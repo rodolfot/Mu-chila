@@ -248,6 +248,4 @@
 233       *           *           *              114            //Maze Ruud Box (Higher)
 234       *           *           *              115            //Maze Ruud Box (Highest)
 235       *           *           *              90             //Golden Archer
-236       7582        *           *              *              //Season Level Reward A
-237       7608        *           *              *              //Season Level Reward B
 end

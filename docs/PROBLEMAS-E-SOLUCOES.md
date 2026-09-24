@@ -79,6 +79,12 @@ No fim, as pendências que ainda estão abertas.
 - **Solução:** com a conta offline, apagar as habilidades master do personagem (`MasterSkillTree.MasterSkill`: todas as entradas de 3 bytes voltam a `FF 00 FF`). Feito no Quest1 em 24/09/2026, com backup em `C:\MuServer\DB\backup-caixas-Quest1-master-antes-de-zerar.csv`. Depois disso: acerto 3.923, acerto PvP 8.484, defesa PvP 1.006.
 - **Atenção:** ao mexer em `MasterLevel`/`MasterPoint` no banco, apague também as habilidades master. Senão elas ficam aprendidas sem pontos que as sustentem.
 
+### GameServer trava ao carregar e o cliente não mostra o servidor (24/09/2026)
+- **Sintoma:** depois de um Reload EventItemBag, o GameServer parou de responder. Ao religar, o log parou em `Event loaded successfully` e o ConnectServer não recebeu o `GameServer online`. No cliente, o botão do servidor não aparecia.
+- **Causa:** dois arquivos novos em `Data\EventItemBag` (caixas Season Level Reward A/B) foram gravados com o texto literal `` `t `` no lugar de TAB, por erro no script que os criou. O carregador do MuDevs não trata a linha malformada e fica preso nela.
+- **Solução:** `EventItemBagManager.txt` voltou ao backup, os dois arquivos foram renomeados para `.desativado-*` e o GameServer e o Castle Siege foram religados. As caixas Season Level Reward continuam sem conteúdo, como no kit.
+- **Regra:** depois de mexer em qualquer arquivo de `Data`, confira no LOG se aparece o `loaded successfully` daquele item antes de dar o assunto por encerrado.
+
 ### Mensagens do servidor com acento aparecem como "invasÃ£o", "comeÃ§ou"
 - **Causa:** o `Portuguese.xml` estava em UTF-8. O servidor repassa os bytes do texto sem converter, e o cliente lê em Windows-1252, então cada letra acentuada (2 bytes em UTF-8) vira dois caracteres.
 - **Solução:** o arquivo foi salvo em **Windows-1252**, mantendo o cabeçalho `encoding="utf-8"`. Conferido na memória do GameServer: as 505 mensagens carregam, com os acentos em 1 byte (`ã` = E3).
