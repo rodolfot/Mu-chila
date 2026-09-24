@@ -51,6 +51,15 @@ No fim, as pendências que ainda estão abertas.
   - o Rune Mage Character Card, que caía de monstros, passou a ter `DropItem = 0`;
   - os cartões existentes são removidos com `tools\Remover-ItensSemSuporte.ps1`, só com o personagem offline.
 
+### Equipamento que não vende, não troca e não dropa (ex.: Legendary Rune Boots)
+- **Causa:** o cliente tem permissões por item. Em `Data\Local\Eng\item_eng.bmd` são registros de 672 bytes, com o código do item nos bytes 0–1 e as permissões nos bytes 661–667; o XOR `FC CF AB` recomeça em cada registro.
+  - As versões "presas" de alguns equipamentos têm tudo zerado: Legendary Rune 125 e (Bound), Rune Sphinx, Storm Jahad, [Bound] Wings of Disillusion...
+  - O servidor deixava esses itens caírem de monstros. Quem pegava ficava com um item que nunca mais saía do inventário.
+- **Solução:**
+  - os **21 equipamentos presos** passaram a ter `DropItem = 0`. As versões normais, negociáveis, continuam caindo;
+  - os 3 itens de missão presos (Elena's Letter, Key of Dimension, Switch Scroll) continuam caindo;
+  - para tirar um item específico de alguém: `tools\Remover-ItensSemSuporte.ps1 -Contas <conta> -Codigos <código>`, com a conta offline.
+
 ### NPC responde "Could not find message 501/502" (ou 248 etc.)
 - **Causa:** o servidor busca as mensagens no idioma 0 do personagem. Com o inglês desativado e o português só no idioma 2, as mensagens sumiram.
 - **Solução:** no `LangManager.xml`, os idiomas 0 e 2 apontam para o `Portuguese.xml`.
