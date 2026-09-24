@@ -555,5 +555,22 @@
 		<Msg ID="10" Text="O jogador %s derrotou o Great Golden Dragon!" />
 		<Msg ID="11" Text="O jogador %s derrotou o White Wizard!" />
 		<Msg ID="12" Text="O jogador %s derrotou o Papai Noel Amaldiçoado!" />
+		<Msg ID="192" Text="A invasão do Skeleton King começou!" />
+		<Msg ID="193" Text="A invasão do Red Dragon começou!" />
+		<Msg ID="194" Text="A invasão dos Dourados começou!" />
+		<Msg ID="195" Text="A invasão do White Wizard começou!" />
+		<Msg ID="196" Text="A invasão de Ano Novo começou!" />
+		<Msg ID="197" Text="A invasão dos coelhos começou!" />
+		<Msg ID="198" Text="A invasão de verão começou!" />
+		<Msg ID="199" Text="A invasão de Natal começou!" />
+		<Msg ID="200" Text="A invasão da Medusa começou!" />
+		<Msg ID="202" Text="O jogador %s derrotou o Skeleton King!" />
+		<Msg ID="203" Text="O jogador %s derrotou o Red Dragon!" />
+		<Msg ID="204" Text="O jogador %s derrotou o Great Golden Dragon!" />
+		<Msg ID="205" Text="O jogador %s derrotou o White Wizard!" />
+		<Msg ID="206" Text="O jogador %s derrotou o Papai Noel Amaldiçoado!" />
+		<Msg ID="207" Text="O jogador %s derrotou a Medusa!" />
+		<Msg ID="210" Text="A invasão dos Demônios invocados começou!" />
+		<Msg ID="211" Text="O evento de invasão dos ovos começou!" />
 	</InvacionMsg>
 </Language>

@@ -555,5 +555,22 @@
 		<Msg ID="10" Text="Player %s defeated Golden Great Dragon!" />
 		<Msg ID="11" Text="Player %s defeated White Wizard!" />
 		<Msg ID="12" Text="Player %s defeated Cursed Santa!" />
+		<Msg ID="192" Text="Skeleton King invasion has begun!" />
+		<Msg ID="193" Text="Invasion of Red Dragon started!" />
+		<Msg ID="194" Text="Invasion of Dourados started!" />
+		<Msg ID="195" Text="Invasion of White Wizard started!" />
+		<Msg ID="196" Text="New Year invasion has begun!" />
+		<Msg ID="197" Text="Invasion of rabbits started!" />
+		<Msg ID="198" Text="Invasion of summer started!" />
+		<Msg ID="199" Text="Christmas invasion has begun!" />
+		<Msg ID="200" Text="Invasion of Medusa began!" />
+		<Msg ID="202" Text="Player %s defeated Skeleton King!" />
+		<Msg ID="203" Text="Player %s defeated Red Dragon!" />
+		<Msg ID="204" Text="Player %s defeated Golden Great Dragon!" />
+		<Msg ID="205" Text="Player %s defeated White Wizard!" />
+		<Msg ID="206" Text="Player %s defeated Cursed Santa!" />
+		<Msg ID="207" Text="Player %s defeated Medusa!" />
+		<Msg ID="210" Text="Invasion of invoking Demons started!" />
+		<Msg ID="211" Text="Invasion of eggs Event started!" />
 	</InvacionMsg>
 </Language>

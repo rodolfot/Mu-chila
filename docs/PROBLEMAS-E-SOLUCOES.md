@@ -65,6 +65,12 @@ No fim, as pendências que ainda estão abertas.
 - **Solução:** no `LangManager.xml`, os idiomas 0 e 2 apontam para o `Portuguese.xml`.
 - **O que 501/502 significam:** são as falas de NPC para jogador **PK** ("Não vendo nada para gente como você"). O jogador precisa usar `/pkclear`.
 
+### Aviso de invasão aparece como "Could not find message 194" (ou 197, 200...)
+- **Sintoma:** só os avisos de invasão falham: início (192–200, 210, 211) e chefe derrotado (202–207). As outras mensagens do servidor funcionam.
+- **Causa:** o GameServer procura os avisos do `InvasionManager.dat` (colunas `RespawnMessage` e `BossMessage`) na seção `<InvacionMsg>` do arquivo de idioma. O kit usa os IDs 192–211, que só existiam na seção `<Message>`; a `<InvacionMsg>` tinha só os IDs 0–12. O inglês do kit tinha o mesmo defeito.
+  - Não era o acento. Conferido na memória do GameServer: a tabela `Message` tinha as 505 mensagens em UTF-8, com a 197 correta; as tabelas `InvacionMsg` tinham 13 entradas, sem a 197.
+- **Solução:** as 17 mensagens de invasão foram copiadas para a `<InvacionMsg>` do `Portuguese.xml` e do `English.xml`, com Reload Common no GameServer e no Castle Siege. O `InvasionManager.dat` não mudou.
+
 ### Caixas (Chicken Box, Earring Box...) não sobem do chão nem descem para o chão
 - **Causa:** as caixas de evento ficam no **Inventário de Evento**. No `GameServerInfo - Common.dat`, `EventInventoryExpireYear/Month/Day` vinha como **31/12/2015**; com a data vencida, o servidor trata esse inventário como fechado e recusa, sem mensagem, pegar ou mover esses itens.
 - **Solução:** validade em **31/12/2037** nos três GameServers, aplicada com Reload Common. Talvez seja preciso sair e entrar no personagem para o cliente mostrar o inventário de evento. O ano 2037 é o limite seguro para executáveis 32 bits antigos, por causa do problema de 2038.
