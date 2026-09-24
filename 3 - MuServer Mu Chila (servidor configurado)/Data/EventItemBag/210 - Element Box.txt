@@ -1,0 +1,83 @@
+3
+//Index   DropRate
+0         10000
+end
+
+4
+//Index   Section   SectionRate   MoneyAmount   OptionValue   DW   DK   FE   MG   DL   SU   RF	GL RW
+0         5         10000         0             0             1    1    1    1    1    1    1	1  1
+0         6         20000         0             0             1    1    1    1    1    1    1	1  1
+end
+
+5
+//RuudMin	RuudMax
+2		8
+end
+
+6
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+7485      1       0       *         *         *         *         *         *         *         *           0          //Talisman Element Change
+6352      1       0       *         *         *         *         *         *         *         *           0          //Kundun's Madness Blade
+6353      1       0       *         *         *         *         *         *         *         *           0          //Kundun's Magic Spell Scroll
+6354      1       0       *         *         *         *         *         *         *         *           0          //Empire Guardians' Stronghold
+6355      1       0       *         *         *         *         *         *         *         *           0          //Ancient Icarus Scroll
+6356      1       0       *         *         *         *         *         *         *         *           0          //Arca's Prophecy
+6357      1       0       *         *         *         *         *         *         *         *           0          //Antonia's Sword
+6358      1       0       *         *         *         *         *         *         *         *           0          //Kundun's Seal Scroll
+//Sealed Fragments Set <----------WTF
+
+//Sealed Fury
+7007      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7008      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7009      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7010      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+//Sealed Transcendence
+7015      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7016      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7017      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7018      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+//Sealed Flurry
+7019      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7020      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7021      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7022      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+//Sealed Redemption
+7023      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7024      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7025      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7026      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+//Sealed Extremity
+7027      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7028      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7029      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7030      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+//Sealed Captivation
+7031      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7032      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7033      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7034      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+
+//Sealed Conquest
+7035      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7036      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7037      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7038      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+
+//Sealed Honor
+7043      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7044      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7045      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7046      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+
+//Sealed Destruction
+7047      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7048      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7049      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7050      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+
+//Sealed Tenacity
+7055      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7056      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7057      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+7058      0       0       *         *         *         *         *         *         *         *           0          //Bloodangel Sealed
+end

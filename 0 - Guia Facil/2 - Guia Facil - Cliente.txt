@@ -1,0 +1,45 @@
+////////////////////////////////////////////
+                   ALLAN JPA
+               SENIOR PROFISSIONAL
+   
+   [Suporte      ]
+   [Via Whatsapp ]   {22} 999518600
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
+
+
+=============================================================
+[TUTORIAL FACIL]
+=============================================================
+1 -  Abra a pasta 'Cliente Season 14 Full'.
+     
+2 -  Abra o arquivo 'Config-DEV'.
+
+3 -  Altere 'TEUIPAQUI' por seu endereço IP.
+     
+      
+
+         [ Pronto - Cliente configurado!]
+
+=============================================================
+=============================================================
+
+
+
+
+
+
+
+
+[*====Info MAIN========*]
+
+[Info]
+ClientExeVersion=22;55(1.08.10)
+ClientExeSerial=FtpGR9XLWaiwEmho
+
+Offsets:
+IpAddress=0x01269012
+ClientExeVersion=0x1272270
+ClientExeSerial=0x1272278

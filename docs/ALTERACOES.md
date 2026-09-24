@@ -1,0 +1,46 @@
+# Alterações em relação ao kit original
+
+Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) e
+`3 - MuServer Mu Chila (servidor configurado)` / `2 - Cliente Season 14 Full`. Feito em 23/09/2026.
+
+## Servidor (`C:\MuServer`)
+
+| Arquivo | Alteração | Motivo |
+|---|---|---|
+| `ConnectServer\ServerList.dat` | `TEUIPAQUI` → `"26.139.39.123"`; nomes → `Mu Chila`, `Mu Chila 2`, `Mu Chila 3`, `Mu Chila BattleCore`, `Mu Chila CastleSiege` | IP do Radmin e nome do servidor |
+| `Data\MapServerInfo.dat` | `STEUIPAQUI` → `S26.139.39.123` | IP para troca de mapa entre servidores; o "S" é obrigatório |
+| `GameServer*\DATA\GameServerInfo - Common.dat` | `ServerName` → `Mu Chila`, `Mu Chila CastleSiege`, `Mu Chila BattleCore` | Nome do servidor. `CustomerName` não foi alterado |
+| `Data\Lang\English.xml` | Mensagens 495 e 581 → "Welcome to Mu Chila..." | Boas-vindas |
+| `Data\Event\InvasionManager.dat` | Invasão Golden (índice 2) a cada 10 min; duração 600 → 540 s | Pedido: dragões dourados a cada 10 minutos |
+| `Data\EventItemBagManager.txt` | Entradas 236 a 254 | Caixas que caíam sem conteúdo |
+| `Data\EventItemBag\236..254 - *.txt` | Novos: 1 item inicial de classe +6, sorteado entre 40 | Pedido: prêmio das caixas |
+| `Startup - Iniciar Server.lnk` | Aponta para `C:\MuServer\2 - Ligar Servidor\Ligar Servidor.exe` | Apontava para uma pasta de Downloads de outro PC |
+| `Criar Conta.bat` / `Criar Conta.ps1` | Novos | Criar conta de jogo pelo ODBC |
+| `Cliente Season 14 - main.lnk` | Novo | Atalho para o cliente |
+| `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\` | Novos: `GremoryCase_MuDevs.sql`, `RestoreItem_MuDevs.sql` | Objetos que faltavam no backup |
+
+## Banco de dados (`.\MUONLINE`)
+
+- `MuOnlineS14` e `BattleCore` restaurados dos `.bak` do kit.
+- Scripts da pasta `Querys` aplicados (lista em INSTALACAO §4). `BanMac` foi criado no `MuOnlineS14`, sem o `USE [MuOnlineIP]`.
+- `MuCastle_DATA`: datas do cerco atualizadas.
+- Gremory Case e Restore Item: tabelas e procedimentos criados, também no `BattleCore`.
+- Contas criadas pelos jogadores (ex.: `dodo`) ficam só no banco. **Não há backup do banco neste repositório**, porque ele teria as senhas dos jogadores.
+
+## ODBC
+
+- DSNs de usuário de **32 bits** `MuOnlineS14` e `BattleCore`, com `Server=(local)\MUONLINE` e Trusted Connection. Os `.reg` do kit não foram usados.
+
+## Cliente (`2 - Cliente Season 14 Full`)
+
+| Arquivo | Alteração |
+|---|---|
+| `Config - Dev.ini` | `IpAddress = 26.139.39.123`; `WindowName = Mu Chila` |
+| `Data\Local\ServerList.bmd`, `Data\Local\{Eng,Por,Spn}\serverlist_*.bmd` | Grupo 1: "Helheim" → "Mu Chila" |
+
+Formato dos `.bmd`: registros de 41 bytes (`WORD índice` + `nome[32]` + 7 bytes). Cada registro tem XOR próprio com a chave `FC CF AB`.
+
+## Máquina do dono (fora do repositório)
+
+- Registro `HKCU\Software\Webzen\Mu\Config`: `DisplayDeviceModeIndex = 9`, `FullScreenMode = 0` (1920x1080 em janela).
+- Ferramenta de diagnóstico Frida instalada no Python do usuário. Para remover: `python -m pip uninstall frida`.

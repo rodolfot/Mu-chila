@@ -1,0 +1,23 @@
+USE [MuOnlineIP]
+GO
+
+/****** Object:  Table [dbo].[BanMacInfo]    Script Date: 07/25/2019 00:06:13 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[BanMacInfo](
+	[Account] [varchar](11) NULL,
+	[Name] [varchar](11) NULL,
+	[HardwareId] [varchar](36) NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO

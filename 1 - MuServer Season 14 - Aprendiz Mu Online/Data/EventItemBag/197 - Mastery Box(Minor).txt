@@ -1,0 +1,25 @@
+3
+//Index   DropRate
+0         10000
+end
+
+4
+//Index   Section   SectionRate   MoneyAmount   OptionValue   DW   DK   FE   MG   DL   SU   RF	GL RW
+0         *         15000         100000        0             1    1    1    1    1    1    1	1  1
+0         5         10000         0             0             1    1    1    1    1    1    1	1  1
+0         6         20000         0             0             1    1    1    1    1    1    1	1  1
+end
+
+5
+//RuudMin	RuudMax
+3		5
+end
+
+6
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+7181      0       0       *         *         *         *         *         *         *         *           0          //Jewel of Bless
+7392      0       0       *         *         *         *         *         *         *         *           0          //Blessing of Light
+7431      0       0       *         *         *         *         *         *         *         *           0          //Bless of Light (Low Grade)
+7432      0       0       *         *         *         *         *         *         *         *           0          //Bless of Light (Middle Grade)
+end
+

@@ -1,0 +1,36 @@
+0
+//StoneOfEvolutionPoint
+2
+end
+
+1
+//Rank	RankPoint	Level	LevelPoint
+1	1		0	4
+2	2		1	3
+3	3		2	6
+4	4		3	9
+5	5		4	12
+6	6		5	15
+*	*		6	18
+*	*		7	21
+end
+
+2
+//Selection	Type	ItemCount	ItemBagIndex	Descritpion
+13		240	2		0		// One Stone
+13		240	2		1		// Two Stones
+13		240	2		2		// Three Stones
+13		240	2		3		// Two Stones
+13		240	2		4		// Two Stones
+13		240	2		5		// Two Stones
+end
+
+3
+//ItemBagIndex	Selection	Type	LevelMin	LevelMax	EvoItemSelection	EvoItemType	Skill	Luck	Option	Exc
+0		13		211	0		0		13			270		0	0	0	*	
+1		13		211	0		0		13			272		0	0	0	*
+2		13		211	0		0		13			274		0	0	0	*
+3		13		211	0		0		13			278		0	0	0	*
+4		13		211	0		0		13			280		0	0	0	*
+5		13		211	0		0		13			282		0	0	0	*
+end

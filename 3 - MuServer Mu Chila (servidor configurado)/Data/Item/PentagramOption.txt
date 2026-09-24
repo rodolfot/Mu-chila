@@ -1,0 +1,29 @@
+0
+//Index   Option0   Option1   Comment
+6344      0         0         //Muren's Book of Magic
+6345      0         0         //Scroll of Etramu
+6346      0         0         //Lorencia Knights' Iron Shield
+6347      2         0         //Iron Shield of the Magic
+6348      0         0         //Hero Elixir
+6349      3         0         //Brave Hero Elixir
+6350      0         0         //Gladiator's Dagger
+6351      1         0         //Merciless Gladiator's Dagger
+6352      4         3         //Kundun's Madness Blade
+6353      5         3         //Kundun's Magic Spell Scroll
+6354      4         6         //Empire Guardians' Stronghold
+6355      5         6         //Ancient Icarus Scroll
+6356      7         3         //Arca's Prophecy
+6357      7         4         //Antonia's Sword
+6358      7         5         //Kundun's Seal Scroll
+end
+
+1
+//Index   Name                                 Value   Type0   Rank0   Level0   Type1   Rank1   Level1   Type2   Rank2   Level2   Type3   Rank3   Level3   Type4   Rank4   Level4
+1         "Mul Pentagram Damage"               10      0       2       3        *       *       *        *       *       *        *       *       *        *       *       * 
+2         "Mul Pentagram Defense"              10      0       2       3        *       *       *        *       *       *        *       *       *        *       *       *
+3         "Add Elemental Critical D. Rate"     10      0       2       3        *       *       *        *       *       *        *       *       *        *       *       *
+4         "Add Elemental D. Transfer Rate"     5       0       3       5        1       3       5        *       *       *        *       *       *        *       *       *
+5         "Add Elemental A. Transfer Rate"     1       0       3       5        1       3       5        *       *       *        *       *       *        *       *       *
+6         "Mul Elemental D. S. R."             5       0       3       6        2       3       6        *       *       *        *       *       *        *       *       *
+7         "Mul Elemental A. S. R."             5       0       3       6        2       3       6        3       3       6        *       *       *        *       *       *
+end

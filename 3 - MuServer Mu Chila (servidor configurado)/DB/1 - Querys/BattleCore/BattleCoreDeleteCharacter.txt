@@ -1,0 +1,37 @@
+
+/****** Object:  StoredProcedure [dbo].[BattleCoreDeleteCharacter]    Script Date: 01/30/2020 18:00:10 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[BattleCoreDeleteCharacter]
+	@AccountID varchar(10),
+	@Name varchar(10),
+	@ServerCode int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode)
+	BEGIN
+		SELECT 0 AS Result
+		RETURN
+	END
+
+	DECLARE @KeyName varchar(10)
+	SELECT @KeyName = Name FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode
+
+	DELETE FROM [BattleCore].[dbo].Character WHERE AccountID = @AccountID AND Name = @KeyName
+	DELETE FROM [BattleCore].[dbo].OptionData WHERE Name = @KeyName
+	DELETE FROM [BattleCore].[dbo].MuunInventory WHERE Name = @KeyName
+	DELETE FROM [BattleCore].[dbo].EventInventory WHERE Name = @KeyName
+	DELETE FROM [BattleCore].[dbo].PentagramJewel WHERE Name = @KeyName
+
+	SELECT 1 AS Result
+END
+
+GO
+

@@ -1,0 +1,104 @@
+
+/****** Object:  Table [dbo].[T_HuntingRecord]    Script Date: 01/31/2020 11:51:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[T_HuntingRecord](
+	[AccountID] [varchar](10) NOT NULL,
+	[Name] [varchar](10) NOT NULL,
+	[MapIndex] [int] NOT NULL,
+	[mYear] [int] NULL,
+	[mMonth] [int] NULL,
+	[mDay] [int] NULL,
+	[CurrentLevel] [int] NULL,
+	[HuntingAccrueSecond] [int] NULL,
+	[NormalAccrueDamage] [bigint] NULL,
+	[PentagramAccrueDamage] [bigint] NULL,
+	[HealAccrueValue] [int] NULL,
+	[MonsterKillCount] [int] NULL,
+	[AccrueExp] [bigint] NULL,
+	[Class] [int] NULL,
+	[MaxNormalDamage] [int] NULL,
+	[MinNormalDamage] [int] NULL,
+	[MaxPentagramDamage] [int] NULL,
+	[MinPentagramDamage] [int] NULL,
+	[GetNormalAccrueDamage] [int] NULL,
+	[GetPentagramAccrueDamage] [int] NULL,
+	[mDate] [datetime] NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'계정명' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'AccountID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'캐릭터명' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'Name'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'맵인덱스' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'MapIndex'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'헌팅연도' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'mYear'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'헌팅달' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'mMonth'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'헌팅일' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'mDay'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'캐릭터레벨' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'CurrentLevel'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'총헌팅시간' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'HuntingAccrueSecond'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'총일반데미지' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'NormalAccrueDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'총속성데미지' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'PentagramAccrueDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'치료량' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'HealAccrueValue'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'몬스터킬수' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'MonsterKillCount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'경험치' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'AccrueExp'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'클래스' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'Class'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'최대일반데미지' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'MaxNormalDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'최소일반데미지' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'MinNormalDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'최대속성데이지' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'MaxPentagramDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'최소속성데이미' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'MinPentagramDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'피격일반데미지' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'GetNormalAccrueDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'피격속성데미지' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'GetPentagramAccrueDamage'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'데이터기록시간' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecord', @level2type=N'COLUMN',@level2name=N'mDate'
+GO
+
+

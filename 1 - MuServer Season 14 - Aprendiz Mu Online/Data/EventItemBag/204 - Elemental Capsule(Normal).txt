@@ -1,0 +1,51 @@
+3
+//Index   DropRate
+0         10000
+end
+4
+//Index   Section   SectionRate   MoneyAmount   OptionValue   DW   DK   FE   MG   DL   SU   RF	GL RW
+0         6	    100           0             0             1    1    1    1    1    1    1	1  1
+0         7	    1500          0             0             1    1    1    1    1    1    1	1  1
+0         8	    1500          0             0             1    1    1    1    1    1    1	1  1
+0         9	    2500          0             0             1    1    1    1    1    1    1	1  1
+end
+
+6
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+6305      1       0       *         *         *         *         *         *         *         *           0          //Errtel of Radiance
+end
+
+7
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+7448      1       0       *         *         *         *         *         *         *         *           0          //Blessing of Spirit
+end
+
+8
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+7477      1       0       *         *         *         *         *         *         *         *           0          //Fragment of Radiance slot (1)
+7478      1       0       *         *         *         *         *         *         *         *           0          //Fragment of Radiance slot (2)
+7479      1       0       *         *         *         *         *         *         *         *           0          //Fragment of Radiance slot (3)
+7480      1       0       *         *         *         *         *         *         *         *           0          //Fragment of Radiance slot (4)
+end
+
+9
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+6432      1       0       *         *         *         *         *         *         *         *           0          //Elemental Rune
+6432      1       0       *         *         *         *         *         *         *         *           0          //Fragment of Radiance slot (2)
+7479      1       0       *         *         *         *         *         *         *         *           0          //Fragment of Radiance slot (3)
+7480      1       0       *         *         *         *         *         *         *         *           0          //Fragment of Radiance slot (4)
+end
+//	<Drop Rate="2500" Count="1">
+//		<Item Cat="12" Index="288" ItemMinLevel="0" ItemMaxLevel="0" Durability="3" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="0" ElementalItem="0" />
+//		<Item Cat="12" Index="288" ItemMinLevel="0" ItemMaxLevel="0" Durability="5" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="0" ElementalItem="0" />
+//		<Item Cat="14" Index="290" ItemMinLevel="0" ItemMaxLevel="0" Durability="2" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="0" ElementalItem="0" />
+//		<Item Cat="14" Index="290" ItemMinLevel="0" ItemMaxLevel="0" Durability="5" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="0" ElementalItem="0" />
+//		<Item Cat="14" Index="290" ItemMinLevel="0" ItemMaxLevel="0" Durability="10" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="0" ElementalItem="0" />
+////		<Item Cat="14" Index="290" ItemMinLevel="0" ItemMaxLevel="0" Durability="15" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="0" ElementalItem="0" />
+//	</Drop>
+//	<Drop Rate="500" Count="1">
+//		<Item Cat="12" Index="203" ItemMinLevel="0" ItemMaxLevel="0" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="-2" ElementalItem="-1" />
+//		<Item Cat="12" Index="204" ItemMinLevel="0" ItemMaxLevel="0" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="-2" ElementalItem="-1" />
+//		<Item Cat="12" Index="206" ItemMinLevel="0" ItemMaxLevel="0" Skill="0" Luck="0" Option="0" Exc="-1" SetItem="0" SocketCount="-2" ElementalItem="-1" />
+//	</Drop>
+//

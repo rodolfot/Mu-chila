@@ -1,0 +1,79 @@
+
+/****** Object:  StoredProcedure [dbo].[WZ_HuntingRecordInfoSave]    Script Date: 01/31/2020 11:54:02 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[WZ_HuntingRecordInfoSave]
+	@AccountID					VARCHAR(10)
+	,@Name						VARCHAR(10)
+	,@MapIndex					INT
+	,@mYear						INT
+	,@mMonth					INT
+	,@mDay						INT
+	,@CurrentLevel				INT
+	,@HuntingAccrueSecond		INT
+	,@NormalAccrueDamage		BIGINT
+	,@PentagramAccrueDamage		BIGINT
+	,@HealAccrueValue			INT
+	,@MonsterKillCount			INT
+	,@AccrueExp					BIGINT
+	,@Class						INT
+	,@MaxNormalDamage			INT
+	,@MinNormalDamage			INT
+	,@MaxPentagramDamage		INT
+	,@MinPentagramDamage		INT
+	,@GetNormalAccrueDamage		INT
+	,@GetPentagramAccrueDamage	INT
+AS  
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+UPDATE dbo.T_HuntingRecord
+SET 
+		CurrentLevel				= @CurrentLevel
+	,	HuntingAccrueSecond			= @HuntingAccrueSecond
+	,	NormalAccrueDamage 			= @NormalAccrueDamage
+	,	PentagramAccrueDamage 		= @PentagramAccrueDamage
+	,	HealAccrueValue	 			= @HealAccrueValue
+	,	MonsterKillCount 			= @MonsterKillCount
+	,	AccrueExp					= @AccrueExp
+	,	Class 						= @Class
+	,	MaxNormalDamage 			= @MaxNormalDamage
+	,	MinNormalDamage 			= @MinNormalDamage
+	,	MaxPentagramDamage 			= @MaxPentagramDamage
+	,	MinPentagramDamage 			= @MinPentagramDamage
+	,	GetNormalAccrueDamage 		= @GetNormalAccrueDamage
+	,	GetPentagramAccrueDamage 	= @GetPentagramAccrueDamage
+	,	mDate						= GETDATE()
+WHERE AccountID = @AccountID 
+	AND Name = @Name 
+	AND MapIndex = @MapIndex 
+	AND mYear = @mYear  
+	AND mMonth = @mMonth  
+	AND mDay = @mDay
+
+IF @@ROWCOUNT = 0 
+BEGIN
+	INSERT INTO dbo.T_HuntingRecord 
+		(AccountID, Name, MapIndex, mYear, mMonth, mDay, CurrentLevel
+		, HuntingAccrueSecond, NormalAccrueDamage, PentagramAccrueDamage
+		, HealAccrueValue, MonsterKillCount, AccrueExp, Class, MaxNormalDamage
+		, MinNormalDamage, MaxPentagramDamage, MinPentagramDamage
+		, GetNormalAccrueDamage, GetPentagramAccrueDamage, mDate)
+	VALUES 
+		(@AccountID,@Name,@MapIndex,@mYear,@mMonth,@mDay,@CurrentLevel
+		,@HuntingAccrueSecond,@NormalAccrueDamage,@PentagramAccrueDamage
+		,@HealAccrueValue,@MonsterKillCount,@AccrueExp, @Class, @MaxNormalDamage
+		, @MinNormalDamage, @MaxPentagramDamage, @MinPentagramDamage
+		, @GetNormalAccrueDamage, @GetPentagramAccrueDamage, GETDATE())
+END
+
+
+
+
+GO
+
+

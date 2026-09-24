@@ -1,0 +1,25 @@
+3
+//Index   DropRate
+0         10000
+end
+
+4
+//Index   Section   SectionRate   MoneyAmount   OptionValue   DW   DK   FE   MG   DL   SU   RF	GL RW
+0         6         10000         0             0             1    1    1    1    1    1    1	1  1
+end
+
+6
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+7179      10      0       *         *         *         *         *         *         *         *           0          //Box of kundun +3
+6670      0       0       *         *         *         *         *         *         *         *           0          //Loch's Feather
+7181      0       0       *         *         *         *         *         *         *         *           0          //Jewel of Bless
+7182      0       0       *         *         *         *         *         *         *         *           0          //Jewel of Soul
+7179      10      0       *         *         *         *         *         *         *         *           0          //Box of kundun +3
+6670      0       0       *         *         *         *         *         *         *         *           0          //Loch's Feather
+7181      0       0       *         *         *         *         *         *         *         *           0          //Jewel of Bless
+7182      0       0       *         *         *         *         *         *         *         *           0          //Jewel of Soul
+7179      10      0       *         *         *         *         *         *         *         *           0          //Box of kundun +3
+6670      0       0       *         *         *         *         *         *         *         *           0          //Loch's Feather
+7181      0       0       *         *         *         *         *         *         *         *           0          //Jewel of Bless
+7182      0       0       *         *         *         *         *         *         *         *           0          //Jewel of Soul
+end

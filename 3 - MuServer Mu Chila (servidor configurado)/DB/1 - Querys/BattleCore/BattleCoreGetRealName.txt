@@ -1,0 +1,20 @@
+/****** Object:  StoredProcedure [dbo].[BattleCoreGetRealName]    Script Date: 01/30/2020 18:01:05 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[BattleCoreGetRealName]
+	@KeyName varchar(10)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT UBFName AS RealName, ServerCode FROM [BattleCore].[dbo].BattleCoreInfo WHERE Name = @KeyName
+END
+
+GO
+
+

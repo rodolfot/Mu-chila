@@ -1,0 +1,32 @@
+
+/****** Object:  StoredProcedure [dbo].[BattleCoreGetChaosCastleReward]    Script Date: 01/30/2020 18:00:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[BattleCoreGetChaosCastleReward]
+	@AccountID varchar(10),
+	@Name varchar(10),
+	@ServerCode int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode)
+	BEGIN
+		SELECT 2 AS Result
+		RETURN
+	END
+
+	DECLARE @KeyName varchar(10)
+	SELECT @KeyName = Name FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode
+
+	SELECT 1 AS Result, * FROM [BattleCore].[dbo].BattleCoreChaosCastleReward WHERE CharName = @KeyName
+END
+
+
+GO

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Processes>
+  <Process Run="True" Delay="1000" Path="..\DataServer1\DataServer.exe" Parameters="" />
+  <Process Run="True" Delay="1000" Path="..\DataServer2\DataServer.exe" Parameters="" />
+  <Process Run="True" Delay="1000" Path="..\JoinServer\JoinServer.exe" Parameters="/p55970 /ca54.39.26.99 /cp55557" />
+  <Process Run="True" Delay="1000" Path="..\ExDB\ExDB.exe" Parameters="127.0.0.1" />
+  <Process Run="True" Delay="1000" Path="..\ChatServer\ChatServer.exe" Parameters="127.0.0.1" />
+  <Process Run="True" Delay="1000" Path="..\GameServer\GameServer.exe" Parameters="" />
+  <Process Run="True" Delay="1000" Path="..\ConnectServer\ConnectServer.exe" Parameters="" />
+</Processes>

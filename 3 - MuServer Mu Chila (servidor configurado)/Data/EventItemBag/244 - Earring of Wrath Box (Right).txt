@@ -1,0 +1,50 @@
+//====================================================
+// Mu Chila - item inicial de classe +6, sorteado entre armas e armaduras iniciais
+//====================================================
+0
+//EventName                        DropZen   ItemDropRate   ItemDropCount   SetItemDropRate   ItemDropType   Fireworks
+"Earring of Wrath Box (Right)"     0         100            1               0                 0              0
+end
+1
+//Section   Type   MinLevel   MaxLevel   Skill   Luck   Option   Excellent
+5           0      6          6          0       0      0        0        //Skull Staff (DW)
+0           1      6          6          0       0      0        0        //Short Sword (DK/MG)
+1           0      6          6          0       0      0        0        //Small Axe (DK)
+4           0      6          6          0       0      0        0        //Short Bow (Elf)
+4           8      6          6          0       0      0        0        //Crossbow (Elf)
+2           8      6          6          0       0      0        0        //Battle Scepter (DL)
+5           14     6          6          0       0      0        0        //Mystery Stick (SU)
+0           32     6          6          0       0      0        0        //Sacred Glove (RF)
+3           13     6          6          0       0      0        0        //Lapid Lance (GL)
+2           28     6          6          0       0      0        0        //Elemental Rune Mace (RW)
+7           2      6          6          0       0      0        0        //Pad (DW/MG)
+8           2      6          6          0       0      0        0        //Pad (DW/MG)
+9           2      6          6          0       0      0        0        //Pad (DW/MG)
+10          2      6          6          0       0      0        0        //Pad (DW/MG)
+11          2      6          6          0       0      0        0        //Pad (DW/MG)
+7           5      6          6          0       0      0        0        //Leather (DK/DL/RF)
+8           5      6          6          0       0      0        0        //Leather (DK/DL/RF)
+9           5      6          6          0       0      0        0        //Leather (DK/DL/RF)
+10          5      6          6          0       0      0        0        //Leather (DK/DL/RF)
+11          5      6          6          0       0      0        0        //Leather (DK/DL/RF)
+7           10     6          6          0       0      0        0        //Vine (Elf)
+8           10     6          6          0       0      0        0        //Vine (Elf)
+9           10     6          6          0       0      0        0        //Vine (Elf)
+10          10     6          6          0       0      0        0        //Vine (Elf)
+11          10     6          6          0       0      0        0        //Vine (Elf)
+7           39     6          6          0       0      0        0        //Violent Wind (SU)
+8           39     6          6          0       0      0        0        //Violent Wind (SU)
+9           39     6          6          0       0      0        0        //Violent Wind (SU)
+10          39     6          6          0       0      0        0        //Violent Wind (SU)
+11          39     6          6          0       0      0        0        //Violent Wind (SU)
+7           91     6          6          0       0      0        0        //Robust (GL)
+8           91     6          6          0       0      0        0        //Robust (GL)
+9           91     6          6          0       0      0        0        //Robust (GL)
+10          91     6          6          0       0      0        0        //Robust (GL)
+11          91     6          6          0       0      0        0        //Robust (GL)
+7           116    6          6          0       0      0        0        //Rune Padded (RW)
+8           116    6          6          0       0      0        0        //Rune Padded (RW)
+9           116    6          6          0       0      0        0        //Rune Padded (RW)
+10          116    6          6          0       0      0        0        //Rune Padded (RW)
+11          116    6          6          0       0      0        0        //Rune Padded (RW)
+end

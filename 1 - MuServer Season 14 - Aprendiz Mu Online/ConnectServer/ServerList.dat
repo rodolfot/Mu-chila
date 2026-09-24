@@ -1,0 +1,18 @@
+//====================================================
+//
+//                 ALLAN JPA ~~ SEASON 14 FULL
+//                    SENIOR PROFISSIONAL
+// [ WHATSAPP ]     
+// [ NUMBER   ]     *22 999518600
+// [ URL      ] www.AprendizMuOnline.com.br   
+//
+// ( INSTRUCAO) ALTERAR 'TEUIPAQUI' por teu ip abaixo       
+//
+//=====================================================
+//ServerCode   PasiveServer	ServerName         ServerAddress      ServerPort       ServerType
+20             0 		"GameServer"       "TEUIPAQUI"        55901            "SHOW"
+21             0 		"GameServer1"       "TEUIPAQUI"       55902            "SHOW"
+22             0 		"GameServer2"       "TEUIPAQUI"       55903            "SHOW"
+120            0	        "BattleCore"       "TEUIPAQUI"        55904            "SHOW"
+19             0		"GameServerCS"     "TEUIPAQUI"        55919            "HIDE"
+end

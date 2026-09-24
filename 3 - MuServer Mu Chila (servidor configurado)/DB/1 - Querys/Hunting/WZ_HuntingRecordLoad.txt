@@ -1,0 +1,30 @@
+/****** Object:  StoredProcedure [dbo].[WZ_HuntingRecordLoad]    Script Date: 01/31/2020 11:55:37 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[WZ_HuntingRecordLoad]
+	@AccountID	VARCHAR(10)
+	,@Name		VARCHAR(10)
+	,@MapIndex	INT
+AS  
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT TOP 60 MapIndex, mYear, mMonth, mDay, CurrentLevel
+	, HuntingAccrueSecond, NormalAccrueDamage, PentagramAccrueDamage
+	, HealAccrueValue, MonsterKillCount, AccrueExp, Class, MaxNormalDamage
+	, MinNormalDamage, MaxPentagramDamage, MinPentagramDamage
+	, GetNormalAccrueDamage, GetPentagramAccrueDamage
+FROM dbo.T_HuntingRecord
+WHERE AccountID = @AccountID	
+	AND	Name = @Name		
+	AND	MapIndex = @MapIndex
+ORDER BY mDate desc
+
+
+GO
+
+

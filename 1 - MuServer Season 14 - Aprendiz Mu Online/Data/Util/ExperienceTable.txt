@@ -1,0 +1,13 @@
+//====================================================
+//
+//                 ALLAN JPA ~~ SEASON 14 FULL
+//                    SENIOR PROFISSIONAL
+// [ WHATSAPP ]     
+// [ NUMBER   ]     *22 999518600
+// [ URL      ] www.AprendizMuOnline.com.br   
+//
+//       
+//
+//=====================================================
+//MinLevel   MaxLevel   MinMasterLevel   MaxMasterLevel   MinReset   MaxReset   MinMasterReset   MaxMasterReset   ExperienceRate
+end

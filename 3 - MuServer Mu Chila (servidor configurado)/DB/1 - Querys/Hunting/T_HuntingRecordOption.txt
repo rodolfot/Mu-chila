@@ -1,0 +1,37 @@
+
+/****** Object:  Table [dbo].[T_HuntingRecordOption]    Script Date: 01/31/2020 11:51:46 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[T_HuntingRecordOption](
+	[AccountID] [varchar](10) NOT NULL,
+	[Name] [varchar](10) NOT NULL,
+	[UserOpen] [tinyint] NOT NULL,
+ CONSTRAINT [PK_T_HuntingRecordOption_Name_AccountID] PRIMARY KEY CLUSTERED 
+(
+	[Name] ASC,
+	[AccountID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'계정명' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecordOption', @level2type=N'COLUMN',@level2name=N'AccountID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'캐릭터명' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecordOption', @level2type=N'COLUMN',@level2name=N'Name'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'사냥기록오픈(1공개0비공개)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'T_HuntingRecordOption', @level2type=N'COLUMN',@level2name=N'UserOpen'
+GO
+
+

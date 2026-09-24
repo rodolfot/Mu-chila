@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Processes>
+  <Process Run="True" Delay="1000" Path="C:\MuServerFerrareziS6\DataServer1\DataServer.exe" Parameters="" />
+  <Process Run="True" Delay="1000" Path="C:\MuServerFerrareziS6\DataServer2\DataServer.exe" Parameters="" />
+  <Process Run="True" Delay="1000" Path="C:\MuServerFerrareziS6\JoinServer\JoinServer.exe" Parameters="/p55970 /ca127.0.0.1 /cp55557" />
+  <Process Run="True" Delay="1000" Path="C:\MuServerFerrareziS6\ExDB\ExDB.exe" Parameters="127.0.0.1" />
+  <Process Run="True" Delay="1000" Path="C:\MuServerFerrareziS6\ChatServer\ChatServer.exe" Parameters="127.0.0.1" />
+  <Process Run="True" Delay="1000" Path="C:\MuServerFerrareziS6\GameServer\GameServer.exe" Parameters="" />
+  <Process Run="True" Delay="1000" Path="C:\MuServerFerrareziS6\ConnectServer\ConnectServer.exe" Parameters="" />
+</Processes>

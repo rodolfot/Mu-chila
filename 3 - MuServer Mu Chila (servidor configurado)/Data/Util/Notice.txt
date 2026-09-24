@@ -1,0 +1,14 @@
+//====================================================
+//
+//                 ALLAN JPA ~~ SEASON 14 FULL
+//                    SENIOR PROFISSIONAL
+// [ WHATSAPP ]     
+// [ NUMBER   ]     *22 999518600
+// [ URL      ] www.AprendizMuOnline.com.br   
+//
+//       
+//
+//=====================================================
+//Message                                                            Type   Count   Opacity   Delay   Red   Green   Blue   Speed   RepeatTime
+"Server Season 14 AM"                                                  0      0       0         0       0     0       0      0       60
+end

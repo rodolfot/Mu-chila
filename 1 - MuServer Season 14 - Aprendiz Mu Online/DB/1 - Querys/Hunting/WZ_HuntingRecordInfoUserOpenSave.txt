@@ -1,0 +1,33 @@
+
+/****** Object:  StoredProcedure [dbo].[WZ_HuntingRecordInfoUserOpenSave]    Script Date: 01/31/2020 11:55:01 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[WZ_HuntingRecordInfoUserOpenSave]
+	@AccountID	VARCHAR(10)
+	,@Name		VARCHAR(10)
+	,@UserOpen	TINYINT
+AS  
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+UPDATE dbo.T_HuntingRecordOption
+SET UserOpen = @UserOpen
+WHERE AccountID = @AccountID
+	AND Name = @Name
+
+IF @@ROWCOUNT = 0 
+BEGIN
+	INSERT INTO dbo.T_HuntingRecordOption 
+		(AccountID, Name, UserOpen)
+	VALUES
+		(@AccountID,@Name,@UserOpen)
+END
+
+
+GO
+
+

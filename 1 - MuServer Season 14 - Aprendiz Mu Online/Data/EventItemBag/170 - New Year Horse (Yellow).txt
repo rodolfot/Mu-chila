@@ -1,0 +1,10 @@
+0
+//EventName              	DropZen   ItemDropRate   ItemDropCount   SetItemDropRate   ItemDropType   Fireworks	
+"New Year Horse (Yellow)"	100000	  50		 1		  0		    0		   0
+end
+
+1
+//Section   Type   MinLevel   MaxLevel   Skill	Luck	Option	Excellent
+13	    169	   0	      0		 0	 0	0	0
+13	    170	   0	      0		 0	 0	0	0	
+end

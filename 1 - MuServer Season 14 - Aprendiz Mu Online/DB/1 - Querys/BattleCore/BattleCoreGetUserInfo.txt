@@ -1,0 +1,55 @@
+
+/****** Object:  StoredProcedure [dbo].[BattleCoreGetUserInfo]    Script Date: 01/30/2020 18:01:36 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[BattleCoreGetUserInfo]
+	@AccountID varchar(10),
+	@Name varchar(10),
+	@ServerCode int,
+	@IsUBFServer int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF (@IsUBFServer = 1) -- Battle Core GS
+	BEGIN
+		IF EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND Name = @Name)
+		BEGIN
+			SELECT 1 AS Result, RegisterState, RegisterMonth, RegisterDay FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND Name = @Name
+			RETURN
+		END
+		ELSE
+		BEGIN
+			SELECT 0 AS Result
+			RETURN
+		END
+	END
+	ELSE IF (@IsUBFServer = 0) -- Normal GS
+	BEGIN
+		IF EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode)
+		BEGIN
+			SELECT 1 AS Result, RegisterState, RegisterMonth, RegisterDay FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode
+			RETURN
+		END
+		ELSE
+		BEGIN
+			SELECT 0 AS Result
+			RETURN
+		END
+	END
+	ELSE
+	BEGIN
+		SELECT 0 AS Result
+		RETURN
+	END			
+END
+
+GO
+
+

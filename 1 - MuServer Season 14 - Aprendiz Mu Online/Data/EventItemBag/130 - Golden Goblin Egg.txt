@@ -1,0 +1,31 @@
+3
+//Index   DropRate
+0         10000
+end
+
+4
+//Index   Section   SectionRate   MoneyAmount   OptionValue   DW   DK   FE   MG   DL   SU   RF	GL RW
+0         6         10000         0             0             1    1    1    1    1    1    1	1  1
+0         7         20000         0             0             1    1    1    1    1    1    1	1  1
+end
+
+6
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+6867      0       0       *         *         *         *         *         *         *         *           0          //Evolution Stone
+end
+
+7
+//Index   Level   Grade   Option0   Option1   Option2   Option3   Option4   Option5   Option6	Attribute   Duration   Comment
+6872      1       0       *         *         *         *         *         *         *         *           0	       //Nymph
+6874      1       0       *         *         *         *         *         *         *         *           0	       //Safi
+6879      1       0       *         *         *         *         *         *         *         *           0	       //William
+6881      1       0       *         *         *         *         *         *         *         *           0	       //Paul
+6883      1       0       *         *         *         *         *         *         *         *           0	       //Chiron
+6889      1       0       *         *         *         *         *         *         *         *           0	       //Witch
+6891      1       0       *         *         *         *         *         *         *         *           0	       //Skull
+6868      1       0       *         *         *         *         *         *         *         *           0	       //Luki
+6870      1       0       *         *         *         *         *         *         *         *           0	       //Tony
+6893      1       0       *         *         *         *         *         *         *         *           0	       //Pumpy
+6885      1       0       *         *         *         *         *         *         *         *           0	       //Wooparoo
+6887      1       0       *         *         *         *         *         *         *         *           0	       //Tibetton
+end

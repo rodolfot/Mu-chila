@@ -1,0 +1,18 @@
+0
+//EventName              	DropZen   ItemDropRate 	ItemDropCount   SetItemDropRate   ItemDropType   Fireworks	
+"CC Survival TryOut"		1000	  100		1		0		  0		 0
+end
+
+
+2
+//Section   Type   MinLevel     MaxLevel  Skill	 Luck	Option	Excellent   SetOption   SocketOption    SocketProbalty1  	SocketProbalty2  SocketProbalty3  SocketProbalty4  SocketProbalty5
+12	    212    0 		0	  0 	 0	0	0	    0		5		100			90		 80		  70		   60
+12	    213    0	 	0	  0	 0	0	0	    0		5		100			90		 80		  70		   60
+12	    214    0	 	0	  0	 0	0	0	    0		5		100			90		 80		  70		   60
+12	    208    0	 	0	  0	 0	0	0	    0		5	 	100			90		 80		  70		   60
+12	    209    0	 	0	  0	 0	0	0	    0		5		100			90		 80		  70		   60
+12	    210    0	 	0	  0	 0	0	0	    0		5		100			90		 80		  70		   60
+12	    211    0	 	0	  0	 0	0	0	    0		5		100			90		 80		  70		   60
+12	    136    1	 	1	  0	 0	0	0	    0		5		100			90		 80		  70		   60
+12	    136    2	 	2	  0	 0	0	0	    0		5		100			90		 80		  70		   60	 
+end

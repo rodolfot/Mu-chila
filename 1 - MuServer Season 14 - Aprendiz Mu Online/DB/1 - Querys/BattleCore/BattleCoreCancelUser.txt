@@ -1,0 +1,50 @@
+
+/****** Object:  StoredProcedure [dbo].[BattleCoreCancelUser]    Script Date: 01/30/2020 17:59:51 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[BattleCoreCancelUser]
+	@AccountID varchar(10),
+	@Name varchar(10),
+	@ServerCode int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode)
+	BEGIN
+		SELECT 0 AS Result
+		RETURN
+	END
+
+	DECLARE @KeyName varchar(10)
+	SELECT @KeyName = Name FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode
+
+	DECLARE @Slot1 varchar(10), @Slot2 varchar(10), @CurSlot varchar(10)
+	SELECT @Slot1 = GameID1, @Slot2 = GameID2 FROM [BattleCore].[dbo].AccountCharacter WHERE Id = @AccountID
+
+	IF (@Slot1 = @KeyName)
+	BEGIN
+		UPDATE [BattleCore].[dbo].AccountCharacter SET GameID1 = NULL WHERE Id = @AccountID
+		PRINT 'Slot1 clear'
+	END
+	ELSE IF (@Slot2 = @KeyName)
+	BEGIN
+		UPDATE [BattleCore].[dbo].AccountCharacter SET GameID2 = NULL WHERE Id = @AccountID
+		PRINT 'Slot2 clear'
+	END
+
+	UPDATE [BattleCore].[dbo].BattleCoreInfo SET RegisterState = 0, RegisterDay = 0, RegisterMonth = 0, LeftTime = GETDATE() WHERE
+		AccountID = @AccountID AND UBFName = @Name AND ServerCode = @ServerCode
+
+	SELECT 1 AS Result
+END
+
+
+GO
+
+

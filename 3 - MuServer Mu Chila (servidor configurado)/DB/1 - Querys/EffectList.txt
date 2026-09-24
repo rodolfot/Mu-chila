@@ -1,0 +1,1 @@
+ALTER TABLE dbo.Character ALTER COLUMN EffectList varbinary(448)

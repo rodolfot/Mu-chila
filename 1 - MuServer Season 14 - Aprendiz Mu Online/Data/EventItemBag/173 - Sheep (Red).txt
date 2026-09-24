@@ -1,0 +1,10 @@
+0
+//EventName              	DropZen   ItemDropRate   ItemDropCount   SetItemDropRate   ItemDropType   Fireworks	
+"Sheep (Red)"			10000     45		 1		  0		    0		   0
+end
+
+1
+//Section   Type   MinLevel   MaxLevel   Skill	Luck	Option	Excellent
+13	    169	   0	      0		 0	 0	0	0
+13	    170	   0	      0		 0	 0	0	0	
+end

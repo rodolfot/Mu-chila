@@ -1,0 +1,85 @@
+
+/****** Object:  StoredProcedure [dbo].[BattleCoreJoinUser]    Script Date: 01/30/2020 18:01:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+CREATE PROCEDURE [dbo].[BattleCoreJoinUser]
+	@AccountID varchar(10),
+	@Name varchar(10),
+	@UBFName varchar(10),
+	@ServerCode int,
+	@RegisterState int,
+	@RegisterMonth int,
+	@RegisterDay int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF ((SELECT COUNT (*) FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND RegisterState = 1) >= 2)
+	BEGIN
+		SELECT 4 AS Result
+		RETURN
+	END
+
+	IF EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @UBFName AND ServerCode = @ServerCode AND RegisterState = 1)
+	BEGIN
+		SELECT 2 AS Result
+		RETURN
+	END
+
+	IF EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @UBFName AND ServerCode = @ServerCode AND RegisterState = 0)
+	BEGIN
+		DECLARE @LeftTime smalldatetime
+		SELECT @LeftTime = LeftTime FROM [BattleCore].[dbo].BattleCoreInfo WHERE AccountID = @AccountID AND UBFName = @UBFName AND ServerCode = @ServerCode AND RegisterState = 0
+
+		IF (DATEDIFF(SECOND, @LeftTime, GETDATE()) < 180)
+		BEGIN
+			SELECT 3 AS Result, (180 - DATEDIFF(SECOND, @LeftTime, GETDATE())) AS LeftSecond
+			RETURN
+		END
+		ELSE
+		BEGIN
+			UPDATE [BattleCore].[dbo].BattleCoreInfo SET RegisterState = 1, RegisterMonth = @RegisterMonth, RegisterDay = @RegisterDay WHERE AccountID = @AccountID AND UBFName = @UBFName AND ServerCode = @ServerCode
+			SELECT 1 AS Result
+			RETURN
+		END
+	END
+	ELSE
+	BEGIN
+
+		DECLARE @FreeKeyName int
+		SET @FreeKeyName = 0
+
+		WHILE (1 = 1)
+		BEGIN
+			SET @FreeKeyName = ROUND(((2000000000 - 1 -1) * RAND() + 1), 0)
+			IF NOT EXISTS (SELECT * FROM [BattleCore].[dbo].BattleCoreInfo WHERE Name = @FreeKeyName)
+			BEGIN
+				BREAK
+			END
+		END
+
+		INSERT INTO [BattleCore].[dbo].BattleCoreInfo (AccountID, Name, UBFName, ServerCode, RegisterState, RegisterMonth, RegisterDay, LeftTime,Observer) VALUES
+		(@AccountID, @FreeKeyName, @UBFName, @ServerCode, 1, @RegisterMonth, @RegisterDay, NULL,0)
+
+		INSERT INTO [BattleCore].[dbo].AccountCharacter (Id, GameID1, GameID2, GameID3, GameID4, GameID5, GameIDC, MoveCnt, ExtClass, ExtWarehouse) VALUES
+		(@AccountID, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1)
+
+		SELECT 0 AS Result
+	END
+		RETURN
+
+
+END
+
+
+
+GO
+
+

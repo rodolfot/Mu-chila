@@ -1,0 +1,29 @@
+;==================================================
+;
+;              ALLAN JPA ~~ SEASON 14 FULL
+;                  SENIOR PROFISSIONAL
+; [ WHATSAPP ]     
+; [ NUMBER   ]     *22 999518600
+; [ URL      ] www.AprendizMuOnline.com.br           
+;
+;==================================================
+
+
+1 - Crie database com nome de 'MuOnlineS14'
+    Pós restaurar, rode a ODBC.
+
+
+2 - Crie database com nome 'BattleCore'
+    Pós restaurar, rode a ODBC.
+
+
+
+3 - Execute os comandos QueryAnalyzer da pasta 'Querys'
+    [Apenas após a restauração das DBs]
+
+
+
+
+======================================
+*/ Recomendável SQL Server 2008 R2 /*
+======================================
