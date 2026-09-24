@@ -48,6 +48,16 @@ As caixas abertas com o botão direito estão em `Data\EventItemBagManager.txt` 
 As 19 caixas que caíam de monstros sem conteúdo (entradas 236 a 254) agora dão **1 item inicial de classe +6**, sorteado entre 40 armas e peças de armadura.
 Depois de editar, use Reload EventItemBag.
 
+## Drops de monstros
+
+`Data\Item\ItemDrop.txt` tem uma linha por regra: `Index Level Grade Option0..6 Duration MapNumber MonsterClass MonsterLevelMin MonsterLevelMax DropRate`.
+O `DropRate` é **por milhão** (1000 = 0,1% por monstro morto). Depois de editar, use Reload Item.
+
+- **Box of Kundun** (item 7179): cai em Kalima com 1% de chance por monstro.
+  - Kalima 1–2 dão +1 (nível 8); Kalima 3, +2; Kalima 4, +3; Kalima 5, +4; **Kalima 6–7, +5** (nível 12).
+  - Mapas: 24–29 e 36.
+- **Custom Event Drop** (`Data\Custom\CustomEventDrop.txt`): chuva de joias e Box of Kundun +4/+5 em Lorencia às 20:00. Vem **desligado** (`CustomEventDropSwitch = 0` no `GameServerInfo - Custom.dat`).
+
 ## Itens que não podem ser largados
 
 `Data\Item\ItemMove.txt` define `AllowDrop/AllowSell/AllowTrade/AllowVault` por item.
