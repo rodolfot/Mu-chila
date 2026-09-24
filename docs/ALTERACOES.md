@@ -29,6 +29,8 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 - Scripts da pasta `Querys` aplicados (lista em INSTALACAO §4). `BanMac` foi criado no `MuOnlineS14`, sem o `USE [MuOnlineIP]`.
 - `MuCastle_DATA`: datas do cerco atualizadas.
 - Gremory Case e Restore Item: tabelas e procedimentos criados, também no `BattleCore`.
+- Gatilho `TR_MuChila_ClasseInicial` (DW, DK, Elfa e Summoner nascem na 2ª classe) e +1 de classe nos personagens que estavam na básica (24/09/2026).
+- Caixas sem suporte removidas de inventários, inventários de evento e baús (backup em `C:\MuServer\DB\backup-caixas-*.csv`).
 - Contas criadas pelos jogadores (ex.: `dodo`) ficam só no banco. **Não há backup do banco neste repositório**, porque ele teria as senhas dos jogadores.
 
 ## ODBC

@@ -10,6 +10,9 @@
 # Backups temporarios criados durante as alteracoes (o historico do git substitui)
 *.bak-*
 
+# Backups de dados de jogadores gerados pelas ferramentas (ficam so em C:\MuServer\DB)
+backup-caixas-*.csv
+
 # Pacotes gerados para distribuicao (o cliente vai descompactado no repositorio)
 *.zip
 

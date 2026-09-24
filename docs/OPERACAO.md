@@ -61,7 +61,7 @@ As caixas novas do S14 que abrem com o botão direito (Ruud Box, Earring Box, Gi
 
 ## Evolução de classe (`/change`)
 
-Personagens novos começam na classe básica e **não evoluem sozinhos**.
+**DW, DK, Elfa e Summoner já nascem na 2ª classe** (gatilho `TR_MuChila_ClasseInicial` no banco), porque o cliente S14 mostra a básica e a 2ª com o mesmo nome. As próximas evoluções continuam sendo manuais.
 Itens e skills marcados com `2` nas colunas de classe do `Item.txt` exigem a 2ª classe (ex.: a foice Brova/"Beuroba" exige Blade Knight).
 Para evoluir, digite **`/change`** no chat. É grátis e vai até a 3ª classe (`CommandChangeLimit = 3` em `GameServerInfo - Command.dat`).
 Cada uso sobe uma classe e responde "You successfully evolved".

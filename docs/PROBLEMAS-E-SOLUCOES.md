@@ -39,7 +39,8 @@ No fim, as pendências que ainda estão abertas.
 
 ### Caixas que não abrem (`[CGOpenBoxRecv] [Error] [Box Type] Unknown box identifier`)
 - **Causa:** a abertura com o botão direito do S14 envia um identificador de caixa que o GameServer MuDevs FREE não conhece. O `EventItemBagManager` não é consultado nesse caminho, e não existe configuração para ele. Os prêmios criados nas entradas 236 a 254 não tiveram efeito e foram removidos.
-- **Solução:** as 19 caixas (Earring of Wrath Box, [Speed] Earring Box, Ruud Box, Gift Box, Mastery Box, Chicken Box...) **deixaram de cair dos monstros** (`DropItem = 0` no `Item.txt`). As que já estão nos inventários não abrem; podem ser vendidas ou descartadas.
+- **Solução:** as 19 caixas (Earring of Wrath Box, [Speed] Earring Box, Ruud Box, Gift Box, Mastery Box, Chicken Box...) **deixaram de cair dos monstros** (`DropItem = 0` no `Item.txt`).
+- **Limpeza:** as que estavam em inventários, inventários de evento e baús foram removidas com `tools\Remover-CaixasSemSuporte.ps1`, que só mexe em contas offline há mais de 1 minuto e guarda backup em `C:\MuServer\DB\backup-caixas-*.csv`.
 
 ### NPC responde "Could not find message 501/502" (ou 248 etc.)
 - **Causa:** o servidor busca as mensagens no idioma 0 do personagem. Com o inglês desativado e o português só no idioma 2, as mensagens sumiram.
@@ -57,10 +58,11 @@ No fim, as pendências que ainda estão abertas.
 - Testar se, ao abrir, dão o item inicial +6.
 
 ### Personagem novo aparece como "Blade Knight" no cliente, mas é Dark Knight no servidor
-- **Relato:** "todo char inicial está sendo apresentado como Blade Knight".
-- **O servidor e o banco estão coerentes:** Dark Knight = 16, Blade Knight = 17, +1 por evolução. `DefaultClassType` e `DefaultClassInfo.txt` usam as classes básicas, e nenhum personagem usou `/change`.
-- **Consequência:** o cliente exibe uma classe acima da real. O jogador tenta equipar itens de 2ª classe, e o servidor recusa (é o caso da Beuroba).
-- **Pendente:** comparar o que o cliente mostra para personagens de classe conhecida, nas contas do kit (TikiTaka = 18, Mage = 1, Yoyita = 33, Elfita = 34, asas = 32), e o que passa a mostrar depois de `/change`. Com isso dá para decidir entre ajustar a criação de personagem e só documentar.
+- **Causa:** o cliente S14 mostra a classe básica e a 2ª classe com o mesmo nome (16 e 17 aparecem ambos como "Blade Knight"). O servidor, porém, cria o personagem na básica (+0). Com isso, o cliente oferecia itens e skills de 2ª classe que o servidor recusava ("Não pode vestir o item").
+- **Solução:**
+  - Gatilho `TR_MuChila_ClasseInicial` na tabela `Character`: DW, DK, Elfa e Summoner já nascem na 2ª classe, com +1, igual ao `/change`. O script é `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\ClasseInicial_2aClasse.sql`.
+  - Os personagens que ainda estavam na básica (MalocoBR, Yololo, asas, Quest4) subiram +1.
+  - MG, DL e RF não precisam. Grow Lancer e Rune Wizard não foram alterados, por falta de confirmação; se aparecer o mesmo sintoma, basta usar `/change`.
 
 ### Item comprado não pode ser usado / habilidades não funcionam em algumas contas (provável causa única)
 - **Caso da mamaeupo:**
