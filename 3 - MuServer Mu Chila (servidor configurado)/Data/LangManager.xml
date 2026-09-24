@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LanguageManager>
-	<Lang ID="0" FileName="English.xml" Enable="0"/>
+	<Lang ID="0" FileName="Portuguese.xml" Enable="1"/>
 	<Lang ID="1" FileName="Spanish.xml" Enable="0"/>
 	<Lang ID="2" FileName="Portuguese.xml" Enable="1"/>
 	<Lang ID="3" FileName="Korean.xml" Enable="0"/>

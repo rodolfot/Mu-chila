@@ -13,10 +13,9 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `GameServer*\DATA\GameServerInfo - Common.dat` | `EventInventoryExpire` 31/12/2015 → 31/12/2037 | A data vencida bloqueava pegar e mover caixas de evento |
 | `Data\Lang\English.xml` | Mensagens 495 e 581 → "Welcome to Mu Chila..." | Boas-vindas |
 | `Data\Event\InvasionManager.dat` | Invasão Golden (índice 2) a cada 10 min; duração 600 → 540 s | Pedido: dragões dourados a cada 10 minutos |
-| `Data\EventItemBagManager.txt` | Entradas 236 a 254 | Caixas que caíam sem conteúdo |
-| `Data\EventItemBag\236..254 - *.txt` | Novos: 1 item inicial de classe +6, sorteado entre 40 | Pedido: prêmio das caixas |
+| `Data\Item\Item.txt` | `DropItem` 1 → 0 em 19 caixas da seção 14 (7591–7625) | O servidor não abre essas caixas; os prêmios via EventItemBag não funcionaram e foram removidos |
 | `Data\Item\ItemDrop.txt` | Box of Kundun em Kalima (1%): K1–2 +1, K3 +2, K4 +3, K5 +4, K6–7 +5 | O kit não tinha drop de Box of Kundun |
-| `Data\Lang\Portuguese.xml` (novo) + `Data\LangManager.xml` | 548 mensagens do servidor em português (Windows-1252); português ativado e inglês desativado | Pedido: jogo em português |
+| `Data\Lang\Portuguese.xml` (novo) + `Data\LangManager.xml` | 548 mensagens do servidor em português (Windows-1252); os idiomas 0 e 2 apontam para ele | Pedido: jogo em português (os personagens usam o idioma 0) |
 | Cliente: `Idioma - Portugues.reg` / `Idioma - Ingles.reg` (novos) | Trocam o `LangSelection` do cliente | O cliente já tem textos `Por` oficiais |
 | `Data\Monster\MonsterSetBase\*.xml` (43 mapas) | Spawns de SPOT/MONSTER viram 1.676 grupos de 5+ em chão livre (`tools\Agrupar-Spawns.ps1`) | Pedido: monstros agrupados em vez de espalhados |
 | `Startup - Iniciar Server.lnk` | Aponta para `C:\MuServer\2 - Ligar Servidor\Ligar Servidor.exe` | Apontava para uma pasta de Downloads de outro PC |

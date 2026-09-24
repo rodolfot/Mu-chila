@@ -45,8 +45,9 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
 ## Caixas
 
 As caixas abertas com o botão direito estão em `Data\EventItemBagManager.txt` (código do item → saco) e `Data\EventItemBag\NNN - Nome.txt` (itens possíveis).
-As 19 caixas que caíam de monstros sem conteúdo (entradas 236 a 254) agora dão **1 item inicial de classe +6**, sorteado entre 40 armas e peças de armadura.
-Depois de editar, use Reload EventItemBag.
+Isso vale para caixas usadas pelo caminho clássico, como a Box of Kundun (7179 níveis 8–12). Depois de editar, use Reload EventItemBag.
+
+As caixas novas do S14 que abrem com o botão direito (Ruud Box, Earring Box, Gift Box, Mastery Box, Chicken Box...) passam por outro caminho: o servidor MuDevs FREE só aceita as que conhece e **não tem configuração para elas**, e o log registra `Unknown box identifier`. As 19 que não abrem deixaram de cair dos monstros (`DropItem = 0` no `Item.txt`).
 
 ## Idioma (português)
 

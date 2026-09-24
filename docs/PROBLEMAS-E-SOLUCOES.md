@@ -38,8 +38,13 @@ No fim, as pendências que ainda estão abertas.
 - **Solução:** é regra do kit, não bug. Para mudar, veja OPERACAO.md.
 
 ### Caixas que não abrem (`[CGOpenBoxRecv] [Error] [Box Type] Unknown box identifier`)
-- **Causa:** 19 caixas (Earring of Wrath Box, [Speed] Earring Box, Ruud Box, Gift Box, Mastery Box...) estão marcadas como drop de monstro no `Item.txt`, mas não tinham conteúdo no `EventItemBagManager.txt`.
-- **Solução:** entradas 236 a 254 com sacos de item inicial de classe +6. Aguardando alguém abrir uma caixa no jogo para confirmar.
+- **Causa:** a abertura com o botão direito do S14 envia um identificador de caixa que o GameServer MuDevs FREE não conhece. O `EventItemBagManager` não é consultado nesse caminho, e não existe configuração para ele. Os prêmios criados nas entradas 236 a 254 não tiveram efeito e foram removidos.
+- **Solução:** as 19 caixas (Earring of Wrath Box, [Speed] Earring Box, Ruud Box, Gift Box, Mastery Box, Chicken Box...) **deixaram de cair dos monstros** (`DropItem = 0` no `Item.txt`). As que já estão nos inventários não abrem; podem ser vendidas ou descartadas.
+
+### NPC responde "Could not find message 501/502" (ou 248 etc.)
+- **Causa:** o servidor busca as mensagens no idioma 0 do personagem. Com o inglês desativado e o português só no idioma 2, as mensagens sumiram.
+- **Solução:** no `LangManager.xml`, os idiomas 0 e 2 apontam para o `Portuguese.xml`.
+- **O que 501/502 significam:** são as falas de NPC para jogador **PK** ("Não vendo nada para gente como você"). O jogador precisa usar `/pkclear`.
 
 ### Caixas (Chicken Box, Earring Box...) não sobem do chão nem descem para o chão
 - **Causa:** as caixas de evento ficam no **Inventário de Evento**. No `GameServerInfo - Common.dat`, `EventInventoryExpireYear/Month/Day` vinha como **31/12/2015**; com a data vencida, o servidor trata esse inventário como fechado e recusa, sem mensagem, pegar ou mover esses itens.

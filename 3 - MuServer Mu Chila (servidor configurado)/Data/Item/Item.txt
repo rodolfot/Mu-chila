@@ -2155,12 +2155,12 @@ end
 420 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Bound]Mysterious Stone"			0 	 0 	 
 421 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "2nd Bound Wings Chest"			0 	 0 	 
 422 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "3rd Bound Wings Chest"			0 	 0 	 
-423 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "[Balls and Cows] Lower Box"			0 	 0 	 
-424 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "[Balls and Cows] Medium Box"			0 	 0 	 
-425 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "[Balls and Cows] Higher Box"			0 	 0 	 
-426 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "60-Day Mastery Armor Box"			0 	 0 	 
-427 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "30-Day Mastery Armor Box"			0 	 0 	 
-428 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "3-Day Mastery Armor Box"			0 	 0 	 
+423 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Balls and Cows] Lower Box"			0 	 0 	 
+424 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Balls and Cows] Medium Box"			0 	 0 	 
+425 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Balls and Cows] Higher Box"			0 	 0 	 
+426 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "60-Day Mastery Armor Box"			0 	 0 	 
+427 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "30-Day Mastery Armor Box"			0 	 0 	 
+428 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "3-Day Mastery Armor Box"			0 	 0 	 
 429 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "+11 3rd Wings Chest (Bound)"			0 	 0 	 
 430 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Elena's Letter"				0 	 0 	 
 431 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Key of Dimension"				0 	 0 	 
@@ -2173,23 +2173,23 @@ end
 438 	 * 	 0 	 1 	 2 		 1 		 1 		 1 		 "[Reinforce] Arcanum of Battle"		0 	 0 	 
 439 	 * 	 0 	 1 	 2 		 1 		 1 		 1 		 "[Reinforce] Arcanum of Strength"		0 	 0 	 
 440 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Season Level Reward B"			0 	 0 	 
-441 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Lapidary Stone Box"				0 	 0 	 
-442 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Earring of Wrath Box (Left)"			0 	 0 	 
-443 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Earring of Wrath Box (Right)"			0 	 0 	 
+441 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Lapidary Stone Box"				0 	 0 	 
+442 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Earring of Wrath Box (Left)"			0 	 0 	 
+443 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Earring of Wrath Box (Right)"			0 	 0 	 
 444 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Energy Drink"					0 	 0 	 
-445 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Chicken Box"					0 	 0 	 
-446 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "[Event] Ruud Box"				0 	 0 	 
-447 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Ruud Box (2,000)"				0 	 0 	 
-448 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Ruud Box (3,000)"				0 	 0 	 
+445 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Chicken Box"					0 	 0 	 
+446 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Event] Ruud Box"				0 	 0 	 
+447 	 * 	 0 	 2 	 2 		 1 		 1 		 0 		 "Ruud Box (2,000)"				0 	 0 	 
+448 	 * 	 0 	 2 	 2 		 1 		 1 		 0 		 "Ruud Box (3,000)"				0 	 0 	 
 449 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Frost Soul"					0 	 0 	 
 450 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Soul Anvil"					0 	 0 	 
-451 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "[Event] Ruud Box (2nd Week)"			0 	 0 	 
-452 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "60-Day Mastery Weapon Box"			0 	 0 	 
+451 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Event] Ruud Box (2nd Week)"			0 	 0 	 
+452 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "60-Day Mastery Weapon Box"			0 	 0 	 
 453 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Switch Scroll"				0 	 0 	 
-454 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "[Speed] Earring Box (Left)"			0 	 0 	 
-455 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Small Gift Box"				0 	 0 	 
-456 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Medium Gift Box"				0 	 0 	 
-457 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Large Gift Box"				0 	 0 	 
+454 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Speed] Earring Box (Left)"			0 	 0 	 
+455 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Small Gift Box"				0 	 0 	 
+456 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Medium Gift Box"				0 	 0 	 
+457 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Large Gift Box"				0 	 0 	 
 487 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Rune Mage Character Card"			0 	 0 	 
 end
 
