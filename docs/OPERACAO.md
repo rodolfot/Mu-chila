@@ -52,7 +52,7 @@ As caixas novas do S14 que abrem com o botão direito (Ruud Box, Earring Box, Gi
 ## Idioma (português)
 
 - **Servidor:** as mensagens do servidor estão em `Data\Lang\Portuguese.xml`, ativado no `Data\LangManager.xml` (English `Enable="0"`, Portuguese `Enable="1"`). Aplique com Reload Common.
-  - O arquivo é gravado em **Windows-1252**, embora o cabeçalho diga utf-8; é assim que os acentos chegam certos ao cliente. Edite mantendo essa codificação.
+  - O arquivo deve ser **UTF-8 válido** (sem BOM). Com Windows-1252 o servidor descarta, sem avisar, toda mensagem com acento, e o jogo mostra "Could not find message N".
   - Os comandos (`/move`, `/post`...) continuam com o nome original.
 - **Cliente:** registro `HKCU\Software\Webzen\Mu\Config` → `LangSelection = Por`. Os arquivos `Idioma - Portugues.reg` e `Idioma - Ingles.reg` na pasta do cliente fazem a troca com dois cliques.
   - O cliente passa a carregar `Data\Local\Por\*.bmd`: missões, dicas de skill, ajuda e opções de conjunto já vêm traduzidas.

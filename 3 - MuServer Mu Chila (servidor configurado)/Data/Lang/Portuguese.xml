@@ -4,20 +4,20 @@
 	<Message>
 		<Msg ID="0" Text="O Blood Castle fecha em %d minuto(s)" />
 		<Msg ID="1" Text="O Blood Castle foi fechado" />
-		<Msg ID="2" Text="O Blood Castle %d começa em %d minuto(s)" />
-		<Msg ID="3" Text="O Blood Castle começou" />
+		<Msg ID="2" Text="O Blood Castle %d comeÃ§a em %d minuto(s)" />
+		<Msg ID="3" Text="O Blood Castle comeÃ§ou" />
 		<Msg ID="4" Text="Todos os monstros foram derrotados" />
 		<Msg ID="5" Text="Todos os chefes foram derrotados" />
 		<Msg ID="6" Text="O Blood Castle terminou" />
-		<Msg ID="7" Text="Você não é forte o suficiente para entrar no Blood Castle" />
+		<Msg ID="7" Text="VocÃª nÃ£o Ã© forte o suficiente para entrar no Blood Castle" />
 		<Msg ID="8" Text="O jogador %s derrubou a arma do Anjo" />
 		<Msg ID="9" Text="O jogador %s pegou a arma do Anjo" />
-		<Msg ID="10" Text="O jogador %s destruiu o portão do castelo" />
-		<Msg ID="11" Text="O jogador %s destruiu a estátua" />
+		<Msg ID="10" Text="O jogador %s destruiu o portÃ£o do castelo" />
+		<Msg ID="11" Text="O jogador %s destruiu a estÃ¡tua" />
 		<Msg ID="16" Text="O Chaos Castle fecha em %d minuto(s)" />
 		<Msg ID="17" Text="O Chaos Castle foi fechado" />
-		<Msg ID="18" Text="O Chaos Castle %d começa em %d minuto(s)" />
-		<Msg ID="19" Text="O Chaos Castle começou" />
+		<Msg ID="18" Text="O Chaos Castle %d comeÃ§a em %d minuto(s)" />
+		<Msg ID="19" Text="O Chaos Castle comeÃ§ou" />
 		<Msg ID="20" Text="O Chaos Castle terminou" />
 		<Msg ID="32" Text="/move" />
 		<Msg ID="33" Text="/post" />
@@ -46,333 +46,333 @@
 		<Msg ID="56" Text="/soccer" />
 		<Msg ID="57" Text="/re" />
 		<Msg ID="58" Text="/hide" />
-		<Msg ID="64" Text="Você não tem permissão para usar /post" />
-		<Msg ID="65" Text="Você precisa ter pelo menos o nível %d para usar /post" />
-		<Msg ID="66" Text="Você precisa ter pelo menos %d resets para usar /post" />
-		<Msg ID="67" Text="Você precisa ter pelo menos %d Zen para usar /post" />
+		<Msg ID="64" Text="VocÃª nÃ£o tem permissÃ£o para usar /post" />
+		<Msg ID="65" Text="VocÃª precisa ter pelo menos o nÃ­vel %d para usar /post" />
+		<Msg ID="66" Text="VocÃª precisa ter pelo menos %d resets para usar /post" />
+		<Msg ID="67" Text="VocÃª precisa ter pelo menos %d Zen para usar /post" />
 		<Msg ID="68" Text="Aguarde %d segundos para usar /post" />
 		<Msg ID="69" Text="<FONT color='#FFFF00'>[POST][%d] %s :%s</FONT><BR>" />
-		<Msg ID="70" Text="Você não tem permissão para usar /add" />
+		<Msg ID="70" Text="VocÃª nÃ£o tem permissÃ£o para usar /add" />
 		<Msg ID="71" Text="Comando exclusivo do Dark Lord" />
-		<Msg ID="72" Text="Você não tem pontos suficientes para adicionar" />
-		<Msg ID="73" Text="Você precisa ter pelo menos %d Zen para usar /add" />
-		<Msg ID="74" Text="Você adicionou %d pontos, restam %d pontos para distribuir" />
-		<Msg ID="75" Text="Você não tem permissão para usar /pkclear" />
-		<Msg ID="76" Text="Você não é PK" />
-		<Msg ID="77" Text="Você precisa ter pelo menos %d Zen para usar /pkclear" />
+		<Msg ID="72" Text="VocÃª nÃ£o tem pontos suficientes para adicionar" />
+		<Msg ID="73" Text="VocÃª precisa ter pelo menos %d Zen para usar /add" />
+		<Msg ID="74" Text="VocÃª adicionou %d pontos, restam %d pontos para distribuir" />
+		<Msg ID="75" Text="VocÃª nÃ£o tem permissÃ£o para usar /pkclear" />
+		<Msg ID="76" Text="VocÃª nÃ£o Ã© PK" />
+		<Msg ID="77" Text="VocÃª precisa ter pelo menos %d Zen para usar /pkclear" />
 		<Msg ID="78" Text="Seu PK foi limpo" />
-		<Msg ID="79" Text="Você não tem permissão para usar /money" />
-		<Msg ID="80" Text="Você digitou um valor inválido para adicionar" />
-		<Msg ID="81" Text="Você não tem permissão para usar /change" />
-		<Msg ID="82" Text="Você precisa ter pelo menos %d Zen para usar /change" />
-		<Msg ID="83" Text="Você não pode evoluir mais" />
-		<Msg ID="84" Text="Você evoluiu com sucesso" />
-		<Msg ID="85" Text="Você não tem permissão para usar /ware" />
-		<Msg ID="86" Text="Você não pode usar /ware neste momento" />
-		<Msg ID="87" Text="Você escolheu um baú inválido" />
-		<Msg ID="88" Text="Você mudou para o baú %d com sucesso" />
-		<Msg ID="89" Text="Você não tem permissão para usar /reset" />
-		<Msg ID="90" Text="Você não pode usar /reset neste momento" />
-		<Msg ID="91" Text="Você precisa ter pelo menos o nível %d para usar /reset" />
-		<Msg ID="92" Text="Você precisa ter pelo menos %d Zen para usar /reset" />
-		<Msg ID="93" Text="Você não pode ter mais de %d resets" />
-		<Msg ID="94" Text="Você não pode resetar com itens equipados" />
-		<Msg ID="95" Text="Reset feito com sucesso! Agora você tem %d resets" />
-		<Msg ID="96" Text="Você não tem permissão para usar /gmmove" />
-		<Msg ID="97" Text="Alvo inválido para /gmmove" />
-		<Msg ID="98" Text="Você não tem permissão para usar /gmpost" />
-		<Msg ID="99" Text="Você não tem permissão para usar /track" />
-		<Msg ID="100" Text="Alvo inválido para /track" />
-		<Msg ID="101" Text="Você não tem permissão para usar /trace" />
-		<Msg ID="102" Text="Alvo inválido para /trace" />
-		<Msg ID="103" Text="Você não tem permissão para usar /disconnect" />
-		<Msg ID="104" Text="Alvo inválido para /disconnect" />
-		<Msg ID="105" Text="Você não tem permissão para usar /fireworks" />
-		<Msg ID="106" Text="Você não tem permissão para usar /make" />
+		<Msg ID="79" Text="VocÃª nÃ£o tem permissÃ£o para usar /money" />
+		<Msg ID="80" Text="VocÃª digitou um valor invÃ¡lido para adicionar" />
+		<Msg ID="81" Text="VocÃª nÃ£o tem permissÃ£o para usar /change" />
+		<Msg ID="82" Text="VocÃª precisa ter pelo menos %d Zen para usar /change" />
+		<Msg ID="83" Text="VocÃª nÃ£o pode evoluir mais" />
+		<Msg ID="84" Text="VocÃª evoluiu com sucesso" />
+		<Msg ID="85" Text="VocÃª nÃ£o tem permissÃ£o para usar /ware" />
+		<Msg ID="86" Text="VocÃª nÃ£o pode usar /ware neste momento" />
+		<Msg ID="87" Text="VocÃª escolheu um baÃº invÃ¡lido" />
+		<Msg ID="88" Text="VocÃª mudou para o baÃº %d com sucesso" />
+		<Msg ID="89" Text="VocÃª nÃ£o tem permissÃ£o para usar /reset" />
+		<Msg ID="90" Text="VocÃª nÃ£o pode usar /reset neste momento" />
+		<Msg ID="91" Text="VocÃª precisa ter pelo menos o nÃ­vel %d para usar /reset" />
+		<Msg ID="92" Text="VocÃª precisa ter pelo menos %d Zen para usar /reset" />
+		<Msg ID="93" Text="VocÃª nÃ£o pode ter mais de %d resets" />
+		<Msg ID="94" Text="VocÃª nÃ£o pode resetar com itens equipados" />
+		<Msg ID="95" Text="Reset feito com sucesso! Agora vocÃª tem %d resets" />
+		<Msg ID="96" Text="VocÃª nÃ£o tem permissÃ£o para usar /gmmove" />
+		<Msg ID="97" Text="Alvo invÃ¡lido para /gmmove" />
+		<Msg ID="98" Text="VocÃª nÃ£o tem permissÃ£o para usar /gmpost" />
+		<Msg ID="99" Text="VocÃª nÃ£o tem permissÃ£o para usar /track" />
+		<Msg ID="100" Text="Alvo invÃ¡lido para /track" />
+		<Msg ID="101" Text="VocÃª nÃ£o tem permissÃ£o para usar /trace" />
+		<Msg ID="102" Text="Alvo invÃ¡lido para /trace" />
+		<Msg ID="103" Text="VocÃª nÃ£o tem permissÃ£o para usar /disconnect" />
+		<Msg ID="104" Text="Alvo invÃ¡lido para /disconnect" />
+		<Msg ID="105" Text="VocÃª nÃ£o tem permissÃ£o para usar /fireworks" />
+		<Msg ID="106" Text="VocÃª nÃ£o tem permissÃ£o para usar /make" />
 		<Msg ID="107" Text="[%s] item criado com sucesso" />
-		<Msg ID="108" Text="Você não tem permissão para usar /skin" />
-		<Msg ID="109" Text="Alvo inválido para /skin" />
-		<Msg ID="110" Text="Você não tem permissão para usar /setmoney" />
-		<Msg ID="111" Text="Alvo inválido para /setmoney" />
-		<Msg ID="112" Text="Valor inválido para /setmoney" />
-		<Msg ID="113" Text="Você não tem permissão para usar /notice" />
-		<Msg ID="114" Text="Distribuição automática de pontos: ligada (%d)" />
-		<Msg ID="115" Text="Distribuição automática de pontos: desligada" />
-		<Msg ID="116" Text="Reset automático: ligado" />
-		<Msg ID="117" Text="Reset automático: desligado" />
-		<Msg ID="118" Text="Você não tem permissão para usar /mreset" />
-		<Msg ID="119" Text="Você não pode usar /mreset neste momento" />
-		<Msg ID="120" Text="Você precisa ter pelo menos %d níveis para usar /mreset" />
-		<Msg ID="121" Text="Você precisa ter pelo menos %d resets para usar /mreset" />
-		<Msg ID="122" Text="Você precisa ter pelo menos %d Zen para usar /mreset" />
-		<Msg ID="123" Text="Você não pode ter mais de %d master resets" />
-		<Msg ID="124" Text="Você não pode fazer master reset com itens equipados" />
-		<Msg ID="125" Text="Master reset feito com sucesso! Agora você tem %d master resets" />
+		<Msg ID="108" Text="VocÃª nÃ£o tem permissÃ£o para usar /skin" />
+		<Msg ID="109" Text="Alvo invÃ¡lido para /skin" />
+		<Msg ID="110" Text="VocÃª nÃ£o tem permissÃ£o para usar /setmoney" />
+		<Msg ID="111" Text="Alvo invÃ¡lido para /setmoney" />
+		<Msg ID="112" Text="Valor invÃ¡lido para /setmoney" />
+		<Msg ID="113" Text="VocÃª nÃ£o tem permissÃ£o para usar /notice" />
+		<Msg ID="114" Text="DistribuiÃ§Ã£o automÃ¡tica de pontos: ligada (%d)" />
+		<Msg ID="115" Text="DistribuiÃ§Ã£o automÃ¡tica de pontos: desligada" />
+		<Msg ID="116" Text="Reset automÃ¡tico: ligado" />
+		<Msg ID="117" Text="Reset automÃ¡tico: desligado" />
+		<Msg ID="118" Text="VocÃª nÃ£o tem permissÃ£o para usar /mreset" />
+		<Msg ID="119" Text="VocÃª nÃ£o pode usar /mreset neste momento" />
+		<Msg ID="120" Text="VocÃª precisa ter pelo menos %d nÃ­veis para usar /mreset" />
+		<Msg ID="121" Text="VocÃª precisa ter pelo menos %d resets para usar /mreset" />
+		<Msg ID="122" Text="VocÃª precisa ter pelo menos %d Zen para usar /mreset" />
+		<Msg ID="123" Text="VocÃª nÃ£o pode ter mais de %d master resets" />
+		<Msg ID="124" Text="VocÃª nÃ£o pode fazer master reset com itens equipados" />
+		<Msg ID="125" Text="Master reset feito com sucesso! Agora vocÃª tem %d master resets" />
 		<Msg ID="126" Text="Pedidos recebidos: ligados" />
 		<Msg ID="127" Text="Pedidos recebidos: desligados" />
-		<Msg ID="128" Text="Pedidos recebidos: automático" />
-		<Msg ID="129" Text="Você só pode resetar %d vezes por dia" />
-		<Msg ID="130" Text="Você só pode resetar %d vezes por semana" />
-		<Msg ID="131" Text="Você só pode resetar %d vezes por mês" />
-		<Msg ID="132" Text="Você só pode fazer master reset %d vezes por dia" />
-		<Msg ID="133" Text="Você só pode fazer master reset %d vezes por semana" />
-		<Msg ID="134" Text="Você só pode fazer master reset %d vezes por mês" />
-		<Msg ID="135" Text="Você não tem permissão para usar /hide" />
+		<Msg ID="128" Text="Pedidos recebidos: automÃ¡tico" />
+		<Msg ID="129" Text="VocÃª sÃ³ pode resetar %d vezes por dia" />
+		<Msg ID="130" Text="VocÃª sÃ³ pode resetar %d vezes por semana" />
+		<Msg ID="131" Text="VocÃª sÃ³ pode resetar %d vezes por mÃªs" />
+		<Msg ID="132" Text="VocÃª sÃ³ pode fazer master reset %d vezes por dia" />
+		<Msg ID="133" Text="VocÃª sÃ³ pode fazer master reset %d vezes por semana" />
+		<Msg ID="134" Text="VocÃª sÃ³ pode fazer master reset %d vezes por mÃªs" />
+		<Msg ID="135" Text="VocÃª nÃ£o tem permissÃ£o para usar /hide" />
 		<Msg ID="144" Text="A Devil Square fecha em %d minuto(s)" />
 		<Msg ID="145" Text="A Devil Square foi fechada" />
-		<Msg ID="146" Text="A Devil Square %d começa em %d minuto(s)" />
-		<Msg ID="147" Text="A Devil Square começou" />
+		<Msg ID="146" Text="A Devil Square %d comeÃ§a em %d minuto(s)" />
+		<Msg ID="147" Text="A Devil Square comeÃ§ou" />
 		<Msg ID="148" Text="A Devil Square terminou" />
-		<Msg ID="149" Text="Você não é forte o suficiente para entrar na Devil Square" />
-		<Msg ID="160" Text="O jogador não está online" />
-		<Msg ID="161" Text="Você não pode duelar agora" />
+		<Msg ID="149" Text="VocÃª nÃ£o Ã© forte o suficiente para entrar na Devil Square" />
+		<Msg ID="160" Text="O jogador nÃ£o estÃ¡ online" />
+		<Msg ID="161" Text="VocÃª nÃ£o pode duelar agora" />
 		<Msg ID="162" Text="O jogador recusou o duelo automaticamente" />
-		<Msg ID="163" Text="Você já pediu ou recebeu um pedido de duelo" />
-		<Msg ID="164" Text="O jogador já pediu ou recebeu um pedido de duelo" />
-		<Msg ID="165" Text="Você não pode duelar durante uma Guerra de Guilds" />
-		<Msg ID="166" Text="O jogador não pode duelar durante uma Guerra de Guilds" />
-		<Msg ID="167" Text="Você não pode duelar neste mapa" />
-		<Msg ID="168" Text="Você não pode duelar durante o Castle Siege" />
-		<Msg ID="169" Text="Nome de jogador inválido" />
-		<Msg ID="170" Text="Você não pode duelar em legítima defesa" />
-		<Msg ID="171" Text="O jogador não pode duelar em legítima defesa" />
+		<Msg ID="163" Text="VocÃª jÃ¡ pediu ou recebeu um pedido de duelo" />
+		<Msg ID="164" Text="O jogador jÃ¡ pediu ou recebeu um pedido de duelo" />
+		<Msg ID="165" Text="VocÃª nÃ£o pode duelar durante uma Guerra de Guilds" />
+		<Msg ID="166" Text="O jogador nÃ£o pode duelar durante uma Guerra de Guilds" />
+		<Msg ID="167" Text="VocÃª nÃ£o pode duelar neste mapa" />
+		<Msg ID="168" Text="VocÃª nÃ£o pode duelar durante o Castle Siege" />
+		<Msg ID="169" Text="Nome de jogador invÃ¡lido" />
+		<Msg ID="170" Text="VocÃª nÃ£o pode duelar em legÃ­tima defesa" />
+		<Msg ID="171" Text="O jogador nÃ£o pode duelar em legÃ­tima defesa" />
 		<Msg ID="172" Text="O jogador recusou seu pedido de duelo" />
-		<Msg ID="173" Text="Todas as arenas estão ocupadas no momento" />
-		<Msg ID="174" Text="Duelo entre %s e %s começou!" />
+		<Msg ID="173" Text="Todas as arenas estÃ£o ocupadas no momento" />
+		<Msg ID="174" Text="Duelo entre %s e %s comeÃ§ou!" />
 		<Msg ID="175" Text="O jogador %s venceu o duelo contra %s!" />
 		<Msg ID="176" Text="O Illusion Temple fecha em %d minuto(s)" />
 		<Msg ID="177" Text="O Illusion Temple foi fechado" />
-		<Msg ID="178" Text="O Illusion Temple %d começa em %d minuto(s)" />
-		<Msg ID="179" Text="O Illusion Temple começou" />
+		<Msg ID="178" Text="O Illusion Temple %d comeÃ§a em %d minuto(s)" />
+		<Msg ID="179" Text="O Illusion Temple comeÃ§ou" />
 		<Msg ID="180" Text="O Illusion Temple terminou" />
-		<Msg ID="181" Text="Você não é forte o suficiente para entrar no Illusion Temple" />
-		<Msg ID="182" Text="Você não tem o item necessário para entrar no Illusion Temple" />
+		<Msg ID="181" Text="VocÃª nÃ£o Ã© forte o suficiente para entrar no Illusion Temple" />
+		<Msg ID="182" Text="VocÃª nÃ£o tem o item necessÃ¡rio para entrar no Illusion Temple" />
 		<Msg ID="183" Text="O jogador %s derrubou o artefato" />
 		<Msg ID="184" Text="O jogador %s pegou o artefato" />
-		<Msg ID="192" Text="A invasão do Skeleton King começou!" />
-		<Msg ID="193" Text="A invasão do Red Dragon começou!" />
-		<Msg ID="194" Text="A invasão dos Dourados começou!" />
-		<Msg ID="195" Text="A invasão do White Wizard começou!" />
-		<Msg ID="196" Text="A invasão de Ano Novo começou!" />
-		<Msg ID="197" Text="A invasão dos coelhos começou!" />
-		<Msg ID="198" Text="A invasão de verão começou!" />
-		<Msg ID="199" Text="A invasão de Natal começou!" />
-		<Msg ID="200" Text="A invasão da Medusa começou!" />
+		<Msg ID="192" Text="A invasÃ£o do Skeleton King comeÃ§ou!" />
+		<Msg ID="193" Text="A invasÃ£o do Red Dragon comeÃ§ou!" />
+		<Msg ID="194" Text="A invasÃ£o dos Dourados comeÃ§ou!" />
+		<Msg ID="195" Text="A invasÃ£o do White Wizard comeÃ§ou!" />
+		<Msg ID="196" Text="A invasÃ£o de Ano Novo comeÃ§ou!" />
+		<Msg ID="197" Text="A invasÃ£o dos coelhos comeÃ§ou!" />
+		<Msg ID="198" Text="A invasÃ£o de verÃ£o comeÃ§ou!" />
+		<Msg ID="199" Text="A invasÃ£o de Natal comeÃ§ou!" />
+		<Msg ID="200" Text="A invasÃ£o da Medusa comeÃ§ou!" />
 		<Msg ID="202" Text="O jogador %s derrotou o Skeleton King!" />
 		<Msg ID="203" Text="O jogador %s derrotou o Red Dragon!" />
 		<Msg ID="204" Text="O jogador %s derrotou o Great Golden Dragon!" />
 		<Msg ID="205" Text="O jogador %s derrotou o White Wizard!" />
-		<Msg ID="206" Text="O jogador %s derrotou o Papai Noel Amaldiçoado!" />
+		<Msg ID="206" Text="O jogador %s derrotou o Papai Noel AmaldiÃ§oado!" />
 		<Msg ID="207" Text="O jogador %s derrotou a Medusa!" />
 		<Msg ID="208" Text="O mercador Moss apareceu!" />
 		<Msg ID="209" Text="O mercador Moss foi embora!" />
-		<Msg ID="210" Text="A invasão dos Demônios invocados começou!" />
-		<Msg ID="211" Text="O evento de invasão dos ovos começou!" />
-		<Msg ID="224" Text="Você precisa ter pelo menos o nível %d para ir para lá" />
-		<Msg ID="225" Text="Você precisa ter pelo menos %d Zen para ir para lá" />
-		<Msg ID="226" Text="Você não pode se mover neste momento" />
-		<Msg ID="227" Text="Assassinos (PK) não podem se mover" />
-		<Msg ID="228" Text="Você não tem o equipamento necessário para ir para lá" />
-		<Msg ID="229" Text="Só membros de uma família Gens podem ir para lá" />
-		<Msg ID="230" Text="Você precisa ter no máximo o nível %d para ir para lá" />
-		<Msg ID="231" Text="Você precisa ter pelo menos %d resets para ir para lá" />
-		<Msg ID="232" Text="Você precisa ter no máximo %d resets para ir para lá" />
-		<Msg ID="240" Text="O Senior não está ativo no momento" />
-		<Msg ID="241" Text="O Senior não funciona durante o Castle Siege" />
-		<Msg ID="242" Text="Você precisa ser da guild dona do castelo para usar o Senior" />
-		<Msg ID="243" Text="Você precisa ser o líder da guild para usar o Senior" />
-		<Msg ID="244" Text="O Guarda não funciona durante o Castle Siege" />
-		<Msg ID="245" Text="Você já está em uma guild" />
-		<Msg ID="246" Text="Você não tem nível ou resets suficientes para criar uma guild" />
-		<Msg ID="247" Text="A loja está vazia" />
-		<Msg ID="248" Text="Nível da conta: Free" />
-		<Msg ID="249" Text="Nível da conta: Vip1 (%s)" />
-		<Msg ID="250" Text="Nível da conta: Vip2 (%s)" />
-		<Msg ID="251" Text="Nível da conta: Vip3 (%s)" />
+		<Msg ID="210" Text="A invasÃ£o dos DemÃ´nios invocados comeÃ§ou!" />
+		<Msg ID="211" Text="O evento de invasÃ£o dos ovos comeÃ§ou!" />
+		<Msg ID="224" Text="VocÃª precisa ter pelo menos o nÃ­vel %d para ir para lÃ¡" />
+		<Msg ID="225" Text="VocÃª precisa ter pelo menos %d Zen para ir para lÃ¡" />
+		<Msg ID="226" Text="VocÃª nÃ£o pode se mover neste momento" />
+		<Msg ID="227" Text="Assassinos (PK) nÃ£o podem se mover" />
+		<Msg ID="228" Text="VocÃª nÃ£o tem o equipamento necessÃ¡rio para ir para lÃ¡" />
+		<Msg ID="229" Text="SÃ³ membros de uma famÃ­lia Gens podem ir para lÃ¡" />
+		<Msg ID="230" Text="VocÃª precisa ter no mÃ¡ximo o nÃ­vel %d para ir para lÃ¡" />
+		<Msg ID="231" Text="VocÃª precisa ter pelo menos %d resets para ir para lÃ¡" />
+		<Msg ID="232" Text="VocÃª precisa ter no mÃ¡ximo %d resets para ir para lÃ¡" />
+		<Msg ID="240" Text="O Senior nÃ£o estÃ¡ ativo no momento" />
+		<Msg ID="241" Text="O Senior nÃ£o funciona durante o Castle Siege" />
+		<Msg ID="242" Text="VocÃª precisa ser da guild dona do castelo para usar o Senior" />
+		<Msg ID="243" Text="VocÃª precisa ser o lÃ­der da guild para usar o Senior" />
+		<Msg ID="244" Text="O Guarda nÃ£o funciona durante o Castle Siege" />
+		<Msg ID="245" Text="VocÃª jÃ¡ estÃ¡ em uma guild" />
+		<Msg ID="246" Text="VocÃª nÃ£o tem nÃ­vel ou resets suficientes para criar uma guild" />
+		<Msg ID="247" Text="A loja estÃ¡ vazia" />
+		<Msg ID="248" Text="NÃ­vel da conta: Free" />
+		<Msg ID="249" Text="NÃ­vel da conta: Vip1 (%s)" />
+		<Msg ID="250" Text="NÃ­vel da conta: Vip2 (%s)" />
+		<Msg ID="251" Text="NÃ­vel da conta: Vip3 (%s)" />
 		<Msg ID="256" Text="Bem-vindo, %s!" />
-		<Msg ID="257" Text="Você precisa ter pelo menos o nível 40 para usar o anel" />
-		<Msg ID="258" Text="Você precisa ter pelo menos o nível 80 para usar o anel" />
-		<Msg ID="259" Text="Você não pode ir para este mapa agora" />
-		<Msg ID="260" Text="Você não pode pegar este item agora" />
-		<Msg ID="261" Text="Você não pode sair do jogo com uma troca aberta" />
-		<Msg ID="262" Text="Você não pode sair do jogo com o baú aberto" />
-		<Msg ID="263" Text="Você não pode sair do jogo com a Chaos Machine aberta" />
-		<Msg ID="264" Text="Você não pode sair do jogo com o Treinador aberto" />
-		<Msg ID="265" Text="Você não pode sair do jogo em legítima defesa" />
-		<Msg ID="266" Text="Você está no nível máximo" />
-		<Msg ID="267" Text="Você está no nível master máximo" />
-		<Msg ID="268" Text="Você só pode adicionar %d pontos" />
-		<Msg ID="269" Text="Você não pode falar por %d segundos" />
-		<Msg ID="270" Text="Você não pode mandar mensagem para si mesmo" />
-		<Msg ID="271" Text="Olá, eu sou o guarda alegre" />
-		<Msg ID="272" Text="Não foi possível fazer o teletransporte" />
-		<Msg ID="273" Text="Você será teletransportado em %d segundo(s)" />
-		<Msg ID="274" Text="Você não pode ir para este mapa com montaria" />
-		<Msg ID="275" Text="Você não pode ir para este mapa sem asa" />
+		<Msg ID="257" Text="VocÃª precisa ter pelo menos o nÃ­vel 40 para usar o anel" />
+		<Msg ID="258" Text="VocÃª precisa ter pelo menos o nÃ­vel 80 para usar o anel" />
+		<Msg ID="259" Text="VocÃª nÃ£o pode ir para este mapa agora" />
+		<Msg ID="260" Text="VocÃª nÃ£o pode pegar este item agora" />
+		<Msg ID="261" Text="VocÃª nÃ£o pode sair do jogo com uma troca aberta" />
+		<Msg ID="262" Text="VocÃª nÃ£o pode sair do jogo com o baÃº aberto" />
+		<Msg ID="263" Text="VocÃª nÃ£o pode sair do jogo com a Chaos Machine aberta" />
+		<Msg ID="264" Text="VocÃª nÃ£o pode sair do jogo com o Treinador aberto" />
+		<Msg ID="265" Text="VocÃª nÃ£o pode sair do jogo em legÃ­tima defesa" />
+		<Msg ID="266" Text="VocÃª estÃ¡ no nÃ­vel mÃ¡ximo" />
+		<Msg ID="267" Text="VocÃª estÃ¡ no nÃ­vel master mÃ¡ximo" />
+		<Msg ID="268" Text="VocÃª sÃ³ pode adicionar %d pontos" />
+		<Msg ID="269" Text="VocÃª nÃ£o pode falar por %d segundos" />
+		<Msg ID="270" Text="VocÃª nÃ£o pode mandar mensagem para si mesmo" />
+		<Msg ID="271" Text="OlÃ¡, eu sou o guarda alegre" />
+		<Msg ID="272" Text="NÃ£o foi possÃ­vel fazer o teletransporte" />
+		<Msg ID="273" Text="VocÃª serÃ¡ teletransportado em %d segundo(s)" />
+		<Msg ID="274" Text="VocÃª nÃ£o pode ir para este mapa com montaria" />
+		<Msg ID="275" Text="VocÃª nÃ£o pode ir para este mapa sem asa" />
 		<Msg ID="276" Text="Presente da CashShop" />
 		<Msg ID="304" Text="O Ice Walker apareceu!" />
-		<Msg ID="305" Text="Você não é forte o suficiente para entrar no Double Goer" />
+		<Msg ID="305" Text="VocÃª nÃ£o Ã© forte o suficiente para entrar no Double Goer" />
 		<Msg ID="306" Text="O Ice Walker foi derrotado!" />
-		<Msg ID="320" Text="Selupan apareceu! O portão do Viveiro fecha em %d minuto(s)" />
-		<Msg ID="321" Text="O portão do Viveiro foi fechado" />
+		<Msg ID="320" Text="Selupan apareceu! O portÃ£o do Viveiro fecha em %d minuto(s)" />
+		<Msg ID="321" Text="O portÃ£o do Viveiro foi fechado" />
 		<Msg ID="322" Text="O jogador %s derrotou o Selupan!" />
-		<Msg ID="323" Text="O portão do Viveiro abre de novo em %d minuto(s)" />
-		<Msg ID="324" Text="O portão do Viveiro abriu!" />
-		<Msg ID="325" Text="O portão do Viveiro está fechado" />
+		<Msg ID="323" Text="O portÃ£o do Viveiro abre de novo em %d minuto(s)" />
+		<Msg ID="324" Text="O portÃ£o do Viveiro abriu!" />
+		<Msg ID="325" Text="O portÃ£o do Viveiro estÃ¡ fechado" />
 		<Msg ID="336" Text="A Torre do Refinamento fecha em 60 minuto(s)" />
 		<Msg ID="337" Text="A Torre do Refinamento fecha em 20 minuto(s)" />
 		<Msg ID="338" Text="A porta de Kanturu abre em 1 minuto(s)" />
-		<Msg ID="339" Text="A batalha contra a Maya vai começar, prepare-se" />
-		<Msg ID="340" Text="A próxima batalha começa em 1 minuto(s)" />
+		<Msg ID="339" Text="A batalha contra a Maya vai comeÃ§ar, prepare-se" />
+		<Msg ID="340" Text="A prÃ³xima batalha comeÃ§a em 1 minuto(s)" />
 		<Msg ID="341" Text="Nightmare apareceu! Derrote-o para liberar a Torre do Refinamento" />
 		<Msg ID="342" Text="Nightmare foi derrotado! A Torre do Refinamento foi liberada" />
-		<Msg ID="343" Text="O tempo acabou, você será retirado do evento" />
-		<Msg ID="352" Text="O Castle Deep começa em 5 minuto(s)" />
-		<Msg ID="353" Text="O Castle Deep começou" />
+		<Msg ID="343" Text="O tempo acabou, vocÃª serÃ¡ retirado do evento" />
+		<Msg ID="352" Text="O Castle Deep comeÃ§a em 5 minuto(s)" />
+		<Msg ID="353" Text="O Castle Deep comeÃ§ou" />
 		<Msg ID="354" Text="O Castle Deep terminou" />
 		<Msg ID="355" Text="Erohim foi morto por %s" />
 		<Msg ID="356" Text="%s foi morto pelo jogador %s" />
-		<Msg ID="368" Text="Balgass se uniu ao exército de Kundun e se prepara para atacar a fortaleza de Crywolf" />
-		<Msg ID="369" Text="A armada de Balgass está pronta para atacar a fortaleza de Crywolf" />
+		<Msg ID="368" Text="Balgass se uniu ao exÃ©rcito de Kundun e se prepara para atacar a fortaleza de Crywolf" />
+		<Msg ID="369" Text="A armada de Balgass estÃ¡ pronta para atacar a fortaleza de Crywolf" />
 		<Msg ID="370" Text="A armada de Balgass marcha para a fortaleza de Crywolf" />
 		<Msg ID="371" Text="A armada de Balgass se aproxima da fortaleza de Crywolf" />
-		<Msg ID="372" Text="Nenhuma Elfa se conectou aos altares, a estátua do lobo ficou desprotegida" />
-		<Msg ID="373" Text="Balgass vai sobreviver até o fim da batalha" />
-		<Msg ID="374" Text="A defesa falhou! A estátua do lobo sagrado foi tomada por Balgass" />
-		<Msg ID="375" Text="A defesa foi um sucesso! A estátua do lobo sagrado foi protegida" />
-		<Msg ID="376" Text="A conexão com os Altares do Lobo começa em %d segundo(s)" />
-		<Msg ID="377" Text="A conexão com os Altares do Lobo começa em %d minuto(s)" />
+		<Msg ID="372" Text="Nenhuma Elfa se conectou aos altares, a estÃ¡tua do lobo ficou desprotegida" />
+		<Msg ID="373" Text="Balgass vai sobreviver atÃ© o fim da batalha" />
+		<Msg ID="374" Text="A defesa falhou! A estÃ¡tua do lobo sagrado foi tomada por Balgass" />
+		<Msg ID="375" Text="A defesa foi um sucesso! A estÃ¡tua do lobo sagrado foi protegida" />
+		<Msg ID="376" Text="A conexÃ£o com os Altares do Lobo comeÃ§a em %d segundo(s)" />
+		<Msg ID="377" Text="A conexÃ£o com os Altares do Lobo comeÃ§a em %d minuto(s)" />
 		<Msg ID="378" Text="A armada de Balgass ataca em %d segundo(s)" />
 		<Msg ID="379" Text="A armada de Balgass ataca em %d minuto(s)" />
-		<Msg ID="380" Text="Sem a proteção das elfas, a estátua do lobo sagrado ficou desprotegida" />
-		<Msg ID="381" Text="Balgass está chegando! Proteja a estátua do lobo sagrado" />
-		<Msg ID="382" Text="A armada de Balgass começou a atacar a estátua do lobo sagrado" />
-		<Msg ID="383" Text="A armada de Balgass foi derrotada com a ajuda dos heróis" />
+		<Msg ID="380" Text="Sem a proteÃ§Ã£o das elfas, a estÃ¡tua do lobo sagrado ficou desprotegida" />
+		<Msg ID="381" Text="Balgass estÃ¡ chegando! Proteja a estÃ¡tua do lobo sagrado" />
+		<Msg ID="382" Text="A armada de Balgass comeÃ§ou a atacar a estÃ¡tua do lobo sagrado" />
+		<Msg ID="383" Text="A armada de Balgass foi derrotada com a ajuda dos herÃ³is" />
 		<Msg ID="384" Text="Ranking MvP: %d" />
-		<Msg ID="385" Text="Experiência MvP: %d" />
+		<Msg ID="385" Text="ExperiÃªncia MvP: %d" />
 		<Msg ID="386" Text="Balgass foi morto por %s!" />
 		<Msg ID="387" Text="Balgass morreu!" />
 		<Msg ID="388" Text="O Dark Elf %d foi morto por %s!" />
 		<Msg ID="389" Text="Pontos MvP: %d" />
 		<Msg ID="390" Text="Conectado ao altar %d" />
-		<Msg ID="391" Text="%s está conectado ao altar %d" />
+		<Msg ID="391" Text="%s estÃ¡ conectado ao altar %d" />
 		<Msg ID="392" Text="O altar %d foi conectado" />
-		<Msg ID="393" Text="O período de conexão ao pedestal %d ainda não começou" />
-		<Msg ID="394" Text="O altar %d já foi conectado mais de 2 vezes" />
-		<Msg ID="395" Text="Posição errada para conectar ao altar %d" />
-		<Msg ID="396" Text="%s está tentando se conectar ao altar %d" />
-		<Msg ID="397" Text="Você será conectado ao altar em 5 segundo(s)" />
-		<Msg ID="398" Text="Não se mova até a conexão terminar" />
-		<Msg ID="399" Text="A conexão com o altar %d foi cancelada" />
-		<Msg ID="400" Text="A barreira da estátua do lobo sagrado desapareceu" />
-		<Msg ID="401" Text="Número de conexões: %d, vida da estátua: %d" />
-		<Msg ID="402" Text="A barreira da estátua do lobo sagrado foi criada" />
-		<Msg ID="403" Text="A conexão exige nível 260 ou maior" />
+		<Msg ID="393" Text="O perÃ­odo de conexÃ£o ao pedestal %d ainda nÃ£o comeÃ§ou" />
+		<Msg ID="394" Text="O altar %d jÃ¡ foi conectado mais de 2 vezes" />
+		<Msg ID="395" Text="PosiÃ§Ã£o errada para conectar ao altar %d" />
+		<Msg ID="396" Text="%s estÃ¡ tentando se conectar ao altar %d" />
+		<Msg ID="397" Text="VocÃª serÃ¡ conectado ao altar em 5 segundo(s)" />
+		<Msg ID="398" Text="NÃ£o se mova atÃ© a conexÃ£o terminar" />
+		<Msg ID="399" Text="A conexÃ£o com o altar %d foi cancelada" />
+		<Msg ID="400" Text="A barreira da estÃ¡tua do lobo sagrado desapareceu" />
+		<Msg ID="401" Text="NÃºmero de conexÃµes: %d, vida da estÃ¡tua: %d" />
+		<Msg ID="402" Text="A barreira da estÃ¡tua do lobo sagrado foi criada" />
+		<Msg ID="403" Text="A conexÃ£o exige nÃ­vel 260 ou maior" />
 		<Msg ID="416" Text="O Castle Siege terminou" />
-		<Msg ID="417" Text="Começou o período de inscrição do Castle Siege" />
-		<Msg ID="418" Text="Começou o período de registro de emblemas do Castle Siege" />
-		<Msg ID="419" Text="Começou o período de seleção de guilds do Castle Siege" />
-		<Msg ID="420" Text="A seleção de guilds do Castle Siege terminou" />
-		<Msg ID="421" Text="Começou o período de preparação do Castle Siege" />
-		<Msg ID="422" Text="O Castle Siege começa em %d minuto(s)" />
-		<Msg ID="423" Text="O Castle Siege está em disputa" />
+		<Msg ID="417" Text="ComeÃ§ou o perÃ­odo de inscriÃ§Ã£o do Castle Siege" />
+		<Msg ID="418" Text="ComeÃ§ou o perÃ­odo de registro de emblemas do Castle Siege" />
+		<Msg ID="419" Text="ComeÃ§ou o perÃ­odo de seleÃ§Ã£o de guilds do Castle Siege" />
+		<Msg ID="420" Text="A seleÃ§Ã£o de guilds do Castle Siege terminou" />
+		<Msg ID="421" Text="ComeÃ§ou o perÃ­odo de preparaÃ§Ã£o do Castle Siege" />
+		<Msg ID="422" Text="O Castle Siege comeÃ§a em %d minuto(s)" />
+		<Msg ID="423" Text="O Castle Siege estÃ¡ em disputa" />
 		<Msg ID="424" Text="A guild %s defendeu o castelo com sucesso" />
-		<Msg ID="425" Text="A guild %s é a nova dona do castelo" />
-		<Msg ID="426" Text="O dono do castelo não foi definido" />
-		<Msg ID="427" Text="Só resta a estátua Guardiã" />
-		<Msg ID="432" Text="O cargo do jogador %s mudou para Assistente do Líder" />
+		<Msg ID="425" Text="A guild %s Ã© a nova dona do castelo" />
+		<Msg ID="426" Text="O dono do castelo nÃ£o foi definido" />
+		<Msg ID="427" Text="SÃ³ resta a estÃ¡tua GuardiÃ£" />
+		<Msg ID="432" Text="O cargo do jogador %s mudou para Assistente do LÃ­der" />
 		<Msg ID="433" Text="O cargo do jogador %s mudou para Battlemaster" />
 		<Msg ID="434" Text="O cargo do jogador %s mudou para Membro da Guild" />
 		<Msg ID="435" Text="O tipo da guild %s mudou para %d" />
-		<Msg ID="436" Text="A guild entrou na aliança %s" />
-		<Msg ID="437" Text="A guild agora é inimiga da guild %s" />
-		<Msg ID="438" Text="A guild %s entrou na aliança %s" />
-		<Msg ID="439" Text="A guild saiu da aliança" />
-		<Msg ID="440" Text="A guild %s saiu da aliança %s" />
-		<Msg ID="441" Text="A guild não faz mais parte da aliança %s" />
-		<Msg ID="442" Text="A guild não é mais inimiga da guild %s" />
-		<Msg ID="443" Text="A aliança %s foi desfeita" />
-		<Msg ID="448" Text="Você não pode invocar a Life Stone fora do Castle Siege" />
-		<Msg ID="449" Text="Só a aliança atacante pode invocar a Life Stone" />
+		<Msg ID="436" Text="A guild entrou na alianÃ§a %s" />
+		<Msg ID="437" Text="A guild agora Ã© inimiga da guild %s" />
+		<Msg ID="438" Text="A guild %s entrou na alianÃ§a %s" />
+		<Msg ID="439" Text="A guild saiu da alianÃ§a" />
+		<Msg ID="440" Text="A guild %s saiu da alianÃ§a %s" />
+		<Msg ID="441" Text="A guild nÃ£o faz mais parte da alianÃ§a %s" />
+		<Msg ID="442" Text="A guild nÃ£o Ã© mais inimiga da guild %s" />
+		<Msg ID="443" Text="A alianÃ§a %s foi desfeita" />
+		<Msg ID="448" Text="VocÃª nÃ£o pode invocar a Life Stone fora do Castle Siege" />
+		<Msg ID="449" Text="SÃ³ a alianÃ§a atacante pode invocar a Life Stone" />
 		<Msg ID="450" Text="Uma Life Stone foi invocada" />
-		<Msg ID="451" Text="Você não pode invocar a Life Stone dentro da Dragon Tower" />
+		<Msg ID="451" Text="VocÃª nÃ£o pode invocar a Life Stone dentro da Dragon Tower" />
 		<Msg ID="452" Text="A Life Stone foi invocada com sucesso" />
 		<Msg ID="453" Text="Falha ao invocar a Life Stone" />
-		<Msg ID="464" Text="Você não pode invocar soldados fora do Castle Siege" />
-		<Msg ID="465" Text="Só a aliança defensora pode invocar soldados" />
-		<Msg ID="466" Text="Só o líder da guild e o assistente podem invocar soldados" />
-		<Msg ID="467" Text="O número máximo de soldados foi atingido" />
+		<Msg ID="464" Text="VocÃª nÃ£o pode invocar soldados fora do Castle Siege" />
+		<Msg ID="465" Text="SÃ³ a alianÃ§a defensora pode invocar soldados" />
+		<Msg ID="466" Text="SÃ³ o lÃ­der da guild e o assistente podem invocar soldados" />
+		<Msg ID="467" Text="O nÃºmero mÃ¡ximo de soldados foi atingido" />
 		<Msg ID="468" Text="Soldado invocado com sucesso" />
 		<Msg ID="469" Text="Falha ao invocar o soldado" />
 		<Msg ID="480" Text="Servidor fechado" />
 		<Msg ID="481" Text="O servidor fecha automaticamente em %d segundo(s)" />
-		<Msg ID="482" Text="Este item é duplicado, fale com o administrador" />
+		<Msg ID="482" Text="Este item Ã© duplicado, fale com o administrador" />
 		<Msg ID="483" Text="Seu bloqueio de chat terminou" />
-		<Msg ID="484" Text="Você sairá do jogo em %d segundo(s)" />
-		<Msg ID="485" Text="Legítima defesa contra %s começou" />
-		<Msg ID="486" Text="Legítima defesa contra %s terminou" />
+		<Msg ID="484" Text="VocÃª sairÃ¡ do jogo em %d segundo(s)" />
+		<Msg ID="485" Text="LegÃ­tima defesa contra %s comeÃ§ou" />
+		<Msg ID="486" Text="LegÃ­tima defesa contra %s terminou" />
 		<Msg ID="487" Text="O servidor desliga automaticamente em 1 minuto(s)" />
 		<Msg ID="488" Text="O servidor desliga automaticamente em 3 minuto(s)" />
 		<Msg ID="489" Text="O servidor desliga automaticamente em 5 minuto(s)" />
-		<Msg ID="490" Text="O jogo começa automaticamente em 10 segundo(s)" />
+		<Msg ID="490" Text="O jogo comeÃ§a automaticamente em 10 segundo(s)" />
 		<Msg ID="491" Text="%s ganhou %d Jewel of Bless" />
-		<Msg ID="492" Text="Não é possível entrar no evento com montaria." />
-		<Msg ID="493" Text="Não é possível entrar no evento durante uma Guerra de Guilds." />
-		<Msg ID="494" Text="Não é possível entrar no evento durante um duelo." />
+		<Msg ID="492" Text="NÃ£o Ã© possÃ­vel entrar no evento com montaria." />
+		<Msg ID="493" Text="NÃ£o Ã© possÃ­vel entrar no evento durante uma Guerra de Guilds." />
+		<Msg ID="494" Text="NÃ£o Ã© possÃ­vel entrar no evento durante um duelo." />
 		<Msg ID="495" Text="Bem-vindo ao Mu Chila! Bom jogo!" />
 		<Msg ID="496" Text="/gpost" />
-		<Msg ID="497" Text="Você não tem permissão para usar /gpost" />
+		<Msg ID="497" Text="VocÃª nÃ£o tem permissÃ£o para usar /gpost" />
 		<Msg ID="498" Text="[GM][%d] %s" />
 		<Msg ID="499" Text="Feliz Ano Novo!" />
 		<Msg ID="500" Text="Feliz Natal!" />
-		<Msg ID="501" Text="Não vendo nada para gente como você." />
-		<Msg ID="502" Text="Não ajudo criminosos como você! Procure outro lugar." />
-		<Msg ID="503" Text="Diminua a quantidade de Zen no seu inventário." />
+		<Msg ID="501" Text="NÃ£o vendo nada para gente como vocÃª." />
+		<Msg ID="502" Text="NÃ£o ajudo criminosos como vocÃª! Procure outro lugar." />
+		<Msg ID="503" Text="Diminua a quantidade de Zen no seu inventÃ¡rio." />
 		<Msg ID="504" Text="/Buy" />
-		<Msg ID="505" Text="Você não tem permissão para usar /Buy" />
-		<Msg ID="506" Text="Você precisa ter pelo menos o nível %d para usar /Buy" />
-		<Msg ID="507" Text= "Você precisa ter pelo menos %d resets para usar /Buy" />
-		<Msg ID="508" Text="Você precisa ter pelo menos %d Zen para usar /Buy" />
+		<Msg ID="505" Text="VocÃª nÃ£o tem permissÃ£o para usar /Buy" />
+		<Msg ID="506" Text="VocÃª precisa ter pelo menos o nÃ­vel %d para usar /Buy" />
+		<Msg ID="507" Text= "VocÃª precisa ter pelo menos %d resets para usar /Buy" />
+		<Msg ID="508" Text="VocÃª precisa ter pelo menos %d Zen para usar /Buy" />
 		<Msg ID="509" Text="Aguarde %d segundos para usar /Buy" />
 		<Msg ID="510" Text="[Compra][%d] %s" />
 		<Msg ID="511" Text="/Sell" />
-		<Msg ID="512" Text="Você não tem permissão para usar /Sell" />
-		<Msg ID="513" Text="Você precisa ter pelo menos o nível %d para usar /Sell" />
-		<Msg ID="514" Text="Você precisa ter pelo menos %d resets para usar /Sell" />
-		<Msg ID="515" Text="Você precisa ter pelo menos %d Zen para usar /Sell" />
+		<Msg ID="512" Text="VocÃª nÃ£o tem permissÃ£o para usar /Sell" />
+		<Msg ID="513" Text="VocÃª precisa ter pelo menos o nÃ­vel %d para usar /Sell" />
+		<Msg ID="514" Text="VocÃª precisa ter pelo menos %d resets para usar /Sell" />
+		<Msg ID="515" Text="VocÃª precisa ter pelo menos %d Zen para usar /Sell" />
 		<Msg ID="516" Text="Aguarde %d segundos para usar /Sell" />
 		<Msg ID="517" Text="[Venda][%d] %s" />
 		<Msg ID="518" Text="/clearinv" />
-		<Msg ID="519" Text="Você não tem permissão para usar /clearinv" />
-		<Msg ID="520" Text="Inventário não foi limpo: Zen insuficiente" />
-		<Msg ID="521" Text="Inventário limpo" />
+		<Msg ID="519" Text="VocÃª nÃ£o tem permissÃ£o para usar /clearinv" />
+		<Msg ID="520" Text="InventÃ¡rio nÃ£o foi limpo: Zen insuficiente" />
+		<Msg ID="521" Text="InventÃ¡rio limpo" />
 		<Msg ID="522" Text="/clearextinv" />
-		<Msg ID="523" Text="Você não tem permissão para usar /clearextinv" />
-		<Msg ID="524" Text="Inventário extra não foi limpo: Zen insuficiente" />
-		<Msg ID="525" Text="Inventário extra limpo" />
+		<Msg ID="523" Text="VocÃª nÃ£o tem permissÃ£o para usar /clearextinv" />
+		<Msg ID="524" Text="InventÃ¡rio extra nÃ£o foi limpo: Zen insuficiente" />
+		<Msg ID="525" Text="InventÃ¡rio extra limpo" />
 		<Msg ID="526" Text="/pkset" />
-		<Msg ID="527" Text="Você não tem permissão para usar /pkset" />
-		<Msg ID="528" Text="Alvo inválido para /pkset" />
-		<Msg ID="529" Text="Valor inválido para /pkset" />
+		<Msg ID="527" Text="VocÃª nÃ£o tem permissÃ£o para usar /pkset" />
+		<Msg ID="528" Text="Alvo invÃ¡lido para /pkset" />
+		<Msg ID="529" Text="Valor invÃ¡lido para /pkset" />
 		<Msg ID="530" Text="Status PK %d aplicado em %s com sucesso" />
 		<Msg ID="531" Text="/setlvl" />
-		<Msg ID="532" Text="Você não tem permissão para usar /setlvl" />
-		<Msg ID="533" Text="Alvo inválido para /setlvl" />
-		<Msg ID="534" Text="Valor inválido para /setlvl" />
-		<Msg ID="535" Text="%s mudou seu nível para %d" />
-		<Msg ID="536" Text="Nível %d aplicado em %s com sucesso" />
+		<Msg ID="532" Text="VocÃª nÃ£o tem permissÃ£o para usar /setlvl" />
+		<Msg ID="533" Text="Alvo invÃ¡lido para /setlvl" />
+		<Msg ID="534" Text="Valor invÃ¡lido para /setlvl" />
+		<Msg ID="535" Text="%s mudou seu nÃ­vel para %d" />
+		<Msg ID="536" Text="NÃ­vel %d aplicado em %s com sucesso" />
 		<Msg ID="537" Text="/msetlvl" />
-		<Msg ID="538" Text="Você não tem permissão para usar /msetlvl" />
-		<Msg ID="539" Text="Alvo inválido para /msetlvl" />
-		<Msg ID="540" Text="Valor inválido para /msetlvl" />
-		<Msg ID="541" Text="%s mudou seu nível master para %d" />
-		<Msg ID="542" Text="Nível master %d aplicado em %s com sucesso" />
-		<Msg ID="543" Text="Você não tem permissão para usar /AddStat" />
-		<Msg ID="544" Text="Alvo inválido para /AddStat" />
-		<Msg ID="545" Text="Valor inválido para /AddStat" />
+		<Msg ID="538" Text="VocÃª nÃ£o tem permissÃ£o para usar /msetlvl" />
+		<Msg ID="539" Text="Alvo invÃ¡lido para /msetlvl" />
+		<Msg ID="540" Text="Valor invÃ¡lido para /msetlvl" />
+		<Msg ID="541" Text="%s mudou seu nÃ­vel master para %d" />
+		<Msg ID="542" Text="NÃ­vel master %d aplicado em %s com sucesso" />
+		<Msg ID="543" Text="VocÃª nÃ£o tem permissÃ£o para usar /AddStat" />
+		<Msg ID="544" Text="Alvo invÃ¡lido para /AddStat" />
+		<Msg ID="545" Text="Valor invÃ¡lido para /AddStat" />
 		<Msg ID="546" Text="/statstr" />
-		<Msg ID="547" Text="%s te deu Força: %d" />
-		<Msg ID="548" Text="Atributos enviados para %s com sucesso. Força: %d" />
+		<Msg ID="547" Text="%s te deu ForÃ§a: %d" />
+		<Msg ID="548" Text="Atributos enviados para %s com sucesso. ForÃ§a: %d" />
 		<Msg ID="549" Text="/statagi" />
 		<Msg ID="550" Text="%s te deu Agilidade: %d" />
 		<Msg ID="551" Text="Atributos enviados para %s com sucesso. Agilidade: %d" />
@@ -385,129 +385,129 @@
 		<Msg ID="558" Text="/statcom" />
 		<Msg ID="559" Text="%s te deu Comando: %d" />
 		<Msg ID="560" Text="Atributos enviados para %s com sucesso. Comando: %d" />
-		<Msg ID="561" Text="Só o Dark Lord pode usar este comando" />
+		<Msg ID="561" Text="SÃ³ o Dark Lord pode usar este comando" />
 		<Msg ID="562" Text="/banuser" />
-		<Msg ID="563" Text="Você não tem permissão para usar /banuser ou /unbanuser" />
+		<Msg ID="563" Text="VocÃª nÃ£o tem permissÃ£o para usar /banuser ou /unbanuser" />
 		<Msg ID="564" Text="Personagem %s banido!" />
 		<Msg ID="565" Text="/unbanuser" />
 		<Msg ID="566" Text="Personagem %s desbanido!" />
 		<Msg ID="567" Text="/debuff" />
-		<Msg ID="568" Text="Você não tem permissão para usar /debuff" />
-		<Msg ID="569" Text="Você precisa ter pelo menos %d Zen para usar /debuff" />
+		<Msg ID="568" Text="VocÃª nÃ£o tem permissÃ£o para usar /debuff" />
+		<Msg ID="569" Text="VocÃª precisa ter pelo menos %d Zen para usar /debuff" />
 		<Msg ID="570" Text="Seus efeitos negativos foram removidos" />
 		<Msg ID="571" Text="/addeffect" />
-		<Msg ID="572" Text="Você não tem permissão para usar /addeffect" />
-		<Msg ID="573" Text="Alvo inválido para /addeffect" />
-		<Msg ID="574" Text="O efeito %d não é válido" />
+		<Msg ID="572" Text="VocÃª nÃ£o tem permissÃ£o para usar /addeffect" />
+		<Msg ID="573" Text="Alvo invÃ¡lido para /addeffect" />
+		<Msg ID="574" Text="O efeito %d nÃ£o Ã© vÃ¡lido" />
 		<Msg ID="575" Text="Efeito adicionado com sucesso" />
 		<Msg ID="576" Text="/godmode" />
-		<Msg ID="577" Text="Você não tem permissão para usar /godmode" />
+		<Msg ID="577" Text="VocÃª nÃ£o tem permissÃ£o para usar /godmode" />
 		<Msg ID="578" Text="/csstate" />
-		<Msg ID="579" Text="Você não tem permissão para usar /csstate" />
-		<Msg ID="580" Text="Estado de Castle Siege inválido" />
+		<Msg ID="579" Text="VocÃª nÃ£o tem permissÃ£o para usar /csstate" />
+		<Msg ID="580" Text="Estado de Castle Siege invÃ¡lido" />
 		<Msg ID="581" Text="Bem-vindo ao Mu Chila" />
 		<Msg ID="582" Text="Entrou no jogo" />
 		<Msg ID="583" Text="[GameMaster] %s entrou no jogo" />
-		<Msg ID="584" Text="Diferença de nível grande demais para entrar no grupo" />
-		<Msg ID="585" Text="Você é forte demais para receber meu buff" />
-		<Msg ID="586" Text="Você não tem permissão para usar bots" />
-		<Msg ID="587" Text="Você recebeu minha bênção!" />
+		<Msg ID="584" Text="DiferenÃ§a de nÃ­vel grande demais para entrar no grupo" />
+		<Msg ID="585" Text="VocÃª Ã© forte demais para receber meu buff" />
+		<Msg ID="586" Text="VocÃª nÃ£o tem permissÃ£o para usar bots" />
+		<Msg ID="587" Text="VocÃª recebeu minha bÃªnÃ§Ã£o!" />
 		<Msg ID="588" Text="<FONT color='#FFFF00'>[POST]%s :%s</FONT><BR>" />
-		<Msg ID="589" Text="Só jogadores VIP podem ir para este mapa" />
-		<Msg ID="590" Text="Criação de guilds desativada temporariamente" />
-		<Msg ID="591" Text="Você não tem Zen suficiente no webbank para criar uma guild" />
+		<Msg ID="589" Text="SÃ³ jogadores VIP podem ir para este mapa" />
+		<Msg ID="590" Text="CriaÃ§Ã£o de guilds desativada temporariamente" />
+		<Msg ID="591" Text="VocÃª nÃ£o tem Zen suficiente no webbank para criar uma guild" />
 		<Msg ID="592" Text="/attack" />
-		<Msg ID="593" Text="Você não está habilitado a usar /attack" />
-		<Msg ID="594" Text="Você precisa ter pelo menos o nível %d para usar o comando" />
-		<Msg ID="595" Text="Você precisa ter pelo menos %d reset(s) para usar o comando" />
-		<Msg ID="596" Text="Você já está usando o comando" />
-		<Msg ID="597" Text="Você não pode usar o comando neste local" />
-		<Msg ID="598" Text="Você não tem a magia necessária para usar o comando" />
+		<Msg ID="593" Text="VocÃª nÃ£o estÃ¡ habilitado a usar /attack" />
+		<Msg ID="594" Text="VocÃª precisa ter pelo menos o nÃ­vel %d para usar o comando" />
+		<Msg ID="595" Text="VocÃª precisa ter pelo menos %d reset(s) para usar o comando" />
+		<Msg ID="596" Text="VocÃª jÃ¡ estÃ¡ usando o comando" />
+		<Msg ID="597" Text="VocÃª nÃ£o pode usar o comando neste local" />
+		<Msg ID="598" Text="VocÃª nÃ£o tem a magia necessÃ¡ria para usar o comando" />
 		<Msg ID="599" Text="Aguarde %d segundo(s) para aceitar a troca" />
-		<Msg ID="600" Text="O aparecimento de %s será anunciado em %d minuto(s)" />
+		<Msg ID="600" Text="O aparecimento de %s serÃ¡ anunciado em %d minuto(s)" />
 		<Msg ID="601" Text="%s vai aparecer em %d minuto(s)" />
 		<Msg ID="602" Text="%s apareceu em %s" />
 		<Msg ID="603" Text="%s foi embora" />
-		<Msg ID="604" Text="Não há espaço suficiente, volte mais tarde" />
+		<Msg ID="604" Text="NÃ£o hÃ¡ espaÃ§o suficiente, volte mais tarde" />
 		<Msg ID="605" Text="%s encontrou %s" />
 		<Msg ID="606" Text="Obrigado por jogar" />
-		<Msg ID="607" Text="Não tenho mais nada para entregar, desculpe" />
+		<Msg ID="607" Text="NÃ£o tenho mais nada para entregar, desculpe" />
 		<Msg ID="608" Text="/chatblock" />
 		<Msg ID="609" Text="/unchatblock" />
-		<Msg ID="610" Text="Você não tem permissão para usar /chatblock" />
-		<Msg ID="611" Text="Você precisa ter pelo menos %d Zen para usar /chatblock" />
+		<Msg ID="610" Text="VocÃª nÃ£o tem permissÃ£o para usar /chatblock" />
+		<Msg ID="611" Text="VocÃª precisa ter pelo menos %d Zen para usar /chatblock" />
 		<Msg ID="612" Text="Personagem bloqueado com sucesso" />
-		<Msg ID="613" Text="Você não tem permissão para usar /unchatblock" />
-		<Msg ID="614" Text="Você precisa ter pelo menos %d Zen para usar /unchatblock" />
+		<Msg ID="613" Text="VocÃª nÃ£o tem permissÃ£o para usar /unchatblock" />
+		<Msg ID="614" Text="VocÃª precisa ter pelo menos %d Zen para usar /unchatblock" />
 		<Msg ID="615" Text="Personagem desbloqueado com sucesso" />
-		<Msg ID="616" Text="Você chegou a 100 abates" />
+		<Msg ID="616" Text="VocÃª chegou a 100 abates" />
 		<Msg ID="617" Text="O Dng Pvp fecha em %d minuto(s)" />
-		<Msg ID="618" Text="O Dng Pvp começa em %d minuto(s)" />
-		<Msg ID="619" Text="O Dng Pvp começou" />
+		<Msg ID="618" Text="O Dng Pvp comeÃ§a em %d minuto(s)" />
+		<Msg ID="619" Text="O Dng Pvp comeÃ§ou" />
 		<Msg ID="620" Text="O Dng Pvp terminou" />
 		<Msg ID="621" Text="O Dng Pvp foi fechado" />
-		<Msg ID="622" Text="[Dng Pvp] Pontuação da partida: %d" />
-		<Msg ID="623" Text="[Dng Pvp] O vencedor do Dng Pvp é %s com %d pontos" />
-		<Msg ID="624" Text="[Dng Pvp] Nova pontuação: %d" />
-		<Msg ID="625" Text="[Dng Pvp] Você precisa ter pelo menos o nível %d para entrar" />
-		<Msg ID="626" Text="[Dng Pvp] Você não pode entrar agora" />
-		<Msg ID="627" Text="O duelo não pode começar na zona segura" />
-		<Msg ID="640" Text="Aguarde 2 segundo(s) para fazer outra ação" />
+		<Msg ID="622" Text="[Dng Pvp] PontuaÃ§Ã£o da partida: %d" />
+		<Msg ID="623" Text="[Dng Pvp] O vencedor do Dng Pvp Ã© %s com %d pontos" />
+		<Msg ID="624" Text="[Dng Pvp] Nova pontuaÃ§Ã£o: %d" />
+		<Msg ID="625" Text="[Dng Pvp] VocÃª precisa ter pelo menos o nÃ­vel %d para entrar" />
+		<Msg ID="626" Text="[Dng Pvp] VocÃª nÃ£o pode entrar agora" />
+		<Msg ID="627" Text="O duelo nÃ£o pode comeÃ§ar na zona segura" />
+		<Msg ID="640" Text="Aguarde 2 segundo(s) para fazer outra aÃ§Ã£o" />
 		<Msg ID="641" Text="/gremgif" />
-		<Msg ID="642" Text="Você não tem permissão para usar /gremgif" />
-		<Msg ID="643" Text="Alvo inválido para /gremgif" />
-		<Msg ID="644" Text="Destino de armazenamento inválido (1 - servidor, 2 - personagem)" />
+		<Msg ID="642" Text="VocÃª nÃ£o tem permissÃ£o para usar /gremgif" />
+		<Msg ID="643" Text="Alvo invÃ¡lido para /gremgif" />
+		<Msg ID="644" Text="Destino de armazenamento invÃ¡lido (1 - servidor, 2 - personagem)" />
 		<Msg ID="645" Text="/clearinvmuun" />
-		<Msg ID="646" Text="Você não tem permissão para usar /clearinvmuun" />
-		<Msg ID="647" Text="Inventário de Muun não foi limpo: Zen insuficiente" />
-		<Msg ID="648" Text="Inventário de Muun limpo" />
+		<Msg ID="646" Text="VocÃª nÃ£o tem permissÃ£o para usar /clearinvmuun" />
+		<Msg ID="647" Text="InventÃ¡rio de Muun nÃ£o foi limpo: Zen insuficiente" />
+		<Msg ID="648" Text="InventÃ¡rio de Muun limpo" />
 		<Msg ID="649" Text="/banmac" />
-		<Msg ID="650" Text="[BanMac] Você não pode usar este comando" />
-		<Msg ID="651" Text="[BanMac] Jogador inválido ou desconectado" />
-		<Msg ID="652" Text="[BanMac] Máquina banida com sucesso" />
-		<Msg ID="653" Text="Você não pode entrar: o limite diário de entradas foi atingido." />
+		<Msg ID="650" Text="[BanMac] VocÃª nÃ£o pode usar este comando" />
+		<Msg ID="651" Text="[BanMac] Jogador invÃ¡lido ou desconectado" />
+		<Msg ID="652" Text="[BanMac] MÃ¡quina banida com sucesso" />
+		<Msg ID="653" Text="VocÃª nÃ£o pode entrar: o limite diÃ¡rio de entradas foi atingido." />
 		<Msg ID="654" Text="Limite de entradas [%d/%d]." />
 		<Msg ID="655" Text="/pack" />
 		<Msg ID="656" Text="/unpack" />
-		<Msg ID="657" Text="Tipo de joia não permitido" />
-		<Msg ID="658" Text="Você não tem joias suficientes para esta operação." />
+		<Msg ID="657" Text="Tipo de joia nÃ£o permitido" />
+		<Msg ID="658" Text="VocÃª nÃ£o tem joias suficientes para esta operaÃ§Ã£o." />
 		<Msg ID="659" Text="Joias agrupadas com sucesso." />
-		<Msg ID="660" Text="Você não tem joias suficientes para esta operação." />
-		<Msg ID="661" Text="Você não tem espaço suficiente para esta operação." />
+		<Msg ID="660" Text="VocÃª nÃ£o tem joias suficientes para esta operaÃ§Ã£o." />
+		<Msg ID="661" Text="VocÃª nÃ£o tem espaÃ§o suficiente para esta operaÃ§Ã£o." />
 		<Msg ID="662" Text="Erro interno." />
 		<Msg ID="663" Text="Joias desagrupadas com sucesso" />
-		<Msg ID="664" Text="Destrua a Horda de Espíritos Corrompidos e o Obelisco Amaldiçoado!" />
-		<Msg ID="665" Text="A Horda de Espíritos Corrompidos desapareceu." />
-		<Msg ID="666" Text="O Obelisco Amaldiçoado foi destruído por %s." />
-		<Msg ID="667" Text="Você protegeu Acheron da Horda Amaldiçoada." />
-		<Msg ID="668" Text="[BlockChat] Este jogador já está registrado" />
+		<Msg ID="664" Text="Destrua a Horda de EspÃ­ritos Corrompidos e o Obelisco AmaldiÃ§oado!" />
+		<Msg ID="665" Text="A Horda de EspÃ­ritos Corrompidos desapareceu." />
+		<Msg ID="666" Text="O Obelisco AmaldiÃ§oado foi destruÃ­do por %s." />
+		<Msg ID="667" Text="VocÃª protegeu Acheron da Horda AmaldiÃ§oada." />
+		<Msg ID="668" Text="[BlockChat] Este jogador jÃ¡ estÃ¡ registrado" />
 		<Msg ID="669" Text="Refino do Lucky Item bem-sucedido." />
 		<Msg ID="670" Text="O refino do Lucky Item falhou." />
-		<Msg ID="671" Text="Você não pode fazer Guerra de Guilds neste mapa." />
-		<Msg ID="672" Text="Você não pode fazer trocas neste mapa." />
-		<Msg ID="673" Text="Você não pode abrir loja pessoal neste mapa." />
+		<Msg ID="671" Text="VocÃª nÃ£o pode fazer Guerra de Guilds neste mapa." />
+		<Msg ID="672" Text="VocÃª nÃ£o pode fazer trocas neste mapa." />
+		<Msg ID="673" Text="VocÃª nÃ£o pode abrir loja pessoal neste mapa." />
 
-		<Msg ID="674" Text="Você não pode entrar no Battle Core enquanto faz uma troca." />
-		<Msg ID="675" Text="Falha na inscrição no Battle Core" />
-		<Msg ID="676" Text="Você se inscreveu no Battle Core" />
+		<Msg ID="674" Text="VocÃª nÃ£o pode entrar no Battle Core enquanto faz uma troca." />
+		<Msg ID="675" Text="Falha na inscriÃ§Ã£o no Battle Core" />
+		<Msg ID="676" Text="VocÃª se inscreveu no Battle Core" />
 		<Msg ID="677" Text="Avatar criado no Battle Core com sucesso." />
-		<Msg ID="678" Text="Não é possível cancelar o Battle Core no servidor central." />
-		<Msg ID="679" Text="Você cancelou sua inscrição no Battle Core." />
-		<Msg ID="680" Text="Suas informações do Battle Core foram atualizadas." />
-		<Msg ID="681" Text="Seu personagem já está inscrito no Battle Core." />
+		<Msg ID="678" Text="NÃ£o Ã© possÃ­vel cancelar o Battle Core no servidor central." />
+		<Msg ID="679" Text="VocÃª cancelou sua inscriÃ§Ã£o no Battle Core." />
+		<Msg ID="680" Text="Suas informaÃ§Ãµes do Battle Core foram atualizadas." />
+		<Msg ID="681" Text="Seu personagem jÃ¡ estÃ¡ inscrito no Battle Core." />
 		<Msg ID="682" Text="O tempo para entrar no Battle Core expirou." />
-		<Msg ID="683" Text="Você já tem o máximo de personagens inscritos. Remova um para inscrever outro." />
+		<Msg ID="683" Text="VocÃª jÃ¡ tem o mÃ¡ximo de personagens inscritos. Remova um para inscrever outro." />
 		<Msg ID="684" Text="Falha ao criar o avatar no Battle Core." />
-		<Msg ID="685" Text="Você não pode usar a loja pessoal no Battle Core." />
-		<Msg ID="686" Text="Não é possível criar personagem no Battle Core." />
-		<Msg ID="687" Text="O baú não está disponível no Battle Core." />
-		<Msg ID="688" Text="Trocas não são permitidas durante a inscrição no Battle Core." />
-		<Msg ID="689" Text="Você não pode entrar no Battle Core com a loja pessoal aberta." />
-		<Msg ID="690" Text="Não disponível no Battle Core." />
+		<Msg ID="685" Text="VocÃª nÃ£o pode usar a loja pessoal no Battle Core." />
+		<Msg ID="686" Text="NÃ£o Ã© possÃ­vel criar personagem no Battle Core." />
+		<Msg ID="687" Text="O baÃº nÃ£o estÃ¡ disponÃ­vel no Battle Core." />
+		<Msg ID="688" Text="Trocas nÃ£o sÃ£o permitidas durante a inscriÃ§Ã£o no Battle Core." />
+		<Msg ID="689" Text="VocÃª nÃ£o pode entrar no Battle Core com a loja pessoal aberta." />
+		<Msg ID="690" Text="NÃ£o disponÃ­vel no Battle Core." />
 		<Msg ID="691" Text="Sistema de desmontagem desativado, tente mais tarde." />
-		<Msg ID="692" Text="A restauração de itens está desativada no momento." />
-		<Msg ID="693" Text="Falha ao carregar os dados de restauração de itens." />
-		<Msg ID="694" Text="Você não pode usar a restauração de itens nem recuperar itens que estão à venda." />
+		<Msg ID="692" Text="A restauraÃ§Ã£o de itens estÃ¡ desativada no momento." />
+		<Msg ID="693" Text="Falha ao carregar os dados de restauraÃ§Ã£o de itens." />
+		<Msg ID="694" Text="VocÃª nÃ£o pode usar a restauraÃ§Ã£o de itens nem recuperar itens que estÃ£o Ã  venda." />
 	</Message>
 	<MapName>
 		<Msg ID="0" Text="Lorencia" />
@@ -542,18 +542,18 @@
 		<Msg ID="29" Text="Kalima 6" />
 	</MapName>
 	<InvacionMsg>
-		<Msg ID="0" Text="A invasão do Skeleton King começou!" />
-		<Msg ID="1" Text="A invasão do Red Dragon começou!" />
-		<Msg ID="2" Text="A invasão dos Dourados começou!" />
-		<Msg ID="3" Text="A invasão do White Wizard começou!" />
-		<Msg ID="4" Text="A invasão de Ano Novo começou!" />
-		<Msg ID="5" Text="A invasão dos coelhos começou!" />
-		<Msg ID="6" Text="A invasão de verão começou!" />
-		<Msg ID="7" Text="A invasão de Natal começou!" />
+		<Msg ID="0" Text="A invasÃ£o do Skeleton King comeÃ§ou!" />
+		<Msg ID="1" Text="A invasÃ£o do Red Dragon comeÃ§ou!" />
+		<Msg ID="2" Text="A invasÃ£o dos Dourados comeÃ§ou!" />
+		<Msg ID="3" Text="A invasÃ£o do White Wizard comeÃ§ou!" />
+		<Msg ID="4" Text="A invasÃ£o de Ano Novo comeÃ§ou!" />
+		<Msg ID="5" Text="A invasÃ£o dos coelhos comeÃ§ou!" />
+		<Msg ID="6" Text="A invasÃ£o de verÃ£o comeÃ§ou!" />
+		<Msg ID="7" Text="A invasÃ£o de Natal comeÃ§ou!" />
 		<Msg ID="8" Text="O jogador %s derrotou o Skeleton King!" />
 		<Msg ID="9" Text="O jogador %s derrotou o Red Dragon!" />
 		<Msg ID="10" Text="O jogador %s derrotou o Great Golden Dragon!" />
 		<Msg ID="11" Text="O jogador %s derrotou o White Wizard!" />
-		<Msg ID="12" Text="O jogador %s derrotou o Papai Noel Amaldiçoado!" />
+		<Msg ID="12" Text="O jogador %s derrotou o Papai Noel AmaldiÃ§oado!" />
 	</InvacionMsg>
 </Language>
