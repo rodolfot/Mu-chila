@@ -71,6 +71,11 @@ No fim, as pendências que ainda estão abertas.
   - Não era o acento. Conferido na memória do GameServer: a tabela `Message` tinha as 505 mensagens em UTF-8, com a 197 correta; as tabelas `InvacionMsg` tinham 13 entradas, sem a 197.
 - **Solução:** as 17 mensagens de invasão foram copiadas para a `<InvacionMsg>` do `Portuguese.xml` e do `English.xml`, com Reload Common no GameServer e no Castle Siege. O `InvasionManager.dat` não mudou.
 
+### Mensagens do servidor com acento aparecem como "invasÃ£o", "comeÃ§ou"
+- **Causa:** o `Portuguese.xml` estava em UTF-8. O servidor repassa os bytes do texto sem converter, e o cliente lê em Windows-1252, então cada letra acentuada (2 bytes em UTF-8) vira dois caracteres.
+- **Solução:** o arquivo foi salvo em **Windows-1252**, mantendo o cabeçalho `encoding="utf-8"`. Conferido na memória do GameServer: as 505 mensagens carregam, com os acentos em 1 byte (`ã` = E3).
+- Numa sessão anterior a documentação atribuía o "Could not find message" ao Windows-1252. Estava errado: aquele erro era a seção `<InvacionMsg>` (item acima).
+
 ### Caixas (Chicken Box, Earring Box...) não sobem do chão nem descem para o chão
 - **Causa:** as caixas de evento ficam no **Inventário de Evento**. No `GameServerInfo - Common.dat`, `EventInventoryExpireYear/Month/Day` vinha como **31/12/2015**; com a data vencida, o servidor trata esse inventário como fechado e recusa, sem mensagem, pegar ou mover esses itens.
 - **Solução:** validade em **31/12/2037** nos três GameServers, aplicada com Reload Common. Talvez seja preciso sair e entrar no personagem para o cliente mostrar o inventário de evento. O ano 2037 é o limite seguro para executáveis 32 bits antigos, por causa do problema de 2038.
