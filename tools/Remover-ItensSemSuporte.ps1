@@ -9,9 +9,10 @@ param(
 )
 
 # Ruud/Earring/Gift/Mastery/Chicken Box etc. (secao 14): "Unknown box identifier" no GameServer
-$codigos = @(7591, 7592, 7593, 7594, 7595, 7596, 7609, 7610, 7611, 7613, 7614, 7615, 7616, 7619, 7620, 7622, 7623, 7624, 7625,
-             7259, 7337, 7449, 7655)   # Summoner, RageFighter, Grow Lancer e Rune Mage Character Card
-if ($Codigos) { $codigos = $Codigos }
+# (nome diferente de $Codigos: variaveis do PowerShell nao diferenciam maiusculas, e a lista padrao apagava o parametro)
+$alvos = @(7591, 7592, 7593, 7594, 7595, 7596, 7609, 7610, 7611, 7613, 7614, 7615, 7616, 7619, 7620, 7622, 7623, 7624, 7625,
+           7259, 7337, 7449, 7655)   # Summoner, RageFighter, Grow Lancer e Rune Mage Character Card
+if ($Codigos) { $alvos = $Codigos }
 
 function Clear-CaixaSlots([byte[]]$blob) {
     $removidos = @()
@@ -19,7 +20,7 @@ function Clear-CaixaSlots([byte[]]$blob) {
         $o = $s * 16
         if ($blob[$o] -eq 0xFF -and $blob[$o + 7] -eq 0xFF -and $blob[$o + 9] -eq 0xFF) { continue }   # slot vazio
         $idx = $blob[$o] -bor (($blob[$o + 7] -band 0x80) -shl 1) -bor (($blob[$o + 9] -band 0xF0) -shl 5)
-        if ($codigos -contains $idx) {
+        if ($alvos -contains $idx) {
             for ($j = 0; $j -lt 16; $j++) { $blob[$o + $j] = 0xFF }
             $removidos += "slot $s = item $idx"
         }
