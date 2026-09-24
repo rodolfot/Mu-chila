@@ -1,4 +1,5 @@
-# Remove do inventario, do inventario de evento e do bau as caixas que o servidor MuDevs FREE nao consegue abrir.
+# Remove do inventario, do inventario de evento e do bau os itens que o servidor MuDevs FREE nao suporta:
+# caixas que nao abrem e cartoes de personagem (a criacao de classe nao depende deles aqui).
 # So mexe em contas desconectadas ha pelo menos 1 minuto (o GameServer sobrescreveria o inventario de quem esta online).
 # Os dados originais ficam salvos em C:\MuServer\DB\backup-caixas-<data>.csv (fora do repositorio) antes de qualquer alteracao.
 param(
@@ -7,7 +8,8 @@ param(
 )
 
 # Ruud/Earring/Gift/Mastery/Chicken Box etc. (secao 14): "Unknown box identifier" no GameServer
-$codigos = @(7591, 7592, 7593, 7594, 7595, 7596, 7609, 7610, 7611, 7613, 7614, 7615, 7616, 7619, 7620, 7622, 7623, 7624, 7625)
+$codigos = @(7591, 7592, 7593, 7594, 7595, 7596, 7609, 7610, 7611, 7613, 7614, 7615, 7616, 7619, 7620, 7622, 7623, 7624, 7625,
+             7259, 7337, 7449, 7655)   # Summoner, RageFighter, Grow Lancer e Rune Mage Character Card
 
 function Clear-CaixaSlots([byte[]]$blob) {
     $removidos = @()

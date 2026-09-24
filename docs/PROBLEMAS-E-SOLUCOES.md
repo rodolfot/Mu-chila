@@ -40,7 +40,16 @@ No fim, as pendências que ainda estão abertas.
 ### Caixas que não abrem (`[CGOpenBoxRecv] [Error] [Box Type] Unknown box identifier`)
 - **Causa:** a abertura com o botão direito do S14 envia um identificador de caixa que o GameServer MuDevs FREE não conhece. O `EventItemBagManager` não é consultado nesse caminho, e não existe configuração para ele. Os prêmios criados nas entradas 236 a 254 não tiveram efeito e foram removidos.
 - **Solução:** as 19 caixas (Earring of Wrath Box, [Speed] Earring Box, Ruud Box, Gift Box, Mastery Box, Chicken Box...) **deixaram de cair dos monstros** (`DropItem = 0` no `Item.txt`).
-- **Limpeza:** as que estavam em inventários, inventários de evento e baús foram removidas com `tools\Remover-CaixasSemSuporte.ps1`, que só mexe em contas offline há mais de 1 minuto e guarda backup em `C:\MuServer\DB\backup-caixas-*.csv`.
+- **Limpeza:** as que estavam em inventários, inventários de evento e baús foram removidas com `tools\Remover-ItensSemSuporte.ps1`, que só mexe em contas offline há mais de 1 minuto e guarda backup em `C:\MuServer\DB\backup-caixas-*.csv`.
+
+### Item laranja sem nome que não vende, não usa e não dropa ("Esses itens não podem ser trocados")
+- **O que é:** um **cartão de personagem** (Summoner, Rage Fighter, Grow Lancer ou Rune Mage Character Card: 7259, 7337, 7449, 7655).
+  - No MU oficial ele libera a criação da classe na conta.
+  - Aqui todas as classes já podem ser criadas sem ele (`AccountCharacter.ExtClass = 0` em todas as contas, e mesmo assim há personagens dessas classes).
+  - O cliente o trata como intransferível, e o servidor não faz nada ao usá-lo.
+- **Solução:**
+  - o Rune Mage Character Card, que caía de monstros, passou a ter `DropItem = 0`;
+  - os cartões existentes são removidos com `tools\Remover-ItensSemSuporte.ps1`, só com o personagem offline.
 
 ### NPC responde "Could not find message 501/502" (ou 248 etc.)
 - **Causa:** o servidor busca as mensagens no idioma 0 do personagem. Com o inglês desativado e o português só no idioma 2, as mensagens sumiram.

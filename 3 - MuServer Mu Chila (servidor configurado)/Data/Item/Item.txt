@@ -2190,7 +2190,7 @@ end
 455 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Small Gift Box"				0 	 0 	 
 456 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Medium Gift Box"				0 	 0 	 
 457 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Large Gift Box"				0 	 0 	 
-487 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Rune Mage Character Card"			0 	 0 	 
+487 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Rune Mage Character Card"			0 	 0 	 
 end
 
 15 
