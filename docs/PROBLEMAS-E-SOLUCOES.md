@@ -71,6 +71,14 @@ No fim, as pendências que ainda estão abertas.
   - Não era o acento. Conferido na memória do GameServer: a tabela `Message` tinha as 505 mensagens em UTF-8, com a 197 correta; as tabelas `InvacionMsg` tinham 13 entradas, sem a 197.
 - **Solução:** as 17 mensagens de invasão foram copiadas para a `<InvacionMsg>` do `Portuguese.xml` e do `English.xml`, com Reload Common no GameServer e no Castle Siege. O `InvasionManager.dat` não mudou.
 
+### Personagem dá "Miss" em tudo e a janela (C) mostra "Suces de Atq" ≈ -2147479000
+- **Sintoma:** "Suces de Atq(%)", "Ataq PvP (%)" e "Def PvP (%)" negativos, perto de -2.147.483.648, mesmo sem nenhum item equipado. O personagem erra quase todos os golpes, até em monstros de Lorencia.
+- **Causa (conferida na memória do GameServer):** o personagem tinha as habilidades master 301 "Add Defense Success Rate PvP", 325 "Add Attack Success Rate" e 347 "Add Attack Success Rate PvP" com **nível 0**. O mínimo é 1 (`MasterSkillTree.txt`). Com nível 0, o bônus de cada uma sai como -2³¹ e é somado justamente a esses três atributos. A base calculada estava certa (3.923).
+  - Não é a 4ª classe abaixo do 400 nem o Master Level: a mamaeupo está assim e acerta normalmente, com as mesmas habilidades no nível 9.
+  - Visto no Quest1 depois de um `/reset` feito com 3 pontos de master gastos. Como as habilidades ficaram no nível 0 ainda não foi reproduzido.
+- **Solução:** com a conta offline, apagar as habilidades master do personagem (`MasterSkillTree.MasterSkill`: todas as entradas de 3 bytes voltam a `FF 00 FF`). Feito no Quest1 em 24/09/2026, com backup em `C:\MuServer\DB\backup-caixas-Quest1-master-antes-de-zerar.csv`. Depois disso: acerto 3.923, acerto PvP 8.484, defesa PvP 1.006.
+- **Atenção:** ao mexer em `MasterLevel`/`MasterPoint` no banco, apague também as habilidades master. Senão elas ficam aprendidas sem pontos que as sustentem.
+
 ### Mensagens do servidor com acento aparecem como "invasÃ£o", "comeÃ§ou"
 - **Causa:** o `Portuguese.xml` estava em UTF-8. O servidor repassa os bytes do texto sem converter, e o cliente lê em Windows-1252, então cada letra acentuada (2 bytes em UTF-8) vira dois caracteres.
 - **Solução:** o arquivo foi salvo em **Windows-1252**, mantendo o cabeçalho `encoding="utf-8"`. Conferido na memória do GameServer: as 505 mensagens carregam, com os acentos em 1 byte (`ã` = E3).
