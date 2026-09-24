@@ -356,7 +356,7 @@ CashShopGoblinPointValue_AL3 = 1
 ; Event Inventory Settings
 ;==================================================
 EventInventorySwitch = 1
-EventInventoryExpireYear = 2015
+EventInventoryExpireYear = 2037
 EventInventoryExpireMonth = 12
 EventInventoryExpireDay = 31
 

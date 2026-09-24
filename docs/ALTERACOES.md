@@ -10,6 +10,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `ConnectServer\ServerList.dat` | `TEUIPAQUI` → `"26.139.39.123"`; nomes → `Mu Chila`, `Mu Chila 2`, `Mu Chila 3`, `Mu Chila BattleCore`, `Mu Chila CastleSiege` | IP do Radmin e nome do servidor |
 | `Data\MapServerInfo.dat` | `STEUIPAQUI` → `S26.139.39.123` | IP para troca de mapa entre servidores; o "S" é obrigatório |
 | `GameServer*\DATA\GameServerInfo - Common.dat` | `ServerName` → `Mu Chila`, `Mu Chila CastleSiege`, `Mu Chila BattleCore` | Nome do servidor. `CustomerName` não foi alterado |
+| `GameServer*\DATA\GameServerInfo - Common.dat` | `EventInventoryExpire` 31/12/2015 → 31/12/2037 | A data vencida bloqueava pegar e mover caixas de evento |
 | `Data\Lang\English.xml` | Mensagens 495 e 581 → "Welcome to Mu Chila..." | Boas-vindas |
 | `Data\Event\InvasionManager.dat` | Invasão Golden (índice 2) a cada 10 min; duração 600 → 540 s | Pedido: dragões dourados a cada 10 minutos |
 | `Data\EventItemBagManager.txt` | Entradas 236 a 254 | Caixas que caíam sem conteúdo |

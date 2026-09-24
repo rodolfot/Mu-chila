@@ -41,16 +41,23 @@ No fim, as pendências que ainda estão abertas.
 - **Causa:** 19 caixas (Earring of Wrath Box, [Speed] Earring Box, Ruud Box, Gift Box, Mastery Box...) estão marcadas como drop de monstro no `Item.txt`, mas não tinham conteúdo no `EventItemBagManager.txt`.
 - **Solução:** entradas 236 a 254 com sacos de item inicial de classe +6. Aguardando alguém abrir uma caixa no jogo para confirmar.
 
+### Caixas (Chicken Box, Earring Box...) não sobem do chão nem descem para o chão
+- **Causa:** as caixas de evento ficam no **Inventário de Evento**. No `GameServerInfo - Common.dat`, `EventInventoryExpireYear/Month/Day` vinha como **31/12/2015**; com a data vencida, o servidor trata esse inventário como fechado e recusa, sem mensagem, pegar ou mover esses itens.
+- **Solução:** validade em **31/12/2037** nos três GameServers, aplicada com Reload Common. Talvez seja preciso sair e entrar no personagem para o cliente mostrar o inventário de evento. O ano 2037 é o limite seguro para executáveis 32 bits antigos, por causa do problema de 2038.
+
 ## Pendências
 
-### Caixa no chão que não dá para pegar
-- **Sintomas:** a "Earring of Wrath Box (Left)" dropada por um monstro morto pelo próprio jogador não é pega. Não aparece mensagem, e outros itens são pegos normalmente.
+### Confirmar as caixas no jogo
+- Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
+- Testar se, ao abrir, dão o item inicial +6.
+
+### Habilidades que não podem ser usadas ou equipadas em algumas contas
+- **Relato:** "não conseguimos usar as habilidades, não consegue equipar; dependendo da conta, funciona".
 - **O que foi verificado:**
-  - o GameServer não registra falha ao pegar item;
-  - o item é normal (1x1, sem restrição no `ItemMove`, não empilhável);
-  - o inventário tem espaço;
-  - o jogador já tinha uma caixa igual no inventário.
-- **Próximo teste:** abrir a caixa do inventário (agora elas têm conteúdo) e tentar pegar outra caixa igual.
+  - a lista de skills (`MagicList`) dos personagens novos está normal no banco;
+  - o log do GameServer não mostra erro de skill.
+- **Observação:** o dodo estava com status de PK (nível 4) e perdeu a asa ao morrer.
+- **Falta:** saber qual personagem, qual skill ou item, e se aparece mensagem. Um print ajuda.
 
 ### Mercado às vezes não abre
 - **O que foi verificado:**
