@@ -48,6 +48,25 @@ As caixas abertas com o botão direito estão em `Data\EventItemBagManager.txt` 
 As 19 caixas que caíam de monstros sem conteúdo (entradas 236 a 254) agora dão **1 item inicial de classe +6**, sorteado entre 40 armas e peças de armadura.
 Depois de editar, use Reload EventItemBag.
 
+## Evolução de classe (`/change`)
+
+Personagens novos começam na classe básica e **não evoluem sozinhos**.
+Itens e skills marcados com `2` nas colunas de classe do `Item.txt` exigem a 2ª classe (ex.: a foice Brova/"Beuroba" exige Blade Knight).
+Para evoluir, digite **`/change`** no chat. É grátis e vai até a 3ª classe (`CommandChangeLimit = 3` em `GameServerInfo - Command.dat`).
+Cada uso sobe uma classe e responde "You successfully evolved".
+
+## Spawn de monstros em grupos
+
+Os spawns dos mapas de caça foram reorganizados em **grupos de 5 ou mais** do mesmo monstro, num quadrado de 5×5 tiles:
+- **Números:** 1.676 grupos, com o total de monstros praticamente igual (8.895 → 8.899).
+- **Posições:** os grupos ficam nas mesmas regiões onde cada monstro já nascia, sempre em chão livre (validado pelo arquivo `Data\Terrain\TerrainN.att`).
+- **Ficaram como estavam:**
+  - chefes e raros, com 1 ou 2 no mapa ou respawn de 10 minutos ou mais (Kundun, Erohim, Balrog...);
+  - armadilhas;
+  - Crywolf e o Refúgio de Balgass.
+- **Aplicar mudanças no ar:** Reload Monster (recria todos os monstros e limpa invasões em andamento).
+- **Refazer a partir dos arquivos originais do kit:** `.\tools\Agrupar-Spawns.ps1` (sem `-Apply` só simula; com `-Apply` grava, com backup).
+
 ## Drops de monstros
 
 `Data\Item\ItemDrop.txt` tem uma linha por regra: `Index Level Grade Option0..6 Duration MapNumber MonsterClass MonsterLevelMin MonsterLevelMax DropRate`.

@@ -159,451 +159,96 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
+		<Config Class="34" Range="3" BeginPosX="192" BeginPosY="168" EndPosX="196" EndPosY="172" Direction="-1" Quantity="6" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="79" BeginPosY="238" EndPosX="83" EndPosY="242" Direction="-1" Quantity="6" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="236" BeginPosY="238" EndPosX="240" EndPosY="242" Direction="-1" Quantity="6" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="111" BeginPosY="163" EndPosX="115" EndPosY="167" Direction="-1" Quantity="6" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="160" BeginPosY="224" EndPosX="164" EndPosY="228" Direction="-1" Quantity="5" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="246" BeginPosY="163" EndPosX="250" EndPosY="167" Direction="-1" Quantity="5" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="111" BeginPosY="207" EndPosX="115" EndPosY="211" Direction="-1" Quantity="5" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="204" BeginPosY="209" EndPosX="208" EndPosY="213" Direction="-1" Quantity="5" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="192" BeginPosY="245" EndPosX="196" EndPosY="249" Direction="-1" Quantity="5" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="33" BeginPosY="173" EndPosX="37" EndPosY="177" Direction="-1" Quantity="6" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="54" BeginPosY="3" EndPosX="58" EndPosY="7" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="6" BeginPosY="93" EndPosX="10" EndPosY="97" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="22" BeginPosY="248" EndPosX="26" EndPosY="252" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="55" BeginPosY="121" EndPosX="59" EndPosY="125" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="3" BeginPosY="26" EndPosX="7" EndPosY="30" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="55" BeginPosY="215" EndPosX="59" EndPosY="219" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="4" BeginPosY="206" EndPosX="8" EndPosY="210" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="9" BeginPosY="137" EndPosX="13" EndPosY="141" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="41" BeginPosY="42" EndPosX="45" EndPosY="46" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="39" BeginPosY="93" EndPosX="43" EndPosY="97" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="25" BeginPosY="7" EndPosX="29" EndPosY="11" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="235" BeginPosY="36" EndPosX="239" EndPosY="40" Direction="-1" Quantity="6" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="188" BeginPosY="240" EndPosX="192" EndPosY="244" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="160" BeginPosY="126" EndPosX="164" EndPosY="130" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="243" BeginPosY="136" EndPosX="247" EndPosY="140" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="160" BeginPosY="11" EndPosX="164" EndPosY="15" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="206" BeginPosY="88" EndPosX="210" EndPosY="92" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="160" BeginPosY="63" EndPosX="164" EndPosY="67" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="193" BeginPosY="37" EndPosX="197" EndPosY="41" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="201" BeginPosY="136" EndPosX="205" EndPosY="140" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="245" BeginPosY="96" EndPosX="249" EndPosY="100" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="223" BeginPosY="3" EndPosX="227" EndPosY="7" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="231" BeginPosY="68" EndPosX="235" EndPosY="72" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="164" BeginPosY="94" EndPosX="168" EndPosY="98" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="221" BeginPosY="114" EndPosX="225" EndPosY="118" Direction="-1" Quantity="5" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="11" BeginPosY="38" EndPosX="15" EndPosY="42" Direction="-1" Quantity="6" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="37" BeginPosY="202" EndPosX="41" EndPosY="206" Direction="-1" Quantity="6" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="133" BeginPosY="104" EndPosX="137" EndPosY="108" Direction="-1" Quantity="6" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="123" BeginPosY="3" EndPosX="127" EndPosY="7" Direction="-1" Quantity="6" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="27" BeginPosY="109" EndPosX="31" EndPosY="113" Direction="-1" Quantity="5" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="79" BeginPosY="55" EndPosX="83" EndPosY="59" Direction="-1" Quantity="5" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="84" BeginPosY="136" EndPosX="88" EndPosY="140" Direction="-1" Quantity="5" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="133" BeginPosY="50" EndPosX="137" EndPosY="54" Direction="-1" Quantity="5" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="49" BeginPosY="12" EndPosX="53" EndPosY="16" Direction="-1" Quantity="5" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="89" BeginPosY="95" EndPosX="93" EndPosY="99" Direction="-1" Quantity="5" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="192" BeginPosY="31" EndPosX="196" EndPosY="35" Direction="-1" Quantity="6" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="246" BeginPosY="247" EndPosX="250" EndPosY="251" Direction="-1" Quantity="6" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="174" BeginPosY="162" EndPosX="178" EndPosY="166" Direction="-1" Quantity="6" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="245" BeginPosY="105" EndPosX="249" EndPosY="109" Direction="-1" Quantity="6" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="160" BeginPosY="242" EndPosX="164" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="244" BeginPosY="176" EndPosX="248" EndPosY="180" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="245" BeginPosY="49" EndPosX="249" EndPosY="53" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="202" BeginPosY="211" EndPosX="206" EndPosY="215" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="234" BeginPosY="3" EndPosX="238" EndPosY="7" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="215" BeginPosY="77" EndPosX="219" EndPosY="81" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="165" BeginPosY="206" EndPosX="169" EndPosY="210" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="208" BeginPosY="174" EndPosX="212" EndPosY="178" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="210" BeginPosY="246" EndPosX="214" EndPosY="250" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="242" BeginPosY="212" EndPosX="246" EndPosY="216" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="222" BeginPosY="30" EndPosX="226" EndPosY="34" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="244" BeginPosY="77" EndPosX="248" EndPosY="81" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="231" BeginPosY="128" EndPosX="235" EndPosY="132" Direction="-1" Quantity="5" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="4" BeginPosY="102" EndPosX="8" EndPosY="106" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="133" BeginPosY="4" EndPosX="137" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="48" BeginPosY="248" EndPosX="52" EndPosY="252" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="25" BeginPosY="7" EndPosX="29" EndPosY="11" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="49" BeginPosY="168" EndPosX="53" EndPosY="172" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="86" BeginPosY="57" EndPosX="90" EndPosY="61" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="54" BeginPosY="116" EndPosX="58" EndPosY="120" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="36" BeginPosY="56" EndPosX="40" EndPosY="60" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="0" BeginPosY="178" EndPosX="4" EndPosY="182" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="2" BeginPosY="235" EndPosX="6" EndPosY="239" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="79" BeginPosY="11" EndPosX="83" EndPosY="15" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="131" BeginPosY="49" EndPosX="135" EndPosY="53" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="41" BeginPosY="208" EndPosX="45" EndPosY="212" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="99" BeginPosY="196" EndPosX="103" EndPosY="200" Direction="-1" Quantity="6" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="129" BeginPosY="83" EndPosX="133" EndPosY="87" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="80" BeginPosY="130" EndPosX="84" EndPosY="134" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="127" BeginPosY="247" EndPosX="131" EndPosY="251" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="81" BeginPosY="240" EndPosX="85" EndPosY="244" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="125" BeginPosY="137" EndPosX="129" EndPosY="141" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="86" BeginPosY="91" EndPosX="90" EndPosY="95" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="133" BeginPosY="175" EndPosX="137" EndPosY="179" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="132" BeginPosY="210" EndPosX="136" EndPosY="214" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="102" BeginPosY="163" EndPosX="106" EndPosY="167" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>
-		<Config Class="35" Range="30" PositionX="29" PositionY="208" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="30" PositionY="183" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="33" PositionY="206" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="54" PositionY="213" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="36" Range="30" PositionX="193" PositionY="239" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="191" PositionY="131" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="191" PositionY="118" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="29" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="37" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="48" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="63" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="74" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="98" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="112" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="126" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="175" PositionY="127" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="184" PositionY="128" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="199" PositionY="134" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="206" PositionY="136" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="227" PositionY="136" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="242" PositionY="135" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="243" PositionY="125" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="229" PositionY="127" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="245" PositionY="109" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="217" PositionY="127" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="244" PositionY="89" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="207" PositionY="127" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="219" PositionY="6" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="244" PositionY="53" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="235" PositionY="56" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="235" PositionY="38" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="236" PositionY="26" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="235" PositionY="15" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="226" PositionY="14" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="211" PositionY="15" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="210" PositionY="101" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="210" PositionY="114" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="239" PositionY="7" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="244" PositionY="25" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="243" PositionY="40" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="244" PositionY="8" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="243" PositionY="65" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="195" PositionY="99" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="244" PositionY="82" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="244" PositionY="92" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="226" PositionY="118" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="235" PositionY="110" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="235" PositionY="87" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="199" PositionY="124" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="193" PositionY="108" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="209" PositionY="94" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="235" PositionY="73" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="196" PositionY="89" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="219" PositionY="94" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="190" PositionY="29" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="210" PositionY="23" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="226" PositionY="22" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="227" PositionY="33" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="227" PositionY="54" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="228" PositionY="67" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="228" PositionY="81" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="228" PositionY="104" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="191" PositionY="16" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="220" PositionY="79" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="219" PositionY="60" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="219" PositionY="45" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="219" PositionY="34" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="202" PositionY="38" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="205" PositionY="62" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="208" PositionY="166" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="196" PositionY="166" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="188" PositionY="165" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="179" PositionY="165" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="165" PositionY="183" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="34" Range="30" PositionX="167" PositionY="197" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="39" Range="30" PositionX="167" PositionY="211" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="34" Range="30" PositionX="192" PositionY="203" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="39" Range="30" PositionX="165" PositionY="241" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="184" PositionY="246" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="34" Range="30" PositionX="191" PositionY="244" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="39" Range="30" PositionX="200" PositionY="245" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="214" PositionY="245" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="228" PositionY="245" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="245" PositionY="246" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="34" Range="30" PositionX="235" PositionY="237" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="224" PositionY="235" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="206" PositionY="237" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="200" PositionY="228" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="209" PositionY="212" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="225" PositionY="196" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="209" PositionY="190" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="198" PositionY="192" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="187" PositionY="184" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="193" PositionY="173" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="172" PositionY="177" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="39" Range="30" PositionX="198" PositionY="184" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="217" PositionY="196" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="227" PositionY="212" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="217" PositionY="217" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="201" PositionY="216" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="191" PositionY="238" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="193" PositionY="217" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="178" PositionY="224" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="178" PositionY="210" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="177" PositionY="195" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="41" Range="30" PositionX="126" PositionY="246" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="133" PositionY="235" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="133" PositionY="225" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="133" PositionY="185" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="133" PositionY="209" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="132" PositionY="201" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="125" PositionY="189" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="128" PositionY="175" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="134" PositionY="166" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="129" PositionY="167" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="97" PositionY="184" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="107" PositionY="168" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="95" PositionY="173" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="89" PositionY="174" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="83" PositionY="183" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="86" PositionY="190" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="83" PositionY="201" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="83" PositionY="213" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="89" PositionY="224" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="84" PositionY="237" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="86" PositionY="245" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="98" PositionY="245" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="108" PositionY="245" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="116" PositionY="244" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="118" PositionY="229" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="116" PositionY="211" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="111" PositionY="194" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="115" PositionY="178" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="97" PositionY="202" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="97" PositionY="214" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="102" PositionY="225" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="98" PositionY="236" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="111" PositionY="219" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="123" PositionY="224" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="116" PositionY="134" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="97" PositionY="133" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="85" PositionY="132" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="85" PositionY="116" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="85" PositionY="96" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="101" PositionY="87" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="118" PositionY="89" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="37" Range="30" PositionX="133" PositionY="87" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="41" Range="30" PositionX="116" PositionY="113" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="133" PositionY="115" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="37" Range="30" PositionX="104" PositionY="136" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="41" Range="30" PositionX="124" PositionY="136" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="37" Range="30" PositionX="96" PositionY="116" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="94" PositionY="100" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="89" PositionY="135" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="133" PositionY="98" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="41" Range="30" PositionX="106" PositionY="112" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="95" PositionY="106" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="37" Range="30" PositionX="112" PositionY="87" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="133" PositionY="109" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="121" PositionY="119" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="123" PositionY="130" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="87" PositionY="7" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="97" PositionY="6" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="117" PositionY="8" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="37" Range="30" PositionX="124" PositionY="11" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="133" PositionY="26" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="134" PositionY="37" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="134" PositionY="49" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="123" PositionY="54" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="37" Range="30" PositionX="115" PositionY="53" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="98" PositionY="54" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="84" PositionY="54" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="93" PositionY="41" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="99" PositionY="40" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="101" PositionY="29" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="98" PositionY="17" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="112" PositionY="16" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="124" PositionY="41" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="111" PositionY="39" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="86" PositionY="41" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="98" PositionY="24" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="115" PositionY="28" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="55" PositionY="15" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="46" PositionY="13" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="37" Range="30" PositionX="39" PositionY="11" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="22" PositionY="17" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="37" Range="30" PositionX="14" PositionY="24" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="53" PositionY="39" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="10" PositionY="41" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="37" Range="30" PositionX="7" PositionY="52" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="15" PositionY="54" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="37" Range="30" PositionX="25" PositionY="49" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="38" PositionY="48" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="48" PositionY="48" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="41" PositionY="57" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="34" Range="30" PositionX="123" PositionY="201" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="40" Range="30" PositionX="55" PositionY="28" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="46" PositionY="25" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="37" Range="30" PositionX="30" PositionY="32" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="35" Range="30" PositionX="23" PositionY="40" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="22" PositionY="30" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="39" PositionY="38" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="6" PositionY="98" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="33" PositionY="86" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="46" PositionY="86" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="55" PositionY="87" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="53" PositionY="97" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="42" PositionY="97" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="35" PositionY="98" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="25" PositionY="98" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="15" PositionY="127" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="8" PositionY="107" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="53" PositionY="116" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="41" PositionY="121" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="34" Range="30" PositionX="115" PositionY="167" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="40" Range="30" PositionX="25" PositionY="135" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="42" PositionY="135" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="52" PositionY="135" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="30" PositionY="171" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="38" PositionY="227" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="8" PositionY="191" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="51" PositionY="183" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="8" PositionY="211" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="8" PositionY="231" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="15" PositionY="244" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="18" PositionY="107" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="39" PositionY="246" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="11" PositionY="175" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="54" PositionY="220" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="31" PositionY="127" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="55" PositionY="195" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="34" Range="30" PositionX="105" PositionY="175" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="35" Range="30" PositionX="55" PositionY="174" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
 		<Config Class="38" Range="30" PositionX="31" PositionY="212" Direction="-1" Element="0" /> <!-- "Balrog" -->
-		<Config Class="35" Range="30" PositionX="30" PositionY="233" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="21" PositionY="216" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="38" PositionY="212" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="29" PositionY="200" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="24" PositionY="189" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="48" PositionY="167" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="41" PositionY="167" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="38" PositionY="234" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="37" Range="30" PositionX="38" PositionY="201" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="18" PositionY="200" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="13" PositionY="191" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="38" PositionY="192" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="34" Range="30" PositionX="215" PositionY="174" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="245" PositionY="168" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="235" PositionY="214" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="165" PositionY="223" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="127" PositionY="239" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="125" PositionY="180" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="113" PositionY="189" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="98" PositionY="231" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="37" Range="30" PositionX="89" PositionY="119" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="86" PositionY="100" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="108" PositionY="116" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="126" PositionY="108" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="86" PositionY="26" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="111" PositionY="26" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="48" PositionY="17" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="13" PositionY="9" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="16" PositionY="41" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="38" PositionY="53" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="54" PositionY="51" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="45" PositionY="32" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="25" PositionY="86" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="52" PositionY="92" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="37" Range="30" PositionX="30" PositionY="102" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="35" Range="30" PositionX="34" PositionY="108" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="53" PositionY="111" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="45" PositionY="137" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="11" PositionY="96" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="43" PositionY="170" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="8" PositionY="220" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="27" PositionY="247" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="54" PositionY="232" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="24" PositionY="225" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="16" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="164" PositionY="87" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="200" PositionY="104" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="205" PositionY="87" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="219" PositionY="68" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="211" PositionY="64" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="209" PositionY="52" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="210" PositionY="41" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="210" PositionY="32" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="194" PositionY="23" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="204" PositionY="15" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="236" PositionY="44" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="235" PositionY="98" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="222" PositionY="109" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="218" PositionY="87" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="228" PositionY="91" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="244" PositionY="15" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="228" PositionY="7" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="202" PositionY="25" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="226" PositionY="166" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="239" PositionY="167" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="227" PositionY="175" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="239" PositionY="174" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="245" PositionY="179" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="245" PositionY="189" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="245" PositionY="200" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="246" PositionY="212" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="245" PositionY="224" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="237" PositionY="226" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="236" PositionY="220" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="238" PositionY="208" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="237" PositionY="201" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="232" PositionY="196" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="238" PositionY="184" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="224" PositionY="185" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="216" PositionY="183" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="207" PositionY="178" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="196" PositionY="176" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="187" PositionY="192" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="185" PositionY="201" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="187" PositionY="209" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="185" PositionY="220" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="175" PositionY="217" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="176" PositionY="245" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="206" PositionY="244" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="215" PositionY="209" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="184" PositionY="173" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="172" PositionY="188" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="173" PositionY="171" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="206" PositionY="200" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="218" PositionY="229" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="34" Range="30" PositionX="112" PositionY="235" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="83" PositionY="220" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="90" PositionY="239" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="133" PositionY="215" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="88" PositionY="206" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="121" PositionY="235" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="104" PositionY="183" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="86" PositionY="109" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="96" PositionY="86" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="128" PositionY="86" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="122" PositionY="101" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="101" PositionY="100" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="86" PositionY="125" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="132" PositionY="124" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="37" Range="30" PositionX="110" PositionY="100" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="103" PositionY="8" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="37" Range="30" PositionX="128" PositionY="6" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="127" PositionY="34" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="130" PositionY="48" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="105" PositionY="55" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="84" PositionY="16" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="124" PositionY="24" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="14" PositionY="15" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="13" PositionY="33" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="30" PositionY="39" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="55" PositionY="8" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="44" PositionY="41" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="8" PositionY="25" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="37" PositionY="21" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="29" PositionY="24" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="19" PositionY="97" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="42" PositionY="109" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="22" PositionY="121" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="5" PositionY="122" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="5" PositionY="132" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="14" PositionY="137" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="38" PositionY="184" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="36" PositionY="174" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="23" PositionY="174" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="18" PositionY="168" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="7" PositionY="184" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="8" PositionY="200" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="19" PositionY="208" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="50" PositionY="241" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="54" PositionY="205" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="46" PositionY="208" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="18" PositionY="183" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="14" PositionY="224" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="7" PositionY="240" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="48" PositionY="232" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="48" PositionY="215" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="49" PositionY="191" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="48" PositionY="174" Direction="-1" Element="0" /> <!-- "Death Knight" -->
 		<Config Class="38" Range="30" PositionX="28" PositionY="212" Direction="-1" Element="0" /> <!-- "Balrog" -->
-		<Config Class="40" Range="30" PositionX="23" PositionY="239" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="23" PositionY="195" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="31" PositionY="191" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="25" PositionY="167" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="11" PositionY="168" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="4" PositionY="177" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="47" PositionY="247" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="34" Range="30" PositionX="104" PositionY="232" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="102" PositionY="217" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="103" PositionY="205" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="103" PositionY="197" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="97" PositionY="196" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="101" PositionY="188" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="110" PositionY="206" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="41" Range="30" PositionX="115" PositionY="199" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="135" PositionY="174" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="122" PositionY="167" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="41" Range="30" PositionX="101" PositionY="168" Direction="-1" Element="0" /> <!-- "Death Cow" -->
-		<Config Class="34" Range="30" PositionX="96" PositionY="167" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="37" Range="30" PositionX="26" PositionY="108" Direction="-1" Element="0" /> <!-- "Devil" -->
-		<Config Class="40" Range="30" PositionX="19" PositionY="86" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="15" PositionY="119" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="35" Range="30" PositionX="34" PositionY="137" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="54" PositionY="121" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="35" Range="30" PositionX="30" PositionY="10" Direction="-1" Element="0" /> <!-- "Death Gorgon" -->
-		<Config Class="40" Range="30" PositionX="24" PositionY="9" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="30" PositionY="17" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="110" PositionY="8" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="134" PositionY="8" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="135" PositionY="17" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="111" PositionY="46" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="99" PositionY="48" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="85" PositionY="49" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="40" Range="30" PositionX="91" PositionY="56" Direction="-1" Element="0" /> <!-- "Death Knight" -->
-		<Config Class="39" Range="30" PositionX="195" PositionY="32" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="189" PositionY="38" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="195" PositionY="40" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="189" PositionY="48" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="196" PositionY="54" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="190" PositionY="59" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="197" PositionY="64" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="203" PositionY="50" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="244" PositionY="72" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="244" PositionY="100" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="245" PositionY="117" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="236" PositionY="127" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="36" Range="30" PositionX="219" PositionY="117" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="209" PositionY="107" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="201" PositionY="113" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="36" Range="30" PositionX="212" PositionY="87" Direction="-1" Element="0" /> <!-- "Shadow" -->
-		<Config Class="39" Range="30" PositionX="196" PositionY="207" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="195" PositionY="200" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="230" PositionY="229" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="34" Range="30" PositionX="238" PositionY="213" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="210" PositionY="225" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="34" Range="30" PositionX="215" PositionY="236" Direction="-1" Element="0" /> <!-- "Cursed Wizard" -->
-		<Config Class="39" Range="30" PositionX="173" PositionY="227" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="183" PositionY="233" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
-		<Config Class="39" Range="30" PositionX="173" PositionY="237" Direction="-1" Element="0" /> <!-- "Poison Shadow" -->
 	</MONSTER>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<EVENT>

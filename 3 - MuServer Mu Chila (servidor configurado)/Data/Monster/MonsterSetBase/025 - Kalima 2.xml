@@ -6,69 +6,19 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
+		<Config Class="174" Range="3" BeginPosX="118" BeginPosY="58" EndPosX="122" EndPosY="62" Direction="-1" Quantity="9" Element="0" /> <!-- "Death Angel" (Mu Chila: grupo) -->
+		<Config Class="175" Range="3" BeginPosX="56" BeginPosY="66" EndPosX="60" EndPosY="70" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Centurion" (Mu Chila: grupo) -->
+		<Config Class="176" Range="3" BeginPosX="106" BeginPosY="35" EndPosX="110" EndPosY="39" Direction="-1" Quantity="7" Element="0" /> <!-- "Blood Soldier" (Mu Chila: grupo) -->
+		<Config Class="177" Range="3" BeginPosX="58" BeginPosY="10" EndPosX="62" EndPosY="14" Direction="-1" Quantity="6" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
+		<Config Class="177" Range="3" BeginPosX="25" BeginPosY="76" EndPosX="29" EndPosY="80" Direction="-1" Quantity="5" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
+		<Config Class="178" Range="3" BeginPosX="79" BeginPosY="16" EndPosX="83" EndPosY="20" Direction="-1" Quantity="5" Element="0" /> <!-- "Rogue Centurion" (Mu Chila: grupo) -->
+		<Config Class="178" Range="3" BeginPosX="110" BeginPosY="20" EndPosX="114" EndPosY="24" Direction="-1" Quantity="5" Element="0" /> <!-- "Rogue Centurion" (Mu Chila: grupo) -->
+		<Config Class="179" Range="3" BeginPosX="70" BeginPosY="74" EndPosX="74" EndPosY="78" Direction="-1" Quantity="8" Element="0" /> <!-- "Necron" (Mu Chila: grupo) -->
+		<Config Class="180" Range="3" BeginPosX="44" BeginPosY="65" EndPosX="48" EndPosY="69" Direction="-1" Quantity="5" Element="0" /> <!-- "Schriker" (Mu Chila: grupo) -->
+		<Config Class="180" Range="3" BeginPosX="32" BeginPosY="110" EndPosX="36" EndPosY="114" Direction="-1" Quantity="5" Element="0" /> <!-- "Schriker" (Mu Chila: grupo) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>
-		<Config Class="177" Range="30" PositionX="30" PositionY="75" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="35" PositionY="21" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="28" PositionY="17" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="36" PositionY="11" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="51" PositionY="11" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="42" PositionY="12" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="45" PositionY="22" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="52" PositionY="24" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="53" PositionY="17" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="177" Range="30" PositionX="60" PositionY="9" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="178" Range="30" PositionX="67" PositionY="22" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="177" Range="30" PositionX="60" PositionY="22" Direction="-1" Element="0" /> <!-- "Aegis" -->
-		<Config Class="178" Range="30" PositionX="69" PositionY="9" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="74" PositionY="14" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="82" PositionY="8" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="81" PositionY="19" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="86" PositionY="13" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="92" PositionY="6" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="96" PositionY="16" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="99" PositionY="9" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="178" Range="30" PositionX="109" PositionY="19" Direction="-1" Element="0" /> <!-- "Rogue Centurion" -->
-		<Config Class="176" Range="30" PositionX="110" PositionY="9" Direction="-1" Element="0" /> <!-- "Blood Soldier" -->
-		<Config Class="176" Range="30" PositionX="118" PositionY="17" Direction="-1" Element="0" /> <!-- "Blood Soldier" -->
-		<Config Class="176" Range="30" PositionX="110" PositionY="35" Direction="-1" Element="0" /> <!-- "Blood Soldier" -->
-		<Config Class="176" Range="30" PositionX="121" PositionY="27" Direction="-1" Element="0" /> <!-- "Blood Soldier" -->
-		<Config Class="176" Range="30" PositionX="119" PositionY="35" Direction="-1" Element="0" /> <!-- "Blood Soldier" -->
-		<Config Class="176" Range="30" PositionX="114" PositionY="44" Direction="-1" Element="0" /> <!-- "Blood Soldier" -->
-		<Config Class="174" Range="30" PositionX="120" PositionY="50" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="174" Range="30" PositionX="105" PositionY="54" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="174" Range="30" PositionX="119" PositionY="57" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="174" Range="30" PositionX="110" PositionY="65" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="174" Range="30" PositionX="121" PositionY="67" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="176" Range="30" PositionX="108" PositionY="28" Direction="-1" Element="0" /> <!-- "Blood Soldier" -->
-		<Config Class="174" Range="30" PositionX="111" PositionY="72" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="174" Range="30" PositionX="105" PositionY="86" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="179" Range="30" PositionX="118" PositionY="84" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="174" Range="30" PositionX="118" PositionY="95" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="179" Range="30" PositionX="104" PositionY="101" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="179" Range="30" PositionX="115" PositionY="106" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="179" Range="30" PositionX="93" PositionY="96" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="179" Range="30" PositionX="93" PositionY="84" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="179" Range="30" PositionX="82" PositionY="85" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="179" Range="30" PositionX="82" PositionY="77" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="179" Range="30" PositionX="74" PositionY="76" Direction="-1" Element="0" /> <!-- "Necron" -->
-		<Config Class="175" Range="30" PositionX="87" PositionY="90" Direction="-1" Element="0" /> <!-- "Death Centurion" -->
-		<Config Class="175" Range="30" PositionX="68" PositionY="77" Direction="-1" Element="0" /> <!-- "Death Centurion" -->
-		<Config Class="175" Range="30" PositionX="63" PositionY="72" Direction="-1" Element="0" /> <!-- "Death Centurion" -->
-		<Config Class="175" Range="30" PositionX="58" PositionY="78" Direction="-1" Element="0" /> <!-- "Death Centurion" -->
-		<Config Class="174" Range="30" PositionX="120" PositionY="75" Direction="-1" Element="0" /> <!-- "Death Angel" -->
-		<Config Class="175" Range="30" PositionX="57" PositionY="71" Direction="-1" Element="0" /> <!-- "Death Centurion" -->
-		<Config Class="180" Range="30" PositionX="32" PositionY="50" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="42" PositionY="51" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="38" PositionY="58" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="29" PositionY="65" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="46" PositionY="66" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="42" PositionY="97" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="37" PositionY="109" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="47" PositionY="107" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="53" PositionY="93" Direction="-1" Element="0" /> <!-- "Schriker" -->
-		<Config Class="180" Range="30" PositionX="35" PositionY="87" Direction="-1" Element="0" /> <!-- "Schriker" -->
 		<Config Class="181" Range="30" PositionX="26" PositionY="76" Direction="-1" Element="0" /> <!-- "Illusion of Kundun" -->
 	</MONSTER>
 <!-- ================================================================================================================================================================================================================================================================================= -->

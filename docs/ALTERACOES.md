@@ -16,6 +16,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Data\EventItemBagManager.txt` | Entradas 236 a 254 | Caixas que caíam sem conteúdo |
 | `Data\EventItemBag\236..254 - *.txt` | Novos: 1 item inicial de classe +6, sorteado entre 40 | Pedido: prêmio das caixas |
 | `Data\Item\ItemDrop.txt` | Box of Kundun em Kalima (1%): K1–2 +1, K3 +2, K4 +3, K5 +4, K6–7 +5 | O kit não tinha drop de Box of Kundun |
+| `Data\Monster\MonsterSetBase\*.xml` (43 mapas) | Spawns de SPOT/MONSTER viram 1.676 grupos de 5+ em chão livre (`tools\Agrupar-Spawns.ps1`) | Pedido: monstros agrupados em vez de espalhados |
 | `Startup - Iniciar Server.lnk` | Aponta para `C:\MuServer\2 - Ligar Servidor\Ligar Servidor.exe` | Apontava para uma pasta de Downloads de outro PC |
 | `Criar Conta.bat` / `Criar Conta.ps1` | Novos | Criar conta de jogo pelo ODBC |
 | `Cliente Season 14 - main.lnk` | Novo | Atalho para o cliente |

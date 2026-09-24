@@ -51,13 +51,15 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
-### Habilidades que não podem ser usadas ou equipadas em algumas contas
-- **Relato:** "não conseguimos usar as habilidades, não consegue equipar; dependendo da conta, funciona".
-- **O que foi verificado:**
-  - a lista de skills (`MagicList`) dos personagens novos está normal no banco;
-  - o log do GameServer não mostra erro de skill.
-- **Observação:** o dodo estava com status de PK (nível 4) e perdeu a asa ao morrer.
-- **Falta:** saber qual personagem, qual skill ou item, e se aparece mensagem. Um print ajuda.
+### Item comprado não pode ser usado / habilidades não funcionam em algumas contas (provável causa única)
+- **Caso da mamaeupo:**
+  - a "Beuroba +2" é a **Brova** do servidor (item 3,11; o cliente usa outro nome);
+  - ela exige a **2ª classe de Dark Knight** (Blade Knight): o marcador `2` na coluna DK do `Item.txt`;
+  - a mamaeupo continua **Dark Knight básico** (classe 16) no nível 249.
+- **Padrão geral:** todos os personagens novos estão na classe básica (dodo 16, Maloco 48, MalocoBR 0). Os das contas do kit, onde "funciona", já estão evoluídos.
+- **Solução:** digitar **`/change`** no chat para evoluir (grátis, até a 3ª classe). Veja OPERACAO.md.
+- **Confirmar:** se as habilidades continuarem falhando depois da evolução, investigar de novo.
+- O cliente e o servidor usam nomes diferentes para alguns itens. Para achar o código de um nome do cliente, busque no `Data\Local\Eng\itemtooltip_eng.bmd`: registros de 124 bytes, XOR `FC CF AB` por registro, `WORD seção` + `WORD índice` + nome.
 
 ### Mercado às vezes não abre
 - **O que foi verificado:**

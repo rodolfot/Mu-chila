@@ -6,72 +6,20 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
+		<Config Class="358" Range="3" BeginPosX="108" BeginPosY="146" EndPosX="112" EndPosY="150" Direction="-1" Quantity="6" Element="0" /> <!-- "Persona" (Mu Chila: grupo) -->
+		<Config Class="358" Range="3" BeginPosX="183" BeginPosY="83" EndPosX="187" EndPosY="87" Direction="-1" Quantity="6" Element="0" /> <!-- "Persona" (Mu Chila: grupo) -->
+		<Config Class="358" Range="3" BeginPosX="96" BeginPosY="74" EndPosX="100" EndPosY="78" Direction="-1" Quantity="5" Element="0" /> <!-- "Persona" (Mu Chila: grupo) -->
+		<Config Class="358" Range="3" BeginPosX="191" BeginPosY="145" EndPosX="195" EndPosY="149" Direction="-1" Quantity="5" Element="0" /> <!-- "Persona" (Mu Chila: grupo) -->
+		<Config Class="358" Range="3" BeginPosX="149" BeginPosY="119" EndPosX="153" EndPosY="123" Direction="-1" Quantity="5" Element="0" /> <!-- "Persona" (Mu Chila: grupo) -->
+		<Config Class="359" Range="3" BeginPosX="192" BeginPosY="135" EndPosX="196" EndPosY="139" Direction="-1" Quantity="6" Element="0" /> <!-- "Twin Tale" (Mu Chila: grupo) -->
+		<Config Class="359" Range="3" BeginPosX="94" BeginPosY="80" EndPosX="98" EndPosY="84" Direction="-1" Quantity="6" Element="0" /> <!-- "Twin Tale" (Mu Chila: grupo) -->
+		<Config Class="359" Range="3" BeginPosX="118" BeginPosY="136" EndPosX="122" EndPosY="140" Direction="-1" Quantity="6" Element="0" /> <!-- "Twin Tale" (Mu Chila: grupo) -->
+		<Config Class="359" Range="3" BeginPosX="151" BeginPosY="77" EndPosX="155" EndPosY="81" Direction="-1" Quantity="6" Element="0" /> <!-- "Twin Tale" (Mu Chila: grupo) -->
+		<Config Class="360" Range="3" BeginPosX="109" BeginPosY="136" EndPosX="113" EndPosY="140" Direction="-1" Quantity="6" Element="0" /> <!-- "Dreadfear" (Mu Chila: grupo) -->
+		<Config Class="360" Range="3" BeginPosX="176" BeginPosY="112" EndPosX="180" EndPosY="116" Direction="-1" Quantity="6" Element="0" /> <!-- "Dreadfear" (Mu Chila: grupo) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>
-		<Config Class="359" Range="30" PositionX="159" PositionY="98" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="100" PositionY="97" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="99" PositionY="85" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="125" PositionY="74" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="113" PositionY="96" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="111" PositionY="79" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="123" PositionY="88" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="358" Range="30" PositionX="140" PositionY="76" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="359" Range="30" PositionX="139" PositionY="99" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="178" PositionY="92" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="198" PositionY="121" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="197" PositionY="136" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="126" PositionY="98" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="135" PositionY="88" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="117" PositionY="135" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="358" Range="30" PositionX="106" PositionY="159" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="360" Range="30" PositionX="110" PositionY="140" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="359" Range="30" PositionX="101" PositionY="139" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="149" PositionY="85" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="153" PositionY="78" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="151" PositionY="160" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="179" PositionY="139" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="187" PositionY="145" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="358" Range="30" PositionX="97" PositionY="78" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="124" PositionY="69" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="138" PositionY="67" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="183" PositionY="86" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="175" PositionY="104" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="359" Range="30" PositionX="168" PositionY="94" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="360" Range="30" PositionX="122" PositionY="127" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="358" Range="30" PositionX="111" PositionY="159" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="105" PositionY="133" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="119" PositionY="126" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="135" PositionY="150" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="177" PositionY="129" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="193" PositionY="146" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="195" PositionY="105" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="163" PositionY="82" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="132" PositionY="97" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="158" PositionY="137" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="171" PositionY="141" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="147" PositionY="148" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="152" PositionY="120" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="359" Range="30" PositionX="199" PositionY="131" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="359" Range="30" PositionX="195" PositionY="115" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
-		<Config Class="358" Range="30" PositionX="102" PositionY="78" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="128" PositionY="69" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="156" PositionY="120" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="127" PositionY="135" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="360" Range="30" PositionX="140" PositionY="162" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="360" Range="30" PositionX="176" PositionY="117" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="360" Range="30" PositionX="162" PositionY="129" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="360" Range="30" PositionX="167" PositionY="129" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="360" Range="30" PositionX="137" PositionY="142" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="360" Range="30" PositionX="150" PositionY="151" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="358" Range="30" PositionX="106" PositionY="154" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="358" Range="30" PositionX="111" PositionY="154" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="360" Range="30" PositionX="163" PositionY="148" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="360" Range="30" PositionX="177" PositionY="150" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="358" Range="30" PositionX="108" PositionY="148" Direction="-1" Element="0" /> <!-- "Persona" -->
-		<Config Class="360" Range="30" PositionX="152" PositionY="110" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="360" Range="30" PositionX="164" PositionY="112" Direction="-1" Element="0" /> <!-- "Dreadfear" -->
-		<Config Class="359" Range="30" PositionX="185" PositionY="97" Direction="-1" Element="0" /> <!-- "Twin Tale" -->
 		<Config Class="106" Range="30" PositionX="141" PositionY="155" Direction="8" Element="0" /> <!-- "Laser Trap" -->
 		<Config Class="106" Range="30" PositionX="138" PositionY="166" Direction="8" Element="0" /> <!-- "Laser Trap" -->
 		<Config Class="106" Range="30" PositionX="141" PositionY="166" Direction="8" Element="0" /> <!-- "Laser Trap" -->

@@ -18,26 +18,86 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="3" Range="30" BeginPosX="139" BeginPosY="63" EndPosX="247" EndPosY="164" Direction="-1" Quantity="60" Element="0" /> <!-- "Spider" -->
-		<Config Class="26" Range="30" BeginPosX="109" BeginPosY="46" EndPosX="154" EndPosY="181" Direction="-1" Quantity="10" Element="0" /> <!-- "Goblin" -->
-		<Config Class="26" Range="30" BeginPosX="136" BeginPosY="156" EndPosX="247" EndPosY="204" Direction="-1" Quantity="10" Element="0" /> <!-- "Goblin" -->
-		<Config Class="26" Range="30" BeginPosX="135" BeginPosY="42" EndPosX="247" EndPosY="73" Direction="-1" Quantity="10" Element="0" /> <!-- "Goblin" -->
-		<Config Class="27" Range="30" BeginPosX="109" BeginPosY="46" EndPosX="154" EndPosY="181" Direction="-1" Quantity="20" Element="0" /> <!-- "Chain Scorpion" -->
-		<Config Class="27" Range="30" BeginPosX="135" BeginPosY="42" EndPosX="247" EndPosY="73" Direction="-1" Quantity="20" Element="0" /> <!-- "Chain Scorpion" -->
-		<Config Class="27" Range="30" BeginPosX="136" BeginPosY="156" EndPosX="247" EndPosY="204" Direction="-1" Quantity="20" Element="0" /> <!-- "Chain Scorpion" -->
-		<Config Class="33" Range="30" BeginPosX="106" BeginPosY="3" EndPosX="247" EndPosY="40" Direction="-1" Quantity="20" Element="0" /> <!-- "Elite Goblin" -->
-		<Config Class="33" Range="30" BeginPosX="59" BeginPosY="6" EndPosX="128" EndPosY="106" Direction="-1" Quantity="20" Element="0" /> <!-- "Elite Goblin" -->
-		<Config Class="28" Range="30" BeginPosX="106" BeginPosY="3" EndPosX="247" EndPosY="40" Direction="-1" Quantity="20" Element="0" /> <!-- "Beetle Monster" -->
-		<Config Class="28" Range="30" BeginPosX="59" BeginPosY="6" EndPosX="128" EndPosY="106" Direction="-1" Quantity="20" Element="0" /> <!-- "Beetle Monster" -->
-		<Config Class="29" Range="30" BeginPosX="106" BeginPosY="3" EndPosX="247" EndPosY="40" Direction="-1" Quantity="20" Element="0" /> <!-- "Hunter" -->
-		<Config Class="29" Range="30" BeginPosX="59" BeginPosY="6" EndPosX="128" EndPosY="106" Direction="-1" Quantity="20" Element="0" /> <!-- "Hunter" -->
-		<Config Class="30" Range="30" BeginPosX="7" BeginPosY="4" EndPosX="63" EndPosY="176" Direction="-1" Quantity="10" Element="0" /> <!-- "Forest Monster" -->
-		<Config Class="30" Range="30" BeginPosX="41" BeginPosY="107" EndPosX="107" EndPosY="181" Direction="-1" Quantity="10" Element="0" /> <!-- "Forest Monster" -->
-		<Config Class="30" Range="30" BeginPosX="105" BeginPosY="184" EndPosX="247" EndPosY="246" Direction="-1" Quantity="10" Element="0" /> <!-- "Forest Monster" -->
-		<Config Class="31" Range="30" BeginPosX="7" BeginPosY="4" EndPosX="63" EndPosY="176" Direction="-1" Quantity="20" Element="0" /> <!-- "Agon" -->
-		<Config Class="31" Range="30" BeginPosX="41" BeginPosY="107" EndPosX="107" EndPosY="181" Direction="-1" Quantity="20" Element="0" /> <!-- "Agon" -->
-		<Config Class="31" Range="30" BeginPosX="105" BeginPosY="184" EndPosX="247" EndPosY="246" Direction="-1" Quantity="20" Element="0" /> <!-- "Agon" -->
-		<Config Class="32" Range="30" BeginPosX="4" BeginPosY="168" EndPosX="115" EndPosY="248" Direction="-1" Quantity="40" Element="0" /> <!-- "Stone Golem" -->
+		<Config Class="3" Range="3" BeginPosX="206" BeginPosY="133" EndPosX="210" EndPosY="137" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="137" BeginPosY="61" EndPosX="141" EndPosY="65" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="243" BeginPosY="61" EndPosX="247" EndPosY="65" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="137" BeginPosY="162" EndPosX="141" EndPosY="166" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="190" BeginPosY="79" EndPosX="194" EndPosY="83" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="150" BeginPosY="112" EndPosX="154" EndPosY="116" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="243" BeginPosY="162" EndPosX="247" EndPosY="166" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="243" BeginPosY="107" EndPosX="247" EndPosY="111" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="178" BeginPosY="162" EndPosX="182" EndPosY="166" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="221" BeginPosY="84" EndPosX="225" EndPosY="88" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="159" BeginPosY="82" EndPosX="163" EndPosY="86" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="213" BeginPosY="162" EndPosX="217" EndPosY="166" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="26" Range="3" BeginPosX="157" BeginPosY="185" EndPosX="161" EndPosY="189" Direction="-1" Quantity="5" Element="0" /> <!-- "Goblin" (Mu Chila: grupo) -->
+		<Config Class="26" Range="3" BeginPosX="243" BeginPosY="40" EndPosX="247" EndPosY="44" Direction="-1" Quantity="5" Element="0" /> <!-- "Goblin" (Mu Chila: grupo) -->
+		<Config Class="26" Range="3" BeginPosX="107" BeginPosY="57" EndPosX="111" EndPosY="61" Direction="-1" Quantity="5" Element="0" /> <!-- "Goblin" (Mu Chila: grupo) -->
+		<Config Class="26" Range="3" BeginPosX="243" BeginPosY="154" EndPosX="247" EndPosY="158" Direction="-1" Quantity="5" Element="0" /> <!-- "Goblin" (Mu Chila: grupo) -->
+		<Config Class="26" Range="3" BeginPosX="107" BeginPosY="131" EndPosX="111" EndPosY="135" Direction="-1" Quantity="5" Element="0" /> <!-- "Goblin" (Mu Chila: grupo) -->
+		<Config Class="26" Range="3" BeginPosX="178" BeginPosY="71" EndPosX="182" EndPosY="75" Direction="-1" Quantity="5" Element="0" /> <!-- "Goblin" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="136" BeginPosY="96" EndPosX="140" EndPosY="100" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="243" BeginPosY="202" EndPosX="247" EndPosY="206" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="243" BeginPosY="40" EndPosX="247" EndPosY="44" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="134" BeginPosY="202" EndPosX="138" EndPosY="206" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="188" BeginPosY="154" EndPosX="192" EndPosY="158" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="175" BeginPosY="40" EndPosX="179" EndPosY="44" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="107" BeginPosY="44" EndPosX="111" EndPosY="48" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="107" BeginPosY="148" EndPosX="111" EndPosY="152" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="237" BeginPosY="154" EndPosX="241" EndPosY="158" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="194" BeginPosY="202" EndPosX="198" EndPosY="206" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="209" BeginPosY="71" EndPosX="213" EndPosY="75" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="27" Range="3" BeginPosX="148" BeginPosY="137" EndPosX="152" EndPosY="141" Direction="-1" Quantity="5" Element="0" /> <!-- "Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="102" BeginPosY="55" EndPosX="106" EndPosY="59" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="245" BeginPosY="4" EndPosX="249" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="164" BeginPosY="4" EndPosX="168" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="57" BeginPosY="4" EndPosX="61" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="57" BeginPosY="104" EndPosX="61" EndPosY="108" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="126" BeginPosY="104" EndPosX="130" EndPosY="108" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="110" BeginPosY="1" EndPosX="114" EndPosY="5" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="28" Range="3" BeginPosX="204" BeginPosY="38" EndPosX="208" EndPosY="42" Direction="-1" Quantity="5" Element="0" /> <!-- "Beetle Monster" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="161" BeginPosY="20" EndPosX="165" EndPosY="24" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="57" BeginPosY="104" EndPosX="61" EndPosY="108" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="62" BeginPosY="4" EndPosX="66" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="245" BeginPosY="4" EndPosX="249" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="126" BeginPosY="83" EndPosX="130" EndPosY="87" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="108" BeginPosY="32" EndPosX="112" EndPosY="36" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="208" BeginPosY="38" EndPosX="212" EndPosY="42" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="29" Range="3" BeginPosX="59" BeginPosY="54" EndPosX="63" EndPosY="58" Direction="-1" Quantity="5" Element="0" /> <!-- "Hunter" (Mu Chila: grupo) -->
+		<Config Class="30" Range="3" BeginPosX="135" BeginPosY="203" EndPosX="139" EndPosY="207" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Monster" (Mu Chila: grupo) -->
+		<Config Class="30" Range="3" BeginPosX="5" BeginPosY="2" EndPosX="9" EndPosY="6" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Monster" (Mu Chila: grupo) -->
+		<Config Class="30" Range="3" BeginPosX="5" BeginPosY="145" EndPosX="9" EndPosY="149" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Monster" (Mu Chila: grupo) -->
+		<Config Class="30" Range="3" BeginPosX="241" BeginPosY="240" EndPosX="245" EndPosY="244" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Monster" (Mu Chila: grupo) -->
+		<Config Class="30" Range="3" BeginPosX="101" BeginPosY="105" EndPosX="105" EndPosY="109" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Monster" (Mu Chila: grupo) -->
+		<Config Class="30" Range="3" BeginPosX="32" BeginPosY="73" EndPosX="36" EndPosY="77" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Monster" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="19" BeginPosY="104" EndPosX="23" EndPosY="108" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="241" BeginPosY="240" EndPosX="245" EndPosY="244" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="103" BeginPosY="216" EndPosX="107" EndPosY="220" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="61" BeginPosY="2" EndPosX="65" EndPosY="6" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="105" BeginPosY="127" EndPosX="109" EndPosY="131" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="180" BeginPosY="182" EndPosX="184" EndPosY="186" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="39" BeginPosY="177" EndPosX="43" EndPosY="181" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="5" BeginPosY="38" EndPosX="9" EndPosY="42" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="162" BeginPosY="244" EndPosX="166" EndPosY="248" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="61" BeginPosY="62" EndPosX="65" EndPosY="66" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="239" BeginPosY="182" EndPosX="243" EndPosY="186" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="31" Range="3" BeginPosX="57" BeginPosY="133" EndPosX="61" EndPosY="137" Direction="-1" Quantity="5" Element="0" /> <!-- "Agon" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="104" BeginPosY="228" EndPosX="108" EndPosY="232" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="2" BeginPosY="166" EndPosX="6" EndPosY="170" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="24" BeginPosY="245" EndPosX="28" EndPosY="249" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="72" BeginPosY="166" EndPosX="76" EndPosY="170" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="37" BeginPosY="199" EndPosX="41" EndPosY="203" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="113" BeginPosY="184" EndPosX="117" EndPosY="188" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="66" BeginPosY="245" EndPosX="70" EndPosY="249" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="32" Range="3" BeginPosX="2" BeginPosY="214" EndPosX="6" EndPosY="218" Direction="-1" Quantity="5" Element="0" /> <!-- "Stone Golem" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="198" BeginPosY="27" EndPosX="202" EndPosY="31" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="57" BeginPosY="104" EndPosX="61" EndPosY="108" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="94" BeginPosY="4" EndPosX="98" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="126" BeginPosY="73" EndPosX="130" EndPosY="77" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="57" BeginPosY="47" EndPosX="61" EndPosY="51" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="149" BeginPosY="1" EndPosX="153" EndPosY="5" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="245" BeginPosY="4" EndPosX="249" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
+		<Config Class="33" Range="3" BeginPosX="99" BeginPosY="104" EndPosX="103" EndPosY="108" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Goblin" (Mu Chila: grupo) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>
