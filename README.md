@@ -21,7 +21,7 @@ O kit foi instalado, corrigido e ajustado. O que mudou em relação ao kit origi
 | `2 - Cliente Season 14 Full/` | **Cliente liberado para teste**: IP do Radmin, nome "Mu Chila", servidor na lista |
 | `3 - MuServer Mu Chila (servidor configurado)/` | **Servidor configurado**: cópia de `C:\MuServer` sem logs |
 | `5 - PrintScreans/`, `6 - ChangeLog/` | Imagens e changelog do kit original |
-| `tools/` | Scripts de apoio (sincronizar servidor, recarregar sem reiniciar, ler o log do cliente) |
+| `tools/` | Scripts de apoio (sincronizar servidor, recarregar sem reiniciar, ler o log do cliente) e o código do painel `MuChilaAdmin` |
 | `docs/` | Documentação |
 
 ## Início rápido
@@ -30,6 +30,8 @@ O kit foi instalado, corrigido e ajustado. O que mudou em relação ao kit origi
 1. A primeira instalação está em [docs/INSTALACAO.md](docs/INSTALACAO.md).
 2. No dia a dia: ligue o Radmin VPN, abra `C:\MuServer\Startup - Iniciar Server.lnk`, clique em iniciar e espere tudo ficar verde.
 3. Para criar contas, use `C:\MuServer\Criar Conta.bat`.
+4. Para disparar eventos, dar VIP, banir ou recarregar configurações, use `C:\MuServer\Mu Chila Admin.lnk`.
+   Para editar personagens, inventário e baú, use o MuEditor (`C:\MuServer\1 - MuEditor\MuEditor.exe`).
 
 **Jogadores:**
 1. Entre na rede Radmin VPN do dono do servidor.
@@ -39,7 +41,7 @@ O kit foi instalado, corrigido e ajustado. O que mudou em relação ao kit origi
 ## Documentação
 
 - [docs/INSTALACAO.md](docs/INSTALACAO.md): instalar do zero (SQL, ODBC, scripts, IPs, launcher).
-- [docs/OPERACAO.md](docs/OPERACAO.md): ligar e desligar, recarregar sem reiniciar, contas, GM, eventos, caixas, resolução, distribuir o cliente.
+- [docs/OPERACAO.md](docs/OPERACAO.md): ligar e desligar, painel de administração, MuEditor, recarregar sem reiniciar, contas, GM, eventos, caixas, resolução, distribuir o cliente.
 - [docs/PROBLEMAS-E-SOLUCOES.md](docs/PROBLEMAS-E-SOLUCOES.md): erros já diagnosticados e pendências.
 - [docs/ALTERACOES.md](docs/ALTERACOES.md): cada arquivo alterado em relação ao kit.
 

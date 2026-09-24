@@ -6,6 +6,40 @@
 - **Desligar com jogadores online:** menu `File` do GameServer → "1/3/5 Minute(s) Server Close". Os jogadores recebem aviso.
 - O launcher **não** religa servidores que caírem nem inicia sozinho quando é aberto.
 
+## Painel Mu Chila Admin
+
+Atalho: `C:\MuServer\Mu Chila Admin.lnk` (programa em `C:\MuServer\MuChilaAdmin`, código em `tools\MuChilaAdmin`).
+Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque conversa com as janelas dos servidores e com o SQL local.
+
+| Aba | O que faz |
+|---|---|
+| **Servidor** | Mostra os 6 processos, os jogadores online (conta, personagem, IP) e o título do GameServer (jogadores e monstros). Atualiza a cada 5 s. |
+| | Botões: iniciar e parar tudo pelo launcher, desconectar todos os jogadores (os personagens são salvos), abrir o MuEditor e o launcher. |
+| | "Recarregar sem reiniciar": manda o Reload escolhido para o GameServer **e** o Castle Siege ao mesmo tempo. |
+| **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |
+| **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
+
+- VIP e ban valem no **próximo login** da conta. Para valer na hora, desconecte o jogador (ele volta já com o novo nível).
+- VIP = `MEMB_INFO.AccountLevel` (1–3) + `AccountExpireDate`. Os benefícios de cada nível ficam nas linhas `*_AL1`, `*_AL2` e `*_AL3` do `GameServerInfo - Common.dat`.
+- Ban = `MEMB_INFO.bloc_code = 1`.
+- Teste rápido sem abrir a janela: `C:\MuServer\MuChilaAdmin\MuChilaAdmin.exe --teste C:\temp\teste.txt`. O arquivo lista banco, servidores, GameServer e agendas; o código de saída é o número de falhas.
+- Para recompilar depois de mudar o código:
+
+  ```powershell
+  dotnet publish .\tools\MuChilaAdmin\MuChilaAdmin.csproj -c Release -r win-x64 --self-contained false -o C:\MuServer\MuChilaAdmin
+  ```
+
+  Feche o painel antes, porque o `.exe` fica travado enquanto ele está aberto.
+
+## MuEditor (personagens, inventário, baú)
+
+`C:\MuServer\1 - MuEditor\MuEditor.exe` já vem no kit e está configurado para o banco local (`config.ini`: `SERVER = .\MUONLINE`, `PORT = 61764`, login do Windows).
+Use-o para editar contas, personagens (nível, pontos, classe, zen, mapa), inventário, baú e guildas.
+
+- Edite só personagens de contas **offline**. O servidor salva o personagem ao sair e sobrescreve o que foi mudado com o jogador conectado. Para garantir, use "Desconectar todos os jogadores" no painel ou espere o jogador sair.
+- A porta `61764` é dinâmica do SQL Express. Se o MuEditor parar de conectar depois de reinstalar o SQL, veja a porta atual em *SQL Server Configuration Manager → Protocolos para MUONLINE → TCP/IP → Endereços → IPAll → Portas Dinâmicas TCP* e ajuste o `config.ini`.
+- O MuEditor é da versão S8 (3.5.8). Itens novos do S14 podem aparecer sem nome ou com o ícone errado. Para esses itens, prefira `/make` no jogo com um GM.
+
 ## Recarregar sem reiniciar
 
 A maioria das configurações pode ser recarregada com o servidor rodando, sem derrubar ninguém. Use o menu `Reload` na janela do servidor ou o script:
@@ -36,10 +70,16 @@ Mudanças de IP no `MapServerInfo.dat` e nas portas exigem reiniciar.
 Não há comando para iniciar evento na hora. Tudo vem das agendas em `Data\Event\*.dat`.
 Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` significa qualquer valor.
 
-- **Invasões** (`InvasionManager.dat`): 0 Underworld, 1 Red Dragon, 2 Golden, 3 White Wizard, 7 Christmas, 8 Medusa.
+- **Invasões** (`InvasionManager.dat`): 0 Underworld, 1 Red Dragon, 2 Golden, 3 White Wizard, 4 Ano Novo, 5 Páscoa, 6 Verão, 7 Christmas, 8 Medusa, 9 Demônios invocados, 10 Ovos.
   - **Golden:** a cada **10 minutos** (00, 10, 20, 30, 40 e 50), com duração de **540 s**, para não sobrepor.
   - **Red Dragon:** 0:15, 4:15, 8:15, 12:15, 16:15 e 18:32.
-- **Disparar uma vez:** adicione uma linha com data exata (ex.: `1  2026  9  23  *  21  5  0`) e Reload Event.
+- **Disparar uma vez:** use a aba **Eventos** do painel Mu Chila Admin. Ela grava uma linha com data exata no `.dat` do evento, marcada com `//MuChilaAdmin`, e manda Reload Event para o GameServer e o Castle Siege.
+  - Invasões começam no minuto seguinte (padrão de 1 minuto).
+  - Blood Castle, Devil Square, Chaos Castle e Illusion Temple têm sala de espera e avisam 5 minutos antes. Por isso o padrão é 6 minutos.
+  - Castle Deep e Moss Merchant também podem ser disparados.
+  - As linhas antigas continuam no arquivo e não voltam a disparar, porque têm ano, mês e dia fixos. "Limpar disparos já executados" remove as que passaram há mais de 30 minutos.
+  - Na primeira alteração do dia, o painel salva uma cópia `.bak-AAAAMMDD` do arquivo.
+  - À mão: adicione uma linha como `1  2026  9  23  *  21  5  0` antes do `end` do bloco de agenda e use Reload Event. O primeiro número é o índice da invasão e só existe no `InvasionManager.dat`.
 - **Conferir se nasceu:** o título da janela do GameServer mostra `MonsterCount`, que sobe quando a invasão aparece.
 
 ## Caixas

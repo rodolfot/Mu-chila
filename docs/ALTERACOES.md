@@ -24,6 +24,8 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Criar Conta.bat` / `Criar Conta.ps1` | Novos | Criar conta de jogo pelo ODBC |
 | `Cliente Season 14 - main.lnk` | Novo | Atalho para o cliente |
 | `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\` | Novos: `GremoryCase_MuDevs.sql`, `RestoreItem_MuDevs.sql` | Objetos que faltavam no backup |
+| `1 - MuEditor\config.ini` | `SERVER` `(local)` → `.\MUONLINE`, `PORT` `1433` → `61764` (nas duas seções) | O kit apontava para a instância padrão do SQL; o banco está na instância nomeada `MUONLINE` |
+| `MuChilaAdmin\` + `Mu Chila Admin.lnk` (novos) | Painel de administração compilado de `tools\MuChilaAdmin` (24/09/2026) | Pedido: disparar eventos, dar VIP, banir e controlar o servidor por um programa |
 
 ## Banco de dados (`.\MUONLINE`)
 
