@@ -51,6 +51,12 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Personagem novo aparece como "Blade Knight" no cliente, mas é Dark Knight no servidor
+- **Relato:** "todo char inicial está sendo apresentado como Blade Knight".
+- **O servidor e o banco estão coerentes:** Dark Knight = 16, Blade Knight = 17, +1 por evolução. `DefaultClassType` e `DefaultClassInfo.txt` usam as classes básicas, e nenhum personagem usou `/change`.
+- **Consequência:** o cliente exibe uma classe acima da real. O jogador tenta equipar itens de 2ª classe, e o servidor recusa (é o caso da Beuroba).
+- **Pendente:** comparar o que o cliente mostra para personagens de classe conhecida, nas contas do kit (TikiTaka = 18, Mage = 1, Yoyita = 33, Elfita = 34, asas = 32), e o que passa a mostrar depois de `/change`. Com isso dá para decidir entre ajustar a criação de personagem e só documentar.
+
 ### Item comprado não pode ser usado / habilidades não funcionam em algumas contas (provável causa única)
 - **Caso da mamaeupo:**
   - a "Beuroba +2" é a **Brova** do servidor (item 3,11; o cliente usa outro nome);

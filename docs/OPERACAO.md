@@ -48,6 +48,16 @@ As caixas abertas com o botão direito estão em `Data\EventItemBagManager.txt` 
 As 19 caixas que caíam de monstros sem conteúdo (entradas 236 a 254) agora dão **1 item inicial de classe +6**, sorteado entre 40 armas e peças de armadura.
 Depois de editar, use Reload EventItemBag.
 
+## Idioma (português)
+
+- **Servidor:** as mensagens do servidor estão em `Data\Lang\Portuguese.xml`, ativado no `Data\LangManager.xml` (English `Enable="0"`, Portuguese `Enable="1"`). Aplique com Reload Common.
+  - O arquivo é gravado em **Windows-1252**, embora o cabeçalho diga utf-8; é assim que os acentos chegam certos ao cliente. Edite mantendo essa codificação.
+  - Os comandos (`/move`, `/post`...) continuam com o nome original.
+- **Cliente:** registro `HKCU\Software\Webzen\Mu\Config` → `LangSelection = Por`. Os arquivos `Idioma - Portugues.reg` e `Idioma - Ingles.reg` na pasta do cliente fazem a troca com dois cliques.
+  - O cliente passa a carregar `Data\Local\Por\*.bmd`: missões, dicas de skill, ajuda e opções de conjunto já vêm traduzidas.
+  - Os nomes e dicas de itens continuam em inglês, porque `item_por` e `itemtooltip_por` são cópias do inglês.
+  - O texto da interface fica no `Data\Lang.mpr`, que é criptografado.
+
 ## Evolução de classe (`/change`)
 
 Personagens novos começam na classe básica e **não evoluem sozinhos**.
