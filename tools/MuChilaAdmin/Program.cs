@@ -12,6 +12,13 @@ static class Program
         if (args.Length > 0 && args[0] == "--teste")
             return SelfTest(args.Length > 1 ? args[1] : Path.Combine(Path.GetTempPath(), "muchila-admin-teste.txt"));
 
+        // "MuChilaAdmin.exe --zerar-master <conta> <personagem> <arquivo>": o mesmo que o botao, sem abrir a janela
+        if (args.Length == 4 && args[0] == "--zerar-master")
+        {
+            try { File.WriteAllText(args[3], Accounts.ClearMasterSkills(args[1], args[2])); return 0; }
+            catch (Exception ex) { File.WriteAllText(args[3], "FALHA: " + ex.Message); return 1; }
+        }
+
         ApplicationConfiguration.Initialize();
         Application.Run(new MainForm());
         return 0;

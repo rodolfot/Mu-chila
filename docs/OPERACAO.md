@@ -18,6 +18,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | | "Recarregar sem reiniciar": manda o Reload escolhido para o GameServer **e** o Castle Siege ao mesmo tempo. |
 | **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
+| | "Zerar habilidades master": escolhe um personagem da conta (offline), apaga as habilidades master e devolve os pontos. Serve para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
 
 - VIP e ban valem no **próximo login** da conta. Para valer na hora, desconecte o jogador (ele volta já com o novo nível).
 - VIP = `MEMB_INFO.AccountLevel` (1–3) + `AccountExpireDate`. Os benefícios de cada nível ficam nas linhas `*_AL1`, `*_AL2` e `*_AL3` do `GameServerInfo - Common.dat`.

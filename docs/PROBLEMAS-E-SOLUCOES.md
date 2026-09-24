@@ -73,11 +73,14 @@ No fim, as pendências que ainda estão abertas.
 
 ### Personagem dá "Miss" em tudo e a janela (C) mostra "Suces de Atq" ≈ -2147479000
 - **Sintoma:** "Suces de Atq(%)", "Ataq PvP (%)" e "Def PvP (%)" negativos, perto de -2.147.483.648, mesmo sem nenhum item equipado. O personagem erra quase todos os golpes, até em monstros de Lorencia.
-- **Causa (conferida na memória do GameServer):** o personagem tinha as habilidades master 301 "Add Defense Success Rate PvP", 325 "Add Attack Success Rate" e 347 "Add Attack Success Rate PvP" com **nível 0**. O mínimo é 1 (`MasterSkillTree.txt`). Com nível 0, o bônus de cada uma sai como -2³¹ e é somado justamente a esses três atributos. A base calculada estava certa (3.923).
-  - Não é a 4ª classe abaixo do 400 nem o Master Level: a mamaeupo está assim e acerta normalmente, com as mesmas habilidades no nível 9.
-  - Visto no Quest1 depois de um `/reset` feito com 3 pontos de master gastos. Como as habilidades ficaram no nível 0 ainda não foi reproduzido.
-- **Solução:** com a conta offline, apagar as habilidades master do personagem (`MasterSkillTree.MasterSkill`: todas as entradas de 3 bytes voltam a `FF 00 FF`). Feito no Quest1 em 24/09/2026, com backup em `C:\MuServer\DB\backup-caixas-Quest1-master-antes-de-zerar.csv`. Depois disso: acerto 3.923, acerto PvP 8.484, defesa PvP 1.006.
-- **Atenção:** ao mexer em `MasterLevel`/`MasterPoint` no banco, apague também as habilidades master. Senão elas ficam aprendidas sem pontos que as sustentem.
+- **Causa (conferida na memória do GameServer):** o Quest1 tinha 1 ponto em cada uma das habilidades master 301 "Add Defense Success Rate PvP", 325 "Add Attack Success Rate" e 347 "Add Attack Success Rate PvP". O bônus delas saía como -2³¹ e era somado justamente a esses três atributos. A base calculada estava certa (3.923).
+  - O banco guarda o nível da habilidade a partir de 0: `00` = 1 ponto, `09` = 10 pontos. Registro de 3 bytes por habilidade (`índice baixo, nível, índice alto`); `FF 00 FF` = vazio.
+  - Não é a 4ª classe abaixo do 400 nem o Master Level: a mamaeupo está assim e acerta normalmente, com 10 pontos nas mesmas habilidades.
+  - **Não se reproduz jogando normalmente.** Testado no YolaxD (24/09/2026): 1 e 2 pontos em "Add Attack Success Rate" dão o bônus certo (+511 com 2 pontos), e `/reset` feito com habilidades aprendidas mantém tudo normal.
+  - O Quest1 é um personagem que veio pronto no kit (13 milhões de experiência master e 1 reset de fábrica). Antes da correção, a memória mostrava o Master Level dele valendo **-3**. O estado inválido provavelmente veio desses dados de fábrica junto com o reset.
+- **Solução:** no **Mu Chila Admin**, aba "VIP e contas", selecione a conta e use **"Zerar habilidades master"**. A conta precisa estar offline. As habilidades são apagadas, os pontos master voltam a ficar livres (1 por Master Level) e o estado anterior fica em `C:\MuServer\DB\backup-caixas-master-habilidades.csv`.
+  - Sem abrir a janela: `C:\MuServer\MuChilaAdmin\MuChilaAdmin.exe --zerar-master <conta> <personagem> <arquivo-de-resultado>`.
+  - Feito no Quest1: acerto 3.923, acerto PvP 8.484, defesa PvP 1.006.
 
 ### GameServer trava ao carregar e o cliente não mostra o servidor (24/09/2026)
 - **Sintoma:** depois de um Reload EventItemBag, o GameServer parou de responder. Ao religar, o log parou em `Event loaded successfully` e o ConnectServer não recebeu o `GameServer online`. No cliente, o botão do servidor não aparecia.

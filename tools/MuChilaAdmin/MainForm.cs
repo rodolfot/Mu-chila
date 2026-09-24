@@ -148,18 +148,50 @@ public sealed class MainForm : Form
             Btn("Aplicar VIP", () => ForSelectedAccount(a => { Accounts.SetVip(a, cmbLevel.SelectedIndex, (int)numDays.Value); return $"{a}: {cmbLevel.SelectedItem} por {numDays.Value} dia(s)"; })),
             Btn("Remover VIP", () => ForSelectedAccount(a => { Accounts.SetVip(a, 0, 0); return $"{a}: VIP removido"; })),
             Btn("Banir", () => ForSelectedAccount(a => Confirm($"Banir a conta {a}?") ? Do(() => Accounts.SetBanned(a, true), $"{a}: banida") : null)),
-            Btn("Desbanir", () => ForSelectedAccount(a => { Accounts.SetBanned(a, false); return $"{a}: desbanida"; })));
+            Btn("Desbanir", () => ForSelectedAccount(a => { Accounts.SetBanned(a, false); return $"{a}: desbanida"; })),
+            Btn("Zerar habilidades master", () => ForSelectedAccount(ClearMasterSkills)));
 
         var note = new Label
         {
-            Dock = DockStyle.Top, Height = 52, Padding = new Padding(6),
+            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
             Text = "VIP e ban valem no próximo login da conta. Benefícios de cada nível (experiência, drop, pontos...) ficam nas linhas *_AL1/_AL2/_AL3 " +
-                   "do GameServerInfo - Common.dat. Personagens, inventário e baú: use o MuEditor (aba Servidor).",
+                   "do GameServerInfo - Common.dat. Personagens, inventário e baú: use o MuEditor (aba Servidor). " +
+                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo (conta offline).",
         };
         page.Controls.Add(Titled("Contas", gridAccounts));
         page.Controls.Add(bar);
         page.Controls.Add(note);
         return page;
+    }
+
+    string? ClearMasterSkills(string account)
+    {
+        if (Db.IsOnline(account)) { Log($"{account} está online: peça para sair do jogo e tente de novo."); return null; }
+        var character = PickCharacter(account);
+        if (character == null) return null;
+        if (!Confirm($"Zerar as habilidades master de {character}?\n\nAs habilidades aprendidas somem e os pontos master voltam a ficar livres (1 por Master Level). " +
+                     "Use quando a janela (C) do personagem mostrar \"Suces de Atq\" negativo."))
+            return null;
+        return Accounts.ClearMasterSkills(account, character);
+    }
+
+    static string? PickCharacter(string account)
+    {
+        var names = Accounts.Characters(account);
+        if (names.Length == 0) { MessageBox.Show($"A conta {account} não tem personagens.", "Mu Chila Admin"); return null; }
+        using var dlg = new Form
+        {
+            Text = $"Personagem da conta {account}", FormBorderStyle = FormBorderStyle.FixedDialog, StartPosition = FormStartPosition.CenterParent,
+            MinimizeBox = false, MaximizeBox = false, ClientSize = new Size(320, 90), Font = new Font("Segoe UI", 9),
+        };
+        var combo = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Left = 12, Top = 12, Width = 296 };
+        combo.Items.AddRange(names.Cast<object>().ToArray());
+        combo.SelectedIndex = 0;
+        var ok = new Button { Text = "OK", DialogResult = DialogResult.OK, Left = 152, Top = 52, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 233, Top = 52, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { combo, ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        return dlg.ShowDialog() == DialogResult.OK ? (string)combo.SelectedItem! : null;
     }
 
     void RefreshAccounts()
