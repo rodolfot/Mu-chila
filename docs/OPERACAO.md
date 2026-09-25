@@ -147,6 +147,8 @@ São duas travas, e as duas precisam permitir:
 
 ## Resolução do cliente
 
+O cliente S14 não tem opção de resolução dentro do jogo (issue #4). Com o jogo fechado, dois cliques em `2 - Cliente Season 14 Full\Resolucao - Configurar.bat`: ele mostra um menu e grava as duas chaves abaixo (não precisa de administrador). O arquivo vai nos dois pacotes dos amigos.
+
 No registro, em `HKEY_CURRENT_USER\Software\Webzen\Mu\Config` (com o jogo fechado):
 
 - `DisplayDeviceModeIndex`: 0=800x600, 1=1024x768, 2=1152x864, 3=1280x720, 4=1280x800, 5=1280x960, 6=1440x1080, 7=1600x900, 8=1680x1050, 9=1920x1080, 10=1440x900. De 11 em diante volta para 800x600. A lista pode variar conforme a placa de vídeo.
