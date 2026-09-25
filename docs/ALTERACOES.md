@@ -20,6 +20,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Data\Move\Gate.txt` | Portão 17 (chegada em Lorencia): X 133–151 → 133–143 | Issue #9: a área incluía o miolo da fonte (X 145–150, Y 126–129), que o servidor marca como livre e o cliente não deixa sair |
 | `Data\Item\Item.txt` | `DropItem` 1 → 0 em Frost Soul (14,449) e Soul Anvil (14,450) | Issue #10: nada no servidor usa esses itens e o cliente não deixa vender nem largar |
 | `Data\EventItemBag\009 - Box of Kundun 3.txt`, `187 - Devil’s Boxl.txt`, `188 - High Devil’s Box.txt` | Removidos os itens (7,23) e (7,76), que não existem no cliente nem no `Item.txt` | Issue #5: a caixa gerava um item fantasma, que aparecia como "+7" sem nome |
+| `Data\Item\ItemValue.txt` | Joias e pacotes de joias (Bless, Soul, Life, Creation, Chaos, Guardian: 24 linhas) com o valor ÷ 3; "Bundle of Jewel of Soul 3" passa do nível 0 (repetido) para o 2 | Issue #2: o servidor cobrava e pagava 3× o preço que o cliente mostra |
 | `Data\Item\ItemDrop.txt` | Box of Kundun em Kalima (1%): K1–2 +1, K3 +2, K4 +3, K5 +4, K6–7 +5 | O kit não tinha drop de Box of Kundun |
 | `Data\Lang\Portuguese.xml` (novo) + `Data\LangManager.xml` | 548 mensagens do servidor em português (arquivo em Windows-1252, que é o que o cliente lê); os idiomas 0 e 2 apontam para ele | Pedido: jogo em português (os personagens usam o idioma 0) |
 | `Data\Lang\Portuguese.xml` e `Data\Lang\English.xml` | 17 avisos de invasão (IDs 192–200, 202–207, 210, 211) copiados de `<Message>` para `<InvacionMsg>` | O servidor procura ali os avisos do `InvasionManager.dat`; o jogo mostrava "Could not find message 194/197/200" |
@@ -39,6 +40,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 - `MuCastle_DATA`: datas do cerco atualizadas.
 - Gremory Case e Restore Item: tabelas e procedimentos criados, também no `BattleCore`.
 - Gatilho `TR_MuChila_ClasseInicial` (DW, DK, Elfa e Summoner nascem na 2ª classe) e +1 de classe nos personagens que estavam na básica (24/09/2026).
+- `DefaultClassType.Inventory` (inventário inicial de cada classe): tirados os Wizard's Ring +1 e +2 (Warrior's Ring e Champion's Ring), que todo personagem novo ganhava presos ao personagem e sem efeito (issue #11, 24/09/2026). Personagens já criados continuam com eles. Backup em `C:\MuServer\DB\backup-caixas-DefaultClassType-inventario-*.csv`.
 - Caixas sem suporte removidas de inventários, inventários de evento e baús (backup em `C:\MuServer\DB\backup-caixas-*.csv`).
 - Contas criadas pelos jogadores (ex.: `dodo`) ficam só no banco. **Não há backup do banco neste repositório**, porque ele teria as senhas dos jogadores.
 
