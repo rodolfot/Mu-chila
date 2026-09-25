@@ -54,6 +54,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 |---|---|
 | `Config - Dev.ini` | `IpAddress = 26.139.39.123`; `WindowName = Mu Chila` |
 | `Data\Local\ServerList.bmd`, `Data\Local\{Eng,Por,Spn}\serverlist_*.bmd` | Grupo 1: "Helheim" → "Mu Chila" |
+| `Data\Local\{Eng,Por,Spn}\item_*.bmd` | Frost Soul (7617) e Soul Anvil (7618): permissões `0111000` → `0111110` (iguais às do Jewel of Bless), com a soma de verificação recalculada (`tools\Liberar-ItemCliente.ps1`). Issue #10: agora podem ser vendidos. Vai no pacote de patch. |
 
 Formato dos `.bmd`: registros de 41 bytes (`WORD índice` + `nome[32]` + 7 bytes). Cada registro tem XOR próprio com a chave `FC CF AB`.
 
