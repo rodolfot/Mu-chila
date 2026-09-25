@@ -1,0 +1,10 @@
+Dear {USERNAME},<br /><br />
+
+Welcome to {SERVER_NAME}! Your account has been successfully created, and we are delighted to have you join our community.<br /><br />
+
+To get started, please download the latest game client from our downloads page. We also encourage you to visit our official Discord server, where you can connect with fellow players, share your experiences, and stay up to date with the latest news and announcements.<br /><br />
+
+We wish you the very best on your journey, and look forward to seeing you in-game.<br /><br />
+
+Kind regards,<br />
+The {SERVER_NAME} Team.

@@ -5,6 +5,7 @@
 - **Ligar:** Radmin VPN conectado → `C:\MuServer\Startup - Iniciar Server.lnk` → iniciar. Espere todas as linhas ficarem verdes (amarelo = inicializando).
 - **Desligar com jogadores online:** menu `File` do GameServer → "1/3/5 Minute(s) Server Close". Os jogadores recebem aviso.
 - O launcher **não** religa servidores que caírem nem inicia sozinho quando é aberto.
+- **Site** (cadastro, rankings, loja): `C:\MuServer\Site\Ligar Site.bat` / `Desligar Site.bat`; endereço `http://26.139.39.123` pelo Radmin. Tudo sobre ele em [SITE.md](SITE.md).
 
 ## Painel Mu Chila Admin
 

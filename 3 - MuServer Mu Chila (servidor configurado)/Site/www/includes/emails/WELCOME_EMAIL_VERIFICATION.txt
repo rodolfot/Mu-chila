@@ -1,0 +1,11 @@
+Dear {USERNAME},<br /><br />
+
+Thank you for registering an account with {SERVER_NAME}. To complete your registration and activate your account, we need to verify your email address.<br /><br />
+
+Please confirm your email by clicking the link below:<br />
+<a href="{LINK}" target="_blank">{LINK}</a><br /><br />
+
+You will not be able to sign in until your email address has been verified. If you did not create this account, please disregard this email.<br /><br />
+
+Kind regards,<br />
+The {SERVER_NAME} Team.

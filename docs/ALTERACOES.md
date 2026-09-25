@@ -43,6 +43,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 - Gatilho `TR_MuChila_ClasseInicial` (DW, DK, Elfa e Summoner nascem na 2ª classe) e +1 de classe nos personagens que estavam na básica (24/09/2026).
 - `DefaultClassType.Inventory` (inventário inicial de cada classe): tirados os Wizard's Ring +1 e +2 (Warrior's Ring e Champion's Ring), que todo personagem novo ganhava presos ao personagem e sem efeito (issue #11, 24/09/2026). Personagens já criados continuam com eles. Backup em `C:\MuServer\DB\backup-caixas-DefaultClassType-inventario-*.csv`.
 - Caixas sem suporte removidas de inventários, inventários de evento e baús (backup em `C:\MuServer\DB\backup-caixas-*.csv`).
+- Site (25/09/2026, ver [SITE.md](SITE.md)): login SQL `muchila_site` (leitura, escrita e criação de tabelas no `MuOnlineS14`), 18 tabelas `WEBENGINE_*` do instalador do WebEngine e a tabela `MUCHILA_PEDIDOS` da loja.
 - Contas criadas pelos jogadores (ex.: `dodo`) ficam só no banco. **Não há backup do banco neste repositório**, porque ele teria as senhas dos jogadores.
 
 ## ODBC
@@ -59,7 +60,12 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 
 Formato dos `.bmd`: registros de 41 bytes (`WORD índice` + `nome[32]` + 7 bytes). Cada registro tem XOR próprio com a chave `FC CF AB`.
 
+## Site (`C:\MuServer\Site`, novo em 25/09/2026)
+
+WebEngine CMS 1.2.7 + código do Mu Chila (loja de VIP e cash em modo de teste, agenda real de eventos), Apache 2.4.68 e PHP 8.5.11. Detalhes, segurança e como recriar: [SITE.md](SITE.md).
+
 ## Máquina do dono (fora do repositório)
 
 - Registro `HKCU\Software\Webzen\Mu\Config`: `DisplayDeviceModeIndex = 9`, `FullScreenMode = 0` (1920x1080 em janela).
+- Site: regra do firewall "Mu Chila - Site (porta 80, so Radmin)" (entrada TCP 80 só de 26.0.0.0/8, só para o `httpd.exe` do site) e tarefa agendada "Mu Chila\Site - rankings" (a cada minuto). Módulo Python `capstone` (desmontador, usado nas análises do GameServer): `python -m pip uninstall capstone` para remover.
 - Ferramenta de diagnóstico Frida instalada no Python do usuário. Para remover: `python -m pip uninstall frida`.

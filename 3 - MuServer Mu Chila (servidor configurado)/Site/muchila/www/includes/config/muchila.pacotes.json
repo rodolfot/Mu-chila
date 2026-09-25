@@ -1,0 +1,11 @@
+{
+    "_comentario": "Pacotes da loja do site. valor em reais. VIP: o nível (1 a 3) define os benefícios do _AL1/_AL2/_AL3 no GameServerInfo - Common.dat. Cash vai para o WCoinC (Cash Shop do jogo). Preços de EXEMPLO: ajuste antes de abrir para os jogadores.",
+    "pacotes": [
+        { "id": "vip1-30", "tipo": "vip",  "nome": "VIP 1 - 30 dias", "vip_nivel": 1, "vip_dias": 30, "valor": 10.00, "ativo": true },
+        { "id": "vip2-30", "tipo": "vip",  "nome": "VIP 2 - 30 dias", "vip_nivel": 2, "vip_dias": 30, "valor": 20.00, "ativo": true },
+        { "id": "vip3-30", "tipo": "vip",  "nome": "VIP 3 - 30 dias", "vip_nivel": 3, "vip_dias": 30, "valor": 30.00, "ativo": true },
+        { "id": "cash-1000",  "tipo": "cash", "nome": "1.000 Cash",  "cash": 1000,  "valor": 5.00,  "ativo": true },
+        { "id": "cash-5000",  "tipo": "cash", "nome": "5.500 Cash (5.000 + 10% de bônus)", "cash": 5500, "valor": 25.00, "ativo": true },
+        { "id": "cash-10000", "tipo": "cash", "nome": "12.000 Cash (10.000 + 20% de bônus)", "cash": 12000, "valor": 50.00, "ativo": true }
+    ]
+}

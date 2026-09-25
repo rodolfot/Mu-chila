@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mu Chila: loja de VIP e cash (modules/usercp/loja.php). Pacotes e preços: includes/config/muchila.pacotes.json -->
+<settings>
+	<active>1</active>
+	<!-- simulado = modo de teste (nenhum dinheiro envolvido); mercadopago = PIX real (token em Site\config-local\mercadopago.json) -->
+	<provedor>simulado</provedor>
+	<!-- minutos para pagar o PIX antes do pedido expirar -->
+	<expira_minutos>30</expira_minutos>
+	<!-- pedidos aguardando pagamento ao mesmo tempo, por conta -->
+	<max_pendentes>3</max_pendentes>
+	<!-- e-mail usado no Mercado Pago quando a conta não tem e-mail cadastrado -->
+	<email_padrao></email_padrao>
+	<!-- endereço público (HTTPS) do api/muchila-mercadopago.php, para o Mercado Pago avisar os pagamentos -->
+	<mp_notification_url></mp_notification_url>
+</settings>

@@ -1,0 +1,8 @@
+Dear {USERNAME},<br /><br />
+
+This is a notification to confirm that an administrator has updated the email address associated with your account. All future correspondence will be sent to <b>{NEW_EMAIL}</b>.<br /><br />
+
+If you did not request this change, please contact our support team immediately.<br /><br />
+
+Kind regards,<br />
+The {SERVER_NAME} Team.

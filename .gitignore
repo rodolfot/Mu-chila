@@ -23,3 +23,12 @@ tools/MuChilaAdmin/obj/
 # Arquivos de pasta do Windows
 desktop.ini
 Thumbs.db
+
+# Site: senhas e dados locais (nunca no repositorio publico)
+**/Site/config-local/
+**/Site/tmp/
+**/Site/apache/
+**/Site/php/
+**/Site/www/includes/cache/
+**/includes/config/webengine.json
+*.original

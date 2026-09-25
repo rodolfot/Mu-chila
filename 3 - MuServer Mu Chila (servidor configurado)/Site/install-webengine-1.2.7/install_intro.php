@@ -1,0 +1,77 @@
+<?php
+/**
+ * WebEngine CMS
+ * https://webenginecms.org/
+ * 
+ * @version 1.2.7
+ * @author Lautaro Angelico <http://lautaroangelico.com/>
+ * @copyright (c) 2013-2026 Lautaro Angelico, All Rights Reserved
+ * 
+ * Licensed under the MIT license
+ * http://opensource.org/licenses/MIT
+ */
+
+if(!defined('access') or !access or access != 'install') die();
+
+if(isset($_GET['action'])) {
+	if($_GET['action'] == 'install') {
+		$_SESSION['install_cstep']++;
+		header('Location: install.php');
+		die();
+	}
+}
+?>
+<h4>Getting Started:</h4><br />
+<p>Welcome to the WebEngine CMS installer. During the setup process, this installer will help verify that your web server meets the minimum requirements to run the software.</p>
+<p>If you are installing the software on a shared web hosting account, please ensure that your hosting provider allows outgoing remote connections to your Microsoft SQL Server (MSSQL) port, which is most commonly port 1433.</p>
+
+<br />
+
+<h4>Support:</h4><br />
+<p>If you are having trouble completing the setup process, feel free to reach out through our Discord server. There, you can receive support from other server administrators as well as members of the community.</p>
+<a href="https://webenginecms.org/discord" target="_blank" class="btn btn-sm btn-default">Discord</a>
+
+<hr>
+
+<h4>Latest Version:</h4><br />
+<p>To ensure the best possible experience with our software, please make sure you are installing the latest stable version.</p>
+<a href="https://github.com/lautaroangelico/WebEngine/releases" target="_blank" class="btn btn-sm btn-default">GitHub Project</a>
+
+<hr>
+
+<h4>License:</h4><br />
+<div class="panel panel-default">
+	<div class="panel-body" style="font-size:10px;">
+		The MIT License (MIT)<br /><br />
+
+		Copyright © 2026 Lautaro Angelico<br /><br />
+
+		Permission is hereby granted, free of charge, to any person obtaining a copy of <br />
+		this software and associated documentation files (the “Software”), to deal in <br />
+		the Software without restriction, including without limitation the rights to <br />
+		use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of <br />
+		the Software, and to permit persons to whom the Software is furnished to do so, <br />
+		subject to the following conditions:<br /><br />
+
+		The above copyright notice and this permission notice shall be included in all <br />
+		copies or substantial portions of the Software.<br /><br />
+
+		THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR <br />
+		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS <br />
+		FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR <br />
+		COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER <br />
+		IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN <br />
+		CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	</div>
+</div>
+
+<hr>
+
+<h4>Thank You:</h4><br />
+<p>WebEngine CMS is an open-source project, and I am committed to keeping it that way. A significant amount of time, effort, and dedication has gone into making this project possible, and I am proud of everything that has been accomplished so far.</p>
+<p>If you find WebEngine CMS useful, please consider supporting the continued development of the project by exploring our premium plugins available on the official website. You can also support the project by sharing WebEngine CMS with others, providing feedback, and joining our community through our social media platforms and Discord server.</p>
+<br />
+
+<p>To proceed with the installation, click the "Start Installation" button below.</p>
+
+<a href="?action=install" class="btn btn-lg btn-success">Start Installation</a>
