@@ -16,6 +16,10 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Data\Item\Item.txt` | `DropItem` 1 → 0 em 19 caixas da seção 14 (7591–7625) | O servidor não abre essas caixas; os prêmios via EventItemBag não funcionaram e foram removidos |
 | `Data\Item\Item.txt` | `DropItem` 1 → 0 no Rune Mage Character Card (14,487) | Cartões de personagem não têm uso neste servidor |
 | `Data\Item\Item.txt` | `DropItem` 1 → 0 em 21 equipamentos que o cliente marca como intransferíveis (Legendary Rune 125/Bound, Rune Sphinx, Storm Jahad...) | Ficavam presos no inventário de quem pegava |
+| `GameServer*\DATA\GameServerInfo - Common.dat` | `HelperActiveLevel` 80 → 1 (nos três GameServers) | Issue #8: depois do `/reset` o personagem volta ao nível 1 e o MU Helper ficava bloqueado até o 80 |
+| `Data\Move\Gate.txt` | Portão 17 (chegada em Lorencia): X 133–151 → 133–143 | Issue #9: a área incluía o miolo da fonte (X 145–150, Y 126–129), que o servidor marca como livre e o cliente não deixa sair |
+| `Data\Item\Item.txt` | `DropItem` 1 → 0 em Frost Soul (14,449) e Soul Anvil (14,450) | Issue #10: nada no servidor usa esses itens e o cliente não deixa vender nem largar |
+| `Data\EventItemBag\009 - Box of Kundun 3.txt`, `187 - Devil’s Boxl.txt`, `188 - High Devil’s Box.txt` | Removidos os itens (7,23) e (7,76), que não existem no cliente nem no `Item.txt` | Issue #5: a caixa gerava um item fantasma, que aparecia como "+7" sem nome |
 | `Data\Item\ItemDrop.txt` | Box of Kundun em Kalima (1%): K1–2 +1, K3 +2, K4 +3, K5 +4, K6–7 +5 | O kit não tinha drop de Box of Kundun |
 | `Data\Lang\Portuguese.xml` (novo) + `Data\LangManager.xml` | 548 mensagens do servidor em português (arquivo em Windows-1252, que é o que o cliente lê); os idiomas 0 e 2 apontam para ele | Pedido: jogo em português (os personagens usam o idioma 0) |
 | `Data\Lang\Portuguese.xml` e `Data\Lang\English.xml` | 17 avisos de invasão (IDs 192–200, 202–207, 210, 211) copiados de `<Message>` para `<InvacionMsg>` | O servidor procura ali os avisos do `InvasionManager.dat`; o jogo mostrava "Could not find message 194/197/200" |

@@ -2181,8 +2181,8 @@ end
 446 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Event] Ruud Box"				0 	 0 	 
 447 	 * 	 0 	 2 	 2 		 1 		 1 		 0 		 "Ruud Box (2,000)"				0 	 0 	 
 448 	 * 	 0 	 2 	 2 		 1 		 1 		 0 		 "Ruud Box (3,000)"				0 	 0 	 
-449 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Frost Soul"					0 	 0 	 
-450 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Soul Anvil"					0 	 0 	 
+449 	 * 	 0 	 2 	 2 		 1 		 1 		 0 		 "Frost Soul"					0 	 0 	 
+450 	 * 	 0 	 2 	 2 		 1 		 1 		 0 		 "Soul Anvil"					0 	 0 	 
 451 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "[Event] Ruud Box (2nd Week)"			0 	 0 	 
 452 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "60-Day Mastery Weapon Box"			0 	 0 	 
 453 	 * 	 0 	 2 	 2 		 1 		 1 		 1 		 "Switch Scroll"				0 	 0 	 

@@ -326,7 +326,7 @@ GensSystemFinalRewardDay = 7
 ; Helper Settings
 ;==================================================
 HelperSwitch = 1
-HelperActiveLevel = 80
+HelperActiveLevel = 1
 HelperActiveMessageBox = 1
 HelperRunWithOpenInventory = 0
 HelperActiveDelay = 5
