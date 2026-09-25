@@ -224,7 +224,8 @@ public sealed class MainForm : Form
         }
         var character = PickCharacter(account);
         if (character == null) return null;
-        if (!Confirm($"Zerar as habilidades master de {character}?\n\nAs habilidades aprendidas somem e os pontos master voltam a ficar livres (1 por Master Level). " +
+        if (!Confirm($"Zerar as habilidades master de {character}?\n\nA árvore master é apagada, os pontos voltam a ficar livres (1 por Master Level) e os poderes master " +
+                     "saem da lista de habilidades (os melhorados voltam a ser a habilidade normal, ex.: Twisting Slash Improved → Twisting Slash). " +
                      "Use quando a janela (C) do personagem mostrar \"Suces de Atq\" negativo."))
             return null;
         return Accounts.ClearMasterSkills(account, character);

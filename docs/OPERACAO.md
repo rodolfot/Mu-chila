@@ -18,7 +18,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | | "Recarregar sem reiniciar": manda o Reload escolhido para o GameServer **e** o Castle Siege ao mesmo tempo. |
 | **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
-| | "Zerar habilidades master": escolhe um personagem da conta (offline), apaga as habilidades master e devolve os pontos. Serve para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
+| | "Zerar habilidades master": escolhe um personagem da conta, apaga a árvore master, devolve os pontos (1 por Master Level) e tira os poderes master da lista de habilidades (`MagicList`). Os melhorados voltam à habilidade normal (ex.: 330 Twisting Slash Improved → 41 Twisting Slash), seguindo a coluna `ReplaceSkill` do `MasterSkillTree.txt`. Serve também para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
 
 - VIP e ban valem no **próximo login** da conta. Se a conta estiver online, o painel pergunta se quer **forçar o logout** para valer na hora.
 - **Logout forçado** (perguntas acima e botão "Desconectar jogador selecionado", na aba Servidor): o MuDevs FREE não tem comando para desconectar um jogador só, então o painel derruba a conexão de rede do jogador com o GameServer (ou o Castle Siege). Para o servidor é como se o jogo tivesse fechado: ele salva o personagem e registra a saída.
@@ -137,8 +137,13 @@ O `DropRate` é **por milhão** (1000 = 0,1% por monstro morto). Depois de edita
 
 ## Itens que não podem ser largados
 
-`Data\Item\ItemMove.txt` define `AllowDrop/AllowSell/AllowTrade/AllowVault` por item.
-O kit proíbe largar no chão **asas, joias, pedras de refino e talismãs** (`AllowDrop = 0`). Para liberar, troque para `1` e use Reload Item.
+São duas travas, e as duas precisam permitir:
+- **Servidor:** `Data\Item\ItemMove.txt` define `AllowDrop/AllowSell/AllowTrade/AllowVault` por item (item fora da lista = liberado).
+  O kit proíbe largar no chão **asas, joias, pedras de refino e talismãs** (`AllowDrop = 0`). Para liberar, troque para `1` e use Reload Item.
+- **Cliente:** cada item tem 7 permissões no `Data\Local\{Eng,Por,Spn}\item_*.bmd` (ex.: Jewel of Bless `0111110`; os itens "presos" costumam ter `0111000` ou `0000000`).
+  Para mudar: `.\tools\Liberar-ItemCliente.ps1 -Codigos 7617, 7618 -Permissoes 0111110`. A ferramenta faz backup e recalcula a soma de verificação.
+  Sem a soma certa, o cliente para com "Item_Por.bmd - File corrupted". O algoritmo foi lido do `main.exe` e está descrito no cabeçalho do script.
+  Depois, os jogadores precisam receber os três arquivos novos (pacote de patch).
 
 ## Resolução do cliente
 
