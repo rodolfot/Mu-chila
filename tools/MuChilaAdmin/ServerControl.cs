@@ -1,6 +1,7 @@
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Automation;
@@ -95,6 +96,89 @@ public static class ServerControl
         ((InvokePattern)button.GetCurrentPattern(InvokePattern.Pattern)).Invoke();
         return $"'{wanted}' acionado no launcher.";
     }
+
+    // ---------------- logout forcado de um jogador ----------------
+    // O MuDevs FREE nao tem comando para desconectar um jogador so ("UsersOnline" nao abre nada).
+    // Derrubar a conexao TCP dele tem o mesmo efeito do jogo fechar: o servidor salva o personagem e faz o logout.
+
+    public static bool IsElevated => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+
+    /// <summary>Outras contas online com o mesmo IP (tambem cairiam, porque a conexao e identificada pelo IP).</summary>
+    public static string[] OnlineSameIp(string account) =>
+        Db.Query(@"SELECT s2.memb___id FROM MEMB_STAT s1 JOIN MEMB_STAT s2 ON s2.IP = s1.IP AND s2.memb___id <> s1.memb___id
+                   WHERE s1.memb___id = @a AND s1.ConnectStat = 1 AND s2.ConnectStat = 1", ("@a", account))
+          .Rows.Cast<System.Data.DataRow>().Select(r => (string)r[0]).ToArray();
+
+    /// <summary>Forca o logout da conta derrubando as conexoes dela com o servidor em que esta. Espera o servidor registrar a saida.</summary>
+    public static string ForceLogout(string account)
+    {
+        var t = Db.Query("SELECT IP, ServerName FROM MEMB_STAT WHERE memb___id = @a AND ConnectStat = 1", ("@a", account));
+        if (t.Rows.Count == 0) return $"{account} já está offline.";
+        var ip = (string)t.Rows[0]["IP"];
+        var server = t.Rows[0]["ServerName"] as string ?? "";
+        var proc = Find(server.Contains("CastleSiege", StringComparison.OrdinalIgnoreCase) ? CastleSiegeProcess : GameServerProcess)
+                   ?? throw new InvalidOperationException($"O servidor em que {account} está ({server}) não está rodando.");
+
+        int closed; uint error;
+        if (IsElevated) (closed, error) = DropConnections(proc.Id, ip);
+        else
+        {
+            // So esta parte precisa de administrador: roda o proprio painel elevado com --derrubar (o Windows pede permissao)
+            var result = Path.Combine(Path.GetTempPath(), $"muchila-derrubar-{Guid.NewGuid():N}.txt");
+            var psi = new ProcessStartInfo(Environment.ProcessPath!, $"--derrubar {proc.Id} {ip} \"{result}\"")
+                { UseShellExecute = true, Verb = "runas", WindowStyle = ProcessWindowStyle.Hidden };
+            try { using var p = Process.Start(psi)!; p.WaitForExit(20000); }
+            catch (System.ComponentModel.Win32Exception) { return "Logout forçado cancelado: a permissão de administrador não foi dada."; }
+            var parts = File.Exists(result) ? File.ReadAllText(result).Split(' ') : new[] { "0", "0" };
+            try { File.Delete(result); } catch { }
+            closed = int.Parse(parts[0]); error = uint.Parse(parts[1]);
+        }
+        if (closed == 0)
+            return error != 0 ? $"Não consegui derrubar a conexão de {account} (erro {error})." : $"Nenhuma conexão de {account} ({ip}) encontrada no servidor.";
+
+        for (int i = 0; i < 20 && Db.IsOnline(account); i++) Thread.Sleep(1000);
+        return Db.IsOnline(account)
+            ? $"Conexão de {account} derrubada ({ip}), mas o servidor ainda não registrou a saída. Confira em alguns segundos."
+            : $"{account}: logout forçado ({closed} conexão(ões) de {ip}); o servidor salvou o personagem.";
+    }
+
+    /// <summary>Derruba as conexoes estabelecidas do processo vindas do IP. Retorna (quantas fechou, ultimo erro). Precisa de administrador.</summary>
+    public static (int Closed, uint Error) DropConnections(int pid, string ip)
+    {
+        int closed = 0; uint error = 0;
+        foreach (var c in Connections(pid).Where(c => new System.Net.IPAddress(c.RemoteAddr).ToString() == ip))
+        {
+            var row = new MIB_TCPROW { State = 12 /* DELETE_TCB */, LocalAddr = c.LocalAddr, LocalPort = c.LocalPort, RemoteAddr = c.RemoteAddr, RemotePort = c.RemotePort };
+            var r = SetTcpEntry(ref row);
+            if (r == 0) closed++; else error = r;
+        }
+        return (closed, error);
+    }
+
+    static List<MIB_TCPROW_OWNER_PID> Connections(int pid)
+    {
+        int size = 0;
+        GetExtendedTcpTable(IntPtr.Zero, ref size, false, 2 /* AF_INET */, 4 /* TCP_TABLE_OWNER_PID_CONNECTIONS */, 0);
+        var buf = Marshal.AllocHGlobal(size);
+        try
+        {
+            var list = new List<MIB_TCPROW_OWNER_PID>();
+            if (GetExtendedTcpTable(buf, ref size, false, 2, 4, 0) != 0) return list;
+            int n = Marshal.ReadInt32(buf), rowSize = Marshal.SizeOf<MIB_TCPROW_OWNER_PID>();
+            for (int i = 0; i < n; i++)
+            {
+                var r = Marshal.PtrToStructure<MIB_TCPROW_OWNER_PID>(buf + 4 + i * rowSize);
+                if (r.OwningPid == pid && r.State == 5 /* ESTABLISHED */) list.Add(r);
+            }
+            return list;
+        }
+        finally { Marshal.FreeHGlobal(buf); }
+    }
+
+    [StructLayout(LayoutKind.Sequential)] struct MIB_TCPROW { public uint State, LocalAddr, LocalPort, RemoteAddr, RemotePort; }
+    [StructLayout(LayoutKind.Sequential)] struct MIB_TCPROW_OWNER_PID { public uint State, LocalAddr, LocalPort, RemoteAddr, RemotePort, OwningPid; }
+    [DllImport("iphlpapi.dll")] static extern uint GetExtendedTcpTable(IntPtr table, ref int size, bool order, int af, int tableClass, uint reserved);
+    [DllImport("iphlpapi.dll")] static extern uint SetTcpEntry(ref MIB_TCPROW row);
 
     public static void Open(string path)
     {

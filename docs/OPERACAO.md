@@ -20,7 +20,12 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
 | | "Zerar habilidades master": escolhe um personagem da conta (offline), apaga as habilidades master e devolve os pontos. Serve para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
 
-- VIP e ban valem no **próximo login** da conta. Para valer na hora, desconecte o jogador (ele volta já com o novo nível).
+- VIP e ban valem no **próximo login** da conta. Se a conta estiver online, o painel pergunta se quer **forçar o logout** para valer na hora.
+- **Logout forçado** (perguntas acima e botão "Desconectar jogador selecionado", na aba Servidor): o MuDevs FREE não tem comando para desconectar um jogador só, então o painel derruba a conexão de rede do jogador com o GameServer (ou o Castle Siege). Para o servidor é como se o jogo tivesse fechado: ele salva o personagem e registra a saída.
+  - Precisa de permissão de administrador: o Windows pergunta na hora.
+  - A conexão é achada pelo IP gravado em `MEMB_STAT`. Contas online com o **mesmo IP** também caem, e o painel avisa antes.
+  - "Zerar habilidades master" com a conta online derruba o jogador **antes** de mexer, porque o servidor grava o personagem na saída e desfaria a alteração.
+  - Linha de comando: `MuChilaAdmin.exe --forcar-logout <conta> <arquivo-de-resultado>`.
 - VIP = `MEMB_INFO.AccountLevel` (1–3) + `AccountExpireDate`. Os benefícios de cada nível ficam nas linhas `*_AL1`, `*_AL2` e `*_AL3` do `GameServerInfo - Common.dat`.
 - Ban = `MEMB_INFO.bloc_code = 1`.
 - Teste rápido sem abrir a janela: `C:\MuServer\MuChilaAdmin\MuChilaAdmin.exe --teste C:\temp\teste.txt`. O arquivo lista banco, servidores, GameServer e agendas; o código de saída é o número de falhas.

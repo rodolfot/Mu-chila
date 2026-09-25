@@ -48,6 +48,11 @@ public sealed class MainForm : Form
             Btn("Atualizar", () => RefreshServer()),
             Btn("Iniciar todos (launcher)", () => Log(ServerControl.LauncherToggle(start: true))),
             Btn("Parar todos (launcher)", () => { if (Confirm("Parar todos os servidores? Quem estiver jogando sera desconectado.")) Log(ServerControl.LauncherToggle(start: false)); }),
+            Btn("Desconectar jogador selecionado", () =>
+            {
+                if (gridOnline.CurrentRow?.Cells["Conta"].Value is not string a) { Log("Selecione um jogador na lista \"Jogadores online\"."); return; }
+                if (Confirm($"Forçar o logout de {a}? O jogador é desconectado e o personagem é salvo.{SameIpWarning(a)}")) RunForceLogout(a);
+            }),
             Btn("Desconectar todos os jogadores", () => { if (Confirm("Desconectar todos os jogadores (os personagens sao salvos)?")) LogAll(ServerControl.DisconnectAll()); }),
             Btn("Abrir MuEditor", () => ServerControl.Open(ServerControl.MuEditorPath)),
             Btn("Abrir launcher", () => ServerControl.Open(ServerControl.LauncherPath)));
@@ -145,9 +150,28 @@ public sealed class MainForm : Form
             new Label { Text = "Nível:", AutoSize = true, Padding = new Padding(8, 6, 0, 0) }, cmbLevel,
             new Label { Text = "por", AutoSize = true, Padding = new Padding(0, 6, 0, 0) }, numDays,
             new Label { Text = "dia(s)", AutoSize = true, Padding = new Padding(0, 6, 0, 0) },
-            Btn("Aplicar VIP", () => ForSelectedAccount(a => { Accounts.SetVip(a, cmbLevel.SelectedIndex, (int)numDays.Value); return $"{a}: {cmbLevel.SelectedItem} por {numDays.Value} dia(s)"; })),
-            Btn("Remover VIP", () => ForSelectedAccount(a => { Accounts.SetVip(a, 0, 0); return $"{a}: VIP removido"; })),
-            Btn("Banir", () => ForSelectedAccount(a => Confirm($"Banir a conta {a}?") ? Do(() => Accounts.SetBanned(a, true), $"{a}: banida") : null)),
+            Btn("Aplicar VIP", () => ForSelectedAccount(a =>
+            {
+                Accounts.SetVip(a, cmbLevel.SelectedIndex, (int)numDays.Value);
+                Log($"{a}: {cmbLevel.SelectedItem} por {numDays.Value} dia(s)");
+                OfferLogout(a, "O novo VIP só vale no próximo login.");
+                return null;
+            })),
+            Btn("Remover VIP", () => ForSelectedAccount(a =>
+            {
+                Accounts.SetVip(a, 0, 0);
+                Log($"{a}: VIP removido");
+                OfferLogout(a, "A remoção do VIP só vale no próximo login.");
+                return null;
+            })),
+            Btn("Banir", () => ForSelectedAccount(a =>
+            {
+                if (!Confirm($"Banir a conta {a}?")) return null;
+                Accounts.SetBanned(a, true);
+                Log($"{a}: banida");
+                OfferLogout(a, "O ban impede o próximo login, mas não tira quem já está jogando.");
+                return null;
+            })),
             Btn("Desbanir", () => ForSelectedAccount(a => { Accounts.SetBanned(a, false); return $"{a}: desbanida"; })),
             Btn("Zerar habilidades master", () => ForSelectedAccount(ClearMasterSkills)));
 
@@ -156,7 +180,7 @@ public sealed class MainForm : Form
             Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
             Text = "VIP e ban valem no próximo login da conta. Benefícios de cada nível (experiência, drop, pontos...) ficam nas linhas *_AL1/_AL2/_AL3 " +
                    "do GameServerInfo - Common.dat. Personagens, inventário e baú: use o MuEditor (aba Servidor). " +
-                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo (conta offline).",
+                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo. Com a conta online, o painel oferece forçar o logout.",
         };
         page.Controls.Add(Titled("Contas", gridAccounts));
         page.Controls.Add(bar);
@@ -164,9 +188,40 @@ public sealed class MainForm : Form
         return page;
     }
 
+    /// <summary>Se a conta estiver online, pergunta se deve forcar o logout (para a alteracao valer ja) e faz, se confirmado.</summary>
+    void OfferLogout(string account, string why)
+    {
+        if (!Db.IsOnline(account)) return;
+        if (Confirm($"A conta {account} está online. {why}\n\nForçar o logout agora? O jogador é desconectado e o personagem é salvo.{SameIpWarning(account)}"))
+            RunForceLogout(account);
+    }
+
+    static string SameIpWarning(string account)
+    {
+        var others = ServerControl.OnlineSameIp(account);
+        return others.Length == 0 ? "" : $"\n\nAtenção: {string.Join(", ", others)} usa(m) o mesmo IP e também será(ão) desconectada(s).";
+    }
+
+    void RunForceLogout(string account)
+    {
+        Cursor = Cursors.WaitCursor;
+        try { Log(ServerControl.ForceLogout(account)); }
+        finally { Cursor = Cursors.Default; }
+        Safe(RefreshServer, quiet: true);
+    }
+
     string? ClearMasterSkills(string account)
     {
-        if (Db.IsOnline(account)) { Log($"{account} está online: peça para sair do jogo e tente de novo."); return null; }
+        if (Db.IsOnline(account))
+        {
+            // O servidor grava o personagem ao sair: a conta precisa sair ANTES de mexer, senao a alteracao e desfeita
+            if (!Confirm($"A conta {account} está online. Para zerar as habilidades master, o jogador precisa sair do jogo antes.\n\n" +
+                         $"Forçar o logout e continuar?{SameIpWarning(account)}"))
+                return null;
+            RunForceLogout(account);
+            Thread.Sleep(3000);   // margem para o DataServer terminar de gravar o personagem
+            if (Db.IsOnline(account)) { Log($"{account} ainda aparece online; nada foi alterado. Tente de novo em alguns segundos."); return null; }
+        }
         var character = PickCharacter(account);
         if (character == null) return null;
         if (!Confirm($"Zerar as habilidades master de {character}?\n\nAs habilidades aprendidas somem e os pontos master voltam a ficar livres (1 por Master Level). " +

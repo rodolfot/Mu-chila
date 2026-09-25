@@ -12,6 +12,21 @@ static class Program
         if (args.Length > 0 && args[0] == "--teste")
             return SelfTest(args.Length > 1 ? args[1] : Path.Combine(Path.GetTempPath(), "muchila-admin-teste.txt"));
 
+        // "--derrubar <pid> <ip> <arquivo>": usado pelo proprio painel, elevado, para o logout forcado (grava "fechadas erro")
+        if (args.Length == 4 && args[0] == "--derrubar")
+        {
+            var (closed, error) = ServerControl.DropConnections(int.Parse(args[1]), args[2]);
+            File.WriteAllText(args[3], $"{closed} {error}");
+            return closed > 0 ? 0 : 1;
+        }
+
+        // "--forcar-logout <conta> <arquivo>": o mesmo que o botao, sem abrir a janela
+        if (args.Length == 3 && args[0] == "--forcar-logout")
+        {
+            try { File.WriteAllText(args[2], ServerControl.ForceLogout(args[1])); return 0; }
+            catch (Exception ex) { File.WriteAllText(args[2], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "MuChilaAdmin.exe --zerar-master <conta> <personagem> <arquivo>": o mesmo que o botao, sem abrir a janela
         if (args.Length == 4 && args[0] == "--zerar-master")
         {
