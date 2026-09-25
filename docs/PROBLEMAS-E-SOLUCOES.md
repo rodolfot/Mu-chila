@@ -105,6 +105,15 @@ No fim, as pendências que ainda estão abertas.
 
 ## Pendências
 
+### Skill evoluída (Twisting Slash Strengthener etc.) para de causar dano (issue #12) — em investigação
+- **Sintoma:** com habilidades evoluídas na árvore master, depois de menos de 1 minuto usando a skill ela só faz a animação, sem efeito e sem dano. Os atributos da janela C continuam normais (não é o "Miss" do Quest1).
+- **Descartado (25/09/2026):**
+  - Configuração: `Skill.txt` e `MasterSkillTree.txt` coerentes (cada evolução substitui a skill certa: 326→22, 330→41, 331→42, 336→43, 339→336, 346→344; classe exigida compatível).
+  - Fórmulas (`Formula.txt`): as 35 habilidades master da mamaeupo dão valores normais de 0 a 20 pontos; nenhum NaN, infinito, zero ou estouro.
+  - Anti-hack: `CheckSpeedHack`, `CheckLatencyHack`, `CheckAutoPotionHack`, `CheckAutoComboHack` desligados; o `HackPacketCheck` desconecta (não bloqueia em silêncio) e não registrou nada no horário.
+  - Estado do personagem: o monitor de memória (1 foto/s) no teste das 19:38–19:39 mostrou o servidor aceitando golpes, gastando mana/AG e dando experiência até a personagem morrer às 19:40:00; nenhum campo travou ou congelou.
+- **Próximo passo:** registrar, durante um novo teste, cada pacote que o jogo manda (pelo log do `HackPacketCheck`, com limites altos para não desconectar), para saber se a skill evoluída ainda chega ao servidor depois de parar de dar dano (servidor recusando) ou se o jogo deixa de enviar (cliente).
+
 ### Confirmar as caixas no jogo
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.

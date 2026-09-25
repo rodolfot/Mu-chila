@@ -48,9 +48,18 @@ O código está pronto (`MuChilaProvedorMercadoPago` em `www\includes\muchila\Mu
 
 O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatura `x-signature` e a loja **consulta o pagamento na API** antes de entregar.
 
-### Atenção: hoje o VIP não dá vantagem no jogo
+### Planos (definidos pelo dono em 25/09/2026)
 
-Das 170 configurações por tipo de conta (`_AL0` comum, `_AL1`–`_AL3` VIP) nos `GameServerInfo - *.dat`, só 3 diferem, e nenhuma é vantagem: experiência (2000x), drop e o resto são iguais; o VIP **perde** o `CustomAttackEnable` (ataque automático customizado, ligado só para conta comum); e o VIP 1 tem o `CommandPostSellLevel` digitado errado (`CommandPostSellyLevel`). Definir os benefícios antes de vender VIP.
+| Plano | Tipo de conta | Experiência (e master) | Drop | Preço (30 dias) |
+|---|---|---|---|---|
+| Free | `_AL0` | 100x | 50% | — |
+| Vipzinho | `_AL1` | 300x | 80% | R$ 35 |
+| Vip | `_AL2` | 850x | 110% | R$ 40 |
+| Vipzão | `_AL3` | 2000x | 150% | R$ 50 |
+
+Taxas em `AddExperienceRate_ALn`, `AddMasterExperienceRate_ALn` e `ItemDropRate_ALn` do `GameServerInfo - Common.dat` (três GameServers), aplicadas com Reload Common. Antes todas as contas tinham 2000x/100%, e o VIP ainda perdia o ataque automático (`CustomAttackEnable_AL1..3 = 0`, agora 1) e tinha o `CommandPostSellLevel_AL1` digitado errado (corrigido).
+
+Ainda **não aplicado** (depende de decisão): a redução de experiência e drop pela metade depois de N resets (Free 10, Vipzinho/Vip 150, Vipzão 1000) e as "coins" de cada plano. O emulador só tem redução de experiência por reset igual para todos os tipos de conta (`Data\Util\ExperienceTable.txt`) e nenhuma redução de drop por reset; o servidor não guarda taxa por jogador (lê a do tipo de conta na hora).
 
 ## Segurança
 

@@ -121,9 +121,9 @@ CustomStoreOfflineText5 = You must be at least %d Resets to use the /offstore
 ;==================================================
 CustomAttackSwitch = 1
 CustomAttackEnable_AL0 = 1
-CustomAttackEnable_AL1 = 0
-CustomAttackEnable_AL2 = 0
-CustomAttackEnable_AL3 = 0
+CustomAttackEnable_AL1 = 1
+CustomAttackEnable_AL2 = 1
+CustomAttackEnable_AL3 = 1
 CustomAttackRequireLevel_AL0 = 0
 CustomAttackRequireLevel_AL1 = 0
 CustomAttackRequireLevel_AL2 = 0
