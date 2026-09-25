@@ -112,7 +112,14 @@ No fim, as pendências que ainda estão abertas.
   - Fórmulas (`Formula.txt`): as 35 habilidades master da mamaeupo dão valores normais de 0 a 20 pontos; nenhum NaN, infinito, zero ou estouro.
   - Anti-hack: `CheckSpeedHack`, `CheckLatencyHack`, `CheckAutoPotionHack`, `CheckAutoComboHack` desligados; o `HackPacketCheck` desconecta (não bloqueia em silêncio) e não registrou nada no horário.
   - Estado do personagem: o monitor de memória (1 foto/s) no teste das 19:38–19:39 mostrou o servidor aceitando golpes, gastando mana/AG e dando experiência até a personagem morrer às 19:40:00; nenhum campo travou ou congelou.
-- **Próximo passo:** registrar, durante um novo teste, cada pacote que o jogo manda (pelo log do `HackPacketCheck`, com limites altos para não desconectar), para saber se a skill evoluída ainda chega ao servidor depois de parar de dar dano (servidor recusando) ou se o jogo deixa de enviar (cliente).
+- **Capturado ao vivo (25/09/2026, 20:38–20:45, mamaeupo no mapa 8):**
+  - Pacotes do jogo (registro do `HackPacketCheck`): **49 pedidos de skill de duração (0x1E) em 54 s e nenhuma lista de alvos atingidos (0xDF)**. No GameServer: 0x1E → rotina `0x50B7A0` ("usei a skill": cobra mana/AG e confirma); 0xDF → `0x50B210` (aplica o dano nos alvos que o jogo informa); 0x11 → `0x415510` (golpe normal); 0x19 → `0x50B550`.
+  - O servidor **descartou os 0x1E sem cobrar mana nem AG**. Condições de recusa da `0x50B7A0` conferidas na memória: personagem jogando, vivo, sem contagem de saída, fora de área segura, fora do mapa 64 — todas normais. Sobra a checagem **`0x40ED40`**, que é código protegido (virtualizado) do MuDevs, recebe dois números de 4 bytes que o próprio jogo manda no pacote (+0x10 e +0x14) e usa um objeto de controle por jogador (`[obj+0xD34]`). Não há opção de configuração ligada a ela (`CheckSpeedHack` e afins estão em 0).
+  - Antes disso (20:31–20:40), em outro mapa, o servidor ainda cobrava mana e AG, mas sem dano: o jogo não mandava os 0xDF.
+  - O "último monstro morto" às 20:31:23 coincidiu com a saída do mapa de caça (123 → 57), não com o defeito.
+- **Contorno:** voltar para a seleção de personagem (ou relogar) faz a skill voltar a dar dano.
+- **Próximo teste:** registrar os pacotes **desde o login** (fluxo normal 0x1E + 0xDF) até a falha e gravar a lista de skills (`[obj+0x308]`) e o objeto da proteção (`[obj+0xD34]`) a cada segundo (monitor ampliado), para ver o que muda nele quando a skill passa a ser recusada.
+- Nota técnica: no `HackPacketCheck.txt`, `MinCount 0` desliga o registro; para registrar todo pacote use `MaxDelay 60000`, `MinCount 1`, `MaxCount` alto e `Reload Hack`, e volte o arquivo original depois.
 
 ### Confirmar as caixas no jogo
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
