@@ -88,6 +88,12 @@ No fim, as pendências que ainda estão abertas.
 - **Solução:** `EventItemBagManager.txt` voltou ao backup, os dois arquivos foram renomeados para `.desativado-*` e o GameServer e o Castle Siege foram religados. As caixas Season Level Reward continuam sem conteúdo, como no kit.
 - **Regra:** depois de mexer em qualquer arquivo de `Data`, confira no LOG se aparece o `loaded successfully` daquele item antes de dar o assunto por encerrado.
 
+### Janela de atributos (C) não atualiza os pontos depois de `/addstr` ou `/reset` (issues #1, #6, #7)
+- **Sintoma:** depois de `/addstr` (e `/addagi`, `/addvit`...), a força etc. mudam, mas "Pontos restantes" continua com o valor antigo. Depois do `/reset`, a janela continua mostrando o nível antigo. Suspeita para a #1 (janela travada): clicar no "+" com pontos que já não existem, o servidor recusa e a janela fica esperando.
+- **Causa (lida no código do GameServer):** o `/addstr` (`0x445D40`) soma o atributo, desconta os pontos (`+0x90`) e recalcula o personagem. O cliente recebe só o pacote `C1 1C EC 25`, com força, agilidade, vitalidade, energia e comando (base e adicional), **sem os pontos livres**. O cliente só recebe os pontos livres ao subir de nível ou ao entrar no personagem.
+- Os valores no servidor estão certos; é só a tela. Não há opção de configuração para mandar os pontos, e corrigir exigiria alterar o executável do servidor ou do cliente, que são fechados e protegidos.
+- **Contorno:** depois de `/addstr` ou `/reset`, trocar de personagem (ou relogar) antes de abrir a janela C. Os botões "+" da própria janela atualizam certo.
+
 ### Mensagens do servidor com acento aparecem como "invasÃ£o", "comeÃ§ou"
 - **Causa:** o `Portuguese.xml` estava em UTF-8. O servidor repassa os bytes do texto sem converter, e o cliente lê em Windows-1252, então cada letra acentuada (2 bytes em UTF-8) vira dois caracteres.
 - **Solução:** o arquivo foi salvo em **Windows-1252**, mantendo o cabeçalho `encoding="utf-8"`. Conferido na memória do GameServer: as 505 mensagens carregam, com os acentos em 1 byte (`ã` = E3).
