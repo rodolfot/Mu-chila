@@ -17,6 +17,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Data\Item\Item.txt` | `DropItem` 1 → 0 no Rune Mage Character Card (14,487) | Cartões de personagem não têm uso neste servidor |
 | `Data\Item\Item.txt` | `DropItem` 1 → 0 em 21 equipamentos que o cliente marca como intransferíveis (Legendary Rune 125/Bound, Rune Sphinx, Storm Jahad...) | Ficavam presos no inventário de quem pegava |
 | `GameServer*\DATA\GameServerInfo - Common.dat` | `HelperActiveLevel` 80 → 1 (nos três GameServers) | Issue #8: depois do `/reset` o personagem volta ao nível 1 e o MU Helper ficava bloqueado até o 80 |
+| `GameServer*\DATA\GameServerInfo - Common.dat` | `MasterSkillTreeMaxLevel` 330 → 600 (nos três GameServers); nível total máximo 730 → 1000 | Os melhores itens pedem nível total 800–1000 (Wings of Flame God 800, Soul Sword 900, Blue Eye 1000) e ficavam inalcançáveis |
 | `Data\Move\Gate.txt` | Portão 17 (chegada em Lorencia): X 133–151 → 133–143 | Issue #9: a área incluía o miolo da fonte (X 145–150, Y 126–129), que o servidor marca como livre e o cliente não deixa sair |
 | `Data\Item\Item.txt` | `DropItem` 1 → 0 em Frost Soul (14,449) e Soul Anvil (14,450) | Issue #10: nada no servidor usa esses itens e o cliente não deixa vender nem largar |
 | `Data\EventItemBag\009 - Box of Kundun 3.txt`, `187 - Devil’s Boxl.txt`, `188 - High Devil’s Box.txt` | Removidos os itens (7,23) e (7,76), que não existem no cliente nem no `Item.txt` | Issue #5: a caixa gerava um item fantasma, que aparecia como "+7" sem nome |

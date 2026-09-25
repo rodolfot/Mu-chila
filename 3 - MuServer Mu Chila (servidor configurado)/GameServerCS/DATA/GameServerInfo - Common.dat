@@ -303,7 +303,7 @@ ShieldGaugeAttackComboMiss = 0
 ;==================================================
 MasterSkillTree = 1
 MasterSkillTreePoint = 1
-MasterSkillTreeMaxLevel = 330
+MasterSkillTreeMaxLevel = 600
 
 ;==================================================
 ; Gens System Settings
