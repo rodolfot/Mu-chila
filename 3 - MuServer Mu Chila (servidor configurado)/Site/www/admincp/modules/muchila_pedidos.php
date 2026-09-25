@@ -44,7 +44,9 @@ try {
 		echo '<td><a href="'.admincp_base('searchaccount').'">'.$h($p['conta']).'</a></td><td>'.$h($p['descricao']).'</td><td>'.MuChilaLoja::real($p['valor']).'</td>';
 		echo '<td>'.$h($p['provedor']).($p['provedor_id'] ? '<br><small>'.$h($p['provedor_id']).'</small>' : '').'</td>';
 		echo '<td>'.$h(MuChilaLoja::statusTexto($p['status'])).'</td>';
-		echo '<td>'.($p['entregue_em'] ? MuChilaLoja::data($p['entregue_em']).'<br><small>'.$h($p['entregue_por']).'</small>' : '').'</td>';
+		$zen = (int)$p['zen'] > 0 && $p['status'] === 'entregue'
+			? '<br><small>Zen '.number_format((int)$p['zen'], 0, ',', '.').': '.($p['zen_entregue_em'] ? 'no baú' : '<strong>aguardando sair do jogo</strong>').'</small>' : '';
+		echo '<td>'.($p['entregue_em'] ? MuChilaLoja::data($p['entregue_em']).'<br><small>'.$h($p['entregue_por']).'</small>' : '').$zen.'</td>';
 		echo '<td><small>'.$h($p['obs']).'</small></td><td style="white-space:nowrap">';
 		if($aberto) {
 			echo '<form method="post" style="display:inline" onsubmit="return confirm(\'Entregar o pedido '.(int)$p['id'].' ('.$h($p['descricao']).') para '.$h($p['conta']).'? Use só se o pagamento foi conferido.\')">'

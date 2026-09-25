@@ -50,16 +50,18 @@ O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatu
 
 ### Planos (definidos pelo dono em 25/09/2026)
 
-| Plano | Tipo de conta | Experiência (e master) | Drop | Preço (30 dias) |
-|---|---|---|---|---|
-| Free | `_AL0` | 100x | 50% | — |
-| Vipzinho | `_AL1` | 300x | 80% | R$ 35 |
-| Vip | `_AL2` | 850x | 110% | R$ 40 |
-| Vipzão | `_AL3` | 2000x | 150% | R$ 50 |
+| Plano | Tipo de conta | Experiência (e master) | Drop | Zen no baú | Preço (30 dias) |
+|---|---|---|---|---|---|
+| Free | `_AL0` | 100x | 50% | — | — |
+| Vipzinho | `_AL1` | 300x | 80% | 200.000.000 | R$ 35 |
+| Vip | `_AL2` | 850x | 110% | 500.000.000 | R$ 40 |
+| Vipzão | `_AL3` | 2000x | 150% | 2.000.000.000 | R$ 50 |
+
+**Zen do VIP**: vai para o baú da conta (`warehouse.Money`, limite de 2 bilhões; se a conta nunca abriu o baú, ele é criado vazio). Só entra com a conta **fora do jogo** há 30 s: com o baú aberto, o servidor regravaria o valor antigo ao fechar. Comprado durante o jogo, o Zen fica "aguardando sair do jogo" e é entregue pela tarefa "Mu Chila - Zen do VIP" do agendador do site (a cada minuto) ou quando a pessoa abre a loja. O painel mostra a situação na coluna Entrega; o registro fica em `Site\logs\loja.log`.
 
 Taxas em `AddExperienceRate_ALn`, `AddMasterExperienceRate_ALn` e `ItemDropRate_ALn` do `GameServerInfo - Common.dat` (três GameServers), aplicadas com Reload Common. Antes todas as contas tinham 2000x/100%, e o VIP ainda perdia o ataque automático (`CustomAttackEnable_AL1..3 = 0`, agora 1) e tinha o `CommandPostSellLevel_AL1` digitado errado (corrigido).
 
-Ainda **não aplicado** (depende de decisão): a redução de experiência e drop pela metade depois de N resets (Free 10, Vipzinho/Vip 150, Vipzão 1000) e as "coins" de cada plano. O emulador só tem redução de experiência por reset igual para todos os tipos de conta (`Data\Util\ExperienceTable.txt`) e nenhuma redução de drop por reset; o servidor não guarda taxa por jogador (lê a do tipo de conta na hora).
+**Não aplicado (decisão do dono, 25/09/2026)**: a redução de experiência e drop pela metade depois de N resets (Free 10, Vipzinho/Vip 150, Vipzão 1000). O emulador só tem redução de experiência por reset igual para todos os tipos de conta (`Data\Util\ExperienceTable.txt`: MinReset/MaxReset → ExperienceRate) e nenhuma redução de drop por reset; o servidor não guarda taxa por jogador (lê a do tipo de conta na hora), então uma regra diferente por plano exigiria alterar o executável.
 
 ## Segurança
 
@@ -82,7 +84,8 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\includes\config\muchila.pacotes.json`, `modules\usercp.loja.xml` | Pacotes/preços e configuração da loja |
 | `sql\MUCHILA_PEDIDOS.sql` | Tabela dos pedidos (já criada) |
 | `conf\httpd.conf`, `conf\php.ini` | Cópia da configuração do Apache e do PHP |
-| `testes\teste-loja.php` | Teste do núcleo (14 cenários, conta descartável `lojateste`) |
+| `www\includes\cron\muchila_zen.php` | Tarefa do agendador: Zen pendente do VIP (registrada pelo `Instalar-Modulos.ps1` com o MD5 do arquivo) |
+| `testes\teste-loja.php` | Teste do núcleo (19 cenários, conta descartável `lojateste`) |
 | `testes\teste-site.ps1` | Teste pelo navegador (10 cenários, conta descartável `sitetest1`): `.\teste-site.ps1 -Admin yolaxd -AdminSenha <senha>` |
 
 Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "Loja" no menu do topo e item "Loja: VIP e Cash" no menu do jogador; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin.

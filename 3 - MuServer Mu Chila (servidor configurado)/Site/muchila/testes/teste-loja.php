@@ -33,6 +33,27 @@ try {
     $c = $loja->conta($conta);
     confere('renovação soma aos dias restantes (~60 dias)', abs(strtotime($c['vip_expira']) - strtotime('+60 days')) < 180, $c['vip_expira']);
 
+    // 3b) Zen de bônus do VIP no baú (a conta de teste nunca abriu o baú e está fora do jogo)
+    $zenBau = function() use ($db, $conta) { $s = $db->prepare("SELECT Money FROM warehouse WHERE AccountID = ?"); $s->execute([$conta]); return $s->fetchColumn(); };
+    $s = $db->prepare("SELECT DATALENGTH(Items) AS n, CASE WHEN Items = CAST(REPLICATE(CAST(CHAR(255) AS varchar(max)), 3840) AS varbinary(3840)) THEN 1 ELSE 0 END AS vazio FROM warehouse WHERE AccountID = ?");
+    $s->execute([$conta]); $bau = $s->fetch();
+    confere('Zen dos 2 VIP 1 no baú criado vazio (2 x 200.000.000)', (int)$zenBau() === 400000000 && (int)$bau['n'] === 3840 && (int)$bau['vazio'] === 1, 'baú=' . $zenBau());
+    // no jogo: o Zen espera a conta sair
+    $db->prepare("DELETE FROM MEMB_STAT WHERE memb___id = ?; INSERT INTO MEMB_STAT (memb___id, ConnectStat, ServerName, IP, ConnectTM, DisConnectTM) VALUES (?, 1, 'Teste', '127.0.0.1', GETDATE(), GETDATE())")->execute([$conta, $conta]);
+    $pz = $loja->criarPedido($conta, 'vip1-30', '127.0.0.1');
+    $loja->simular((int)$pz['id'], $conta, true);
+    $pz = $loja->pedido((int)$pz['id']);
+    confere('comprado no jogo: VIP entregue, Zen aguardando', $pz['status'] === 'entregue' && $pz['zen_entregue_em'] === null && (int)$zenBau() === 400000000);
+    confere('tarefa não entrega Zen com a conta no jogo', count($loja->entregarZenPendente($conta)) === 0 && (int)$zenBau() === 400000000);
+    $db->prepare("UPDATE MEMB_STAT SET ConnectStat = 0, DisConnectTM = DATEADD(minute, -1, GETDATE()) WHERE memb___id = ?")->execute([$conta]);
+    $feitos = $loja->entregarZenPendente($conta);
+    confere('depois de sair do jogo, a tarefa entrega o Zen uma vez', count($feitos) === 1 && (int)$zenBau() === 600000000 && count($loja->entregarZenPendente($conta)) === 0, implode(' | ', $feitos));
+    // limite de 2 bilhões
+    $db->prepare("UPDATE warehouse SET Money = 1900000000 WHERE AccountID = ?")->execute([$conta]);
+    $pl = $loja->criarPedido($conta, 'vip1-30', '127.0.0.1');
+    $loja->simular((int)$pl['id'], $conta, true);
+    confere('Zen para no limite de 2.000.000.000', (int)$zenBau() === 2000000000 && str_contains((string)$loja->pedido((int)$pl['id'])['obs'], 'limite'), (string)$loja->pedido((int)$pl['id'])['obs']);
+
     // 4) outro nível com VIP ativo é recusado
     try { $loja->criarPedido($conta, 'vip2-30', '127.0.0.1'); confere('VIP 2 com VIP 1 ativo é recusado', false); }
     catch (Exception $e) { confere('VIP 2 com VIP 1 ativo é recusado', true, $e->getMessage()); }
@@ -72,7 +93,9 @@ try {
 } finally {
     $db->prepare("DELETE FROM MUCHILA_PEDIDOS WHERE conta = ?")->execute([$conta]);
     $db->prepare("DELETE FROM CashShopData WHERE AccountID = ?")->execute([$conta]);
+    $db->prepare("DELETE FROM warehouse WHERE AccountID = ?")->execute([$conta]);
+    $db->prepare("DELETE FROM MEMB_STAT WHERE memb___id = ?")->execute([$conta]);
     $db->prepare("DELETE FROM MEMB_INFO WHERE memb___id = ?")->execute([$conta]);
-    echo "limpeza: conta $conta, pedidos e cash apagados" . PHP_EOL;
+    echo "limpeza: conta $conta, pedidos, cash, baú e status apagados" . PHP_EOL;
 }
 echo "resultado: $ok ok, $falhas falha(s)" . PHP_EOL;

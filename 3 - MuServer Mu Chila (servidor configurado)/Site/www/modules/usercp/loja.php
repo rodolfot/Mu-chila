@@ -15,6 +15,7 @@ $csrf = $_SESSION['muchila_csrf'];
 $erro = null;
 try {
 	$loja = new MuChilaLoja();
+	$loja->entregarZenPendente($conta);   // Zen de VIP comprado enquanto estava no jogo (a tarefa do minuto também faz)
 
 	// POST antes de qualquer saída: depois de comprar, redireciona para o pedido (atualizar a página não compra de novo)
 	if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -72,7 +73,11 @@ if(isset($_GET['pedido'])) {
 	} elseif($p['status'] === 'entregue') {
 		if($p['tipo'] === 'vip') {
 			$c = $loja->conta($conta);
-			message('success', 'Pagamento confirmado! VIP '.(int)$c['vip_nivel'].' ativo até <strong>'.MuChilaLoja::data($c['vip_expira']).'</strong>. Se você estiver jogando, saia e entre de novo para o VIP valer.');
+			$zen = (int)$p['zen'];
+			$zenTexto = $zen <= 0 ? '' : ($p['zen_entregue_em']
+				? ' '.number_format($zen, 0, ',', '.').' de Zen foram colocados no seu baú.'
+				: ' O bônus de '.number_format($zen, 0, ',', '.').' de Zen vai para o seu baú assim que você sair do jogo (até 1 minuto depois).');
+			message('success', 'Pagamento confirmado! VIP '.(int)$c['vip_nivel'].' ativo até <strong>'.MuChilaLoja::data($c['vip_expira']).'</strong>.'.$zenTexto.' Se você estiver jogando, saia e entre de novo para o VIP valer.');
 		} else {
 			message('success', 'Pagamento confirmado! '.number_format((int)$p['cash'], 0, ',', '.').' de cash creditados. Abra a Cash Shop no jogo (se o saldo não aparecer, saia e entre de novo).');
 		}
@@ -101,6 +106,7 @@ foreach($grupos as $tipo => $titulo) {
 		$bloqueado = $tipo === 'vip' && $c['vip_ativo'] && (int)$c['vip_nivel'] !== (int)$p['vip_nivel'];
 		echo '<div class="col-xs-12 col-sm-4"><div class="panel panel-general"><div class="panel-body text-center">';
 		echo '<p><strong>'.$h($p['nome']).'</strong></p><p style="font-size:18px">'.MuChilaLoja::real($p['valor']).'</p>';
+		if(!empty($p['zen'])) echo '<p><small>+ '.number_format((int)$p['zen'], 0, ',', '.').' de Zen no baú</small></p>';
 		if($bloqueado) {
 			echo '<p><small>Disponível quando o seu VIP '.(int)$c['vip_nivel'].' acabar.</small></p>';
 		} else {

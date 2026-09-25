@@ -15,6 +15,7 @@
 class MuChilaLoja
 {
     const PENDENTE = 'pendente', ENTREGUE = 'entregue', CANCELADO = 'cancelado', EXPIRADO = 'expirado', FALHOU = 'falhou';
+    const ZEN_MAXIMO = 2000000000;   // limite de Zen do baú no jogo
 
     public PDO $db;
     public array $cfg;
@@ -55,6 +56,7 @@ class MuChilaLoja
         $lista = [];
         foreach ($json['pacotes'] as $p) {
             if (empty($p['ativo']) || !isset($p['id'], $p['tipo'], $p['nome'], $p['valor'])) continue;
+            $p['zen'] = min(self::ZEN_MAXIMO, max(0, (int)($p['zen'] ?? 0)));   // bônus opcional do VIP, no baú
             if ($p['tipo'] === 'vip' && (int)($p['vip_nivel'] ?? 0) >= 1 && (int)($p['vip_dias'] ?? 0) >= 1
                 || $p['tipo'] === 'cash' && (int)($p['cash'] ?? 0) >= 1) $lista[$p['id']] = $p;
         }
@@ -166,11 +168,12 @@ class MuChilaLoja
             throw new Exception('Você já tem pedidos aguardando pagamento. Pague ou espere eles expirarem antes de criar outro.');
 
         $prov = $this->provedor();
-        $st = $this->db->prepare("INSERT INTO MUCHILA_PEDIDOS (conta, pacote, tipo, descricao, valor, vip_nivel, vip_dias, cash, provedor, expira, ip)
-            OUTPUT INSERTED.id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, DATEADD(minute, CAST(? AS int), GETDATE()), ?)");
+        $st = $this->db->prepare("INSERT INTO MUCHILA_PEDIDOS (conta, pacote, tipo, descricao, valor, vip_nivel, vip_dias, cash, zen, provedor, expira, ip)
+            OUTPUT INSERTED.id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, DATEADD(minute, CAST(? AS int), GETDATE()), ?)");
         $st->execute([$conta, $p['id'], $p['tipo'], $p['nome'], number_format((float)$p['valor'], 2, '.', ''),
             $p['tipo'] === 'vip' ? (int)$p['vip_nivel'] : null, $p['tipo'] === 'vip' ? (int)$p['vip_dias'] : null,
-            $p['tipo'] === 'cash' ? (int)$p['cash'] : null, $prov->nome(), max(5, (int)$this->cfg['expira_minutos']), substr($ip, 0, 45)]);
+            $p['tipo'] === 'cash' ? (int)$p['cash'] : null, $p['zen'] > 0 ? $p['zen'] : null,
+            $prov->nome(), max(5, (int)$this->cfg['expira_minutos']), substr($ip, 0, 45)]);
         $id = (int)$st->fetchColumn();
         $pedido = $this->pedido($id);
 
@@ -238,6 +241,14 @@ class MuChilaLoja
                     WHERE memb___id = ?");
                 $up->execute([$p['vip_nivel'], $p['vip_dias'], $p['vip_nivel'], $p['conta']]);
                 $obs = sprintf('VIP antes: nível %d até %s', $a['AccountLevel'], self::data($a['AccountExpireDate']));
+                if ((int)$p['zen'] > 0) {
+                    if ($this->contaFora($p['conta'])) {
+                        $obs .= '; ' . $this->depositarZen($p['conta'], (int)$p['zen']);
+                        $this->db->prepare("UPDATE MUCHILA_PEDIDOS SET zen_entregue_em = GETDATE() WHERE id = ?")->execute([$id]);
+                    } else {
+                        $obs .= '; Zen aguardando a conta sair do jogo';
+                    }
+                }
             } else {
                 $up = $this->db->prepare("UPDATE CashShopData SET WCoinC = ISNULL(WCoinC, 0) + ? WHERE AccountID = ?");
                 $up->execute([$p['cash'], $p['conta']]);
@@ -252,6 +263,63 @@ class MuChilaLoja
             if ($this->db->inTransaction()) $this->db->rollBack();
             return $this->marcar($id, self::FALHOU, 'Entrega falhou: ' . $e->getMessage(), [self::PENDENTE, self::EXPIRADO, self::FALHOU]);
         }
+    }
+
+    /** Conta fora do jogo há pelo menos 30 s (o servidor já gravou o baú). */
+    public function contaFora(string $conta): bool
+    {
+        $st = $this->db->prepare("SELECT COUNT(*) FROM MEMB_STAT WHERE memb___id = ?
+            AND (ConnectStat = 1 OR DATEDIFF(second, DisConnectTM, GETDATE()) < 30)");
+        $st->execute([$conta]);
+        return (int)$st->fetchColumn() === 0;
+    }
+
+    /** Soma Zen no baú da conta (cria o baú vazio se ela nunca abriu), sem passar do limite do jogo. Chamar dentro de transação. */
+    private function depositarZen(string $conta, int $zen): string
+    {
+        $st = $this->db->prepare("SELECT ISNULL(Money, 0) FROM warehouse WITH (UPDLOCK, ROWLOCK) WHERE AccountID = ?");
+        $st->execute([$conta]);
+        $antes = $st->fetchColumn();
+        if ($antes === false) {
+            $this->db->prepare("INSERT INTO warehouse (AccountID, Items, Money, EndUseDate, DbVersion, pw)
+                VALUES (?, CAST(REPLICATE(CAST(CHAR(255) AS varchar(max)), 3840) AS varbinary(3840)), ?, GETDATE(), 3, 0)")
+                ->execute([$conta, min($zen, self::ZEN_MAXIMO)]);
+            $antes = 0; $depois = min($zen, self::ZEN_MAXIMO);
+            $criado = ' (baú criado)';
+        } else {
+            $depois = min(self::ZEN_MAXIMO, (int)$antes + $zen);
+            $this->db->prepare("UPDATE warehouse SET Money = ? WHERE AccountID = ?")->execute([$depois, $conta]);
+            $criado = '';
+        }
+        $somado = $depois - (int)$antes;
+        return sprintf('Zen no baú: %s + %s = %s%s%s', number_format((int)$antes, 0, ',', '.'), number_format($somado, 0, ',', '.'),
+            number_format($depois, 0, ',', '.'), $somado < $zen ? ' (limite de 2 bilhões; ' . number_format($zen - $somado, 0, ',', '.') . ' não couberam)' : '', $criado);
+    }
+
+    /** Entrega o Zen que ficou aguardando porque a conta estava no jogo (tarefa a cada minuto e ao abrir a loja). */
+    public function entregarZenPendente(?string $conta = null): array
+    {
+        $st = $this->db->prepare("SELECT id, conta, zen FROM MUCHILA_PEDIDOS WHERE status = 'entregue' AND zen > 0 AND zen_entregue_em IS NULL"
+            . ($conta !== null ? " AND conta = ?" : "") . " ORDER BY id");
+        $st->execute($conta !== null ? [$conta] : []);
+        $feitos = [];
+        foreach ($st->fetchAll() as $p) {
+            if (!$this->contaFora($p['conta'])) continue;
+            $this->db->beginTransaction();
+            try {
+                $up = $this->db->prepare("UPDATE MUCHILA_PEDIDOS SET zen_entregue_em = GETDATE() WHERE id = ? AND zen_entregue_em IS NULL");
+                $up->execute([$p['id']]);
+                if ($up->rowCount() !== 1) { $this->db->rollBack(); continue; }
+                $obs = $this->depositarZen($p['conta'], (int)$p['zen']);
+                $this->anotar((int)$p['id'], $obs);
+                $this->db->commit();
+                $feitos[] = "pedido {$p['id']} ({$p['conta']}): $obs";
+            } catch (Exception $e) {
+                if ($this->db->inTransaction()) $this->db->rollBack();
+                $feitos[] = "pedido {$p['id']} ({$p['conta']}): falha ao entregar o Zen: " . $e->getMessage();
+            }
+        }
+        return $feitos;
     }
 
     public function cancelar(int $id, string $motivo): string

@@ -83,6 +83,21 @@ foreach ($idioma in 'pt', 'en') {
     }
 }
 
+# 4b. banco: tabela/colunas da loja (script reaplicável) e tarefa "Mu Chila - Zen do VIP" no agendador (MD5 = md5_file do WebEngine)
+sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -f 65001 -i (Join-Path $PSScriptRoot 'sql\MUCHILA_PEDIDOS.sql') | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao aplicar sql\MUCHILA_PEDIDOS.sql' }
+$md5 = (Get-FileHash (Join-Path $www 'includes\cron\muchila_zen.php') -Algorithm MD5).Hash.ToLower()
+$r = sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -h -1 -W -Q @"
+SET NOCOUNT ON;
+IF EXISTS (SELECT 1 FROM WEBENGINE_CRON WHERE cron_file_run = 'muchila_zen.php')
+BEGIN UPDATE WEBENGINE_CRON SET cron_file_md5 = '$md5' WHERE cron_file_run = 'muchila_zen.php' AND cron_file_md5 <> '$md5'; SELECT 'ja feito: tarefa Zen do VIP' + CASE WHEN @@ROWCOUNT > 0 THEN ' (MD5 atualizado)' ELSE '' END; END
+ELSE BEGIN INSERT INTO WEBENGINE_CRON (cron_name, cron_description, cron_file_run, cron_run_time, cron_last_run, cron_status, cron_protected, cron_file_md5)
+    VALUES ('Mu Chila - Zen do VIP', 'Entrega o Zen de bonus do VIP no bau das contas que ja sairam do jogo', 'muchila_zen.php', '60', NULL, 1, 0, '$md5');
+    SELECT 'aplicado: tarefa Zen do VIP no agendador'; END
+"@
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao registrar a tarefa do Zen' }
+$r
+
 # 5. painel admin
 Ajustar 'admincp\index.php' 'muchila_pedidos' {
     param($t)

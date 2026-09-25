@@ -1,4 +1,4 @@
-# Teste de ponta a ponta do site (como um navegador): cadastro, loja (modo de teste), rankings e painel admin.
+﻿# Teste de ponta a ponta do site (como um navegador): cadastro, loja (modo de teste), rankings e painel admin.
 # Usa a conta descartável sitetest1 e apaga tudo no final.
 # Uso: .\teste-site.ps1 -Admin <conta admin do site> -AdminSenha <senha>
 param([string]$Base = 'http://localhost', [Parameter(Mandatory)][string]$Admin, [Parameter(Mandatory)][string]$AdminSenha)
@@ -21,7 +21,7 @@ try {
     # loja
     $r = Invoke-WebRequest "$Base/usercp/loja" -WebSession $s -UseBasicParsing
     $t = Texto $r
-    Confere 'loja abre logado, em modo de teste, com os pacotes' ($t -match 'MODO DE TESTE' -and $t -match 'VIP 1 - 30 dias' -and $t -match '1\.000 Cash') ($t.Substring(0, [Math]::Min(300, $t.Length)))
+    Confere 'loja abre logado, em modo de teste, com os pacotes' ($t -match 'MODO DE TESTE' -and $t -match 'Vipzinho \(VIP 1\)' -and $t -match '200\.000\.000 de Zen no baú' -and $t -match '1\.000 Cash') ($t.Substring(0, [Math]::Min(300, $t.Length)))
     $r = Invoke-WebRequest "$Base/usercp/loja" -WebSession $s -UseBasicParsing -Method Post -Body @{ csrf = (Csrf $r); comprar = 'cash-1000' }
     $pedido = [regex]::Match($r.BaseResponse.RequestMessage.RequestUri.Query, 'pedido=(\d+)').Groups[1].Value
     $t = Texto $r

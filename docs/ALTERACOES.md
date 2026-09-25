@@ -46,7 +46,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 - Gatilho `TR_MuChila_ClasseInicial` (DW, DK, Elfa e Summoner nascem na 2ª classe) e +1 de classe nos personagens que estavam na básica (24/09/2026).
 - `DefaultClassType.Inventory` (inventário inicial de cada classe): tirados os Wizard's Ring +1 e +2 (Warrior's Ring e Champion's Ring), que todo personagem novo ganhava presos ao personagem e sem efeito (issue #11, 24/09/2026). Personagens já criados continuam com eles. Backup em `C:\MuServer\DB\backup-caixas-DefaultClassType-inventario-*.csv`.
 - Caixas sem suporte removidas de inventários, inventários de evento e baús (backup em `C:\MuServer\DB\backup-caixas-*.csv`).
-- Site (25/09/2026, ver [SITE.md](SITE.md)): login SQL `muchila_site` (leitura, escrita e criação de tabelas no `MuOnlineS14`), 18 tabelas `WEBENGINE_*` do instalador do WebEngine e a tabela `MUCHILA_PEDIDOS` da loja.
+- Site (25/09/2026, ver [SITE.md](SITE.md)): login SQL `muchila_site` (leitura, escrita e criação de tabelas no `MuOnlineS14`), 18 tabelas `WEBENGINE_*` do instalador do WebEngine e a tabela `MUCHILA_PEDIDOS` da loja (com `zen`/`zen_entregue_em` para o Zen do VIP) e a tarefa "Mu Chila - Zen do VIP" na `WEBENGINE_CRON`. A entrega do Zen cria a linha do baú (`warehouse`) de quem nunca abriu o baú.
 - Contas criadas pelos jogadores (ex.: `dodo`) ficam só no banco. **Não há backup do banco neste repositório**, porque ele teria as senhas dos jogadores.
 
 ## ODBC
