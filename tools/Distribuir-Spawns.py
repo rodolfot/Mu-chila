@@ -2,11 +2,14 @@
 #  - grupos pequenos (GRUPO monstros numa caixa 5x5) espalhados por igual na área original de cada monstro
 #    (centros por k-means sobre o chão livre, que ocupam o meio da área em vez das bordas);
 #  - pontos de farm: caixas 7x7 com FARM monstros do tipo mais comum de cada região, longe da cidade.
-# O total de monstros de cada mapa não muda (o farm sai da cota do próprio monstro).
+# O total de monstros de cada mapa não muda (o farm sai da cota do próprio monstro), exceto os mapas em EXTRA.
+# Só conta o chão alcançável andando a partir da cidade ou de um ponto de chegada de portal (Gate.txt).
+# Atenção: rodar sem --mapas refaz os 43 mapas; as regras de portal/alcance (26/09) mudam um pouco a posição dos grupos.
 # Ficam como no kit: chefes/raros (1-2 no mapa ou respawn >= 10 min), armadilhas (MoveRange 0), Crywolf e Refúgio de Balgass.
 # Uso: python tools\Distribuir-Spawns.py              -> simula e mostra a cobertura antes/depois
 #      python tools\Distribuir-Spawns.py --png <pasta> -> também desenha os mapas (cinza chão, verde cidade, amarelo farm, vermelho grupos)
 #      python tools\Distribuir-Spawns.py --gravar      -> grava em C:\MuServer (backup .bak-*); depois Reload Monster no GameServer
+#      --mapas 57,110 limita a esses mapas (os outros ficam como estão)
 import os, re, sys, glob, shutil, datetime, collections
 import numpy as np
 
@@ -23,6 +26,11 @@ DIST_CIDADE_GRUPO = 3
 ALIAS_TERRENO = {25: 24, 26: 24, 27: 24, 28: 24, 29: 24, 124: 123, 125: 123, 126: 123, 127: 123}
 PULAR = {34, 42}                    # Crywolf e Refúgio de Balgass: spawns ligados a eventos
 RAIO_COBERTURA = 10
+DIST_PORTAL = 6                     # nenhum grupo ou farm a menos de 6 tiles de um portal (chegada ou saída)
+# Ajustes por mapa (26/09): a área de cada monstro cresce N tiles em volta dos spawns do kit; MAPA_TODO = o mapa inteiro
+MAPA_TODO = -1
+AMPLIAR = {57: 10, 110: MAPA_TODO}  # Raklion: kit com pontos soltos; Nars: kit só nas bordas (3 monstros do mesmo nível)
+EXTRA = {57: 40, 110: 60}           # monstros a mais por mapa, divididos entre os monstros do mapa (limite do GS: 10.000)
 
 def info_monstros():
     info = {}
@@ -38,6 +46,16 @@ def terreno(mapa):
     if not os.path.exists(f): return None
     b = open(f, 'rb').read()
     return np.frombuffer(b[3:], dtype=np.uint8).reshape(256, 256) if len(b) == 65539 else None   # [y][x]
+
+def portais(mapa, so_chegada=False):
+    # Gate.txt: Index Flag Map X1 Y1 X2 Y2 TargetGate ...; TargetGate 0 = ponto de chegada (quem usa o portal/move aparece ali)
+    m = np.zeros((256, 256), bool)
+    for l in open(os.path.join(SERVIDOR, 'Move', 'Gate.txt'), encoding='cp1252'):
+        v = l.split()
+        if len(v) >= 8 and v[0].isdigit() and v[2] == str(mapa) and (not so_chegada or v[7] == '0'):
+            x1, x2 = sorted((int(v[3]), int(v[5]))); y1, y2 = sorted((int(v[4]), int(v[6])))
+            m[y1:y2 + 1, x1:x2 + 1] = True
+    return m
 
 def configs(xml):
     out = []
@@ -69,8 +87,8 @@ def dilatar(mask, r):
                | p[:-2, :-2] | p[:-2, 2:] | p[2:, :-2] | p[2:, 2:])      # 8 vizinhos: quadrado de raio r
     return out
 
-def sem_bolsoes(andavel, minimo=300):
-    # remove pedaços de chão isolados (menos de `minimo` tiles), onde ninguém chega andando
+def alcancavel(andavel, sementes):
+    # chão ligado (andando) a algum ponto de chegada de portal ou à cidade; o resto ninguém alcança
     vis = np.zeros_like(andavel); ok = np.zeros_like(andavel)
     for y0, x0 in zip(*np.nonzero(andavel)):
         if vis[y0, x0]: continue
@@ -80,8 +98,8 @@ def sem_bolsoes(andavel, minimo=300):
             for yy, xx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
                 if 0 <= yy < 256 and 0 <= xx < 256 and andavel[yy, xx] and not vis[yy, xx]:
                     vis[yy, xx] = True; pilha.append((yy, xx))
-        if len(comp) >= minimo:
-            ys, xs = zip(*comp); ok[ys, xs] = True
+        ys, xs = zip(*comp)
+        if sementes[ys, xs].any(): ok[ys, xs] = True
     return ok
 
 def kmeans(pts, k, semente, fixos=None):
@@ -116,10 +134,12 @@ def planejar(mapa, xml_kit, xml_atual, info):
     if att is None: return None
     livre_monstro = (att & 0x0D) == 0
     cidade = (att & 0x01) != 0
-    alcance = sem_bolsoes((att & 0x0C) == 0)
+    alcance = alcancavel((att & 0x0C) == 0, dilatar(portais(mapa, so_chegada=True), 2) | cidade)
     valido = livre_monstro & alcance
     caixa_g, caixa_f = soma_caixa(valido, MEIA_GRUPO), soma_caixa(valido, MEIA_FARM)
     perto_cidade, porta_cidade = dilatar(cidade, DIST_CIDADE), dilatar(cidade, DIST_CIDADE_GRUPO)
+    perto_portal = dilatar(portais(mapa), DIST_PORTAL)
+    ampliar = AMPLIAR.get(mapa, 0)
     por_cls = collections.defaultdict(list)
     for c in configs(xml_kit): por_cls[c['cls']].append(c)
     mover, intocados = {}, []
@@ -130,13 +150,21 @@ def planejar(mapa, xml_kit, xml_atual, info):
             intocados.append(mi['nome'] if mi else f'#{cls}'); continue
         reg = np.zeros((256, 256), bool)
         for c in lst:
-            x1, y1, x2, y2 = c['rect']; reg[y1:y2 + 1, x1:x2 + 1] = True
+            x1, y1, x2, y2 = c['rect']; a = max(0, ampliar)
+            reg[max(0, y1 - a):y2 + a + 1, max(0, x1 - a):x2 + a + 1] = True
+        if ampliar == MAPA_TODO: reg[:] = True
         reg &= valido
         if (reg & (caixa_g >= MIN_LIVRE_GRUPO)).sum() == 0:
             intocados.append(f"{mi['nome']} (sem chão)"); continue
         mover[cls] = {'n': n, 'reg': reg, 'elem': lst[0]['elem'], 'nome': mi['nome'], 'nivel': mi['nivel'], 'raws': [c['raw'] for c in lst]}
         area_total |= reg
     if not mover: return None
+    kit_total = sum(m['n'] for m in mover.values())
+    extra = EXTRA.get(mapa, 0)
+    for j, cls in enumerate(sorted(mover, key=lambda c: -mover[c]['n'])):      # monstros a mais, proporcionais ao kit
+        mover[cls]['n'] += extra * mover[cls]['n'] // kit_total
+    sobra = kit_total + extra - sum(m['n'] for m in mover.values())
+    for cls in sorted(mover, key=lambda c: -mover[c]['n'])[:sobra]: mover[cls]['n'] += 1
     # ---- pontos de farm: os monstros mais numerosos, no ponto mais central da área de cada um
     total = sum(m['n'] for m in mover.values())
     nfarm = max(1, min(5, round(total / FARM_POR_MONSTROS)))
@@ -147,7 +175,7 @@ def planejar(mapa, xml_kit, xml_atual, info):
             if len(farms) >= nfarm: break
             m = mover[cls]
             if m['n'] - FARM * (usados[cls] + 1) < GRUPO or usados[cls] > rodada: continue
-            cand = m['reg'] & (caixa_f >= MIN_LIVRE_FARM) & ~perto_cidade
+            cand = m['reg'] & (caixa_f >= MIN_LIVRE_FARM) & ~perto_cidade & ~perto_portal
             ys, xs = np.nonzero(cand)
             if not len(xs): continue
             pts = np.stack([xs, ys], 1)
@@ -169,7 +197,7 @@ def planejar(mapa, xml_kit, xml_atual, info):
         k = min(k, len(pts))
         fixos = [(x, y) for x, y, *_ in grupos] + [(x, y) for x, y, _ in farms]
         centros = kmeans(pts, k, 20260926 + mapa * 1000 + cls, fixos)
-        bons = m['reg'] & (caixa_g >= MIN_LIVRE_GRUPO) & ~bloqueio_farm & ~porta_cidade
+        bons = m['reg'] & (caixa_g >= MIN_LIVRE_GRUPO) & ~bloqueio_farm & ~porta_cidade & ~perto_portal
         if not bons.any(): bons = m['reg'] & (caixa_g >= MIN_LIVRE_GRUPO)
         by, bx = np.nonzero(bons); bpts = np.stack([bx, by], 1); ocupado = set()
         for j, c in enumerate(centros):
@@ -179,8 +207,10 @@ def planejar(mapa, xml_kit, xml_atual, info):
             q = resto // k + (1 if j < resto % k else 0)
             grupos.append((int(p[0]), int(p[1]), cls, q))
     antes = [((c['rect'][0] + c['rect'][2]) // 2, (c['rect'][1] + c['rect'][3]) // 2) for c in configs(xml_atual) if c['cls'] in mover]
-    return {'att': att, 'valido': valido & area_total, 'mover': mover, 'farms': farms, 'grupos': grupos, 'intocados': intocados,
-            'cob_antes': cobertura(antes, valido & area_total), 'cob_depois': cobertura([(x, y) for x, y, _, _ in grupos] + [(x, y) for x, y, _ in farms], valido & area_total)}
+    depois = [(x, y) for x, y, _, _ in grupos] + [(x, y) for x, y, _ in farms]
+    return {'att': att, 'valido': valido & area_total, 'mover': mover, 'farms': farms, 'grupos': grupos, 'intocados': intocados, 'kit_total': kit_total,
+            'cob_antes': cobertura(antes, valido & area_total), 'cob_depois': cobertura(depois, valido & area_total),
+            'mapa_antes': cobertura(antes, valido), 'mapa_depois': cobertura(depois, valido)}
 
 def gerar_xml(xml_kit, plano, info):
     remover = set(r for m in plano['mover'].values() for r in m['raws'])
@@ -216,12 +246,13 @@ if __name__ == '__main__':
     if '--grupo' in sys.argv: GRUPO = int(sys.argv[sys.argv.index('--grupo') + 1])
     png = sys.argv[sys.argv.index('--png') + 1] if '--png' in sys.argv else None
     if png: os.makedirs(png, exist_ok=True)
+    so_mapas = {int(x) for x in sys.argv[sys.argv.index('--mapas') + 1].split(',')} if '--mapas' in sys.argv else None
     stamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
     tot_a = tot_d = 0
-    print(f'{"mapa":<26}{"monstros":>9}{"grupos":>8}{"farms":>6}  cobertura (raio {RAIO_COBERTURA}) antes -> depois   farms')
+    print(f'{"mapa":<26}{"monstros":>9}{"grupos":>8}{"farms":>6}  cobertura (raio {RAIO_COBERTURA}) da área dos monstros | do mapa todo   farms')
     for arq_kit in sorted(glob.glob(os.path.join(KIT, '*.xml'))):
         nome = os.path.basename(arq_kit); mapa = int(nome[:3])
-        if mapa in PULAR: continue
+        if mapa in PULAR or (so_mapas and mapa not in so_mapas): continue
         destino = os.path.join(DESTINO, nome)
         if not os.path.exists(destino): continue
         xml_kit = open(arq_kit, encoding='utf-8').read(); xml_atual = open(destino, encoding='utf-8').read()
@@ -230,7 +261,8 @@ if __name__ == '__main__':
         n = sum(m['n'] for m in plano['mover'].values()); n2 = sum(q for *_, q in plano['grupos']) + FARM * len(plano['farms'])
         assert n == n2, (nome, n, n2)
         fs = ', '.join(f"{plano['mover'][c]['nome']} ({x},{y})" for x, y, c in plano['farms'])
-        print(f'{nome[:-4]:<26}{n:>9}{len(plano["grupos"]):>8}{len(plano["farms"]):>6}  {plano["cob_antes"]:5.1f}% -> {plano["cob_depois"]:5.1f}%   {fs}')
+        mon = f'{n}' if n == plano['kit_total'] else f"{plano['kit_total']}+{n - plano['kit_total']}"
+        print(f'{nome[:-4]:<26}{mon:>9}{len(plano["grupos"]):>8}{len(plano["farms"]):>6}  {plano["cob_antes"]:5.1f}% -> {plano["cob_depois"]:5.1f}% | {plano["mapa_antes"]:5.1f}% -> {plano["mapa_depois"]:5.1f}%   {fs}')
         tot_a += plano['cob_antes'] * plano['valido'].sum(); tot_d += plano['cob_depois'] * plano['valido'].sum()
         if png: desenhar(plano, os.path.join(png, nome[:-4] + '.png'))
         if gravar:

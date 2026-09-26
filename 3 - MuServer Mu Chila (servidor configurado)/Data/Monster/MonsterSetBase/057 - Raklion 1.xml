@@ -11,43 +11,54 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="563" Range="3" BeginPosX="34" BeginPosY="215" EndPosX="38" EndPosY="219" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
-		<Config Class="563" Range="3" BeginPosX="118" BeginPosY="40" EndPosX="122" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
-		<Config Class="563" Range="3" BeginPosX="57" BeginPosY="88" EndPosX="61" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
-		<Config Class="563" Range="3" BeginPosX="138" BeginPosY="21" EndPosX="142" EndPosY="25" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
-		<Config Class="458" Range="3" BeginPosX="206" BeginPosY="34" EndPosX="210" EndPosY="38" Direction="-1" Quantity="4" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="458" Range="3" BeginPosX="227" BeginPosY="135" EndPosX="231" EndPosY="139" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="458" Range="3" BeginPosX="197" BeginPosY="99" EndPosX="201" EndPosY="103" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="458" Range="3" BeginPosX="121" BeginPosY="181" EndPosX="125" EndPosY="185" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="458" Range="3" BeginPosX="96" BeginPosY="176" EndPosX="100" EndPosY="180" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="458" Range="3" BeginPosX="138" BeginPosY="130" EndPosX="142" EndPosY="134" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="458" Range="3" BeginPosX="99" BeginPosY="214" EndPosX="103" EndPosY="218" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="565" Range="3" BeginPosX="32" BeginPosY="47" EndPosX="36" EndPosY="51" Direction="-1" Quantity="4" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="565" Range="3" BeginPosX="93" BeginPosY="25" EndPosX="97" EndPosY="29" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="565" Range="3" BeginPosX="30" BeginPosY="118" EndPosX="34" EndPosY="122" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="565" Range="3" BeginPosX="47" BeginPosY="191" EndPosX="51" EndPosY="195" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="565" Range="3" BeginPosX="62" BeginPosY="37" EndPosX="66" EndPosY="41" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
-		<Config Class="564" Range="3" BeginPosX="61" BeginPosY="157" EndPosX="65" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
-		<Config Class="564" Range="3" BeginPosX="33" BeginPosY="66" EndPosX="37" EndPosY="70" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
-		<Config Class="564" Range="3" BeginPosX="26" BeginPosY="197" EndPosX="30" EndPosY="201" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
-		<Config Class="564" Range="3" BeginPosX="32" BeginPosY="144" EndPosX="36" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
-		<Config Class="564" Range="3" BeginPosX="105" BeginPosY="35" EndPosX="109" EndPosY="39" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
-		<Config Class="456" Range="3" BeginPosX="161" BeginPosY="181" EndPosX="165" EndPosY="185" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
-		<Config Class="456" Range="3" BeginPosX="197" BeginPosY="144" EndPosX="201" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
-		<Config Class="456" Range="3" BeginPosX="134" BeginPosY="104" EndPosX="138" EndPosY="108" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
-		<Config Class="456" Range="3" BeginPosX="157" BeginPosY="213" EndPosX="161" EndPosY="217" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
-		<Config Class="456" Range="3" BeginPosX="168" BeginPosY="186" EndPosX="172" EndPosY="190" Direction="-1" Quantity="2" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
-		<Config Class="457" Range="3" BeginPosX="194" BeginPosY="118" EndPosX="198" EndPosY="122" Direction="-1" Quantity="3" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
-		<Config Class="457" Range="3" BeginPosX="149" BeginPosY="193" EndPosX="153" EndPosY="197" Direction="-1" Quantity="3" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
-		<Config Class="457" Range="3" BeginPosX="220" BeginPosY="90" EndPosX="224" EndPosY="94" Direction="-1" Quantity="3" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
-		<Config Class="457" Range="3" BeginPosX="141" BeginPosY="212" EndPosX="145" EndPosY="216" Direction="-1" Quantity="2" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
-		<Config Class="454" Range="3" BeginPosX="180" BeginPosY="201" EndPosX="184" EndPosY="205" Direction="-1" Quantity="4" Element="0" /> <!-- "Ice Walker" (Mu Chila: grupo) -->
+		<Config Class="458" Range="3" BeginPosX="206" BeginPosY="39" EndPosX="210" EndPosY="43" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="458" Range="3" BeginPosX="99" BeginPosY="210" EndPosX="103" EndPosY="214" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="458" Range="3" BeginPosX="131" BeginPosY="100" EndPosX="135" EndPosY="104" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="458" Range="3" BeginPosX="126" BeginPosY="138" EndPosX="130" EndPosY="142" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="458" Range="3" BeginPosX="207" BeginPosY="110" EndPosX="211" EndPosY="114" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="458" Range="3" BeginPosX="119" BeginPosY="179" EndPosX="123" EndPosY="183" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="33" BeginPosY="217" EndPosX="37" EndPosY="221" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="121" BeginPosY="41" EndPosX="125" EndPosY="45" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="45" BeginPosY="86" EndPosX="49" EndPosY="90" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="134" BeginPosY="23" EndPosX="138" EndPosY="27" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="42" BeginPosY="193" EndPosX="46" EndPosY="197" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="96" BeginPosY="29" EndPosX="100" EndPosY="33" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="44" BeginPosY="144" EndPosX="48" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Giant" (Mu Chila: grupo) -->
+		<Config Class="564" Range="3" BeginPosX="31" BeginPosY="113" EndPosX="35" EndPosY="117" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
+		<Config Class="564" Range="3" BeginPosX="62" BeginPosY="32" EndPosX="66" EndPosY="36" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
+		<Config Class="564" Range="3" BeginPosX="60" BeginPosY="152" EndPosX="64" EndPosY="156" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
+		<Config Class="564" Range="3" BeginPosX="25" BeginPosY="200" EndPosX="29" EndPosY="204" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
+		<Config Class="564" Range="3" BeginPosX="35" BeginPosY="57" EndPosX="39" EndPosY="61" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
+		<Config Class="564" Range="3" BeginPosX="129" BeginPosY="45" EndPosX="133" EndPosY="49" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
+		<Config Class="564" Range="3" BeginPosX="63" BeginPosY="90" EndPosX="67" EndPosY="94" Direction="-1" Quantity="2" Element="0" /> <!-- "Dark Coolutin" (Mu Chila: grupo) -->
+		<Config Class="565" Range="3" BeginPosX="60" BeginPosY="84" EndPosX="64" EndPosY="88" Direction="-1" Quantity="4" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="565" Range="3" BeginPosX="105" BeginPosY="20" EndPosX="109" EndPosY="24" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="565" Range="3" BeginPosX="72" BeginPosY="85" EndPosX="76" EndPosY="89" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="565" Range="3" BeginPosX="35" BeginPosY="127" EndPosX="39" EndPosY="131" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="565" Range="3" BeginPosX="80" BeginPosY="30" EndPosX="84" EndPosY="34" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="565" Range="3" BeginPosX="136" BeginPosY="35" EndPosX="140" EndPosY="39" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="565" Range="3" BeginPosX="69" BeginPosY="101" EndPosX="73" EndPosY="105" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Iron Knight" (Mu Chila: grupo) -->
+		<Config Class="456" Range="3" BeginPosX="163" BeginPosY="184" EndPosX="167" EndPosY="188" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
+		<Config Class="456" Range="3" BeginPosX="198" BeginPosY="144" EndPosX="202" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
+		<Config Class="456" Range="3" BeginPosX="190" BeginPosY="107" EndPosX="194" EndPosY="111" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
+		<Config Class="456" Range="3" BeginPosX="171" BeginPosY="208" EndPosX="175" EndPosY="212" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
+		<Config Class="456" Range="3" BeginPosX="148" BeginPosY="210" EndPosX="152" EndPosY="214" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
+		<Config Class="456" Range="3" BeginPosX="93" BeginPosY="191" EndPosX="97" EndPosY="195" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Giant" (Mu Chila: grupo) -->
+		<Config Class="457" Range="3" BeginPosX="194" BeginPosY="124" EndPosX="198" EndPosY="128" Direction="-1" Quantity="3" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
+		<Config Class="457" Range="3" BeginPosX="181" BeginPosY="137" EndPosX="185" EndPosY="141" Direction="-1" Quantity="3" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
+		<Config Class="457" Range="3" BeginPosX="222" BeginPosY="95" EndPosX="226" EndPosY="99" Direction="-1" Quantity="3" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
+		<Config Class="457" Range="3" BeginPosX="144" BeginPosY="190" EndPosX="148" EndPosY="194" Direction="-1" Quantity="3" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
+		<Config Class="457" Range="3" BeginPosX="214" BeginPosY="84" EndPosX="218" EndPosY="88" Direction="-1" Quantity="2" Element="0" /> <!-- "Coolutin" (Mu Chila: grupo) -->
+		<Config Class="454" Range="3" BeginPosX="202" BeginPosY="97" EndPosX="206" EndPosY="101" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Walker" (Mu Chila: grupo) -->
+		<Config Class="454" Range="3" BeginPosX="179" BeginPosY="197" EndPosX="183" EndPosY="201" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Walker" (Mu Chila: grupo) -->
 		<Config Class="454" Range="3" BeginPosX="198" BeginPosY="201" EndPosX="202" EndPosY="205" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Walker" (Mu Chila: grupo) -->
 		<Config Class="455" Range="3" BeginPosX="221" BeginPosY="148" EndPosX="225" EndPosY="152" Direction="-1" Quantity="3" Element="0" /> <!-- "Giant Mammoth" (Mu Chila: grupo) -->
-		<Config Class="455" Range="3" BeginPosX="170" BeginPosY="209" EndPosX="174" EndPosY="213" Direction="-1" Quantity="2" Element="0" /> <!-- "Giant Mammoth" (Mu Chila: grupo) -->
-		<Config Class="562" Range="3" BeginPosX="88" BeginPosY="114" EndPosX="92" EndPosY="118" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Mammoth" (Mu Chila: grupo) -->
-		<Config Class="562" Range="3" BeginPosX="106" BeginPosY="103" EndPosX="110" EndPosY="107" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Mammoth" (Mu Chila: grupo) -->
-		<Config Class="563" Range="3" BeginPosX="62" BeginPosY="133" EndPosX="68" EndPosY="139" Direction="-1" Quantity="12" Element="0" /> <!-- "Dark Giant" (Mu Chila: farm) -->
+		<Config Class="455" Range="3" BeginPosX="160" BeginPosY="217" EndPosX="164" EndPosY="221" Direction="-1" Quantity="3" Element="0" /> <!-- "Giant Mammoth" (Mu Chila: grupo) -->
+		<Config Class="562" Range="3" BeginPosX="83" BeginPosY="114" EndPosX="87" EndPosY="118" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Mammoth" (Mu Chila: grupo) -->
+		<Config Class="562" Range="3" BeginPosX="117" BeginPosY="94" EndPosX="121" EndPosY="98" Direction="-1" Quantity="3" Element="0" /> <!-- "Dark Mammoth" (Mu Chila: grupo) -->
+		<Config Class="562" Range="3" BeginPosX="101" BeginPosY="107" EndPosX="105" EndPosY="111" Direction="-1" Quantity="2" Element="0" /> <!-- "Dark Mammoth" (Mu Chila: grupo) -->
+		<Config Class="563" Range="3" BeginPosX="65" BeginPosY="121" EndPosX="71" EndPosY="127" Direction="-1" Quantity="12" Element="0" /> <!-- "Dark Giant" (Mu Chila: farm) -->
+		<Config Class="458" Range="3" BeginPosX="158" BeginPosY="127" EndPosX="164" EndPosY="133" Direction="-1" Quantity="12" Element="0" /> <!-- "Iron Knight" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

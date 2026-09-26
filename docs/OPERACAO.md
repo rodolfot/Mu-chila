@@ -143,7 +143,12 @@ Desde 26/09/2026 os spawns dos mapas de caça são gerados por `tools\Distribuir
   - Quantidade: 1 a 5 por mapa (1 a cada 100 monstros).
   - Monstro: os mais numerosos do mapa.
   - Posição: pelo menos 18 tiles da cidade e 40 tiles entre um farm e outro.
-- **Números:** 2.602 grupos e 84 farms. O total de monstros de cada mapa é igual ao do kit.
+- **Chão que conta:** só o que é alcançável andando a partir da cidade ou de algum ponto de chegada de portal (`Data\Move\Gate.txt`, portais com `TargetGate = 0`). Nenhum grupo ou farm fica a menos de 6 tiles de um portal.
+- **Ajustes por mapa** (`AMPLIAR` e `EXTRA` no início do script):
+  - **Raklion:** a área de cada monstro cresce 10 tiles em volta dos pontos do kit e o mapa ganhou 40 monstros (120 → 160). O kit usa pontos soltos e sobravam corredores vazios.
+  - **Nars:** os monstros usam o mapa todo e o mapa ganhou 60 monstros (115 → 175). O kit só tinha retângulos pequenos nas bordas; os 3 monstros de Nars têm nível 116–120.
+  - **Cobertura ao vivo:** Raklion foi de 31% para 64% e Nars de 17% para 57%.
+- **Números:** cerca de 2.630 grupos e 86 farms. Fora Raklion e Nars, o total de monstros de cada mapa é igual ao do kit.
   - O GameServer aceita no máximo 10.000 monstros e está com cerca de 9.080; o título da janela mostra `MonsterCount`.
 - **Ficam como no kit:**
   - chefes e raros (1 ou 2 no mapa, ou respawn de 10 minutos ou mais);
@@ -156,6 +161,7 @@ Desde 26/09/2026 os spawns dos mapas de caça são gerados por `tools\Distribuir
   - `--png <pasta>` desenha os mapas: grupos em vermelho, farms em amarelo.
   - `--grupo N` muda o tamanho do grupo.
   - `--gravar` grava, com backup `.bak-*`.
+  - `--mapas 57,110` limita a esses mapas; os outros não são tocados.
 - **Aplicar no ar:** Reload Monster no GameServer (recria todos os monstros e limpa invasões em andamento).
   - Land of Trials (31) e Barracks (41) ficam no servidor do Castle Siege e só mudam quando ele reinicia. Não use Reload Monster no Castle Siege, que recria também os monstros do cerco.
 - **Histórico:** em 23/09 os spawns tinham virado 1.676 grupos de 5, com centros escolhidos pelo "ponto mais distante". Esse método empurrava os grupos para as bordas e cantos de cada área e deixava o meio dos mapas vazio.
