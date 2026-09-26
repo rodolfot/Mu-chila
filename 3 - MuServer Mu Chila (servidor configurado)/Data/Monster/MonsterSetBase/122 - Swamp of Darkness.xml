@@ -5,167 +5,154 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="787" Range="3" BeginPosX="217" BeginPosY="182" EndPosX="221" EndPosY="186" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="72" BeginPosY="119" EndPosX="76" EndPosY="123" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="234" BeginPosY="89" EndPosX="238" EndPosY="93" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="22" BeginPosY="40" EndPosX="26" EndPosY="44" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="178" BeginPosY="190" EndPosX="182" EndPosY="194" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="197" BeginPosY="96" EndPosX="201" EndPosY="100" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="45" BeginPosY="103" EndPosX="49" EndPosY="107" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="125" BeginPosY="41" EndPosX="129" EndPosY="45" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
 		<Config Class="787" Range="3" BeginPosX="47" BeginPosY="204" EndPosX="51" EndPosY="208" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="193" BeginPosY="83" EndPosX="197" EndPosY="87" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="126" BeginPosY="38" EndPosX="130" EndPosY="42" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="43" BeginPosY="133" EndPosX="47" EndPosY="137" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="169" BeginPosY="191" EndPosX="173" EndPosY="195" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="86" BeginPosY="106" EndPosX="90" EndPosY="110" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="193" BeginPosY="108" EndPosX="197" EndPosY="112" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="63" BeginPosY="52" EndPosX="67" EndPosY="56" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="32" BeginPosY="69" EndPosX="36" EndPosY="73" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="221" BeginPosY="176" EndPosX="225" EndPosY="180" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="74" BeginPosY="175" EndPosX="78" EndPosY="179" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="91" BeginPosY="147" EndPosX="95" EndPosY="151" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="110" BeginPosY="178" EndPosX="114" EndPosY="182" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="217" BeginPosY="124" EndPosX="221" EndPosY="128" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="29" BeginPosY="58" EndPosX="33" EndPosY="62" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="221" BeginPosY="106" EndPosX="225" EndPosY="110" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="42" BeginPosY="95" EndPosX="46" EndPosY="99" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="207" BeginPosY="176" EndPosX="211" EndPosY="180" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="78" BeginPosY="18" EndPosX="82" EndPosY="22" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="63" BeginPosY="77" EndPosX="67" EndPosY="81" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="46" BeginPosY="108" EndPosX="50" EndPosY="112" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="129" BeginPosY="58" EndPosX="133" EndPosY="62" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="189" BeginPosY="66" EndPosX="193" EndPosY="70" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="241" BeginPosY="71" EndPosX="245" EndPosY="75" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="147" BeginPosY="40" EndPosX="151" EndPosY="44" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="40" BeginPosY="24" EndPosX="44" EndPosY="28" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="207" BeginPosY="85" EndPosX="211" EndPosY="89" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="43" BeginPosY="156" EndPosX="47" EndPosY="160" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="56" BeginPosY="171" EndPosX="60" EndPosY="175" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="147" BeginPosY="188" EndPosX="151" EndPosY="192" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="125" BeginPosY="45" EndPosX="129" EndPosY="49" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="83" BeginPosY="120" EndPosX="87" EndPosY="124" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="79" BeginPosY="106" EndPosX="83" EndPosY="110" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="224" BeginPosY="191" EndPosX="228" EndPosY="195" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="78" BeginPosY="33" EndPosX="82" EndPosY="37" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="158" BeginPosY="175" EndPosX="162" EndPosY="179" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="64" BeginPosY="116" EndPosX="68" EndPosY="120" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="210" BeginPosY="195" EndPosX="214" EndPosY="199" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="209" BeginPosY="101" EndPosX="213" EndPosY="105" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="196" BeginPosY="96" EndPosX="200" EndPosY="100" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="75" BeginPosY="73" EndPosX="79" EndPosY="77" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="65" BeginPosY="23" EndPosX="69" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
 		<Config Class="787" Range="3" BeginPosX="219" BeginPosY="87" EndPosX="223" EndPosY="91" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="40" BeginPosY="70" EndPosX="44" EndPosY="74" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="78" BeginPosY="33" EndPosX="82" EndPosY="37" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="74" BeginPosY="170" EndPosX="78" EndPosY="174" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="215" BeginPosY="194" EndPosX="219" EndPosY="198" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="43" BeginPosY="133" EndPosX="47" EndPosY="137" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="43" BeginPosY="156" EndPosX="47" EndPosY="160" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="36" BeginPosY="70" EndPosX="40" EndPosY="74" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="71" BeginPosY="75" EndPosX="75" EndPosY="79" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="214" BeginPosY="178" EndPosX="218" EndPosY="182" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="157" BeginPosY="174" EndPosX="161" EndPosY="178" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="91" BeginPosY="147" EndPosX="95" EndPosY="151" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="147" BeginPosY="188" EndPosX="151" EndPosY="192" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="66" BeginPosY="117" EndPosX="70" EndPosY="121" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="206" BeginPosY="85" EndPosX="210" EndPosY="89" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="79" BeginPosY="106" EndPosX="83" EndPosY="110" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="193" BeginPosY="108" EndPosX="197" EndPosY="112" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="111" BeginPosY="178" EndPosX="115" EndPosY="182" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="65" BeginPosY="54" EndPosX="69" EndPosY="58" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="242" BeginPosY="70" EndPosX="246" EndPosY="74" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
 		<Config Class="787" Range="3" BeginPosX="182" BeginPosY="84" EndPosX="186" EndPosY="88" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="787" Range="3" BeginPosX="71" BeginPosY="104" EndPosX="75" EndPosY="108" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="88" BeginPosY="218" EndPosX="92" EndPosY="222" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="125" BeginPosY="187" EndPosX="129" EndPosY="191" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="163" BeginPosY="51" EndPosX="167" EndPosY="55" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="230" BeginPosY="147" EndPosX="234" EndPosY="151" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="22" BeginPosY="40" EndPosX="26" EndPosY="44" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="30" BeginPosY="59" EndPosX="34" EndPosY="63" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="129" BeginPosY="57" EndPosX="133" EndPosY="61" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="144" BeginPosY="49" EndPosX="148" EndPosY="53" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="40" BeginPosY="24" EndPosX="44" EndPosY="28" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="232" BeginPosY="91" EndPosX="236" EndPosY="95" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="217" BeginPosY="124" EndPosX="221" EndPosY="128" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="56" BeginPosY="171" EndPosX="60" EndPosY="175" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="74" BeginPosY="177" EndPosX="78" EndPosY="181" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="65" BeginPosY="22" EndPosX="69" EndPosY="26" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="188" BeginPosY="100" EndPosX="192" EndPosY="104" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="209" BeginPosY="101" EndPosX="213" EndPosY="105" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="114" BeginPosY="188" EndPosX="118" EndPosY="192" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="148" BeginPosY="38" EndPosX="152" EndPosY="42" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="107" BeginPosY="168" EndPosX="111" EndPosY="172" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="221" BeginPosY="106" EndPosX="225" EndPosY="110" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="167" BeginPosY="189" EndPosX="171" EndPosY="193" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="193" BeginPosY="85" EndPosX="197" EndPosY="89" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="190" BeginPosY="66" EndPosX="194" EndPosY="70" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="60" BeginPosY="46" EndPosX="64" EndPosY="50" Direction="-1" Quantity="3" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="787" Range="3" BeginPosX="78" BeginPosY="18" EndPosX="82" EndPosY="22" Direction="-1" Quantity="2" Element="1" /> <!-- "Wooden Beast" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="200" BeginPosY="213" EndPosX="204" EndPosY="217" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
 		<Config Class="786" Range="3" BeginPosX="151" BeginPosY="210" EndPosX="155" EndPosY="214" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
 		<Config Class="786" Range="3" BeginPosX="222" BeginPosY="57" EndPosX="226" EndPosY="61" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="64" BeginPosY="146" EndPosX="68" EndPosY="150" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="183" BeginPosY="170" EndPosX="187" EndPosY="174" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="237" BeginPosY="149" EndPosX="241" EndPosY="153" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="51" BeginPosY="23" EndPosX="55" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="117" BeginPosY="213" EndPosX="121" EndPosY="217" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="183" BeginPosY="197" EndPosX="187" EndPosY="201" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="100" BeginPosY="231" EndPosX="104" EndPosY="235" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="194" BeginPosY="122" EndPosX="198" EndPosY="126" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="73" BeginPosY="217" EndPosX="77" EndPosY="221" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="94" BeginPosY="186" EndPosX="98" EndPosY="190" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="71" BeginPosY="194" EndPosX="75" EndPosY="198" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="18" BeginPosY="160" EndPosX="22" EndPosY="164" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="200" BeginPosY="213" EndPosX="204" EndPosY="217" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="172" BeginPosY="211" EndPosX="176" EndPosY="215" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="205" BeginPosY="61" EndPosX="209" EndPosY="65" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="24" BeginPosY="90" EndPosX="28" EndPosY="94" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="158" BeginPosY="201" EndPosX="162" EndPosY="205" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="73" BeginPosY="63" EndPosX="77" EndPosY="67" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="198" BeginPosY="185" EndPosX="202" EndPosY="189" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="228" BeginPosY="168" EndPosX="232" EndPosY="172" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="49" BeginPosY="187" EndPosX="53" EndPosY="191" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="36" BeginPosY="187" EndPosX="40" EndPosY="191" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="236" BeginPosY="140" EndPosX="240" EndPosY="144" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="64" BeginPosY="129" EndPosX="68" EndPosY="133" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="39" BeginPosY="169" EndPosX="43" EndPosY="173" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="182" BeginPosY="212" EndPosX="186" EndPosY="216" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="92" BeginPosY="174" EndPosX="96" EndPosY="178" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="189" BeginPosY="223" EndPosX="193" EndPosY="227" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="77" BeginPosY="185" EndPosX="81" EndPosY="189" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="73" BeginPosY="206" EndPosX="77" EndPosY="210" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="91" BeginPosY="227" EndPosX="95" EndPosY="231" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="116" BeginPosY="202" EndPosX="120" EndPosY="206" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="191" BeginPosY="165" EndPosX="195" EndPosY="169" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="194" BeginPosY="150" EndPosX="198" EndPosY="154" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="141" BeginPosY="171" EndPosX="145" EndPosY="175" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="113" BeginPosY="24" EndPosX="117" EndPosY="28" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="191" BeginPosY="201" EndPosX="195" EndPosY="205" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="232" BeginPosY="156" EndPosX="236" EndPosY="160" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="50" BeginPosY="213" EndPosX="54" EndPosY="217" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="63" BeginPosY="217" EndPosX="67" EndPosY="221" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="210" BeginPosY="70" EndPosX="214" EndPosY="74" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="213" BeginPosY="164" EndPosX="217" EndPosY="168" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="216" BeginPosY="165" EndPosX="220" EndPosY="169" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="88" BeginPosY="218" EndPosX="92" EndPosY="222" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
 		<Config Class="786" Range="3" BeginPosX="101" BeginPosY="46" EndPosX="105" EndPosY="50" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="108" BeginPosY="49" EndPosX="112" EndPosY="53" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="81" BeginPosY="160" EndPosX="85" EndPosY="164" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="98" BeginPosY="94" EndPosX="102" EndPosY="98" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="786" Range="3" BeginPosX="67" BeginPosY="163" EndPosX="71" EndPosY="167" Direction="-1" Quantity="2" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="129" BeginPosY="201" EndPosX="133" EndPosY="205" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="101" BeginPosY="35" EndPosX="105" EndPosY="39" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="102" BeginPosY="84" EndPosX="106" EndPosY="88" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="64" BeginPosY="128" EndPosX="68" EndPosY="132" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="18" BeginPosY="160" EndPosX="22" EndPosY="164" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="194" BeginPosY="122" EndPosX="198" EndPosY="126" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="113" BeginPosY="23" EndPosX="117" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="116" BeginPosY="202" EndPosX="120" EndPosY="206" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="35" BeginPosY="187" EndPosX="39" EndPosY="191" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="189" BeginPosY="223" EndPosX="193" EndPosY="227" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="64" BeginPosY="145" EndPosX="68" EndPosY="149" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="50" BeginPosY="213" EndPosX="54" EndPosY="217" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="195" BeginPosY="184" EndPosX="199" EndPosY="188" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="71" BeginPosY="193" EndPosX="75" EndPosY="197" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="230" BeginPosY="147" EndPosX="234" EndPosY="151" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="170" BeginPosY="214" EndPosX="174" EndPosY="218" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="64" BeginPosY="217" EndPosX="68" EndPosY="221" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="208" BeginPosY="67" EndPosX="212" EndPosY="71" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="236" BeginPosY="142" EndPosX="240" EndPosY="146" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="69" BeginPosY="203" EndPosX="73" EndPosY="207" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="42" BeginPosY="85" EndPosX="46" EndPosY="89" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="201" BeginPosY="188" EndPosX="205" EndPosY="192" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="48" BeginPosY="181" EndPosX="52" EndPosY="185" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="175" BeginPosY="205" EndPosX="179" EndPosY="209" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="189" BeginPosY="199" EndPosX="193" EndPosY="203" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="191" BeginPosY="165" EndPosX="195" EndPosY="169" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="76" BeginPosY="162" EndPosX="80" EndPosY="166" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="145" BeginPosY="176" EndPosX="149" EndPosY="180" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="117" BeginPosY="213" EndPosX="121" EndPosY="217" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="95" BeginPosY="186" EndPosX="99" EndPosY="190" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="100" BeginPosY="231" EndPosX="104" EndPosY="235" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="78" BeginPosY="185" EndPosX="82" EndPosY="189" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="74" BeginPosY="207" EndPosX="78" EndPosY="211" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="182" BeginPosY="212" EndPosX="186" EndPosY="216" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="51" BeginPosY="190" EndPosX="55" EndPosY="194" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="39" BeginPosY="169" EndPosX="43" EndPosY="173" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="183" BeginPosY="170" EndPosX="187" EndPosY="174" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="92" BeginPosY="173" EndPosX="96" EndPosY="177" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="51" BeginPosY="23" EndPosX="55" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="158" BeginPosY="201" EndPosX="162" EndPosY="205" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="234" BeginPosY="154" EndPosX="238" EndPosY="158" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="73" BeginPosY="217" EndPosX="77" EndPosY="221" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="91" BeginPosY="227" EndPosX="95" EndPosY="231" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="24" BeginPosY="90" EndPosX="28" EndPosY="94" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="194" BeginPosY="150" EndPosX="198" EndPosY="154" Direction="-1" Quantity="3" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="786" Range="3" BeginPosX="108" BeginPosY="49" EndPosX="112" EndPosY="53" Direction="-1" Quantity="2" Element="1" /> <!-- "Swarmface" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="124" BeginPosY="201" EndPosX="128" EndPosY="205" Direction="-1" Quantity="4" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="86" BeginPosY="48" EndPosX="90" EndPosY="52" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="102" BeginPosY="82" EndPosX="106" EndPosY="86" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
 		<Config Class="788" Range="3" BeginPosX="149" BeginPosY="22" EndPosX="153" EndPosY="26" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
 		<Config Class="788" Range="3" BeginPosX="97" BeginPosY="21" EndPosX="101" EndPosY="25" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="86" BeginPosY="48" EndPosX="90" EndPosY="52" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="21" BeginPosY="141" EndPosX="25" EndPosY="145" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="88" BeginPosY="70" EndPosX="92" EndPosY="74" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="24" BeginPosY="140" EndPosX="28" EndPosY="144" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
 		<Config Class="788" Range="3" BeginPosX="226" BeginPosY="133" EndPosX="230" EndPosY="137" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="230" BeginPosY="77" EndPosX="234" EndPosY="81" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="208" BeginPosY="152" EndPosX="212" EndPosY="156" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="239" BeginPosY="115" EndPosX="243" EndPosY="119" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="94" BeginPosY="200" EndPosX="98" EndPosY="204" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="121" BeginPosY="224" EndPosX="125" EndPosY="228" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="20" BeginPosY="204" EndPosX="24" EndPosY="208" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="101" BeginPosY="195" EndPosX="105" EndPosY="199" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="215" BeginPosY="224" EndPosX="219" EndPosY="228" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="238" BeginPosY="117" EndPosX="242" EndPosY="121" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="98" BeginPosY="197" EndPosX="102" EndPosY="201" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
 		<Config Class="788" Range="3" BeginPosX="237" BeginPosY="130" EndPosX="241" EndPosY="134" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="100" BeginPosY="76" EndPosX="104" EndPosY="80" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="105" BeginPosY="23" EndPosX="109" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="23" BeginPosY="203" EndPosX="27" EndPosY="207" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="131" BeginPosY="201" EndPosX="135" EndPosY="205" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="215" BeginPosY="224" EndPosX="219" EndPosY="228" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="21" BeginPosY="204" EndPosX="25" EndPosY="208" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="207" BeginPosY="148" EndPosX="211" EndPosY="152" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="200" BeginPosY="203" EndPosX="204" EndPosY="207" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
 		<Config Class="788" Range="3" BeginPosX="183" BeginPosY="158" EndPosX="187" EndPosY="162" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="90" BeginPosY="59" EndPosX="94" EndPosY="63" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
 		<Config Class="788" Range="3" BeginPosX="226" BeginPosY="140" EndPosX="230" EndPosY="144" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="238" BeginPosY="119" EndPosX="242" EndPosY="123" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="87" BeginPosY="70" EndPosX="91" EndPosY="74" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="788" Range="3" BeginPosX="104" BeginPosY="19" EndPosX="108" EndPosY="23" Direction="-1" Quantity="2" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="222" BeginPosY="23" EndPosX="226" EndPosY="27" Direction="-1" Quantity="4" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="234" BeginPosY="47" EndPosX="238" EndPosY="51" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="104" BeginPosY="21" EndPosX="108" EndPosY="25" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="121" BeginPosY="224" EndPosX="125" EndPosY="228" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="209" BeginPosY="154" EndPosX="213" EndPosY="158" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="90" BeginPosY="59" EndPosX="94" EndPosY="63" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="788" Range="3" BeginPosX="19" BeginPosY="142" EndPosX="23" EndPosY="146" Direction="-1" Quantity="3" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="131" BeginPosY="26" EndPosX="135" EndPosY="30" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="219" BeginPosY="28" EndPosX="223" EndPosY="32" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="22" BeginPosY="96" EndPosX="26" EndPosY="100" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="126" BeginPosY="166" EndPosX="130" EndPosY="170" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="160" BeginPosY="152" EndPosX="164" EndPosY="156" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="218" BeginPosY="24" EndPosX="222" EndPosY="28" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="159" BeginPosY="163" EndPosX="163" EndPosY="167" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="124" BeginPosY="166" EndPosX="128" EndPosY="170" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="159" BeginPosY="161" EndPosX="163" EndPosY="165" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="19" BeginPosY="49" EndPosX="23" EndPosY="53" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="54" BeginPosY="164" EndPosX="58" EndPosY="168" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="110" BeginPosY="62" EndPosX="114" EndPosY="66" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="20" BeginPosY="190" EndPosX="24" EndPosY="194" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="233" BeginPosY="54" EndPosX="237" EndPosY="58" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="24" BeginPosY="24" EndPosX="28" EndPosY="28" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="124" BeginPosY="17" EndPosX="128" EndPosY="21" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="59" BeginPosY="171" EndPosX="63" EndPosY="175" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="239" BeginPosY="53" EndPosX="243" EndPosY="57" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="128" BeginPosY="27" EndPosX="132" EndPosY="31" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="237" BeginPosY="53" EndPosX="241" EndPosY="57" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="123" BeginPosY="27" EndPosX="127" EndPosY="31" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="127" BeginPosY="17" EndPosX="131" EndPosY="21" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="129" BeginPosY="166" EndPosX="133" EndPosY="170" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="49" BeginPosY="62" EndPosX="53" EndPosY="66" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="28" BeginPosY="16" EndPosX="32" EndPosY="20" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="144" BeginPosY="61" EndPosX="148" EndPosY="65" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="73" BeginPosY="225" EndPosX="77" EndPosY="229" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="20" BeginPosY="197" EndPosX="24" EndPosY="201" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="150" BeginPosY="197" EndPosX="154" EndPosY="201" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="130" BeginPosY="177" EndPosX="134" EndPosY="181" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="53" BeginPosY="164" EndPosX="57" EndPosY="168" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="217" BeginPosY="39" EndPosX="221" EndPosY="43" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="155" BeginPosY="225" EndPosX="159" EndPosY="229" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="27" BeginPosY="15" EndPosX="31" EndPosY="19" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="169" BeginPosY="152" EndPosX="173" EndPosY="156" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
-		<Config Class="789" Range="3" BeginPosX="218" BeginPosY="30" EndPosX="222" EndPosY="34" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="789" Range="3" BeginPosX="172" BeginPosY="163" EndPosX="176" EndPosY="167" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="233" BeginPosY="46" EndPosX="237" EndPosY="50" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="155" BeginPosY="225" EndPosX="159" EndPosY="229" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="122" BeginPosY="17" EndPosX="126" EndPosY="21" Direction="-1" Quantity="3" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
+		<Config Class="789" Range="3" BeginPosX="168" BeginPosY="152" EndPosX="172" EndPosY="156" Direction="-1" Quantity="2" Element="1" /> <!-- "Mutton Tile" (Mu Chila: grupo) -->
 		<Config Class="787" Range="3" BeginPosX="108" BeginPosY="78" EndPosX="114" EndPosY="84" Direction="-1" Quantity="12" Element="1" /> <!-- "Wooden Beast" (Mu Chila: farm) -->
 		<Config Class="786" Range="3" BeginPosX="140" BeginPosY="163" EndPosX="146" EndPosY="169" Direction="-1" Quantity="12" Element="1" /> <!-- "Swarmface" (Mu Chila: farm) -->
 		<Config Class="789" Range="3" BeginPosX="147" BeginPosY="67" EndPosX="153" EndPosY="73" Direction="-1" Quantity="12" Element="1" /> <!-- "Mutton Tile" (Mu Chila: farm) -->
 		<Config Class="788" Range="3" BeginPosX="182" BeginPosY="150" EndPosX="188" EndPosY="156" Direction="-1" Quantity="12" Element="1" /> <!-- "Swamp Wizard" (Mu Chila: farm) -->
-		<Config Class="787" Range="3" BeginPosX="177" BeginPosY="101" EndPosX="183" EndPosY="107" Direction="-1" Quantity="12" Element="1" /> <!-- "Wooden Beast" (Mu Chila: farm) -->
+		<Config Class="787" Range="3" BeginPosX="85" BeginPosY="118" EndPosX="91" EndPosY="124" Direction="-1" Quantity="12" Element="1" /> <!-- "Wooden Beast" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

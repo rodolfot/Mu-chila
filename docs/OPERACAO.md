@@ -147,16 +147,22 @@ Desde 26/09/2026 os spawns dos mapas de caça são gerados por `tools\Distribuir
 - **Ajustes por mapa** (`AMPLIAR` e `EXTRA` no início do script):
   - **Raklion:** a área de cada monstro cresce 10 tiles em volta dos pontos do kit e o mapa ganhou 40 monstros (120 → 160). O kit usa pontos soltos e sobravam corredores vazios.
   - **Nars:** os monstros usam o mapa todo e o mapa ganhou 60 monstros (115 → 175). O kit só tinha retângulos pequenos nas bordas; os 3 monstros de Nars têm nível 116–120.
-  - **Cobertura ao vivo:** Raklion foi de 31% para 64% e Nars de 17% para 57%.
-- **Números:** cerca de 2.630 grupos e 86 farms. Fora Raklion e Nars, o total de monstros de cada mapa é igual ao do kit.
-  - O GameServer aceita no máximo 10.000 monstros e está com cerca de 9.080; o título da janela mostra `MonsterCount`.
+  - **De onde saíram os 100 monstros:** Lost Tower −20 (440 → 420), Deep Dungeon 5 −40 (636 → 596) e Swamp of Darkness −40 (527 → 487), que eram os mapas mais cheios.
+  - **Cobertura ao vivo:** Raklion foi de 31% para 62% e Nars de 17% para 56%.
+- **Números:** 2.596 grupos (2.413 de 3 monstros, 100 de 4 e 83 de 2) e 86 farms de 12. O total de monstros é igual ao do kit (9.078 nos spawns).
+- **Limite de monstros (não passe do total do kit):**
+  - O título da janela mostra `MonsterCount x/10000`, mas na prática o GameServer só usa os índices de objeto 0–9169 para os monstros dos spawns **e** das invasões.
+  - Os spawns ocupam uns 9.080. Sobram cerca de 90 vagas, que a invasão Golden (66 monstros a cada 10 minutos) usa.
+  - Em 26/09, +100 monstros líquidos fizeram o último mapa carregado (127, Kubera Mine 5) ficar com 20 de 86 monstros, e as invasões ficariam sem vaga.
+  - Não há configuração para esse limite; ele é fixo no executável do MuDevs FREE. Para ter mais monstros, a saída é um segundo GameServer com parte dos mapas (os códigos 21 e 22 já existem no `MapServerInfo.dat`).
 - **Ficam como no kit:**
   - chefes e raros (1 ou 2 no mapa, ou respawn de 10 minutos ou mais);
   - armadilhas;
   - Crywolf e o Refúgio de Balgass.
 - **Cobertura:** medida na memória do GameServer, é a parte do chão livre com monstro vivo a até 10 tiles.
-  - Lorencia foi de 36% para 62%, Noria de 44% para 70% e Devias de 38% para 70%.
+  - Lorencia foi de 36% para 61%, Noria de 44% para 71% e Devias de 38% para 70%.
   - Os mapas altos ficaram entre 80% e 93%.
+  - A média dos 41 mapas foi de 50% para 78%.
 - **Uso:** `python tools\Distribuir-Spawns.py` só simula e mostra a cobertura antes e depois.
   - `--png <pasta>` desenha os mapas: grupos em vermelho, farms em amarelo.
   - `--grupo N` muda o tamanho do grupo.

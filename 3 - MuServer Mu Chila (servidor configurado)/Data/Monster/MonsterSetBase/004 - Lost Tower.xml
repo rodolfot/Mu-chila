@@ -159,137 +159,130 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="39" Range="3" BeginPosX="235" BeginPosY="223" EndPosX="239" EndPosY="227" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="173" BeginPosY="188" EndPosX="177" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="242" BeginPosY="37" EndPosX="246" EndPosY="41" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="235" BeginPosY="223" EndPosX="239" EndPosY="227" Direction="-1" Quantity="4" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="186" BeginPosY="200" EndPosX="190" EndPosY="204" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="239" BeginPosY="51" EndPosX="243" EndPosY="55" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="242" BeginPosY="83" EndPosX="246" EndPosY="87" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="233" BeginPosY="192" EndPosX="237" EndPosY="196" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="185" BeginPosY="169" EndPosX="189" EndPosY="173" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="238" BeginPosY="196" EndPosX="242" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="180" BeginPosY="173" EndPosX="184" EndPosY="177" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="226" BeginPosY="102" EndPosX="230" EndPosY="106" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="212" BeginPosY="191" EndPosX="216" EndPosY="195" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="206" BeginPosY="195" EndPosX="210" EndPosY="199" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="192" BeginPosY="17" EndPosX="196" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="198" BeginPosY="45" EndPosX="202" EndPosY="49" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="207" BeginPosY="242" EndPosX="211" EndPosY="246" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="222" BeginPosY="51" EndPosX="226" EndPosY="55" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="219" BeginPosY="35" EndPosX="223" EndPosY="39" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="183" BeginPosY="241" EndPosX="187" EndPosY="245" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="174" BeginPosY="215" EndPosX="178" EndPosY="219" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="175" BeginPosY="216" EndPosX="179" EndPosY="220" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="229" BeginPosY="245" EndPosX="233" EndPosY="249" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="243" BeginPosY="107" EndPosX="247" EndPosY="111" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="169" BeginPosY="237" EndPosX="173" EndPosY="241" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="238" BeginPosY="205" EndPosX="242" EndPosY="209" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="235" BeginPosY="209" EndPosX="239" EndPosY="213" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="222" BeginPosY="174" EndPosX="226" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="239" BeginPosY="172" EndPosX="243" EndPosY="176" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="191" BeginPosY="207" EndPosX="195" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="212" BeginPosY="215" EndPosX="216" EndPosY="219" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="237" BeginPosY="124" EndPosX="241" EndPosY="128" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="228" BeginPosY="68" EndPosX="232" EndPosY="72" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="219" BeginPosY="29" EndPosX="223" EndPosY="33" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="234" BeginPosY="5" EndPosX="238" EndPosY="9" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="39" Range="3" BeginPosX="217" BeginPosY="214" EndPosX="221" EndPosY="218" Direction="-1" Quantity="2" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="162" BeginPosY="121" EndPosX="166" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="202" BeginPosY="128" EndPosX="206" EndPosY="132" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="218" BeginPosY="115" EndPosX="222" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="233" BeginPosY="51" EndPosX="237" EndPosY="55" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="208" BeginPosY="33" EndPosX="212" EndPosY="37" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="162" BeginPosY="69" EndPosX="166" EndPosY="73" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="191" BeginPosY="28" EndPosX="195" EndPosY="32" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="219" BeginPosY="88" EndPosX="223" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="224" BeginPosY="128" EndPosX="228" EndPosY="132" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="162" BeginPosY="38" EndPosX="166" EndPosY="42" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="202" BeginPosY="87" EndPosX="206" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="190" BeginPosY="126" EndPosX="194" EndPosY="130" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="191" BeginPosY="59" EndPosX="195" EndPosY="63" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="176" BeginPosY="125" EndPosX="180" EndPosY="129" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="162" BeginPosY="93" EndPosX="166" EndPosY="97" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="223" BeginPosY="68" EndPosX="227" EndPosY="72" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="39" Range="3" BeginPosX="227" BeginPosY="19" EndPosX="231" EndPosY="23" Direction="-1" Quantity="3" Element="0" /> <!-- "Poison Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="164" BeginPosY="121" EndPosX="168" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="188" BeginPosY="126" EndPosX="192" EndPosY="130" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
 		<Config Class="36" Range="3" BeginPosX="195" BeginPosY="104" EndPosX="199" EndPosY="108" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="204" BeginPosY="15" EndPosX="208" EndPosY="19" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="208" BeginPosY="60" EndPosX="212" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="162" BeginPosY="17" EndPosX="166" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
-		<Config Class="36" Range="3" BeginPosX="233" BeginPosY="16" EndPosX="237" EndPosY="20" Direction="-1" Quantity="2" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="162" BeginPosY="30" EndPosX="166" EndPosY="34" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="233" BeginPosY="39" EndPosX="237" EndPosY="43" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="239" BeginPosY="70" EndPosX="243" EndPosY="74" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="233" BeginPosY="24" EndPosX="237" EndPosY="28" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="162" BeginPosY="75" EndPosX="166" EndPosY="79" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="218" BeginPosY="115" EndPosX="222" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="205" BeginPosY="27" EndPosX="209" EndPosY="31" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="206" BeginPosY="61" EndPosX="210" EndPosY="65" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="224" BeginPosY="128" EndPosX="228" EndPosY="132" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="207" BeginPosY="42" EndPosX="211" EndPosY="46" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="202" BeginPosY="128" EndPosX="206" EndPosY="132" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="219" BeginPosY="88" EndPosX="223" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="202" BeginPosY="87" EndPosX="206" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="205" BeginPosY="13" EndPosX="209" EndPosY="17" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="191" BeginPosY="60" EndPosX="195" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
+		<Config Class="36" Range="3" BeginPosX="239" BeginPosY="9" EndPosX="243" EndPosY="13" Direction="-1" Quantity="2" Element="0" /> <!-- "Shadow" (Mu Chila: grupo) -->
 		<Config Class="40" Range="3" BeginPosX="23" BeginPosY="17" EndPosX="27" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="43" BeginPosY="232" EndPosX="47" EndPosY="236" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="26" BeginPosY="93" EndPosX="30" EndPosY="97" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="38" BeginPosY="46" EndPosX="42" EndPosY="50" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="47" BeginPosY="227" EndPosX="51" EndPosY="231" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="5" BeginPosY="99" EndPosX="9" EndPosY="103" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="122" BeginPosY="21" EndPosX="126" EndPosY="25" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
 		<Config Class="40" Range="3" BeginPosX="14" BeginPosY="180" EndPosX="18" EndPosY="184" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="118" BeginPosY="9" EndPosX="122" EndPosY="13" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="108" BeginPosY="6" EndPosX="112" EndPosY="10" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
 		<Config Class="40" Range="3" BeginPosX="50" BeginPosY="16" EndPosX="54" EndPosY="20" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="91" BeginPosY="51" EndPosX="95" EndPosY="55" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="45" BeginPosY="174" EndPosX="49" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="8" BeginPosY="235" EndPosX="12" EndPosY="239" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="33" BeginPosY="46" EndPosX="37" EndPosY="50" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
 		<Config Class="40" Range="3" BeginPosX="42" BeginPosY="122" EndPosX="46" EndPosY="126" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="98" BeginPosY="9" EndPosX="102" EndPosY="13" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="83" BeginPosY="42" EndPosX="87" EndPosY="46" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="125" BeginPosY="43" EndPosX="129" EndPosY="47" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="7" BeginPosY="105" EndPosX="11" EndPosY="109" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="10" BeginPosY="42" EndPosX="14" EndPosY="46" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="48" BeginPosY="210" EndPosX="52" EndPosY="214" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="40" Range="3" BeginPosX="105" BeginPosY="50" EndPosX="109" EndPosY="54" Direction="-1" Quantity="2" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="9" BeginPosY="21" EndPosX="13" EndPosY="25" Direction="-1" Quantity="4" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="6" BeginPosY="215" EndPosX="10" EndPosY="219" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="34" BeginPosY="244" EndPosX="38" EndPosY="248" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="8" BeginPosY="238" EndPosX="12" EndPosY="242" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="45" BeginPosY="174" EndPosX="49" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="85" BeginPosY="17" EndPosX="89" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="119" BeginPosY="50" EndPosX="123" EndPosY="54" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="91" BeginPosY="51" EndPosX="95" EndPosY="55" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="26" BeginPosY="93" EndPosX="30" EndPosY="97" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="13" BeginPosY="118" EndPosX="17" EndPosY="122" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="40" Range="3" BeginPosX="12" BeginPosY="222" EndPosX="16" EndPosY="226" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Knight" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="9" BeginPosY="26" EndPosX="13" EndPosY="30" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="52" BeginPosY="200" EndPosX="56" EndPosY="204" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="31" BeginPosY="230" EndPosX="35" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
 		<Config Class="35" Range="3" BeginPosX="24" BeginPosY="38" EndPosX="28" EndPosY="42" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="14" BeginPosY="98" EndPosX="18" EndPosY="102" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="16" BeginPosY="126" EndPosX="20" EndPosY="130" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="41" BeginPosY="21" EndPosX="45" EndPosY="25" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="2" BeginPosY="123" EndPosX="6" EndPosY="127" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="29" BeginPosY="21" EndPosX="33" EndPosY="25" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="42" BeginPosY="40" EndPosX="46" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="21" BeginPosY="168" EndPosX="25" EndPosY="172" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="38" BeginPosY="21" EndPosX="42" EndPosY="25" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="43" BeginPosY="135" EndPosX="47" EndPosY="139" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="12" BeginPosY="13" EndPosX="16" EndPosY="17" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
 		<Config Class="35" Range="3" BeginPosX="41" BeginPosY="106" EndPosX="45" EndPosY="110" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="23" BeginPosY="226" EndPosX="27" EndPosY="230" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="23" BeginPosY="169" EndPosX="27" EndPosY="173" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="27" BeginPosY="191" EndPosX="31" EndPosY="195" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="24" BeginPosY="209" EndPosX="28" EndPosY="213" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="40" BeginPosY="242" EndPosX="44" EndPosY="246" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
 		<Config Class="35" Range="3" BeginPosX="6" BeginPosY="192" EndPosX="10" EndPosY="196" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
-		<Config Class="35" Range="3" BeginPosX="50" BeginPosY="233" EndPosX="54" EndPosY="237" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="29" BeginPosY="199" EndPosX="33" EndPosY="203" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="15" BeginPosY="208" EndPosX="19" EndPosY="212" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="35" BeginPosY="175" EndPosX="39" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
+		<Config Class="35" Range="3" BeginPosX="24" BeginPosY="244" EndPosX="28" EndPosY="248" Direction="-1" Quantity="2" Element="0" /> <!-- "Death Gorgon" (Mu Chila: grupo) -->
 		<Config Class="37" Range="3" BeginPosX="127" BeginPosY="106" EndPosX="131" EndPosY="110" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="119" BeginPosY="120" EndPosX="123" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="84" BeginPosY="98" EndPosX="88" EndPosY="102" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="48" BeginPosY="34" EndPosX="52" EndPosY="38" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="84" BeginPosY="24" EndPosX="88" EndPosY="28" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
 		<Config Class="37" Range="3" BeginPosX="90" BeginPosY="116" EndPosX="94" EndPosY="120" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="131" BeginPosY="88" EndPosX="135" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="131" BeginPosY="27" EndPosX="135" EndPosY="31" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="110" BeginPosY="86" EndPosX="114" EndPosY="90" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="52" BeginPosY="49" EndPosX="56" EndPosY="53" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="92" BeginPosY="99" EndPosX="96" EndPosY="103" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="109" BeginPosY="88" EndPosX="113" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="125" BeginPosY="40" EndPosX="129" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="106" BeginPosY="27" EndPosX="110" EndPosY="31" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="87" BeginPosY="98" EndPosX="91" EndPosY="102" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="50" BeginPosY="88" EndPosX="54" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="95" BeginPosY="38" EndPosX="99" EndPosY="42" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="131" BeginPosY="93" EndPosX="135" EndPosY="97" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="82" BeginPosY="52" EndPosX="86" EndPosY="56" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="26" BeginPosY="104" EndPosX="30" EndPosY="108" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
 		<Config Class="37" Range="3" BeginPosX="36" BeginPosY="193" EndPosX="40" EndPosY="197" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="125" BeginPosY="6" EndPosX="129" EndPosY="10" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="92" BeginPosY="7" EndPosX="96" EndPosY="11" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="105" BeginPosY="132" EndPosX="109" EndPosY="136" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
 		<Config Class="37" Range="3" BeginPosX="87" BeginPosY="133" EndPosX="91" EndPosY="137" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="102" BeginPosY="134" EndPosX="106" EndPosY="138" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="106" BeginPosY="23" EndPosX="110" EndPosY="27" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="107" BeginPosY="111" EndPosX="111" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="37" Range="3" BeginPosX="100" BeginPosY="38" EndPosX="104" EndPosY="42" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="108" BeginPosY="243" EndPosX="112" EndPosY="247" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="113" BeginPosY="176" EndPosX="117" EndPosY="180" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="128" BeginPosY="235" EndPosX="132" EndPosY="239" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="84" BeginPosY="219" EndPosX="88" EndPosY="223" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="123" BeginPosY="187" EndPosX="127" EndPosY="191" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="97" BeginPosY="85" EndPosX="101" EndPosY="89" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="52" BeginPosY="40" EndPosX="56" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="37" Range="3" BeginPosX="109" BeginPosY="115" EndPosX="113" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Devil" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="128" BeginPosY="226" EndPosX="132" EndPosY="230" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="131" BeginPosY="207" EndPosX="135" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="115" BeginPosY="243" EndPosX="119" EndPosY="247" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="97" BeginPosY="197" EndPosX="101" EndPosY="201" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="102" BeginPosY="166" EndPosX="106" EndPosY="170" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="123" BeginPosY="87" EndPosX="127" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
 		<Config Class="41" Range="3" BeginPosX="97" BeginPosY="220" EndPosX="101" EndPosY="224" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
 		<Config Class="41" Range="3" BeginPosX="93" BeginPosY="237" EndPosX="97" EndPosY="241" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="125" BeginPosY="168" EndPosX="129" EndPosY="172" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="113" BeginPosY="176" EndPosX="117" EndPosY="180" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
 		<Config Class="41" Range="3" BeginPosX="97" BeginPosY="182" EndPosX="101" EndPosY="186" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="81" BeginPosY="181" EndPosX="85" EndPosY="185" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="97" BeginPosY="197" EndPosX="101" EndPosY="201" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="81" BeginPosY="201" EndPosX="85" EndPosY="205" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="87" BeginPosY="172" EndPosX="91" EndPosY="176" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="102" BeginPosY="166" EndPosX="106" EndPosY="170" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="125" BeginPosY="168" EndPosX="129" EndPosY="172" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="84" BeginPosY="178" EndPosX="88" EndPosY="182" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
 		<Config Class="41" Range="3" BeginPosX="112" BeginPosY="199" EndPosX="116" EndPosY="203" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="41" Range="3" BeginPosX="131" BeginPosY="210" EndPosX="135" EndPosY="214" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="219" BeginPosY="234" EndPosX="223" EndPosY="238" Direction="-1" Quantity="4" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="201" BeginPosY="226" EndPosX="205" EndPosY="230" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="93" BeginPosY="171" EndPosX="97" EndPosY="175" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="113" BeginPosY="233" EndPosX="117" EndPosY="237" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="123" BeginPosY="187" EndPosX="127" EndPosY="191" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="123" BeginPosY="131" EndPosX="127" EndPosY="135" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="41" Range="3" BeginPosX="81" BeginPosY="202" EndPosX="85" EndPosY="206" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Cow" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="232" BeginPosY="235" EndPosX="236" EndPosY="239" Direction="-1" Quantity="4" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="201" BeginPosY="227" EndPosX="205" EndPosY="231" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
 		<Config Class="34" Range="3" BeginPosX="103" BeginPosY="173" EndPosX="107" EndPosY="177" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="122" BeginPosY="235" EndPosX="126" EndPosY="239" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="171" BeginPosY="175" EndPosX="175" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
 		<Config Class="34" Range="3" BeginPosX="162" BeginPosY="221" EndPosX="166" EndPosY="225" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
 		<Config Class="34" Range="3" BeginPosX="193" BeginPosY="187" EndPosX="197" EndPosY="191" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="86" BeginPosY="204" EndPosX="90" EndPosY="208" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="84" BeginPosY="188" EndPosX="88" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="121" BeginPosY="222" EndPosX="125" EndPosY="226" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="94" BeginPosY="165" EndPosX="98" EndPosY="169" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="113" BeginPosY="166" EndPosX="117" EndPosY="170" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
 		<Config Class="34" Range="3" BeginPosX="127" BeginPosY="199" EndPosX="131" EndPosY="203" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="98" BeginPosY="229" EndPosX="102" EndPosY="233" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="83" BeginPosY="236" EndPosX="87" EndPosY="240" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
-		<Config Class="34" Range="3" BeginPosX="107" BeginPosY="216" EndPosX="111" EndPosY="220" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="223" BeginPosY="194" EndPosX="227" EndPosY="198" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="216" BeginPosY="234" EndPosX="220" EndPosY="238" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="113" BeginPosY="166" EndPosX="117" EndPosY="170" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="93" BeginPosY="169" EndPosX="97" EndPosY="173" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="165" BeginPosY="195" EndPosX="169" EndPosY="199" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="81" BeginPosY="219" EndPosX="85" EndPosY="223" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
+		<Config Class="34" Range="3" BeginPosX="110" BeginPosY="220" EndPosX="114" EndPosY="224" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Wizard" (Mu Chila: grupo) -->
 		<Config Class="39" Range="3" BeginPosX="208" BeginPosY="164" EndPosX="214" EndPosY="170" Direction="-1" Quantity="12" Element="0" /> <!-- "Poison Shadow" (Mu Chila: farm) -->
 		<Config Class="36" Range="3" BeginPosX="206" BeginPosY="99" EndPosX="212" EndPosY="105" Direction="-1" Quantity="12" Element="0" /> <!-- "Shadow" (Mu Chila: farm) -->
 		<Config Class="40" Range="3" BeginPosX="52" BeginPosY="94" EndPosX="58" EndPosY="100" Direction="-1" Quantity="12" Element="0" /> <!-- "Death Knight" (Mu Chila: farm) -->

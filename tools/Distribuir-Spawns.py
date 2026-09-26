@@ -30,7 +30,10 @@ DIST_PORTAL = 6                     # nenhum grupo ou farm a menos de 6 tiles de
 # Ajustes por mapa (26/09): a área de cada monstro cresce N tiles em volta dos spawns do kit; MAPA_TODO = o mapa inteiro
 MAPA_TODO = -1
 AMPLIAR = {57: 10, 110: MAPA_TODO}  # Raklion: kit com pontos soltos; Nars: kit só nas bordas (3 monstros do mesmo nível)
-EXTRA = {57: 40, 110: 60}           # monstros a mais por mapa, divididos entre os monstros do mapa (limite do GS: 10.000)
+# Monstros a mais (ou a menos) por mapa, divididos entre os monstros do mapa. A soma tem que ficar em 0: o GameServer só usa
+# os índices de objeto 0-9169 para monstros (spawns + invasões); com +100 líquidos o último mapa (127) perdeu 66 monstros
+# e a invasão Golden (66) deixa de caber. Os 100 de Raklion/Nars saem dos mapas mais cheios (cobertura 88-91%).
+EXTRA = {57: 40, 110: 60, 4: -20, 120: -40, 122: -40}
 
 def info_monstros():
     info = {}
