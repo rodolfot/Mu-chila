@@ -203,4 +203,26 @@
 7179      11      0       *         *         *         *         *         *         *         0          28          *              *                 *                 10000      //Box of Kundun +4 (Kalima 5) - Mu Chila
 7179      12      0       *         *         *         *         *         *         *         0          29          *              *                 *                 10000      //Box of Kundun +5 (Kalima 6) - Mu Chila
 7179      12      0       *         *         *         *         *         *         *         0          36          *              *                 *                 10000      //Box of Kundun +5 (Kalima 7) - Mu Chila
+6159      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Jewel of Chaos (Mu Chila: monstros 151-400)
+6216      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Sphere (Tri) (Mu Chila: monstros 151-400)
+6672      8         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Scroll of Archangel 8 (Mu Chila: monstros 151-400)
+6673      8         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Blood Bone 8 (Mu Chila: monstros 151-400)
+6687      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Spirit of Dark Horse (Mu Chila: monstros 151-400)
+6687      1         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Spirit of Dark Spirit (Mu Chila: monstros 151-400)
+6705      6         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Old Scroll 6 (Mu Chila: monstros 151-400)
+6706      6         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Illusion Sorcerer Covenant 6 (Mu Chila: monstros 151-400)
+6801      0         0         *         *         *         *         *         *         *         0         *         *         151       400       3000   //Spirit Map Fragment (Mu Chila: monstros 151-400)
+7181      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Jewel of Bless (Mu Chila: monstros 151-400)
+7182      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Jewel of Soul (Mu Chila: monstros 151-400)
+7184      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Jewel of Life (Mu Chila: monstros 151-400)
+7185      7         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Devil's Eye 7 (Mu Chila: monstros 151-400)
+7186      7         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Devil's Key 7 (Mu Chila: monstros 151-400)
+7189      3         0         *         *         *         *         *         *         *         0         *         *         151       400       3000   //Sign of the Lord (Mu Chila: monstros 151-400)
+7190      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Jewel of Creation (Mu Chila: monstros 151-400)
+7197      7         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Symbol of Kundun 7 (Mu Chila: monstros 151-400)
+7269      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Suspicious Scrap of Paper (Mu Chila: monstros 151-400)
+7278      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Sign of Dimensions (Mu Chila: monstros 151-400)
+7289      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Sealed Golden Box (Mu Chila: monstros 151-400)
+7290      0         0         *         *         *         *         *         *         *         0         *         *         151       400       1000   //Sealed Silver Box (Mu Chila: monstros 151-400)
+7383      0         0         *         *         *         *         *         *         *         0         *         *         151       400       5000   //Card Piece (Mu Chila: monstros 151-400)
 end
