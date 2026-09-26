@@ -69,8 +69,8 @@ static class Program
 
         Check("Banco (contas)", () => $"{Accounts.List().Rows.Count} contas");
         Check("Banco (online)", () => $"{Accounts.Online().Rows.Count} online");
-        Check("Servidores", () => string.Join(", ", ServerControl.Servers.Select(s => $"{s.Display}={(ServerControl.Find(s.Process) != null ? "rodando" : "parado")}")));
-        Check("GameServer", () => { var (p, m) = ServerControl.GameServerCounts(); return $"jogadores {p}, monstros {m}"; });
+        Check("Servidores", () => string.Join(", ", ServerControl.Servers.Select(s => $"{s.Display}={(ServerControl.Find(s.Process, s.Folder) != null ? "rodando" : "parado")}")));
+        Check("GameServers", ServerControl.GameServerCounts);
         Check("Agendas de eventos", () => $"{EventScheduler.Pending().Count} disparo(s) registrados");
         Check("Vigia do /reset", () => ResetWatcher.IsRunning() ? "rodando" : "parado");
         Check("MuEditor", () => File.Exists(ServerControl.MuEditorPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.MuEditorPath));

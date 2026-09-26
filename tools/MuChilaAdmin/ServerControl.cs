@@ -16,14 +16,16 @@ public static class ServerControl
     public static readonly string LauncherPath = Path.Combine(ServerRoot, @"2 - Ligar Servidor\Ligar Servidor.exe");
     public static readonly string MuEditorPath = Path.Combine(ServerRoot, @"1 - MuEditor\MuEditor.exe");
 
-    public static readonly (string Display, string Process)[] Servers =
+    // Folder: pasta do executável, para distinguir os dois GameServers (mesmo executável em GameServer e GameServerNonPvP)
+    public static readonly (string Display, string Process, string? Folder)[] Servers =
     {
-        ("ConnectServer", "ConnectServer"),
-        ("DataServer", "DataServer"),
-        ("DataServer BattleCore", "DataServer BattleCore"),
-        ("JoinServer", "JoinServer"),
-        ("Castle Siege Server", "Castle Siege Server"),
-        ("GameServer", "Game Server S14"),
+        ("ConnectServer", "ConnectServer", null),
+        ("DataServer", "DataServer", null),
+        ("DataServer BattleCore", "DataServer BattleCore", null),
+        ("JoinServer", "JoinServer", null),
+        ("Castle Siege Server", "Castle Siege Server", null),
+        ("GameServer", "Game Server S14", "GameServer"),
+        ("GameServer Non-PvP", "Game Server S14", "GameServerNonPvP"),
     };
 
     public const string GameServerProcess = "Game Server S14";
@@ -40,35 +42,55 @@ public static class ServerControl
     const int AllUserDisconnect = 32772;
     const uint WM_COMMAND = 0x0111;
 
-    public static Process? Find(string processName) => Process.GetProcessesByName(processName).FirstOrDefault();
+    public static Process? Find(string processName, string? folder = null) =>
+        Process.GetProcessesByName(processName).FirstOrDefault(p => folder == null || string.Equals(FolderOf(p), folder, StringComparison.OrdinalIgnoreCase));
 
-    /// <summary>Envia um comando de menu para o GameServer e o Castle Siege (a pasta Data e compartilhada).</summary>
+    /// <summary>Nome da pasta do executável (ex.: "GameServerNonPvP"); vazio se não der para ler.</summary>
+    public static string FolderOf(Process p)
+    {
+        try { return Path.GetFileName(Path.GetDirectoryName(p.MainModule?.FileName ?? "") ?? ""); } catch { return ""; }
+    }
+
+    /// <summary>Todos os GameServers e o Castle Siege rodando (a pasta Data é compartilhada), com um rótulo para o log.</summary>
+    static IEnumerable<(string Label, Process Process)> GameServerProcesses()
+    {
+        foreach (var name in new[] { GameServerProcess, CastleSiegeProcess })
+            foreach (var p in Process.GetProcessesByName(name))
+                yield return (name == GameServerProcess ? $"{name} ({FolderOf(p)})" : name, p);
+    }
+
+    /// <summary>Envia um comando de menu para todos os GameServers e o Castle Siege.</summary>
     public static List<string> SendToGameServers(int menuId)
     {
         var result = new List<string>();
-        foreach (var name in new[] { GameServerProcess, CastleSiegeProcess })
+        foreach (var (label, p) in GameServerProcesses())
         {
-            var p = Find(name);
-            var hwnd = p == null ? IntPtr.Zero : FindMenuWindow(p.Id);
-            if (hwnd == IntPtr.Zero) { result.Add($"{name}: nao esta rodando"); continue; }
+            var hwnd = FindMenuWindow(p.Id);
+            if (hwnd == IntPtr.Zero) { result.Add($"{label}: janela não encontrada"); continue; }
             PostMessage(hwnd, WM_COMMAND, (IntPtr)menuId, IntPtr.Zero);
-            result.Add($"{name}: comando enviado");
+            result.Add($"{label}: comando enviado");
         }
+        if (result.Count == 0) result.Add("Nenhum GameServer rodando");
         return result;
     }
 
     public static List<string> Reload(string item) => SendToGameServers(ReloadIds[item]);
     public static List<string> DisconnectAll() => SendToGameServers(AllUserDisconnect);
 
-    /// <summary>Titulo da janela do GameServer, ex.: "(PlayerCount : 2/100) (MonsterCount : 9023/10000)".</summary>
-    public static (string Players, string Monsters) GameServerCounts()
+    /// <summary>Jogadores e monstros de cada GameServer, lidos do título da janela
+    /// ("Mu Chila (PlayerCount : 2/100) (MonsterCount : 9023/10000)"). Ex.: "Mu Chila: 2/100 jog., 9023 mon. | Non-PvP: ...".</summary>
+    public static string GameServerCounts()
     {
-        var p = Find(GameServerProcess);
-        if (p == null) return ("-", "-");
-        var title = WindowTitle(FindMenuWindow(p.Id));
-        var players = Regex.Match(title, @"PlayerCount : ([^)]+)").Groups[1].Value;
-        var monsters = Regex.Match(title, @"MonsterCount : ([^)]+)").Groups[1].Value;
-        return (players == "" ? "-" : players, monsters == "" ? "-" : monsters);
+        var partes = new List<string>();
+        foreach (var p in Process.GetProcessesByName(GameServerProcess).OrderBy(FolderOf))
+        {
+            var title = WindowTitle(FindMenuWindow(p.Id));
+            var nome = FolderOf(p).EndsWith("NonPvP", StringComparison.OrdinalIgnoreCase) ? "Non-PvP" : "Mu Chila";
+            var players = Regex.Match(title, @"PlayerCount : ([^)]+)").Groups[1].Value;
+            var monsters = Regex.Match(title, @"MonsterCount : (\d+)").Groups[1].Value;
+            partes.Add($"{nome}: {(players == "" ? "-" : players)} jog., {(monsters == "" ? "-" : monsters)} mon.");
+        }
+        return partes.Count == 0 ? "GameServer parado" : string.Join("  |  ", partes);
     }
 
     /// <summary>Aciona "Start all" ou "Stop all" na barra do launcher (o botao alterna entre os dois).</summary>

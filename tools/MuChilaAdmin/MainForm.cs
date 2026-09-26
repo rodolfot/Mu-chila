@@ -74,7 +74,7 @@ public sealed class MainForm : Form
         cmbReload.Items.AddRange(ServerControl.ReloadIds.Keys.Cast<object>().ToArray());
         cmbReload.SelectedIndex = 0;
         var reloadBar = Bar(new Label { Text = "Recarregar sem reiniciar:", AutoSize = true, Padding = new Padding(0, 6, 0, 0) }, cmbReload,
-            Btn("Recarregar (GameServer + Castle Siege)", () => LogAll(ServerControl.Reload((string)cmbReload.SelectedItem!))), lblCounts);
+            Btn("Recarregar (GameServers + Castle Siege)", () => LogAll(ServerControl.Reload((string)cmbReload.SelectedItem!))), lblCounts);
 
         page.Controls.Add(Split(Titled("Processos", gridServers), Titled("Jogadores online", gridOnline), 0.5));
         page.Controls.Add(reloadBar);
@@ -86,15 +86,14 @@ public sealed class MainForm : Form
     {
         var t = new DataTable();
         t.Columns.Add("Servidor"); t.Columns.Add("Status"); t.Columns.Add("Desde");
-        foreach (var (display, process) in ServerControl.Servers)
+        foreach (var (display, process, folder) in ServerControl.Servers)
         {
-            var p = ServerControl.Find(process);
+            var p = ServerControl.Find(process, folder);
             t.Rows.Add(display, p == null ? "parado" : "rodando", p == null ? "" : p.StartTime.ToString("dd/MM HH:mm"));
         }
         gridServers.DataSource = t;
         gridOnline.DataSource = Accounts.Online();
-        var (players, monsters) = ServerControl.GameServerCounts();
-        lblCounts.Text = $"   Jogadores: {players}   Monstros: {monsters}   Vigia: {(ResetWatcher.IsRunning() ? "ligado" : "DESLIGADO")}";
+        lblCounts.Text = $"   {ServerControl.GameServerCounts()}   Vigia: {(ResetWatcher.IsRunning() ? "ligado" : "DESLIGADO")}";
     }
 
     // ---------------- Eventos ----------------

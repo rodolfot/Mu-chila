@@ -1,4 +1,5 @@
 # Aciona um item do menu "Reload" de um servidor em execucao, sem reinicia-lo.
+# -Servidor GameServer recarrega os dois GameServers (Mu Chila e Mu Chila Non-PvP).
 # Exemplos:
 #   .\Recarregar-Servidor.ps1 -Servidor GameServer -Item Event
 #   .\Recarregar-Servidor.ps1 -Servidor CastleSiege -Item EventItemBag
@@ -76,8 +77,11 @@ if ($Item -eq 'Monster' -and $Servidor -eq 'GameServer') {
     }
 }
 
-$proc = Get-Process -Name $processos[$Servidor] -ErrorAction Stop
-$janela = [MuWin]::FindMenuWindow($proc.Id)
-if ($janela -eq [IntPtr]::Zero) { throw "Janela do $Servidor nao encontrada." }
-[void][MuWin]::PostMessage($janela, 0x0111, [IntPtr]$id, [IntPtr]::Zero)   # WM_COMMAND
-Write-Host "Reload $Item enviado ao $Servidor. Confira a linha 'loaded successfully' no LOG do servidor."
+# "GameServer" = todos os processos "Game Server S14" (o normal, em GameServer, e o Non-PvP, em GameServerNonPvP)
+foreach ($proc in @(Get-Process -Name $processos[$Servidor] -ErrorAction Stop)) {
+    $pasta = Split-Path (Split-Path $proc.Path) -Leaf
+    $janela = [MuWin]::FindMenuWindow($proc.Id)
+    if ($janela -eq [IntPtr]::Zero) { Write-Warning "Janela do $Servidor ($pasta) nao encontrada."; continue }
+    [void][MuWin]::PostMessage($janela, 0x0111, [IntPtr]$id, [IntPtr]::Zero)   # WM_COMMAND
+    Write-Host "Reload $Item enviado ao $Servidor ($pasta). Confira a linha 'loaded successfully' no LOG de $pasta."
+}

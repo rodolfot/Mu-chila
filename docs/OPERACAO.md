@@ -7,6 +7,29 @@
 - O launcher **não** religa servidores que caírem nem inicia sozinho quando é aberto.
 - **Site** (cadastro, rankings, loja): `C:\MuServer\Site\Ligar Site.bat` / `Desligar Site.bat`; endereço `http://26.139.39.123` pelo Radmin. Tudo sobre ele em [SITE.md](SITE.md).
 
+## Servidor Non-PvP (desde 26/09/2026)
+
+Um segundo GameServer, **"Mu Chila Non-PvP"**, que aparece na lista do cliente abaixo do "Mu Chila". A única diferença é que um jogador não pode atacar outro.
+
+| O quê | Onde |
+|---|---|
+| Programa | `C:\MuServer\GameServerNonPvP` (cópia do `GameServer`); o launcher liga os dois |
+| Identidade | `GameServerNonPvP\DATA\GameServerInfo - Common.dat`: `ServerName = Mu Chila Non-PvP`, `ServerCode = 80`, `ServerPort = 55902`, **`NonPK = 1`**, `IsArcaWarServer = 0` (só um servidor faz a Arca War) |
+| Lista de servidores | `ConnectServer\ServerList.dat`: linha 80 (substituiu a 21 "Mu Chila 2", que nunca foi usada) |
+| Mapas | `Data\MapServerInfo.dat`: o 80 hospeda todos os mapas (`InitSetVal 1`) e manda os 48 mapas de evento e de cerco para o Castle Siege (19), igual ao 20; quem sai de um evento volta para o servidor de onde veio |
+| Nome no cliente | Grupo 4 dos arquivos `Data\Local\ServerList.bmd` e `serverlist_{eng,por,spn}.bmd` ("Titan" → "Mu Chila Non-PvP"). O grupo é o código ÷ 20: 20–39 = grupo 1 "Mu Chila", 80–99 = grupo 4. Registros de 41 bytes, XOR `FC CF AB` recomeçando em cada registro. Sem o patch, o cliente mostra "Titan" |
+
+- **Mesmas contas e personagens** (mesmo banco). Um personagem fica em um servidor por vez.
+- **Arquivos compartilhados e separados:**
+  - A pasta `Data` (monstros, drops, eventos, caixas) é a mesma para os dois.
+  - Os `GameServerInfo - *.dat` são **um por pasta**. Mudou taxa, VIP ou comando no `GameServer\DATA`? Repita no `GameServerNonPvP\DATA`.
+- **Limite próprio:** cada GameServer tem o seu próprio limite de monstros (índices 0–9169), e cada um roda as próprias invasões.
+- **Vigia e ferramentas:**
+  - O Vigia corrige a checagem de ataques (issue #12) nos dois.
+  - `Recarregar-Servidor.ps1 -Servidor GameServer` e o painel admin recarregam os dois.
+  - O painel lista "GameServer" e "GameServer Non-PvP" e mostra jogadores e monstros de cada um.
+- **Mudança no `MapServerInfo.dat`:** exige reiniciar o Castle Siege, para ele saber devolver os jogadores ao 80.
+
 ## Painel Mu Chila Admin
 
 Atalho: `C:\MuServer\Mu Chila Admin.lnk` (programa em `C:\MuServer\MuChilaAdmin`, código em `tools\MuChilaAdmin`).
@@ -14,9 +37,9 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 
 | Aba | O que faz |
 |---|---|
-| **Servidor** | Mostra os 6 processos, os jogadores online (conta, personagem, IP) e o título do GameServer (jogadores e monstros). Atualiza a cada 5 s. |
+| **Servidor** | Mostra os 7 processos (os dois GameServers separados), os jogadores online (conta, personagem, IP) e jogadores e monstros de cada GameServer. Atualiza a cada 5 s. |
 | | Botões: iniciar e parar tudo pelo launcher, desconectar todos os jogadores (os personagens são salvos), abrir o MuEditor e o launcher. |
-| | "Recarregar sem reiniciar": manda o Reload escolhido para o GameServer **e** o Castle Siege ao mesmo tempo. |
+| | "Recarregar sem reiniciar": manda o Reload escolhido para os dois GameServers **e** o Castle Siege ao mesmo tempo. |
 | **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
 | | "Zerar habilidades master": escolhe um personagem da conta, apaga a árvore master, devolve os pontos (1 por Master Level) e tira os poderes master da lista de habilidades (`MagicList`). Os melhorados voltam à habilidade normal (ex.: 330 Twisting Slash Improved → 41 Twisting Slash), seguindo a coluna `ReplaceSkill` do `MasterSkillTree.txt`. Serve também para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
@@ -65,7 +88,7 @@ A maioria das configurações pode ser recarregada com o servidor rodando, sem d
 .\tools\Recarregar-Servidor.ps1 -Servidor ConnectServer -Item ServerList
 ```
 
-Os arquivos da pasta `Data` são compartilhados pelo GameServer e pelo Castle Siege. Recarregue os dois (`-Servidor CastleSiege`).
+Os arquivos da pasta `Data` são compartilhados pelos dois GameServers (normal e Non-PvP) e pelo Castle Siege. `-Servidor GameServer` já recarrega os dois GameServers; recarregue também o Castle Siege (`-Servidor CastleSiege`).
 Mudanças de IP no `MapServerInfo.dat` e nas portas exigem reiniciar.
 
 ## Contas e GM

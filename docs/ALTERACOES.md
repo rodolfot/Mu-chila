@@ -38,6 +38,10 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Cliente Season 14 - main.lnk` | Novo | Atalho para o cliente |
 | `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\` | Novos: `GremoryCase_MuDevs.sql`, `RestoreItem_MuDevs.sql` | Objetos que faltavam no backup |
 | `1 - MuEditor\config.ini` | `SERVER` `(local)` → `.\MUONLINE`, `PORT` `1433` → `61764` (nas duas seções) | O kit apontava para a instância padrão do SQL; o banco está na instância nomeada `MUONLINE` |
+| `GameServerNonPvP\` (novo, 26/09/2026) | Cópia do `GameServer` com `ServerName = Mu Chila Non-PvP`, `ServerCode = 80`, `ServerPort = 55902`, `NonPK = 1`, `IsArcaWarServer = 0` | Pedido: um servidor sem PvP, selecionável no cliente (ver OPERACAO) |
+| `ConnectServer\ServerList.dat` | Linha 21 "Mu Chila 2" (nunca usada) → 80 "Mu Chila Non-PvP", porta 55902 | Servidor Non-PvP na lista |
+| `Data\MapServerInfo.dat` | Servidor 21 (porta 55902) → 80 hospedando todos os mapas; 48 linhas "80 → 19" para os mapas de evento e cerco, iguais às do 20 | Eventos no Castle Siege também para quem vem do Non-PvP |
+| `2 - Ligar Servidor\Configuration\bor_StartUp.xml` | + `GameServerNonPvP\Game Server S14.exe` (o arquivo é somente leitura; a marca foi mantida) | O launcher liga os dois GameServers |
 | `MuChilaAdmin\` + `Mu Chila Admin.lnk` (novos) | Painel de administração compilado de `tools\MuChilaAdmin` (24/09/2026) | Pedido: disparar eventos, dar VIP, banir e controlar o servidor por um programa |
 
 ## Banco de dados (`.\MUONLINE`)
@@ -61,7 +65,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | Arquivo | Alteração |
 |---|---|
 | `Config - Dev.ini` | `IpAddress = 26.139.39.123`; `WindowName = Mu Chila` |
-| `Data\Local\ServerList.bmd`, `Data\Local\{Eng,Por,Spn}\serverlist_*.bmd` | Grupo 1: "Helheim" → "Mu Chila" |
+| `Data\Local\ServerList.bmd`, `Data\Local\{Eng,Por,Spn}\serverlist_*.bmd` | Grupo 1: "Helheim" → "Mu Chila"; grupo 4 (códigos 80–99): "Titan" → "Mu Chila Non-PvP" (26/09/2026, vai no patch) |
 | `Data\Local\{Eng,Por,Spn}\item_*.bmd` | Frost Soul (7617) e Soul Anvil (7618): permissões `0111000` → `0111110` (iguais às do Jewel of Bless), com a soma de verificação recalculada (`tools\Liberar-ItemCliente.ps1`). Issue #10: agora podem ser vendidos. Vai no pacote de patch. |
 
 Formato dos `.bmd`: registros de 41 bytes (`WORD índice` + `nome[32]` + 7 bytes). Cada registro tem XOR próprio com a chave `FC CF AB`.
