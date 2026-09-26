@@ -37,7 +37,15 @@ public sealed class MainForm : Form
         Controls.Add(log);
 
         refresh.Tick += (_, _) => Safe(RefreshServer, quiet: true);
-        Shown += (_, _) => { Safe(RefreshServer); Safe(RefreshEvents); Safe(RefreshAccounts); refresh.Start(); };
+        Shown += (_, _) => { Safe(StartResetWatcher); Safe(RefreshServer); Safe(RefreshEvents); Safe(RefreshAccounts); refresh.Start(); };
+    }
+
+    /// <summary>O vigia roda em processo próprio (continua depois de fechar o painel); só liga se não estiver rodando.</summary>
+    void StartResetWatcher()
+    {
+        if (ResetWatcher.IsRunning()) return;
+        System.Diagnostics.Process.Start(Application.ExecutablePath, "--vigia-reset");
+        Log("Vigia ligado: corrige a checagem de ataques do GameServer (issue #12) sempre que ele liga; registro em vigia.log.");
     }
 
     // ---------------- Servidor ----------------
@@ -52,6 +60,12 @@ public sealed class MainForm : Form
             {
                 if (gridOnline.CurrentRow?.Cells["Conta"].Value is not string a) { Log("Selecione um jogador na lista \"Jogadores online\"."); return; }
                 if (Confirm($"Forçar o logout de {a}? O jogador é desconectado e o personagem é salvo.{SameIpWarning(a)}")) RunForceLogout(a);
+            }),
+            Btn("Levar à seleção de personagem", () =>
+            {
+                if (gridOnline.CurrentRow?.Cells["Personagem"].Value is not string c) { Log("Selecione um jogador na lista \"Jogadores online\"."); return; }
+                if (Confirm($"Levar {c} para a seleção de personagem? É o mesmo que o jogador escolher \"Trocar personagem\": em 5 segundos o personagem é salvo e o jogo volta para a seleção, sem desconectar."))
+                    Log(ResetWatcher.SendToCharacterSelect(c));
             }),
             Btn("Desconectar todos os jogadores", () => { if (Confirm("Desconectar todos os jogadores (os personagens sao salvos)?")) LogAll(ServerControl.DisconnectAll()); }),
             Btn("Abrir MuEditor", () => ServerControl.Open(ServerControl.MuEditorPath)),
@@ -80,7 +94,7 @@ public sealed class MainForm : Form
         gridServers.DataSource = t;
         gridOnline.DataSource = Accounts.Online();
         var (players, monsters) = ServerControl.GameServerCounts();
-        lblCounts.Text = $"   Jogadores: {players}   Monstros: {monsters}";
+        lblCounts.Text = $"   Jogadores: {players}   Monstros: {monsters}   Vigia: {(ResetWatcher.IsRunning() ? "ligado" : "DESLIGADO")}";
     }
 
     // ---------------- Eventos ----------------

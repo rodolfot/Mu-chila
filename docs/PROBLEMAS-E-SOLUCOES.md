@@ -105,7 +105,10 @@ No fim, as pendências que ainda estão abertas.
 
 ## Pendências
 
-### Skill evoluída (Twisting Slash Strengthener etc.) para de causar dano (issue #12) — em investigação
+### Skill evoluída (Twisting Slash Strengthener etc.) para de causar dano (issue #12) — RESOLVIDO (contorno no servidor)
+- **Solução aplicada (25/09/2026):** o **vigia** do Mu Chila Admin (`MuChilaAdmin.exe --vigia-reset`, liga com o Windows e com o painel) acha no GameServer e no Castle Siege as 6 chamadas à checagem anti-hack de ataques do MuDevs e troca o desvio "descartar" por NOPs (a checagem continua rodando; só não descarta mais o ataque). É feito só na memória, cada vez que o vigia encontra um servidor novo (inclusive depois de reiniciar), conferindo os bytes antes; em versão diferente do executável ele não mexe. Registro em `C:\MuServer\MuChilaAdmin\vigia.log`; conferir com `MuChilaAdmin.exe --vigia-sondar <arquivo>`.
+- **Custo:** fica sem a proteção anti-hack de velocidade de ataque do MuDevs (as outras checagens de velocidade — `CheckSpeedHack` etc. — já estavam desligadas no kit).
+- **Tentativa que não serviu:** trocar o `Data\Character\Player.bmd` do servidor (BMD 0x0C) pelo do jogo (0x0E). O GameServer **fechou** ao recarregar ("Reload Character") às 21:40 de 25/09: ele não lê o formato novo. O original voltou (backup `Player.bmd.bak-20260925-214027`) e o GameServer foi religado às 21:40:53.
 - **Sintoma:** com habilidades evoluídas na árvore master, depois de menos de 1 minuto usando a skill ela só faz a animação, sem efeito e sem dano. Os atributos da janela C continuam normais (não é o "Miss" do Quest1).
 - **Descartado (25/09/2026):**
   - Configuração: `Skill.txt` e `MasterSkillTree.txt` coerentes (cada evolução substitui a skill certa: 326→22, 330→41, 331→42, 336→43, 339→336, 346→344; classe exigida compatível).

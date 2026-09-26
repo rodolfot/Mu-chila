@@ -30,6 +30,11 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 - VIP = `MEMB_INFO.AccountLevel` (1–3) + `AccountExpireDate`. Os benefícios de cada nível ficam nas linhas `*_AL1`, `*_AL2` e `*_AL3` do `GameServerInfo - Common.dat`.
 - Ban = `MEMB_INFO.bloc_code = 1`.
 - Teste rápido sem abrir a janela: `C:\MuServer\MuChilaAdmin\MuChilaAdmin.exe --teste C:\temp\teste.txt`. O arquivo lista banco, servidores, GameServer e agendas; o código de saída é o número de falhas.
+- **Vigia** (`MuChilaAdmin.exe --vigia-reset`, processo sem janela, uma instância só): liga com o Windows (atalho na pasta Inicializar) e quando o painel abre; o painel mostra "Vigia: ligado/DESLIGADO". Ele:
+  - corrige a checagem de ataques do MuDevs no GameServer e no Castle Siege sempre que encontra um servidor novo (issue #12, ver PROBLEMAS-E-SOLUCOES). **Se o vigia não estiver rodando quando o GameServer religar, as skills evoluídas voltam a travar;**
+  - depois do `/reset`, leva o jogador à seleção de personagem (issue #7) — **desligado** até ser testado; para ligar, criar o arquivo vazio `C:\MuServer\MuChilaAdmin\vigia-reset-selecao.ligado`.
+  - Registro: `C:\MuServer\MuChilaAdmin\vigia.log`. Conferir sem mexer em nada: `MuChilaAdmin.exe --vigia-sondar C:\temp\vigia.txt`.
+  - Botão "Levar à seleção de personagem" (aba Servidor): o mesmo que o jogador escolher "Trocar personagem" no jogo, sem desconectar.
 - Para recompilar depois de mudar o código:
 
   ```powershell

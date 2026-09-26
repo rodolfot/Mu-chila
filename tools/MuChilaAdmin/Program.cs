@@ -34,6 +34,24 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[3], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "--vigia-reset": laço do vigia do /reset (sem janela; uma instância só)
+        if (args.Length == 1 && args[0] == "--vigia-reset")
+            return ResetWatcher.Run();
+
+        // "--vigia-sondar <arquivo>": só leitura, mostra o que o vigia enxerga nos GameServers
+        if (args.Length == 2 && args[0] == "--vigia-sondar")
+        {
+            try { File.WriteAllText(args[1], ResetWatcher.Probe()); return 0; }
+            catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex.Message); return 1; }
+        }
+
+        // "--selecao <personagem> <arquivo>": leva o personagem para a seleção de personagem (o mesmo que o botão)
+        if (args.Length == 3 && args[0] == "--selecao")
+        {
+            try { File.WriteAllText(args[2], ResetWatcher.SendToCharacterSelect(args[1])); return 0; }
+            catch (Exception ex) { File.WriteAllText(args[2], "FALHA: " + ex.Message); return 1; }
+        }
+
         ApplicationConfiguration.Initialize();
         Application.Run(new MainForm());
         return 0;
@@ -54,6 +72,7 @@ static class Program
         Check("Servidores", () => string.Join(", ", ServerControl.Servers.Select(s => $"{s.Display}={(ServerControl.Find(s.Process) != null ? "rodando" : "parado")}")));
         Check("GameServer", () => { var (p, m) = ServerControl.GameServerCounts(); return $"jogadores {p}, monstros {m}"; });
         Check("Agendas de eventos", () => $"{EventScheduler.Pending().Count} disparo(s) registrados");
+        Check("Vigia do /reset", () => ResetWatcher.IsRunning() ? "rodando" : "parado");
         Check("MuEditor", () => File.Exists(ServerControl.MuEditorPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.MuEditorPath));
         Check("Launcher", () => File.Exists(ServerControl.LauncherPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.LauncherPath));
 
