@@ -41,11 +41,11 @@ Conta e senha: até **10 caracteres** (limite do jogo). Não há verificação d
 
 ## Pendências
 
-1. **Preços do cash:** os três pacotes (R$ 5, R$ 25, R$ 50) são de exemplo e esperam a tabela do dono.
+1. ~~Preços do cash~~: definidos pelo dono em 26/09/2026, 200 cash por R$ 37, 500 por R$ 45 e 1.000 por R$ 60 (`cash-200`, `cash-500`, `cash-1000` no `muchila.pacotes.json`).
 2. **Mercado Pago (PIX real):** pronto, mas nunca testado contra a API. Passos na seção abaixo; o dono pediu para continuar no modo de teste por enquanto.
 3. **Teste pelo navegador (`teste-site.ps1`):** precisa da senha da conta admin do site e só roda com ela. O teste do núcleo da loja (`teste-loja.php`) passou 19 de 19 em 26/09.
 4. **Notícias:** não há nenhuma publicada. A página inicial mostra só o quadro de eventos e os rankings.
-5. **Segundo servidor (se for criado):** status e jogadores online do site contam só o GameServer principal.
+5. ~~Segundo servidor~~: o "Users Online" do site conta as contas conectadas no banco (`MEMB_STAT.ConnectStat = 1`), então já inclui o Mu Chila Non-PvP.
 
 ## Loja de VIP e cash
 

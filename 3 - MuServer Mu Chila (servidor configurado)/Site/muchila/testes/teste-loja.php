@@ -60,17 +60,17 @@ try {
 
     // 5) cash: conta sem linha no CashShopData
     $db->prepare("DELETE FROM CashShopData WHERE AccountID = ?")->execute([$conta]);
-    $p3 = $loja->criarPedido($conta, 'cash-1000', '127.0.0.1');
+    $p3 = $loja->criarPedido($conta, 'cash-200', '127.0.0.1');
     $loja->simular((int)$p3['id'], $conta, true);
-    confere('cash entregue criando a linha (1000)', (int)$loja->conta($conta)['cash'] === 1000);
-    $p4 = $loja->criarPedido($conta, 'cash-5000', '127.0.0.1');
+    confere('cash entregue criando a linha (200)', (int)$loja->conta($conta)['cash'] === 200);
+    $p4 = $loja->criarPedido($conta, 'cash-500', '127.0.0.1');
     $loja->simular((int)$p4['id'], $conta, true);
-    confere('cash somado (1000 + 5500)', (int)$loja->conta($conta)['cash'] === 6500);
+    confere('cash somado (200 + 500)', (int)$loja->conta($conta)['cash'] === 700);
 
     // 6) pagamento recusado cancela e não entrega
     $p5 = $loja->criarPedido($conta, 'cash-1000', '127.0.0.1');
     $r5 = $loja->simular((int)$p5['id'], $conta, false);
-    confere('recusado vira cancelado sem cash', $loja->pedido((int)$p5['id'])['status'] === 'cancelado' && (int)$loja->conta($conta)['cash'] === 6500, $r5);
+    confere('recusado vira cancelado sem cash', $loja->pedido((int)$p5['id'])['status'] === 'cancelado' && (int)$loja->conta($conta)['cash'] === 700, $r5);
 
     // 7) limite de pendentes
     for ($i = 0; $i < 3; $i++) $loja->criarPedido($conta, 'cash-1000', '127.0.0.1');
@@ -89,7 +89,7 @@ try {
     $exp = array_values(array_filter($lista, fn($x) => $x['status'] === 'expirado'))[0];
     $db->prepare("UPDATE MUCHILA_PEDIDOS SET simulado_status = 'aprovado' WHERE id = ?")->execute([$exp['id']]);
     $loja->processarAviso($exp['provedor_id'], 'atrasado');
-    confere('pago depois de expirar é entregue', $loja->pedido((int)$exp['id'])['status'] === 'entregue' && (int)$loja->conta($conta)['cash'] === 7500);
+    confere('pago depois de expirar é entregue', $loja->pedido((int)$exp['id'])['status'] === 'entregue' && (int)$loja->conta($conta)['cash'] === 1700);
 } finally {
     $db->prepare("DELETE FROM MUCHILA_PEDIDOS WHERE conta = ?")->execute([$conta]);
     $db->prepare("DELETE FROM CashShopData WHERE AccountID = ?")->execute([$conta]);

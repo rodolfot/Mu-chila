@@ -1,5 +1,5 @@
 {
-  "_comentario": "Pacotes da loja do site. valor em reais. VIP (tabela do dono, 25/09/2026): 1 Vipzinho 300x/80% R$35, 2 Vip 850x/110% R$40, 3 Vipzão 2000x/150% R$50; taxas nos _AL1/_AL2/_AL3 do GameServerInfo - Common.dat. zen = bônus de Zen no baú da conta (limite 2 bilhões), entregue com a conta fora do jogo. Cash vai para o WCoinC. Preços do cash ainda de exemplo.",
+  "_comentario": "Pacotes da loja do site. valor em reais. VIP (tabela do dono, 25/09/2026): 1 Vipzinho 300x/80% R$35, 2 Vip 850x/110% R$40, 3 Vipzão 2000x/150% R$50; taxas nos _AL1/_AL2/_AL3 do GameServerInfo - Common.dat. zen = bônus de Zen no baú da conta (limite 2 bilhões), entregue com a conta fora do jogo. Cash vai para o WCoinC. Cash (tabela do dono, 26/09/2026): 200 por R$37, 500 por R$45, 1.000 por R$60.",
   "pacotes": [
     {
       "id": "vip1-30",
@@ -32,27 +32,27 @@
       "zen": 2000000000
     },
     {
+      "id": "cash-200",
+      "tipo": "cash",
+      "nome": "200 Cash",
+      "cash": 200,
+      "valor": 37.0,
+      "ativo": true
+    },
+    {
+      "id": "cash-500",
+      "tipo": "cash",
+      "nome": "500 Cash",
+      "cash": 500,
+      "valor": 45.0,
+      "ativo": true
+    },
+    {
       "id": "cash-1000",
       "tipo": "cash",
       "nome": "1.000 Cash",
       "cash": 1000,
-      "valor": 5.0,
-      "ativo": true
-    },
-    {
-      "id": "cash-5000",
-      "tipo": "cash",
-      "nome": "5.500 Cash (5.000 + 10% de bônus)",
-      "cash": 5500,
-      "valor": 25.0,
-      "ativo": true
-    },
-    {
-      "id": "cash-10000",
-      "tipo": "cash",
-      "nome": "12.000 Cash (10.000 + 20% de bônus)",
-      "cash": 12000,
-      "valor": 50.0,
+      "valor": 60.0,
       "ativo": true
     }
   ]
