@@ -19,7 +19,7 @@ CustomerHardwareId = 8A273289-7F5BC06B-F45B8F6D-2B4ED8E7
 ; Server Settings
 ;==================================================
 ServerName = Mu Chila Non-PvP
-ServerCode = 80
+ServerCode = 21
 ServerLock = 0
 ServerPort = 55902
 ServerVersion = 1.04.05

@@ -9,15 +9,15 @@
 
 ## Servidor Non-PvP (desde 26/09/2026)
 
-Um segundo GameServer, **"Mu Chila Non-PvP"**, que aparece na lista do cliente abaixo do "Mu Chila". A única diferença é que um jogador não pode atacar outro.
+Um segundo GameServer, **"Mu Chila Non-PvP"**. No cliente, ao clicar em "Mu Chila", ele aparece como o segundo sub-servidor (Mu Chila-2; o normal é o Mu Chila-1). A única diferença é que um jogador não pode atacar outro.
 
 | O quê | Onde |
 |---|---|
 | Programa | `C:\MuServer\GameServerNonPvP` (cópia do `GameServer`); o launcher liga os dois |
-| Identidade | `GameServerNonPvP\DATA\GameServerInfo - Common.dat`: `ServerName = Mu Chila Non-PvP`, `ServerCode = 80`, `ServerPort = 55902`, **`NonPK = 1`**, `IsArcaWarServer = 0` (só um servidor faz a Arca War) |
-| Lista de servidores | `ConnectServer\ServerList.dat`: linha 80 (substituiu a 21 "Mu Chila 2", que nunca foi usada) |
-| Mapas | `Data\MapServerInfo.dat`: o 80 hospeda todos os mapas (`InitSetVal 1`) e manda os 48 mapas de evento e de cerco para o Castle Siege (19), igual ao 20; quem sai de um evento volta para o servidor de onde veio |
-| Nome no cliente | Grupo 4 dos arquivos `Data\Local\ServerList.bmd` e `serverlist_{eng,por,spn}.bmd` ("Titan" → "Mu Chila Non-PvP"). O grupo é o código ÷ 20: 20–39 = grupo 1 "Mu Chila", 80–99 = grupo 4. Registros de 41 bytes, XOR `FC CF AB` recomeçando em cada registro. Sem o patch, o cliente mostra "Titan" |
+| Identidade | `GameServerNonPvP\DATA\GameServerInfo - Common.dat`: `ServerName = Mu Chila Non-PvP`, `ServerCode = 21`, `ServerPort = 55902`, **`NonPK = 1`**, `IsArcaWarServer = 0` (só um servidor faz a Arca War) |
+| Lista de servidores | `ConnectServer\ServerList.dat`: linha 21 (era "Mu Chila 2", que o kit deixou reservada e nunca foi usada) |
+| Mapas | `Data\MapServerInfo.dat`: o 21 hospeda todos os mapas (`InitSetVal 1`) e manda os 48 mapas de evento e de cerco para o Castle Siege (19), igual ao 20; quem sai de um evento volta para o servidor de onde veio |
+| Nome no cliente | O cliente agrupa os servidores pelo código ÷ 20: 20–39 = grupo 1 "Mu Chila", com os sub-servidores numerados (20 = Mu Chila-1, 21 = Mu Chila-2). O cliente não precisa de mudança. O cliente é protegido e não deu para confirmar se ele sabe marcar um sub-servidor como "(Non-PvP)". |
 
 - **Mesmas contas e personagens** (mesmo banco). Um personagem fica em um servidor por vez.
 - **Arquivos compartilhados e separados:**
@@ -28,7 +28,8 @@ Um segundo GameServer, **"Mu Chila Non-PvP"**, que aparece na lista do cliente a
   - O Vigia corrige a checagem de ataques (issue #12) nos dois.
   - `Recarregar-Servidor.ps1 -Servidor GameServer` e o painel admin recarregam os dois.
   - O painel lista "GameServer" e "GameServer Non-PvP" e mostra jogadores e monstros de cada um.
-- **Mudança no `MapServerInfo.dat`:** exige reiniciar o Castle Siege, para ele saber devolver os jogadores ao 80.
+- **Mudança no `MapServerInfo.dat`:** exige reiniciar o Castle Siege, para ele saber devolver os jogadores ao 21.
+- **Histórico:** no primeiro dia foi montado com o código 80, como uma linha própria na lista ("Mu Chila Non-PvP", grupo 4 renomeado no cliente). O dono preferiu como sub-servidor do Mu Chila. Então virou o 21, e os arquivos do cliente voltaram ao original.
 
 ## Painel Mu Chila Admin
 
