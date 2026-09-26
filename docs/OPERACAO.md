@@ -99,6 +99,19 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
 As caixas abertas com o botão direito estão em `Data\EventItemBagManager.txt` (código do item → saco) e `Data\EventItemBag\NNN - Nome.txt` (itens possíveis).
 Isso vale para caixas usadas pelo caminho clássico, como a Box of Kundun (7179 níveis 8–12). Depois de editar, use Reload EventItemBag.
 
+Cada abertura sorteia **uma linha** da lista, com a mesma chance para todas. Para uma coisa sair mais vezes, repita a linha.
+
+**Box of Kundun +4 e +5** (desde 26/09/2026):
+
+- **Conteúdo:** as joias e tickets de antes e sets e armas de todas as classes, sem os 4 melhores sets e as 4 melhores armas de cada classe.
+- **Top 4:** Blue Eye, Soul, Holyangel e Darkangel em todas as classes, menos o Rune Wizard. No Rune Wizard são Holyangel, Darkangel, Bloodangel e Light Load Rune. As armas seguem a mesma ideia.
+- **+5:** os 2 melhores sets e as 2 melhores armas permitidos de cada classe, de +2 a +6.
+- **+4:** os 2 seguintes de cada classe, de +0 a +4.
+- **Chances:** as 10 linhas originais estão repetidas 5 vezes (50 de ~154). Mais ou menos 1 de cada 3 caixas dá joia ou ticket e 2 de cada 3 dão equipamento.
+- **Limite de tamanho:** o arquivo ficou com 154 linhas, o mesmo tamanho da maior caixa do kit que já funcionava. Evite passar disso sem testar.
+- **Ver o que cada classe ganha:** `python tools\Montar-CaixasKundun.py`.
+- **Regravar:** `--gravar`, depois de restaurar os arquivos originais pelos `.bak-*`.
+
 As caixas novas do S14 que abrem com o botão direito (Ruud Box, Earring Box, Gift Box, Mastery Box, Chicken Box...) passam por outro caminho: o servidor MuDevs FREE só aceita as que conhece e **não tem configuração para elas**, e o log registra `Unknown box identifier`. As 19 que não abrem deixaram de cair dos monstros (`DropItem = 0` no `Item.txt`).
 
 ## Idioma (português)
