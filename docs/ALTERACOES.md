@@ -39,7 +39,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\` | Novos: `GremoryCase_MuDevs.sql`, `RestoreItem_MuDevs.sql` | Objetos que faltavam no backup |
 | `1 - MuEditor\config.ini` | `SERVER` `(local)` → `.\MUONLINE`, `PORT` `1433` → `61764` (nas duas seções) | O kit apontava para a instância padrão do SQL; o banco está na instância nomeada `MUONLINE` |
 | `GameServerNonPvP\` (novo, 26/09/2026) | Cópia do `GameServer` com `ServerName = Mu Chila Non-PvP`, `ServerCode = 21`, `ServerPort = 55902`, `NonPK = 1`, `IsArcaWarServer = 0` | Pedido: um servidor sem PvP, como sub-servidor do Mu Chila no cliente (Mu Chila-2; ver OPERACAO) |
-| `ConnectServer\ServerList.dat` | Linha 21 "Mu Chila 2" (reservada pelo kit, nunca usada) → "Mu Chila Non-PvP", porta 55902 | Servidor Non-PvP na lista |
+| `ConnectServer\ServerList.dat` | Linha 21 "Mu Chila 2" (reservada pelo kit, nunca usada) → "Mu Chila Non-PvP", porta 55902, `PasiveServer` 0 → 1 | Servidor Non-PvP na lista; `PasiveServer = 1` faz o cliente mostrar "Non-PvP" em vez de "PvP" |
 | `Data\MapServerInfo.dat` | Servidor 21 (porta 55902) hospedando todos os mapas (`InitSetVal` 0 → 1); 48 linhas "21 → 19" para os mapas de evento e cerco, iguais às do 20 | Eventos no Castle Siege também para quem vem do Non-PvP |
 | `2 - Ligar Servidor\Configuration\bor_StartUp.xml` | + `GameServerNonPvP\Game Server S14.exe` (o arquivo é somente leitura; a marca foi mantida) | O launcher liga os dois GameServers |
 | `MuChilaAdmin\` + `Mu Chila Admin.lnk` (novos) | Painel de administração compilado de `tools\MuChilaAdmin` (24/09/2026) | Pedido: disparar eventos, dar VIP, banir e controlar o servidor por um programa |

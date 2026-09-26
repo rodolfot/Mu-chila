@@ -15,9 +15,9 @@ Um segundo GameServer, **"Mu Chila Non-PvP"**. No cliente, ao clicar em "Mu Chil
 |---|---|
 | Programa | `C:\MuServer\GameServerNonPvP` (cópia do `GameServer`); o launcher liga os dois |
 | Identidade | `GameServerNonPvP\DATA\GameServerInfo - Common.dat`: `ServerName = Mu Chila Non-PvP`, `ServerCode = 21`, `ServerPort = 55902`, **`NonPK = 1`**, `IsArcaWarServer = 0` (só um servidor faz a Arca War) |
-| Lista de servidores | `ConnectServer\ServerList.dat`: linha 21 (era "Mu Chila 2", que o kit deixou reservada e nunca foi usada) |
+| Lista de servidores | `ConnectServer\ServerList.dat`: linha 21 (era "Mu Chila 2", que o kit deixou reservada e nunca foi usada), com a coluna **`PasiveServer = 1`**: é ela que faz o cliente escrever "Non-PvP" ao lado do Mu Chila-2 (com 0 ele escreve "PvP") |
 | Mapas | `Data\MapServerInfo.dat`: o 21 hospeda todos os mapas (`InitSetVal 1`) e manda os 48 mapas de evento e de cerco para o Castle Siege (19), igual ao 20; quem sai de um evento volta para o servidor de onde veio |
-| Nome no cliente | O cliente agrupa os servidores pelo código ÷ 20: 20–39 = grupo 1 "Mu Chila", com os sub-servidores numerados (20 = Mu Chila-1, 21 = Mu Chila-2). O cliente não precisa de mudança. O cliente é protegido e não deu para confirmar se ele sabe marcar um sub-servidor como "(Non-PvP)". |
+| Nome no cliente | O cliente agrupa os servidores pelo código ÷ 20: 20–39 = grupo 1 "Mu Chila", com os sub-servidores numerados (20 = Mu Chila-1, 21 = Mu Chila-2). O cliente não precisa de mudança. **Não mexa nos 7 bytes depois do nome nos `serverlist*.bmd`**: trocar `02 00 20 00` fez o cliente fechar sozinho ao abrir (26/09). Só o nome do grupo pode ser trocado |
 
 - **Mesmas contas e personagens** (mesmo banco). Um personagem fica em um servidor por vez.
 - **Arquivos compartilhados e separados:**
