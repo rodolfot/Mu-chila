@@ -42,6 +42,9 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | | Botões: iniciar e parar tudo pelo launcher, desconectar todos os jogadores (os personagens são salvos), abrir o MuEditor e o launcher. |
 | | "Recarregar sem reiniciar": manda o Reload escolhido para os dois GameServers **e** o Castle Siege ao mesmo tempo. |
 | **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |
+| **Bônus** | Ex.: "EXP + EXP master x2 por 60 minutos". Multiplica a taxa de cada plano pelo tempo escolhido, nos dois GameServers e no Castle Siege, e avisa todos os jogadores no início e no fim. Até 7 bônus ao mesmo tempo. Ver [Bônus de EXP e drop](#bônus-de-exp-e-drop). |
+| **Lojas** | Escolha o NPC e edite o que ele vende: adicionar (busca pelo nome), remover, reordenar, nível, durabilidade e opções. Mostra quantos dos 120 espaços (8×15) da janela a loja ocupa e avisa o que não cabe. "Salvar e aplicar" faz backup e recarrega as lojas sem reiniciar. |
+| **Itens e baú** | Mostra o inventário de qualquer personagem ou o baú da conta, com nome, nível e opções. Remove itens só com a conta fora do jogo e com backup em `C:\MuServer\DB\backup-itens-*.csv`. Presentes pela Gremory Case aparecem ao lado; criar presentes pelo painel fica desligado até a calibração (ver [Itens e baú](#itens-e-baú)). |
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
 | | "Zerar habilidades master": escolhe um personagem da conta, apaga a árvore master, devolve os pontos (1 por Master Level) e tira os poderes master da lista de habilidades (`MagicList`). Os melhorados voltam à habilidade normal (ex.: 330 Twisting Slash Improved → 41 Twisting Slash), seguindo a coluna `ReplaceSkill` do `MasterSkillTree.txt`. Serve também para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
 
@@ -66,6 +69,41 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
   ```
 
   Feche o painel antes, porque o `.exe` fica travado enquanto ele está aberto.
+
+## Bônus de EXP e drop
+
+Aba **Bônus** do painel, usando o `Data\Event\BonusManager.dat` do servidor (formato validado no servidor de testes em 26/09/2026):
+
+- **Blocos do arquivo:**
+  - bloco 0 = agenda (Index Ano Mês Dia DiaDaSemana Hora Minuto Segundo);
+  - bloco 1 = Index MensagemInício MensagemFim Duração (segundos);
+  - bloco 2 = Index Tipo Valor_AL0..AL3 e filtros (item, mapa, monstro).
+- **Tipos:** 0 = EXP, 1 = EXP master, 2 = drop. O valor **soma na taxa do plano**. Por isso o painel usa `taxa do plano × (multiplicador − 1)`: x2 soma +100 no Free, +300 no Vipzinho, +850 no Vip e +2000 no Vipzão.
+- **Vagas:** só os índices **3 a 9**. O kit usa 0–2 (drop de Box of Kundun em janeiro, outubro e dezembro), e o índice 90 **derrubou os dois GameServers** na recarga (26/09).
+- **Mensagens:** IDs 700–713 (duas por vaga), gravados no `Portuguese.xml` e no `English.xml`, nas seções `<Message>` e `<InvacionMsg>`.
+- **Recargas:** o painel recarrega Common (mensagens) e Event (agenda).
+- **Cancelar e limpar:** um bônus que ainda não começou pode ser cancelado. "Limpar bônus terminados" libera as vagas.
+- **Falta confirmar no jogo** que um bônus x2 dobra a EXP de uma conta VIP. Para uma conta Free, as duas leituras possíveis do formato dão o mesmo resultado.
+
+## Itens e baú
+
+- **Formato:** cada item ocupa 16 bytes em `Character.Inventory` (237 posições; 0–11 equipado) e em `warehouse.Items` (240 posições: 0–119 baú, 120–239 baú estendido). O layout, conferido em inventários reais, está descrito no topo de `tools\MuChilaAdmin\Items.cs`.
+- **MuEditor:** é da Season 8 e **não deve salvar** inventários do S14, porque pode apagar o inventário expandido e o baú estendido. Use a aba **Itens e baú** para ver e remover.
+- **Presentes:** a **Gremory Case** (tabela `GremoryCase`, procedure `GremoryCaseAddItem`) guarda até 50 presentes por conta.
+  - `StorageType 1` = para a conta; `2` = para um personagem.
+  - O jogador recebe ao entrar no jogo.
+- **Calibração pendente:** o campo `RewardSource` precisa sair de um presente criado pelo próprio servidor. Um GM usa `/gremgif` uma vez no jogo; depois grava-se `RewardSource=N` em `C:\MuServer\MuChilaAdmin\gremory.txt`. Até lá o painel não cria presentes.
+
+## Servidor de testes (`C:\MuServerTeste`)
+
+Antes de mexer num formato novo nos servidores reais, teste num GameServer separado:
+
+- **Criar ou refazer:** `.\tools\Criar-ServidorTeste.ps1 [-Refazer]` copia o GameServer e a `Data` para `C:\MuServerTeste`.
+  - Código 39, porta 55939, nome "Mu Chila Teste".
+  - DataServer, JoinServer e ConnectServer apontam para uma porta vazia (55999): ninguém entra, ele não aparece na lista, não grava no banco e, se cair, não leva nada junto.
+- **Ligar:** `Start-Process 'C:\MuServerTeste\GameServerTeste\Game Server S14.exe' -WorkingDirectory 'C:\MuServerTeste\GameServerTeste'`.
+- **Testar:** altere o arquivo em `C:\MuServerTeste\Data` e use `.\tools\Recarregar-Teste.ps1 -Item Event|Shop|Common|...`. Veja se o processo continua vivo e leia `C:\MuServerTeste\GameServerTeste\LOG`.
+- **Painel contra a cópia:** o painel e o `Recarregar-Servidor.ps1` só mexem em processos dentro de `C:\MuServer`. Para testar o próprio painel contra a cópia, rode-o com a variável `MUCHILA_ROOT=C:\MuServerTeste`. As opções `--agendar-bonus` e `--testar-lojas` foram feitas para isso.
 
 ## MuEditor (personagens, inventário, baú)
 

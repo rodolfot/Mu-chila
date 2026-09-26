@@ -43,6 +43,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Data\MapServerInfo.dat` | Servidor 21 (porta 55902) hospedando todos os mapas (`InitSetVal` 0 → 1); 48 linhas "21 → 19" para os mapas de evento e cerco, iguais às do 20 | Eventos no Castle Siege também para quem vem do Non-PvP |
 | `2 - Ligar Servidor\Configuration\bor_StartUp.xml` | + `GameServerNonPvP\Game Server S14.exe` (o arquivo é somente leitura; a marca foi mantida) | O launcher liga os dois GameServers |
 | `MuChilaAdmin\` + `Mu Chila Admin.lnk` (novos) | Painel de administração compilado de `tools\MuChilaAdmin` (24/09/2026) | Pedido: disparar eventos, dar VIP, banir e controlar o servidor por um programa |
+| `MuChilaAdmin\` (26/09/2026) | Abas novas: **Bônus** (EXP/EXP master/drop por tempo, pelo `BonusManager.dat`), **Lojas** (editor das lojas dos NPCs) e **Itens e baú** (ver e remover itens; presentes pela Gremory Case após calibração). Painel e scripts só mexem em processos de `C:\MuServer` | Pedido do dono: dobro de XP por uma hora, controlar o que cada NPC vende e administrar itens |
 
 ## Banco de dados (`.\MUONLINE`)
 

@@ -18,6 +18,36 @@ public sealed class MainForm : Form
     readonly NumericUpDown numMinutes = new() { Minimum = 1, Maximum = 1440, Value = 1, Width = 70 };
     readonly DataGridView gridPending = Grid();
 
+    // Bônus
+    readonly CheckBox chkExp = new() { Text = "EXP", Checked = true, AutoSize = true, Padding = new Padding(0, 4, 0, 0) };
+    readonly CheckBox chkMaster = new() { Text = "EXP master", Checked = true, AutoSize = true, Padding = new Padding(0, 4, 0, 0) };
+    readonly CheckBox chkDrop = new() { Text = "Drop", AutoSize = true, Padding = new Padding(0, 4, 0, 0) };
+    readonly NumericUpDown numMult = new() { Minimum = 1.1m, Maximum = 10, Increment = 0.5m, DecimalPlaces = 1, Value = 2, Width = 60 };
+    readonly NumericUpDown numBonusMinutes = new() { Minimum = 1, Maximum = 10080, Value = 60, Width = 70 };
+    readonly NumericUpDown numBonusStart = new() { Minimum = 1, Maximum = 10080, Value = 1, Width = 70 };
+    readonly DataGridView gridBonus = Grid();
+
+    // Lojas
+    readonly ListBox lstShops = new() { Dock = DockStyle.Fill, IntegralHeight = false };
+    readonly DataGridView gridShop = new()
+    {
+        Dock = DockStyle.Fill, AllowUserToAddRows = false, AllowUserToDeleteRows = false, SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+        MultiSelect = false, RowHeadersVisible = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = SystemColors.Window,
+    };
+    readonly Label lblShop = new() { AutoSize = true, Padding = new Padding(0, 6, 0, 0), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
+    List<ShopInfo> shops = new();
+    DataTable shopTable = new();
+    int shopShown = -1;
+    bool shopDirty;
+
+    // Itens e baú
+    readonly ComboBox cmbItemAccount = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 140 };
+    readonly ComboBox cmbItemPlace = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 170 };
+    readonly DataGridView gridItems = Grid();
+    readonly DataGridView gridGifts = Grid();
+    List<ItemView> itemsShown = new();
+    const string VaultOption = "(baú da conta)";
+
     // VIP e contas
     readonly DataGridView gridAccounts = Grid();
     readonly ComboBox cmbLevel = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 90 };
@@ -32,12 +62,15 @@ public sealed class MainForm : Form
         var tabs = new TabControl { Dock = DockStyle.Fill };
         tabs.TabPages.Add(ServerTab());
         tabs.TabPages.Add(EventsTab());
+        tabs.TabPages.Add(BonusTab());
+        tabs.TabPages.Add(ShopsTab());
+        tabs.TabPages.Add(ItemsTab());
         tabs.TabPages.Add(AccountsTab());
         Controls.Add(tabs);
         Controls.Add(log);
 
         refresh.Tick += (_, _) => Safe(RefreshServer, quiet: true);
-        Shown += (_, _) => { Safe(StartResetWatcher); Safe(RefreshServer); Safe(RefreshEvents); Safe(RefreshAccounts); refresh.Start(); };
+        Shown += (_, _) => { Safe(StartResetWatcher); Safe(RefreshServer); Safe(RefreshEvents); Safe(RefreshBonus); Safe(RefreshAccounts); refresh.Start(); };
     }
 
     /// <summary>O vigia roda em processo próprio (continua depois de fechar o painel); só liga se não estiver rodando.</summary>
@@ -150,6 +183,303 @@ public sealed class MainForm : Form
         foreach (var (when, name, _) in EventScheduler.Pending())
             t.Rows.Add(when.ToString("dd/MM HH:mm"), name, when > DateTime.Now ? "pendente" : "já executado");
         gridPending.DataSource = t;
+    }
+
+    // ---------------- Bônus ----------------
+    TabPage BonusTab()
+    {
+        var page = new TabPage("Bônus");
+        Label L(string s) => new() { Text = s, AutoSize = true, Padding = new Padding(0, 6, 0, 0) };
+        var bar = Bar(chkExp, chkMaster, chkDrop, L("  x"), numMult, L("  por"), numBonusMinutes, L("minuto(s),  começando daqui a"), numBonusStart, L("minuto(s)"),
+            Btn("Agendar bônus", ScheduleBonus));
+        var bar2 = Bar(
+            Btn("Cancelar bônus selecionado", () =>
+            {
+                if (gridBonus.CurrentRow?.Cells["Vaga"].Value is not int slot) { Log("Selecione um bônus na lista."); return; }
+                Log(BonusScheduler.Cancel(slot));
+                LogAll(ServerControl.Reload("Event"));
+                RefreshBonus();
+            }),
+            Btn("Limpar bônus terminados", () =>
+            {
+                int n = BonusScheduler.CleanupFinished();
+                if (n > 0) LogAll(ServerControl.Reload("Event"));
+                Log($"{n} bônus terminado(s) removido(s).");
+                RefreshBonus();
+            }),
+            Btn("Atualizar", RefreshBonus));
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 70, Padding = new Padding(6),
+            Text = "Exemplo: EXP e EXP master x2 por 60 minutos = experiência em dobro por uma hora para todos. O bônus multiplica a taxa de cada plano " +
+                   "(Free, Vipzinho, Vip e Vipzão continuam na mesma proporção), vale nos dois GameServers e no Castle Siege, e o jogo avisa todos " +
+                   "os jogadores no início e no fim. Até 7 bônus ao mesmo tempo; \"Limpar bônus terminados\" libera as vagas.",
+        };
+        page.Controls.Add(Titled("Bônus agendados por este programa", gridBonus));
+        page.Controls.Add(bar2);
+        page.Controls.Add(bar);
+        page.Controls.Add(help);
+        return page;
+    }
+
+    void ScheduleBonus()
+    {
+        var types = new List<int>();
+        if (chkExp.Checked) types.Add(0);
+        if (chkMaster.Checked) types.Add(1);
+        if (chkDrop.Checked) types.Add(2);
+        // o servidor confere a agenda minuto a minuto: começa no minuto cheio, com pelo menos 30 s de folga para a recarga
+        var start = DateTime.Now.AddMinutes((double)numBonusStart.Value);
+        start = new DateTime(start.Year, start.Month, start.Day, start.Hour, start.Minute, 0);
+        if (start < DateTime.Now.AddSeconds(30)) start = start.AddMinutes(1);
+        Log(BonusScheduler.Schedule(types, numMult.Value, (int)numBonusMinutes.Value, start));
+        LogAll(ServerControl.Reload("Common (inclui mensagens)"));   // mensagens de início e fim
+        LogAll(ServerControl.Reload("Event"));                       // agenda do bônus
+        RefreshBonus();
+    }
+
+    void RefreshBonus()
+    {
+        var t = new DataTable();
+        t.Columns.Add("Vaga", typeof(int)); t.Columns.Add("Início"); t.Columns.Add("Fim"); t.Columns.Add("Bônus"); t.Columns.Add("Situação");
+        foreach (var b in BonusScheduler.List())
+            t.Rows.Add(b.Slot, b.Start.ToString("dd/MM HH:mm"), b.End.ToString("dd/MM HH:mm"), b.Description, b.State);
+        gridBonus.DataSource = t;
+        if (gridBonus.Columns["Bônus"] is { } c) c.FillWeight = 300;
+    }
+
+    // ---------------- Lojas ----------------
+    static readonly string[] ShopCols = { "Seção", "Tipo", "Nível", "Dur", "Skill", "Sorte", "Opção", "Excelente" };
+
+    TabPage ShopsTab()
+    {
+        var page = new TabPage("Lojas");
+        shops = Shops.List();
+        foreach (var s in shops) lstShops.Items.Add($"{s.Index:000} - {s.Name} (NPC {s.MonsterClass})");
+        lstShops.SelectedIndexChanged += (_, _) => Safe(ShowShop);
+        gridShop.CellValueChanged += (_, _) => { if (shopShown >= 0) { shopDirty = true; UpdateShopStatus(); } };
+        gridShop.DataError += (_, e) => { Log("Valor inválido: use só números."); e.Cancel = true; };
+
+        var bar = Bar(
+            Btn("Adicionar item...", AddShopItem),
+            Btn("Remover", () => { if (gridShop.CurrentRow is { } r) { shopTable.Rows.RemoveAt(r.Index); shopDirty = true; UpdateShopStatus(); } }),
+            Btn("Subir", () => MoveShopRow(-1)),
+            Btn("Descer", () => MoveShopRow(+1)),
+            Btn("Salvar e aplicar", SaveShop),
+            Btn("Descartar alterações", () => { shopDirty = false; ShowShop(force: true); }),
+            lblShop);
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 54, Padding = new Padding(6),
+            Text = "Nível 0-15; Dur = durabilidade (em poções, a quantidade do pacote); Skill e Sorte 0 ou 1; Opção 0-7 (+4 a +28); Excelente 0-63. " +
+                   "A janela da loja tem 8×15 espaços e os itens entram na ordem da lista: o que não couber não aparece no jogo. " +
+                   "\"Salvar e aplicar\" faz backup do arquivo e recarrega as lojas nos GameServers, sem reiniciar.",
+        };
+        var right = new Panel { Dock = DockStyle.Fill };
+        right.Controls.Add(gridShop);
+        right.Controls.Add(bar);
+        page.Controls.Add(Split(Titled("NPC", lstShops), Titled("Itens à venda", right), 0.28));
+        page.Controls.Add(help);
+        if (lstShops.Items.Count > 0) lstShops.SelectedIndex = 0;
+        return page;
+    }
+
+    void ShowShop() => ShowShop(force: false);
+
+    void ShowShop(bool force)
+    {
+        int sel = lstShops.SelectedIndex;
+        if (sel < 0 || (sel == shopShown && !force)) return;
+        if (shopDirty && sel != shopShown)
+        {
+            if (!Confirm("A loja atual tem alterações não salvas. Descartar?")) { lstShops.SelectedIndex = shopShown; return; }
+            shopDirty = false;
+        }
+        var t = new DataTable();
+        t.Columns.Add("Item");
+        foreach (var c in ShopCols) t.Columns.Add(c, typeof(int));
+        foreach (var it in Shops.Load(shops[sel]))
+            t.Rows.Add(Shops.Name(it.Section, it.Type), it.Section, it.Type, it.Level, it.Dur, it.Skill, it.Luck, it.Option, it.Excellent);
+        shopShown = -1;   // evita marcar como alterado durante a carga
+        gridShop.DataSource = shopTable = t;
+        gridShop.Columns["Item"]!.ReadOnly = true; gridShop.Columns["Item"]!.FillWeight = 260;
+        gridShop.Columns["Seção"]!.ReadOnly = true; gridShop.Columns["Tipo"]!.ReadOnly = true;
+        shopShown = sel; shopDirty = false;
+        UpdateShopStatus();
+    }
+
+    List<ShopItem> ShopItemsFromGrid() => shopTable.Rows.Cast<DataRow>().Select(r => new ShopItem
+    {
+        Section = (int)r["Seção"], Type = (int)r["Tipo"], Level = (int)r["Nível"], Dur = (int)r["Dur"],
+        Skill = (int)r["Skill"], Luck = (int)r["Sorte"], Option = (int)r["Opção"], Excellent = (int)r["Excelente"],
+    }).ToList();
+
+    void UpdateShopStatus()
+    {
+        var (fora, used) = Shops.Fit(ShopItemsFromGrid());
+        lblShop.ForeColor = fora.Count > 0 ? Color.Firebrick : SystemColors.ControlText;
+        lblShop.Text = $"   {shopTable.Rows.Count} itens, {used} de {Shops.GridWidth * Shops.GridHeight} espaços" +
+                       (fora.Count > 0 ? $" — NÃO CABEM: {string.Join(", ", fora.Select(i => Shops.Name(i.Section, i.Type)))}" : "") +
+                       (shopDirty ? "   (não salvo)" : "");
+    }
+
+    void MoveShopRow(int delta)
+    {
+        if (gridShop.CurrentRow is not { } cur) return;
+        int i = cur.Index, j = i + delta;
+        if (j < 0 || j >= shopTable.Rows.Count) return;
+        var values = shopTable.Rows[i].ItemArray;
+        shopTable.Rows.RemoveAt(i);
+        var row = shopTable.NewRow(); row.ItemArray = values;
+        shopTable.Rows.InsertAt(row, j);
+        gridShop.CurrentCell = gridShop.Rows[j].Cells[0];
+        shopDirty = true; UpdateShopStatus();
+    }
+
+    void AddShopItem()
+    {
+        if (shopShown < 0) return;
+        using var dlg = new Form { Text = "Adicionar item à loja", Width = 520, Height = 480, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        var search = new TextBox { Left = 12, Top = 12, Width = 480, PlaceholderText = "Digite parte do nome (ex.: Jewel, Healing, Dragon)..." };
+        var list = new ListBox { Left = 12, Top = 42, Width = 480, Height = 300 };
+        var all = Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList();
+        void Filter()
+        {
+            list.BeginUpdate(); list.Items.Clear();
+            foreach (var d in all.Where(d => search.Text.Length == 0 || d.Name.Contains(search.Text, StringComparison.OrdinalIgnoreCase)).Take(400))
+                list.Items.Add(d);
+            list.EndUpdate();
+        }
+        list.Format += (_, e) => { if (e.ListItem is ItemDef d) e.Value = $"{d.Name}   [{d.Section},{d.Type}]  {d.Width}×{d.Height}"; };
+        search.TextChanged += (_, _) => Filter();
+        NumericUpDown N(int left, int max, int value) => new() { Left = left, Top = 355, Width = 55, Minimum = 0, Maximum = max, Value = value };
+        Label L(int left, string text) => new() { Left = left, Top = 358, AutoSize = true, Text = text };
+        var level = N(55, 15, 0); var dur = N(145, 255, 0); var opt = N(235, 7, 0);
+        var skill = new CheckBox { Left = 305, Top = 356, Text = "Skill", AutoSize = true };
+        var luck = new CheckBox { Left = 365, Top = 356, Text = "Sorte", AutoSize = true };
+        var ok = new Button { Text = "Adicionar", DialogResult = DialogResult.OK, Left = 336, Top = 395, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 417, Top = 395, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { search, list, L(12, "Nível"), level, L(110, "Dur"), dur, L(195, "Opção"), opt, skill, luck, ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        Filter();
+        if (dlg.ShowDialog(this) != DialogResult.OK || list.SelectedItem is not ItemDef item) return;
+        shopTable.Rows.Add(item.Name, item.Section, item.Type, (int)level.Value, (int)dur.Value, skill.Checked ? 1 : 0, luck.Checked ? 1 : 0, (int)opt.Value, 0);
+        shopDirty = true; UpdateShopStatus();
+        gridShop.CurrentCell = gridShop.Rows[^1].Cells[0];
+    }
+
+    void SaveShop()
+    {
+        if (shopShown < 0) return;
+        gridShop.EndEdit();
+        var items = ShopItemsFromGrid();
+        var (fora, _) = Shops.Fit(items);
+        if (fora.Count > 0 && !Confirm($"{fora.Count} item(ns) não cabem na janela da loja e não vão aparecer no jogo:\n{string.Join("\n", fora.Select(i => Shops.Name(i.Section, i.Type)))}\n\nSalvar assim mesmo?")) return;
+        Shops.Save(shops[shopShown], items);
+        Log($"Loja {shops[shopShown].Name} salva ({items.Count} itens; backup .bak-* ao lado do arquivo).");
+        LogAll(ServerControl.Reload("Shop"));
+        shopDirty = false; UpdateShopStatus();
+    }
+
+    // ---------------- Itens e baú ----------------
+    TabPage ItemsTab()
+    {
+        var page = new TabPage("Itens e baú");
+        cmbItemAccount.DropDown += (_, _) => Safe(() =>
+        {
+            var sel = cmbItemAccount.SelectedItem;
+            cmbItemAccount.Items.Clear();
+            foreach (DataRow r in Accounts.List().Rows) cmbItemAccount.Items.Add((string)r["Conta"]);
+            if (sel != null) cmbItemAccount.SelectedItem = sel;
+        });
+        cmbItemAccount.SelectedIndexChanged += (_, _) => Safe(() =>
+        {
+            cmbItemPlace.Items.Clear();
+            if (cmbItemAccount.SelectedItem is not string a) return;
+            foreach (var c in Accounts.Characters(a)) cmbItemPlace.Items.Add(c);
+            cmbItemPlace.Items.Add(VaultOption);
+            cmbItemPlace.SelectedIndex = 0;
+        });
+        cmbItemPlace.SelectedIndexChanged += (_, _) => Safe(ShowItems);
+        Label L(string s) => new() { Text = s, AutoSize = true, Padding = new Padding(0, 6, 0, 0) };
+        var bar = Bar(L("Conta:"), cmbItemAccount, L("Personagem:"), cmbItemPlace,
+            Btn("Atualizar", ShowItems),
+            Btn("Remover item selecionado", RemoveItem),
+            Btn("Dar item (Gremory Case)...", GiveItem),
+            Btn("Cancelar presente selecionado", () =>
+            {
+                if (cmbItemAccount.SelectedItem is not string a || gridGifts.CurrentRow?.Cells["Codigo"].Value is not int code) { Log("Selecione um presente."); return; }
+                if (!Confirm("Cancelar este presente? O jogador não vai recebê-lo.")) return;
+                Items.CancelGift(a, code); Log("Presente cancelado."); ShowItems();
+            }));
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 54, Padding = new Padding(6),
+            Text = "Remover só funciona com a conta fora do jogo (o servidor regravaria o item ao sair) e salva antes o inventário/baú inteiro em " +
+                   "C:\\MuServer\\DB\\backup-itens-*.csv. Presentes vão para a Gremory Case do jogador: ele recebe ao entrar e puxa para o inventário. " +
+                   "Não use o MuEditor para salvar inventários do S14: ele é da Season 8 e pode apagar o inventário expandido e o baú estendido.",
+        };
+        page.Controls.Add(Split(Titled("Itens", gridItems), Titled("Presentes pendentes na Gremory Case", gridGifts), 0.68));
+        page.Controls.Add(bar);
+        page.Controls.Add(help);
+        return page;
+    }
+
+    void ShowItems()
+    {
+        if (cmbItemAccount.SelectedItem is not string account || cmbItemPlace.SelectedItem is not string place) return;
+        itemsShown = place == VaultOption ? Items.Vault(account) : Items.Inventory(place);
+        var t = new DataTable();
+        foreach (var c in new[] { "Posição", "Onde", "Item", "Nível", "Skill", "Sorte", "Opção", "Excelente", "Set", "Dur" }) t.Columns.Add(c);
+        foreach (var i in itemsShown)
+            t.Rows.Add(i.Slot, i.Place, i.Name, $"+{i.Level}", i.Skill ? "sim" : "", i.Luck ? "sim" : "", i.Option > 0 ? $"+{i.Option * 4}" : "",
+                       i.Excellent == 0 ? "" : $"{System.Numerics.BitOperations.PopCount((uint)i.Excellent)} opção(ões)", i.SetOption > 0 ? "ancient" : "", i.Durability);
+        gridItems.DataSource = t;
+        if (gridItems.Columns["Item"] is { } col) col.FillWeight = 250;
+        gridGifts.DataSource = Items.Gifts(account);
+    }
+
+    void RemoveItem()
+    {
+        if (cmbItemAccount.SelectedItem is not string account || cmbItemPlace.SelectedItem is not string place) return;
+        if (gridItems.CurrentRow == null) { Log("Selecione um item."); return; }
+        var item = itemsShown[gridItems.CurrentRow.Index];
+        if (!Confirm($"Remover {item.Name} +{item.Level} ({item.Place}, posição {item.Slot}) de {(place == VaultOption ? "baú de " + account : place)}?\n\nO inventário/baú inteiro é salvo antes num arquivo de backup.")) return;
+        Log(Items.Remove(account, place == VaultOption ? null : place, item));
+        ShowItems();
+    }
+
+    void GiveItem()
+    {
+        if (cmbItemAccount.SelectedItem is not string account || cmbItemPlace.SelectedItem is not string place) { Log("Escolha a conta e o personagem."); return; }
+        if (Items.RewardSource() == null) { Log("A Gremory Case ainda não foi calibrada (falta um /gremgif de exemplo no jogo); presentes pelo painel ficam desligados até lá."); return; }
+        using var dlg = new Form { Text = "Dar item pela Gremory Case", Width = 520, Height = 500, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        var search = new TextBox { Left = 12, Top = 12, Width = 480, PlaceholderText = "Digite parte do nome do item..." };
+        var list = new ListBox { Left = 12, Top = 42, Width = 480, Height = 290 };
+        var all = Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList();
+        void Filter()
+        {
+            list.BeginUpdate(); list.Items.Clear();
+            foreach (var d in all.Where(d => search.Text.Length == 0 || d.Name.Contains(search.Text, StringComparison.OrdinalIgnoreCase)).Take(400)) list.Items.Add(d);
+            list.EndUpdate();
+        }
+        list.Format += (_, e) => { if (e.ListItem is ItemDef d) e.Value = $"{d.Name}   [{d.Section},{d.Type}]"; };
+        search.TextChanged += (_, _) => Filter();
+        NumericUpDown N(int left, int top, int min, int max, int value) => new() { Left = left, Top = top, Width = 55, Minimum = min, Maximum = max, Value = value };
+        Label L(int left, int top, string text) => new() { Left = left, Top = top + 3, AutoSize = true, Text = text };
+        var level = N(55, 345, 0, 15, 0); var opt = N(150, 345, 0, 7, 0); var exc = N(255, 345, 0, 63, 0); var days = N(385, 345, 1, 3650, 30);
+        var skill = new CheckBox { Left = 12, Top = 378, Text = "Skill", AutoSize = true };
+        var luck = new CheckBox { Left = 75, Top = 378, Text = "Sorte", AutoSize = true };
+        var toAccount = new CheckBox { Left = 145, Top = 378, Text = "Para a conta (qualquer personagem pega)", AutoSize = true, Checked = place == VaultOption, Enabled = place != VaultOption };
+        var ok = new Button { Text = "Dar", DialogResult = DialogResult.OK, Left = 336, Top = 415, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 417, Top = 415, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { search, list, L(12, 345, "Nível"), level, L(110, 345, "Opção"), opt, L(210, 345, "Exc (0-63)"), exc,
+                                              L(320, 345, "Dias p/ pegar"), days, skill, luck, toAccount, ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        Filter();
+        if (dlg.ShowDialog(this) != DialogResult.OK || list.SelectedItem is not ItemDef item) return;
+        Log(Items.Gift(account, toAccount.Checked ? null : place, item.Section, item.Type, (int)level.Value, skill.Checked, luck.Checked, (int)opt.Value, (int)exc.Value, (int)days.Value));
+        ShowItems();
     }
 
     // ---------------- VIP e contas ----------------

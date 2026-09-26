@@ -51,11 +51,18 @@ public static class ServerControl
         try { return Path.GetFileName(Path.GetDirectoryName(p.MainModule?.FileName ?? "") ?? ""); } catch { return ""; }
     }
 
-    /// <summary>Todos os GameServers e o Castle Siege rodando (a pasta Data é compartilhada), com um rótulo para o log.</summary>
+    /// <summary>O processo roda de dentro de ServerRoot? (o GameServer de testes, em C:\MuServerTeste, fica fora do painel real e vice-versa)</summary>
+    public static bool UnderRoot(Process p)
+    {
+        try { return (p.MainModule?.FileName ?? "").StartsWith(ServerRoot.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase); }
+        catch { return false; }
+    }
+
+    /// <summary>Todos os GameServers e o Castle Siege rodando em ServerRoot (a pasta Data é compartilhada), com um rótulo para o log.</summary>
     static IEnumerable<(string Label, Process Process)> GameServerProcesses()
     {
         foreach (var name in new[] { GameServerProcess, CastleSiegeProcess })
-            foreach (var p in Process.GetProcessesByName(name))
+            foreach (var p in Process.GetProcessesByName(name).Where(UnderRoot))
                 yield return (name == GameServerProcess ? $"{name} ({FolderOf(p)})" : name, p);
     }
 
@@ -82,7 +89,7 @@ public static class ServerControl
     public static string GameServerCounts()
     {
         var partes = new List<string>();
-        foreach (var p in Process.GetProcessesByName(GameServerProcess).OrderBy(FolderOf))
+        foreach (var p in Process.GetProcessesByName(GameServerProcess).Where(UnderRoot).OrderBy(FolderOf))
         {
             var title = WindowTitle(FindMenuWindow(p.Id));
             var nome = FolderOf(p).EndsWith("NonPvP", StringComparison.OrdinalIgnoreCase) ? "Non-PvP" : "Mu Chila";

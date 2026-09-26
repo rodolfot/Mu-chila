@@ -12,6 +12,7 @@
 
 # Backups de dados de jogadores gerados pelas ferramentas (ficam so em C:\MuServer\DB)
 backup-caixas-*.csv
+backup-itens-*.csv
 
 # Saida de compilacao do painel (a versao publicada fica em C:\MuServer\MuChilaAdmin)
 tools/MuChilaAdmin/bin/
