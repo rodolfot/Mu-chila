@@ -31,64 +31,94 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="0" Range="3" BeginPosX="226" BeginPosY="72" EndPosX="230" EndPosY="76" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="133" BeginPosY="18" EndPosX="137" EndPosY="22" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="155" BeginPosY="86" EndPosX="159" EndPosY="90" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="195" BeginPosY="18" EndPosX="199" EndPosY="22" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="238" BeginPosY="29" EndPosX="242" EndPosY="33" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="164" BeginPosY="45" EndPosX="168" EndPosY="49" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="189" BeginPosY="72" EndPosX="193" EndPosY="76" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="133" BeginPosY="60" EndPosX="137" EndPosY="64" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="0" Range="3" BeginPosX="209" BeginPosY="46" EndPosX="213" EndPosY="50" Direction="-1" Quantity="5" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="56" BeginPosY="80" EndPosX="60" EndPosY="84" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="18" BeginPosY="242" EndPosX="22" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="92" BeginPosY="174" EndPosX="96" EndPosY="178" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="7" BeginPosY="9" EndPosX="11" EndPosY="13" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="7" BeginPosY="148" EndPosX="11" EndPosY="152" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="92" BeginPosY="9" EndPosX="96" EndPosY="13" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="87" BeginPosY="242" EndPosX="91" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="40" BeginPosY="192" EndPosX="44" EndPosY="196" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="1" Range="3" BeginPosX="92" BeginPosY="120" EndPosX="96" EndPosY="124" Direction="-1" Quantity="5" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="142" BeginPosY="65" EndPosX="146" EndPosY="69" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="221" BeginPosY="240" EndPosX="225" EndPosY="244" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="224" BeginPosY="133" EndPosX="228" EndPosY="137" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="238" BeginPosY="29" EndPosX="242" EndPosY="33" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="178" BeginPosY="185" EndPosX="182" EndPosY="189" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="201" BeginPosY="77" EndPosX="205" EndPosY="81" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="179" BeginPosY="18" EndPosX="183" EndPosY="22" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="178" BeginPosY="119" EndPosX="182" EndPosY="123" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="224" BeginPosY="193" EndPosX="228" EndPosY="197" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="133" BeginPosY="19" EndPosX="137" EndPosY="23" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="178" BeginPosY="230" EndPosX="182" EndPosY="234" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="2" Range="3" BeginPosX="238" BeginPosY="68" EndPosX="242" EndPosY="72" Direction="-1" Quantity="5" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="211" BeginPosY="138" EndPosX="215" EndPosY="142" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="178" BeginPosY="242" EndPosX="182" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="224" BeginPosY="199" EndPosX="228" EndPosY="203" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="178" BeginPosY="88" EndPosX="182" EndPosY="92" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="178" BeginPosY="184" EndPosX="182" EndPosY="188" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="224" BeginPosY="93" EndPosX="228" EndPosY="97" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="220" BeginPosY="240" EndPosX="224" EndPosY="244" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="178" BeginPosY="124" EndPosX="182" EndPosY="128" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="195" BeginPosY="214" EndPosX="199" EndPosY="218" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="33" BeginPosY="210" EndPosX="37" EndPosY="214" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="92" BeginPosY="9" EndPosX="96" EndPosY="13" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="6" BeginPosY="93" EndPosX="10" EndPosY="97" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="92" BeginPosY="135" EndPosX="96" EndPosY="139" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="7" BeginPosY="9" EndPosX="11" EndPosY="13" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="92" BeginPosY="242" EndPosX="96" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="70" BeginPosY="72" EndPosX="74" EndPosY="76" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="31" BeginPosY="149" EndPosX="35" EndPosY="153" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="4" Range="3" BeginPosX="83" BeginPosY="188" EndPosX="87" EndPosY="192" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
-		<Config Class="6" Range="3" BeginPosX="93" BeginPosY="237" EndPosX="97" EndPosY="241" Direction="-1" Quantity="5" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
-		<Config Class="6" Range="3" BeginPosX="168" BeginPosY="166" EndPosX="172" EndPosY="170" Direction="-1" Quantity="5" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
-		<Config Class="6" Range="3" BeginPosX="173" BeginPosY="242" EndPosX="177" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
-		<Config Class="6" Range="3" BeginPosX="96" BeginPosY="166" EndPosX="100" EndPosY="170" Direction="-1" Quantity="5" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
-		<Config Class="7" Range="3" BeginPosX="7" BeginPosY="41" EndPosX="11" EndPosY="45" Direction="-1" Quantity="5" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
-		<Config Class="7" Range="3" BeginPosX="58" BeginPosY="78" EndPosX="62" EndPosY="82" Direction="-1" Quantity="5" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
-		<Config Class="7" Range="3" BeginPosX="58" BeginPosY="9" EndPosX="62" EndPosY="13" Direction="-1" Quantity="5" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
-		<Config Class="14" Range="3" BeginPosX="168" BeginPosY="173" EndPosX="172" EndPosY="177" Direction="-1" Quantity="5" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
-		<Config Class="14" Range="3" BeginPosX="93" BeginPosY="242" EndPosX="97" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
-		<Config Class="14" Range="3" BeginPosX="93" BeginPosY="166" EndPosX="97" EndPosY="170" Direction="-1" Quantity="5" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="19" BeginPosY="31" EndPosX="23" EndPosY="35" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="79" BeginPosY="133" EndPosX="83" EndPosY="137" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="48" BeginPosY="30" EndPosX="52" EndPosY="34" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="26" BeginPosY="225" EndPosX="30" EndPosY="229" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="81" BeginPosY="33" EndPosX="85" EndPosY="37" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="20" BeginPosY="187" EndPosX="24" EndPosY="191" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="50" BeginPosY="143" EndPosX="54" EndPosY="147" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="68" BeginPosY="103" EndPosX="72" EndPosY="107" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="74" BeginPosY="222" EndPosX="78" EndPosY="226" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="27" BeginPosY="71" EndPosX="31" EndPosY="75" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="77" BeginPosY="176" EndPosX="81" EndPosY="180" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="50" BeginPosY="192" EndPosX="54" EndPosY="196" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="22" BeginPosY="154" EndPosX="26" EndPosY="158" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="28" BeginPosY="107" EndPosX="32" EndPosY="111" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="1" Range="3" BeginPosX="70" BeginPosY="69" EndPosX="74" EndPosY="73" Direction="-1" Quantity="3" Element="0" /> <!-- "Hound" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="84" BeginPosY="111" EndPosX="88" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="48" BeginPosY="87" EndPosX="52" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="83" BeginPosY="84" EndPosX="87" EndPosY="88" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="15" BeginPosY="88" EndPosX="19" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="48" BeginPosY="55" EndPosX="52" EndPosY="59" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="45" BeginPosY="121" EndPosX="49" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="59" BeginPosY="164" EndPosX="63" EndPosY="168" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="39" BeginPosY="207" EndPosX="43" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="79" BeginPosY="200" EndPosX="83" EndPosY="204" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="83" BeginPosY="157" EndPosX="87" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="17" BeginPosY="54" EndPosX="21" EndPosY="58" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="53" BeginPosY="230" EndPosX="57" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="12" BeginPosY="216" EndPosX="16" EndPosY="220" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="80" BeginPosY="53" EndPosX="84" EndPosY="57" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="4" Range="3" BeginPosX="36" BeginPosY="171" EndPosX="40" EndPosY="175" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="188" BeginPosY="138" EndPosX="192" EndPosY="142" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="172" BeginPosY="30" EndPosX="176" EndPosY="34" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="187" BeginPosY="80" EndPosX="191" EndPosY="84" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="213" BeginPosY="102" EndPosX="217" EndPosY="106" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="190" BeginPosY="230" EndPosX="194" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="148" BeginPosY="53" EndPosX="152" EndPosY="57" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="145" BeginPosY="30" EndPosX="149" EndPosY="34" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="226" BeginPosY="74" EndPosX="230" EndPosY="78" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="228" BeginPosY="45" EndPosX="232" EndPosY="49" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="203" BeginPosY="30" EndPosX="207" EndPosY="34" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="211" BeginPosY="188" EndPosX="215" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="186" BeginPosY="202" EndPosX="190" EndPosY="206" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="151" BeginPosY="75" EndPosX="155" EndPosY="79" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="215" BeginPosY="220" EndPosX="219" EndPosY="224" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="213" BeginPosY="134" EndPosX="217" EndPosY="138" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="206" BeginPosY="60" EndPosX="210" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Budge Dragon" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="208" BeginPosY="80" EndPosX="212" EndPosY="84" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="167" BeginPosY="79" EndPosX="171" EndPosY="83" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="194" BeginPosY="44" EndPosX="198" EndPosY="48" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="179" BeginPosY="67" EndPosX="183" EndPosY="71" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="196" BeginPosY="68" EndPosX="200" EndPosY="72" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="160" BeginPosY="40" EndPosX="164" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="188" BeginPosY="25" EndPosX="192" EndPosY="29" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="214" BeginPosY="24" EndPosX="218" EndPosY="28" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="138" BeginPosY="73" EndPosX="142" EndPosY="77" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="164" BeginPosY="59" EndPosX="168" EndPosY="63" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="0" Range="3" BeginPosX="214" BeginPosY="48" EndPosX="218" EndPosY="52" Direction="-1" Quantity="3" Element="0" /> <!-- "Bull Fighter" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="185" BeginPosY="157" EndPosX="189" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="190" BeginPosY="217" EndPosX="194" EndPosY="221" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="192" BeginPosY="175" EndPosX="196" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="184" BeginPosY="120" EndPosX="188" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="188" BeginPosY="95" EndPosX="192" EndPosY="99" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="216" BeginPosY="171" EndPosX="220" EndPosY="175" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="215" BeginPosY="151" EndPosX="219" EndPosY="155" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="216" BeginPosY="202" EndPosX="220" EndPosY="206" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="199" BeginPosY="191" EndPosX="203" EndPosY="195" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="217" BeginPosY="118" EndPosX="221" EndPosY="122" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="201" BeginPosY="123" EndPosX="205" EndPosY="127" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="6" Range="3" BeginPosX="151" BeginPosY="232" EndPosX="155" EndPosY="236" Direction="-1" Quantity="3" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
+		<Config Class="6" Range="3" BeginPosX="122" BeginPosY="178" EndPosX="126" EndPosY="182" Direction="-1" Quantity="3" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
+		<Config Class="6" Range="3" BeginPosX="104" BeginPosY="196" EndPosX="108" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
+		<Config Class="6" Range="3" BeginPosX="155" BeginPosY="179" EndPosX="159" EndPosY="183" Direction="-1" Quantity="3" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
+		<Config Class="6" Range="3" BeginPosX="131" BeginPosY="209" EndPosX="135" EndPosY="213" Direction="-1" Quantity="3" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
+		<Config Class="6" Range="3" BeginPosX="160" BeginPosY="207" EndPosX="164" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
+		<Config Class="6" Range="3" BeginPosX="106" BeginPosY="228" EndPosX="110" EndPosY="232" Direction="-1" Quantity="2" Element="0" /> <!-- "Lich" (Mu Chila: grupo) -->
+		<Config Class="14" Range="3" BeginPosX="140" BeginPosY="194" EndPosX="144" EndPosY="198" Direction="-1" Quantity="3" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
+		<Config Class="14" Range="3" BeginPosX="139" BeginPosY="174" EndPosX="143" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
+		<Config Class="14" Range="3" BeginPosX="167" BeginPosY="185" EndPosX="171" EndPosY="189" Direction="-1" Quantity="3" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
+		<Config Class="14" Range="3" BeginPosX="131" BeginPosY="230" EndPosX="135" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
+		<Config Class="14" Range="3" BeginPosX="106" BeginPosY="212" EndPosX="110" EndPosY="216" Direction="-1" Quantity="3" Element="0" /> <!-- "Skeleton" (Mu Chila: grupo) -->
+		<Config Class="7" Range="3" BeginPosX="44" BeginPosY="16" EndPosX="48" EndPosY="20" Direction="-1" Quantity="3" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
+		<Config Class="7" Range="3" BeginPosX="16" BeginPosY="17" EndPosX="20" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
+		<Config Class="7" Range="3" BeginPosX="12" BeginPosY="70" EndPosX="16" EndPosY="74" Direction="-1" Quantity="3" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
+		<Config Class="7" Range="3" BeginPosX="33" BeginPosY="44" EndPosX="37" EndPosY="48" Direction="-1" Quantity="3" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
+		<Config Class="7" Range="3" BeginPosX="48" BeginPosY="70" EndPosX="52" EndPosY="74" Direction="-1" Quantity="3" Element="0" /> <!-- "Giant" (Mu Chila: grupo) -->
+		<Config Class="2" Range="3" BeginPosX="191" BeginPosY="106" EndPosX="197" EndPosY="112" Direction="-1" Quantity="12" Element="0" /> <!-- "Budge Dragon" (Mu Chila: farm) -->
+		<Config Class="3" Range="3" BeginPosX="200" BeginPosY="160" EndPosX="206" EndPosY="166" Direction="-1" Quantity="12" Element="0" /> <!-- "Spider" (Mu Chila: farm) -->
+		<Config Class="0" Range="3" BeginPosX="181" BeginPosY="52" EndPosX="187" EndPosY="58" Direction="-1" Quantity="12" Element="0" /> <!-- "Bull Fighter" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

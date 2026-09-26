@@ -5,72 +5,109 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="45" Range="3" BeginPosX="40" BeginPosY="63" EndPosX="44" EndPosY="67" Direction="-1" Quantity="6" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
-		<Config Class="45" Range="3" BeginPosX="14" BeginPosY="126" EndPosX="18" EndPosY="130" Direction="-1" Quantity="6" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
-		<Config Class="45" Range="3" BeginPosX="79" BeginPosY="14" EndPosX="83" EndPosY="18" Direction="-1" Quantity="6" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
-		<Config Class="45" Range="3" BeginPosX="34" BeginPosY="18" EndPosX="38" EndPosY="22" Direction="-1" Quantity="6" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
-		<Config Class="45" Range="3" BeginPosX="69" BeginPosY="47" EndPosX="73" EndPosY="51" Direction="-1" Quantity="5" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="47" BeginPosY="89" EndPosX="51" EndPosY="93" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="142" BeginPosY="8" EndPosX="146" EndPosY="12" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="43" BeginPosY="4" EndPosX="47" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="79" BeginPosY="45" EndPosX="83" EndPosY="49" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="12" BeginPosY="127" EndPosX="16" EndPosY="131" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="26" BeginPosY="48" EndPosX="30" EndPosY="52" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="99" BeginPosY="8" EndPosX="103" EndPosY="12" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="16" BeginPosY="95" EndPosX="20" EndPosY="99" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="46" Range="3" BeginPosX="109" BeginPosY="38" EndPosX="113" EndPosY="42" Direction="-1" Quantity="5" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="123" BeginPosY="28" EndPosX="127" EndPosY="32" Direction="-1" Quantity="6" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="30" BeginPosY="119" EndPosX="34" EndPosY="123" Direction="-1" Quantity="6" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="241" BeginPosY="6" EndPosX="245" EndPosY="10" Direction="-1" Quantity="6" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="189" BeginPosY="55" EndPosX="193" EndPosY="59" Direction="-1" Quantity="5" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="74" BeginPosY="71" EndPosX="78" EndPosY="75" Direction="-1" Quantity="5" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="177" BeginPosY="9" EndPosX="181" EndPosY="13" Direction="-1" Quantity="5" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="118" BeginPosY="75" EndPosX="122" EndPosY="79" Direction="-1" Quantity="5" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="47" Range="3" BeginPosX="227" BeginPosY="43" EndPosX="231" EndPosY="47" Direction="-1" Quantity="5" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="226" BeginPosY="192" EndPosX="230" EndPosY="196" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="11" BeginPosY="235" EndPosX="15" EndPosY="239" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="221" BeginPosY="47" EndPosX="225" EndPosY="51" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="116" BeginPosY="205" EndPosX="120" EndPosY="209" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="172" BeginPosY="141" EndPosX="176" EndPosY="145" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="35" BeginPosY="171" EndPosX="39" EndPosY="175" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="234" BeginPosY="121" EndPosX="238" EndPosY="125" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="63" BeginPosY="218" EndPosX="67" EndPosY="222" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="166" BeginPosY="192" EndPosX="170" EndPosY="196" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="218" BeginPosY="155" EndPosX="222" EndPosY="159" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="30" BeginPosY="206" EndPosX="34" EndPosY="210" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="89" BeginPosY="209" EndPosX="93" EndPosY="213" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="48" Range="3" BeginPosX="38" BeginPosY="232" EndPosX="42" EndPosY="236" Direction="-1" Quantity="5" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
-		<Config Class="49" Range="3" BeginPosX="23" BeginPosY="225" EndPosX="27" EndPosY="229" Direction="-1" Quantity="5" Element="0" /> <!-- "Hydra" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="87" BeginPosY="173" EndPosX="91" EndPosY="177" Direction="-1" Quantity="6" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="238" BeginPosY="12" EndPosX="242" EndPosY="16" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="128" BeginPosY="60" EndPosX="132" EndPosY="64" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="220" BeginPosY="118" EndPosX="224" EndPosY="122" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="14" BeginPosY="154" EndPosX="18" EndPosY="158" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="137" BeginPosY="127" EndPosX="141" EndPosY="131" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="190" BeginPosY="52" EndPosX="194" EndPosY="56" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="77" BeginPosY="111" EndPosX="81" EndPosY="115" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="238" BeginPosY="70" EndPosX="242" EndPosY="74" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="181" BeginPosY="96" EndPosX="185" EndPosY="100" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="127" BeginPosY="167" EndPosX="131" EndPosY="171" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="113" BeginPosY="96" EndPosX="117" EndPosY="100" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="51" Range="3" BeginPosX="43" BeginPosY="179" EndPosX="47" EndPosY="183" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="103" BeginPosY="133" EndPosX="107" EndPosY="137" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="178" BeginPosY="14" EndPosX="182" EndPosY="18" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="231" BeginPosY="182" EndPosX="235" EndPosY="186" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="17" BeginPosY="233" EndPosX="21" EndPosY="237" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="232" BeginPosY="87" EndPosX="236" EndPosY="91" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="132" BeginPosY="208" EndPosX="136" EndPosY="212" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="34" BeginPosY="164" EndPosX="38" EndPosY="168" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="171" BeginPosY="146" EndPosX="175" EndPosY="150" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="174" BeginPosY="88" EndPosX="178" EndPosY="92" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="83" BeginPosY="186" EndPosX="87" EndPosY="190" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="219" BeginPosY="137" EndPosX="223" EndPosY="141" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="133" BeginPosY="165" EndPosX="137" EndPosY="169" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="206" BeginPosY="54" EndPosX="210" EndPosY="58" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="139" BeginPosY="110" EndPosX="143" EndPosY="114" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="54" BeginPosY="216" EndPosX="58" EndPosY="220" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="65" BeginPosY="139" EndPosX="69" EndPosY="143" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
-		<Config Class="52" Range="3" BeginPosX="203" BeginPosY="105" EndPosX="207" EndPosY="109" Direction="-1" Quantity="5" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="175" BeginPosY="17" EndPosX="179" EndPosY="21" Direction="-1" Quantity="4" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="223" BeginPosY="143" EndPosX="227" EndPosY="147" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="127" BeginPosY="127" EndPosX="131" EndPosY="131" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="42" BeginPosY="219" EndPosX="46" EndPosY="223" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="56" BeginPosY="148" EndPosX="60" EndPosY="152" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="106" BeginPosY="178" EndPosX="110" EndPosY="182" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="230" BeginPosY="84" EndPosX="234" EndPosY="88" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="142" BeginPosY="165" EndPosX="146" EndPosY="169" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="162" BeginPosY="147" EndPosX="166" EndPosY="151" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="75" BeginPosY="135" EndPosX="79" EndPosY="139" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="180" BeginPosY="93" EndPosX="184" EndPosY="97" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="110" BeginPosY="207" EndPosX="114" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="82" BeginPosY="174" EndPosX="86" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="119" BeginPosY="168" EndPosX="123" EndPosY="172" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="28" BeginPosY="205" EndPosX="32" EndPosY="209" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="215" BeginPosY="175" EndPosX="219" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="163" BeginPosY="112" EndPosX="167" EndPosY="116" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="23" BeginPosY="169" EndPosX="27" EndPosY="173" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="200" BeginPosY="101" EndPosX="204" EndPosY="105" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="225" BeginPosY="105" EndPosX="229" EndPosY="109" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="24" BeginPosY="229" EndPosX="28" EndPosY="233" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="63" BeginPosY="177" EndPosX="67" EndPosY="181" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="212" BeginPosY="60" EndPosX="216" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="96" BeginPosY="139" EndPosX="100" EndPosY="143" Direction="-1" Quantity="3" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="228" BeginPosY="92" EndPosX="232" EndPosY="96" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="149" BeginPosY="64" EndPosX="153" EndPosY="68" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="235" BeginPosY="40" EndPosX="239" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="178" BeginPosY="53" EndPosX="182" EndPosY="57" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="40" BeginPosY="176" EndPosX="44" EndPosY="180" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="81" BeginPosY="153" EndPosX="85" EndPosY="157" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="80" BeginPosY="117" EndPosX="84" EndPosY="121" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="232" BeginPosY="18" EndPosX="236" EndPosY="22" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="119" BeginPosY="91" EndPosX="123" EndPosY="95" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="115" BeginPosY="80" EndPosX="119" EndPosY="84" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="223" BeginPosY="115" EndPosX="227" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="213" BeginPosY="96" EndPosX="217" EndPosY="100" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="128" BeginPosY="65" EndPosX="132" EndPosY="69" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="100" BeginPosY="103" EndPosX="104" EndPosY="107" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="230" BeginPosY="69" EndPosX="234" EndPosY="73" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="227" BeginPosY="50" EndPosX="231" EndPosY="54" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="216" BeginPosY="81" EndPosX="220" EndPosY="85" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="51" Range="3" BeginPosX="205" BeginPosY="8" EndPosX="209" EndPosY="12" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Bahamut" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="230" BeginPosY="171" EndPosX="234" EndPosY="175" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="155" BeginPosY="196" EndPosX="159" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="85" BeginPosY="211" EndPosX="89" EndPosY="215" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="42" BeginPosY="209" EndPosX="46" EndPosY="213" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="227" BeginPosY="201" EndPosX="231" EndPosY="205" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="122" BeginPosY="204" EndPosX="126" EndPosY="208" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="34" BeginPosY="231" EndPosX="38" EndPosY="235" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="168" BeginPosY="158" EndPosX="172" EndPosY="162" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="16" BeginPosY="231" EndPosX="20" EndPosY="235" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="174" BeginPosY="172" EndPosX="178" EndPosY="176" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="222" BeginPosY="156" EndPosX="226" EndPosY="160" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="222" BeginPosY="129" EndPosX="226" EndPosY="133" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="66" BeginPosY="217" EndPosX="70" EndPosY="221" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="175" BeginPosY="144" EndPosX="179" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="136" BeginPosY="203" EndPosX="140" EndPosY="207" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="52" BeginPosY="226" EndPosX="56" EndPosY="230" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="167" BeginPosY="187" EndPosX="171" EndPosY="191" Direction="-1" Quantity="3" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="48" Range="3" BeginPosX="221" BeginPosY="189" EndPosX="225" EndPosY="193" Direction="-1" Quantity="2" Element="0" /> <!-- "Lizard King" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="45" BeginPosY="60" EndPosX="49" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="56" BeginPosY="35" EndPosX="60" EndPosY="39" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="46" BeginPosY="16" EndPosX="50" EndPosY="20" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="115" BeginPosY="12" EndPosX="119" EndPosY="16" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="51" BeginPosY="88" EndPosX="55" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="65" BeginPosY="52" EndPosX="69" EndPosY="56" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="21" BeginPosY="96" EndPosX="25" EndPosY="100" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="21" BeginPosY="70" EndPosX="25" EndPosY="74" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="77" BeginPosY="34" EndPosX="81" EndPosY="38" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="31" BeginPosY="111" EndPosX="35" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="62" BeginPosY="17" EndPosX="66" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="84" BeginPosY="63" EndPosX="88" EndPosY="67" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="18" BeginPosY="121" EndPosX="22" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="112" BeginPosY="27" EndPosX="116" EndPosY="31" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="46" Range="3" BeginPosX="78" BeginPosY="16" EndPosX="82" EndPosY="20" Direction="-1" Quantity="3" Element="0" /> <!-- "Vepar" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="110" BeginPosY="38" EndPosX="114" EndPosY="42" Direction="-1" Quantity="4" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="162" BeginPosY="13" EndPosX="166" EndPosY="17" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="191" BeginPosY="23" EndPosX="195" EndPosY="27" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="137" BeginPosY="59" EndPosX="141" EndPosY="63" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="66" BeginPosY="82" EndPosX="70" EndPosY="86" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="101" BeginPosY="48" EndPosX="105" EndPosY="52" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="198" BeginPosY="15" EndPosX="202" EndPosY="19" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="121" BeginPosY="24" EndPosX="125" EndPosY="28" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="141" BeginPosY="13" EndPosX="145" EndPosY="17" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="38" BeginPosY="107" EndPosX="42" EndPosY="111" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="47" BeginPosY="98" EndPosX="51" EndPosY="102" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="128" BeginPosY="13" EndPosX="132" EndPosY="17" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="223" BeginPosY="44" EndPosX="227" EndPosY="48" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="47" Range="3" BeginPosX="149" BeginPosY="15" EndPosX="153" EndPosY="19" Direction="-1" Quantity="3" Element="0" /> <!-- "Valkyrie" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="42" BeginPosY="37" EndPosX="46" EndPosY="41" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="34" BeginPosY="48" EndPosX="38" EndPosY="52" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="19" BeginPosY="41" EndPosX="23" EndPosY="45" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="22" BeginPosY="51" EndPosX="26" EndPosY="55" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="36" BeginPosY="24" EndPosX="40" EndPosY="28" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="36" BeginPosY="66" EndPosX="40" EndPosY="70" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="24" BeginPosY="31" EndPosX="28" EndPosY="35" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="75" BeginPosY="17" EndPosX="79" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="21" BeginPosY="60" EndPosX="25" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="45" Range="3" BeginPosX="22" BeginPosY="84" EndPosX="26" EndPosY="88" Direction="-1" Quantity="2" Element="0" /> <!-- "Bahamut" (Mu Chila: grupo) -->
+		<Config Class="49" Range="3" BeginPosX="21" BeginPosY="225" EndPosX="25" EndPosY="229" Direction="-1" Quantity="4" Element="0" /> <!-- "Hydra" (Mu Chila: grupo) -->
+		<Config Class="52" Range="3" BeginPosX="121" BeginPosY="143" EndPosX="127" EndPosY="149" Direction="-1" Quantity="12" Element="0" /> <!-- "Silver Valkyrie" (Mu Chila: farm) -->
+		<Config Class="51" Range="3" BeginPosX="145" BeginPosY="108" EndPosX="151" EndPosY="114" Direction="-1" Quantity="12" Element="0" /> <!-- "Great Bahamut" (Mu Chila: farm) -->
+		<Config Class="48" Range="3" BeginPosX="142" BeginPosY="195" EndPosX="148" EndPosY="201" Direction="-1" Quantity="12" Element="0" /> <!-- "Lizard King" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

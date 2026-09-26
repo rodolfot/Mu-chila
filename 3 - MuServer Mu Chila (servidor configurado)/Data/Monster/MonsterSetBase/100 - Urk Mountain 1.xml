@@ -6,47 +6,71 @@
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
 		<Config Class="673" Range="30" BeginPosX="126" BeginPosY="108" EndPosX="134" EndPosY="120" Direction="-1" Quantity="1" Element="6" /> <!-- "Lord Silvester" -->
-		<Config Class="670" Range="3" BeginPosX="175" BeginPosY="90" EndPosX="179" EndPosY="94" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="29" BeginPosY="36" EndPosX="33" EndPosY="40" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="93" BeginPosY="220" EndPosX="97" EndPosY="224" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="208" BeginPosY="212" EndPosX="212" EndPosY="216" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="73" BeginPosY="126" EndPosX="77" EndPosY="130" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="121" BeginPosY="11" EndPosX="125" EndPosY="15" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="238" BeginPosY="137" EndPosX="242" EndPosY="141" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="154" BeginPosY="156" EndPosX="158" EndPosY="160" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="189" BeginPosY="25" EndPosX="193" EndPosY="29" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="91" BeginPosY="66" EndPosX="95" EndPosY="70" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="235" BeginPosY="66" EndPosX="239" EndPosY="70" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="125" BeginPosY="110" EndPosX="129" EndPosY="114" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="53" BeginPosY="171" EndPosX="57" EndPosY="175" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="26" BeginPosY="113" EndPosX="30" EndPosY="117" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="670" Range="3" BeginPosX="193" BeginPosY="132" EndPosX="197" EndPosY="136" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="129" BeginPosY="117" EndPosX="133" EndPosY="121" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="213" BeginPosY="216" EndPosX="217" EndPosY="220" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="31" BeginPosY="40" EndPosX="35" EndPosY="44" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="191" BeginPosY="20" EndPosX="195" EndPosY="24" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="238" BeginPosY="97" EndPosX="242" EndPosY="101" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="106" BeginPosY="201" EndPosX="110" EndPosY="205" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="108" BeginPosY="42" EndPosX="112" EndPosY="46" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="217" BeginPosY="156" EndPosX="221" EndPosY="160" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="155" BeginPosY="170" EndPosX="159" EndPosY="174" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="671" Range="3" BeginPosX="182" BeginPosY="103" EndPosX="186" EndPosY="107" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="92" BeginPosY="124" EndPosX="96" EndPosY="128" Direction="-1" Quantity="6" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="215" BeginPosY="211" EndPosX="219" EndPosY="215" Direction="-1" Quantity="6" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="225" BeginPosY="86" EndPosX="229" EndPosY="90" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="131" BeginPosY="8" EndPosX="135" EndPosY="12" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="34" BeginPosY="39" EndPosX="38" EndPosY="43" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="82" BeginPosY="218" EndPosX="86" EndPosY="222" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="156" BeginPosY="164" EndPosX="160" EndPosY="168" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="159" BeginPosY="81" EndPosX="163" EndPosY="85" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="672" Range="3" BeginPosX="31" BeginPosY="117" EndPosX="35" EndPosY="121" Direction="-1" Quantity="5" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="689" Range="3" BeginPosX="120" BeginPosY="95" EndPosX="124" EndPosY="99" Direction="-1" Quantity="6" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
-		<Config Class="689" Range="3" BeginPosX="141" BeginPosY="132" EndPosX="145" EndPosY="136" Direction="-1" Quantity="6" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
-		<Config Class="689" Range="3" BeginPosX="108" BeginPosY="122" EndPosX="112" EndPosY="126" Direction="-1" Quantity="6" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
-		<Config Class="689" Range="3" BeginPosX="149" BeginPosY="105" EndPosX="153" EndPosY="109" Direction="-1" Quantity="5" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
-		<Config Class="689" Range="3" BeginPosX="135" BeginPosY="115" EndPosX="139" EndPosY="119" Direction="-1" Quantity="5" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
-		<Config Class="689" Range="3" BeginPosX="124" BeginPosY="127" EndPosX="128" EndPosY="131" Direction="-1" Quantity="5" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
-		<Config Class="689" Range="3" BeginPosX="114" BeginPosY="108" EndPosX="118" EndPosY="112" Direction="-1" Quantity="5" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="55" BeginPosY="169" EndPosX="59" EndPosY="173" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="234" BeginPosY="65" EndPosX="238" EndPosY="69" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="175" BeginPosY="194" EndPosX="179" EndPosY="198" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="72" BeginPosY="39" EndPosX="76" EndPosY="43" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="99" BeginPosY="72" EndPosX="103" EndPosY="76" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="169" BeginPosY="133" EndPosX="173" EndPosY="137" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="236" BeginPosY="135" EndPosX="240" EndPosY="139" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="177" BeginPosY="90" EndPosX="181" EndPosY="94" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="204" BeginPosY="113" EndPosX="208" EndPosY="117" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="199" BeginPosY="136" EndPosX="203" EndPosY="140" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="119" BeginPosY="165" EndPosX="123" EndPosY="169" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="200" BeginPosY="50" EndPosX="204" EndPosY="54" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="104" BeginPosY="197" EndPosX="108" EndPosY="201" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="136" BeginPosY="29" EndPosX="140" EndPosY="33" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="122" BeginPosY="114" EndPosX="126" EndPosY="118" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="179" BeginPosY="19" EndPosX="183" EndPosY="23" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="27" BeginPosY="114" EndPosX="31" EndPosY="118" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="218" BeginPosY="94" EndPosX="222" EndPosY="98" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="111" BeginPosY="137" EndPosX="115" EndPosY="141" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="76" BeginPosY="130" EndPosX="80" EndPosY="134" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="112" BeginPosY="152" EndPosX="116" EndPosY="156" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="209" BeginPosY="208" EndPosX="213" EndPosY="212" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="231" BeginPosY="171" EndPosX="235" EndPosY="175" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="217" BeginPosY="158" EndPosX="221" EndPosY="162" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="171" BeginPosY="112" EndPosX="175" EndPosY="116" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="201" BeginPosY="87" EndPosX="205" EndPosY="91" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="135" BeginPosY="83" EndPosX="139" EndPosY="87" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="45" BeginPosY="47" EndPosX="49" EndPosY="51" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="219" BeginPosY="51" EndPosX="223" EndPosY="55" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="106" BeginPosY="40" EndPosX="110" EndPosY="44" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="131" BeginPosY="119" EndPosX="135" EndPosY="123" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="157" BeginPosY="37" EndPosX="161" EndPosY="41" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="124" BeginPosY="107" EndPosX="128" EndPosY="111" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="671" Range="3" BeginPosX="153" BeginPosY="170" EndPosX="157" EndPosY="174" Direction="-1" Quantity="2" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="147" BeginPosY="207" EndPosX="151" EndPosY="211" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="225" BeginPosY="114" EndPosX="229" EndPosY="118" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="89" BeginPosY="98" EndPosX="93" EndPosY="102" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="42" BeginPosY="150" EndPosX="46" EndPosY="154" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="100" BeginPosY="12" EndPosX="104" EndPosY="16" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="84" BeginPosY="179" EndPosX="88" EndPosY="183" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="108" BeginPosY="94" EndPosX="112" EndPosY="98" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="155" BeginPosY="163" EndPosX="159" EndPosY="167" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="133" BeginPosY="213" EndPosX="137" EndPosY="217" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="121" BeginPosY="209" EndPosX="125" EndPosY="213" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="33" BeginPosY="118" EndPosX="37" EndPosY="122" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="159" BeginPosY="133" EndPosX="163" EndPosY="137" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="239" BeginPosY="133" EndPosX="243" EndPosY="137" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="39" BeginPosY="139" EndPosX="43" EndPosY="143" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="127" BeginPosY="156" EndPosX="131" EndPosY="160" Direction="-1" Quantity="3" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="672" Range="3" BeginPosX="80" BeginPosY="208" EndPosX="84" EndPosY="212" Direction="-1" Quantity="2" Element="1" /> <!-- "Uruk Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="144" BeginPosY="106" EndPosX="148" EndPosY="110" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="118" BeginPosY="90" EndPosX="122" EndPosY="94" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="111" BeginPosY="111" EndPosX="115" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="115" BeginPosY="99" EndPosX="119" EndPosY="103" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="131" BeginPosY="99" EndPosX="135" EndPosY="103" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="141" BeginPosY="131" EndPosX="145" EndPosY="135" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="127" BeginPosY="130" EndPosX="131" EndPosY="134" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="122" BeginPosY="96" EndPosX="126" EndPosY="100" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="121" BeginPosY="121" EndPosX="125" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="111" BeginPosY="120" EndPosX="115" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="137" BeginPosY="126" EndPosX="141" EndPosY="130" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="115" BeginPosY="128" EndPosX="119" EndPosY="132" Direction="-1" Quantity="3" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="689" Range="3" BeginPosX="136" BeginPosY="120" EndPosX="140" EndPosY="124" Direction="-1" Quantity="2" Element="0" /> <!-- "Flame Trap" (Mu Chila: grupo) -->
+		<Config Class="670" Range="3" BeginPosX="133" BeginPosY="109" EndPosX="139" EndPosY="115" Direction="-1" Quantity="12" Element="1" /> <!-- "Uruk Devil Fairy" (Mu Chila: farm) -->
+		<Config Class="671" Range="3" BeginPosX="157" BeginPosY="77" EndPosX="163" EndPosY="83" Direction="-1" Quantity="12" Element="1" /> <!-- "Uruk Elemental Beast" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

@@ -6,55 +6,86 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="480" Range="3" BeginPosX="76" BeginPosY="19" EndPosX="80" EndPosY="23" Direction="-1" Quantity="6" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="22" BeginPosY="99" EndPosX="26" EndPosY="103" Direction="-1" Quantity="6" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="118" BeginPosY="89" EndPosX="122" EndPosY="93" Direction="-1" Quantity="6" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="28" BeginPosY="45" EndPosX="32" EndPosY="49" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="68" BeginPosY="77" EndPosX="72" EndPosY="81" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="102" BeginPosY="55" EndPosX="106" EndPosY="59" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="41" BeginPosY="13" EndPosX="45" EndPosY="17" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="61" BeginPosY="46" EndPosX="65" EndPosY="50" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="480" Range="3" BeginPosX="101" BeginPosY="28" EndPosX="105" EndPosY="32" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="481" Range="3" BeginPosX="56" BeginPosY="68" EndPosX="60" EndPosY="72" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="481" Range="3" BeginPosX="94" BeginPosY="10" EndPosX="98" EndPosY="14" Direction="-1" Quantity="5" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
-		<Config Class="482" Range="3" BeginPosX="39" BeginPosY="19" EndPosX="43" EndPosY="23" Direction="-1" Quantity="6" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="482" Range="3" BeginPosX="38" BeginPosY="231" EndPosX="42" EndPosY="235" Direction="-1" Quantity="6" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="482" Range="3" BeginPosX="60" BeginPosY="127" EndPosX="64" EndPosY="131" Direction="-1" Quantity="6" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="482" Range="3" BeginPosX="111" BeginPosY="61" EndPosX="115" EndPosY="65" Direction="-1" Quantity="5" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="482" Range="3" BeginPosX="91" BeginPosY="181" EndPosX="95" EndPosY="185" Direction="-1" Quantity="5" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="482" Range="3" BeginPosX="24" BeginPosY="174" EndPosX="28" EndPosY="178" Direction="-1" Quantity="5" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="482" Range="3" BeginPosX="26" BeginPosY="81" EndPosX="30" EndPosY="85" Direction="-1" Quantity="5" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="483" Range="3" BeginPosX="75" BeginPosY="220" EndPosX="79" EndPosY="224" Direction="-1" Quantity="8" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="77" BeginPosY="196" EndPosX="81" EndPosY="200" Direction="-1" Quantity="6" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="233" BeginPosY="211" EndPosX="237" EndPosY="215" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="24" BeginPosY="127" EndPosX="28" EndPosY="131" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="160" BeginPosY="190" EndPosX="164" EndPosY="194" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="30" BeginPosY="222" EndPosX="34" EndPosY="226" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="73" BeginPosY="144" EndPosX="77" EndPosY="148" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="34" BeginPosY="174" EndPosX="38" EndPosY="178" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="107" BeginPosY="229" EndPosX="111" EndPosY="233" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="183" BeginPosY="228" EndPosX="187" EndPosY="232" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="484" Range="3" BeginPosX="217" BeginPosY="174" EndPosX="221" EndPosY="178" Direction="-1" Quantity="5" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="485" Range="3" BeginPosX="224" BeginPosY="207" EndPosX="228" EndPosY="211" Direction="-1" Quantity="7" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
-		<Config Class="486" Range="3" BeginPosX="185" BeginPosY="224" EndPosX="189" EndPosY="228" Direction="-1" Quantity="6" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="486" Range="3" BeginPosX="200" BeginPosY="102" EndPosX="204" EndPosY="106" Direction="-1" Quantity="6" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="486" Range="3" BeginPosX="229" BeginPosY="177" EndPosX="233" EndPosY="181" Direction="-1" Quantity="6" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="486" Range="3" BeginPosX="133" BeginPosY="191" EndPosX="137" EndPosY="195" Direction="-1" Quantity="5" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="486" Range="3" BeginPosX="180" BeginPosY="168" EndPosX="184" EndPosY="172" Direction="-1" Quantity="5" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="486" Range="3" BeginPosX="242" BeginPosY="127" EndPosX="246" EndPosY="131" Direction="-1" Quantity="5" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="487" Range="3" BeginPosX="177" BeginPosY="110" EndPosX="181" EndPosY="114" Direction="-1" Quantity="5" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="487" Range="3" BeginPosX="226" BeginPosY="190" EndPosX="230" EndPosY="194" Direction="-1" Quantity="5" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="487" Range="3" BeginPosX="241" BeginPosY="120" EndPosX="245" EndPosY="124" Direction="-1" Quantity="5" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="488" Range="3" BeginPosX="231" BeginPosY="109" EndPosX="235" EndPosY="113" Direction="-1" Quantity="5" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
-		<Config Class="489" Range="3" BeginPosX="150" BeginPosY="54" EndPosX="154" EndPosY="58" Direction="-1" Quantity="6" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="489" Range="3" BeginPosX="238" BeginPosY="67" EndPosX="242" EndPosY="71" Direction="-1" Quantity="5" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="489" Range="3" BeginPosX="197" BeginPosY="7" EndPosX="201" EndPosY="11" Direction="-1" Quantity="5" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="489" Range="3" BeginPosX="194" BeginPosY="60" EndPosX="198" EndPosY="64" Direction="-1" Quantity="5" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="489" Range="3" BeginPosX="145" BeginPosY="13" EndPosX="149" EndPosY="17" Direction="-1" Quantity="5" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="489" Range="3" BeginPosX="147" BeginPosY="90" EndPosX="151" EndPosY="94" Direction="-1" Quantity="5" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="490" Range="3" BeginPosX="161" BeginPosY="58" EndPosX="165" EndPosY="62" Direction="-1" Quantity="7" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="490" Range="3" BeginPosX="238" BeginPosY="47" EndPosX="242" EndPosY="51" Direction="-1" Quantity="7" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
-		<Config Class="491" Range="3" BeginPosX="153" BeginPosY="21" EndPosX="157" EndPosY="25" Direction="-1" Quantity="5" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="481" Range="3" BeginPosX="36" BeginPosY="66" EndPosX="40" EndPosY="70" Direction="-1" Quantity="4" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="481" Range="3" BeginPosX="66" BeginPosY="24" EndPosX="70" EndPosY="28" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="481" Range="3" BeginPosX="103" BeginPosY="71" EndPosX="107" EndPosY="75" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="483" Range="3" BeginPosX="33" BeginPosY="154" EndPosX="37" EndPosY="158" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="483" Range="3" BeginPosX="50" BeginPosY="211" EndPosX="54" EndPosY="215" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="483" Range="3" BeginPosX="61" BeginPosY="169" EndPosX="65" EndPosY="173" Direction="-1" Quantity="2" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="485" Range="3" BeginPosX="211" BeginPosY="199" EndPosX="215" EndPosY="203" Direction="-1" Quantity="4" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="485" Range="3" BeginPosX="152" BeginPosY="200" EndPosX="156" EndPosY="204" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="491" Range="3" BeginPosX="212" BeginPosY="53" EndPosX="216" EndPosY="57" Direction="-1" Quantity="3" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="491" Range="3" BeginPosX="167" BeginPosY="31" EndPosX="171" EndPosY="35" Direction="-1" Quantity="2" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="200" BeginPosY="224" EndPosX="204" EndPosY="228" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="139" BeginPosY="216" EndPosX="143" EndPosY="220" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="81" BeginPosY="200" EndPosX="85" EndPosY="204" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="32" BeginPosY="173" EndPosX="36" EndPosY="177" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="33" BeginPosY="206" EndPosX="37" EndPosY="210" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="143" BeginPosY="196" EndPosX="147" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="226" BeginPosY="193" EndPosX="230" EndPosY="197" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="30" BeginPosY="136" EndPosX="34" EndPosY="140" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="98" BeginPosY="218" EndPosX="102" EndPosY="222" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="182" BeginPosY="181" EndPosX="186" EndPosY="185" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="61" BeginPosY="140" EndPosX="65" EndPosY="144" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="61" BeginPosY="203" EndPosX="65" EndPosY="207" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="73" BeginPosY="216" EndPosX="77" EndPosY="220" Direction="-1" Quantity="3" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="77" BeginPosY="82" EndPosX="81" EndPosY="86" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="34" BeginPosY="87" EndPosX="38" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="95" BeginPosY="26" EndPosX="99" EndPosY="30" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="86" BeginPosY="61" EndPosX="90" EndPosY="65" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="76" BeginPosY="42" EndPosX="80" EndPosY="46" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="110" BeginPosY="59" EndPosX="114" EndPosY="63" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="55" BeginPosY="64" EndPosX="59" EndPosY="68" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="45" BeginPosY="14" EndPosX="49" EndPosY="18" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="41" BeginPosY="39" EndPosX="45" EndPosY="43" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="116" BeginPosY="68" EndPosX="120" EndPosY="72" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="33" BeginPosY="58" EndPosX="37" EndPosY="62" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="480" Range="3" BeginPosX="114" BeginPosY="83" EndPosX="118" EndPosY="87" Direction="-1" Quantity="3" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: grupo) -->
+		<Config Class="488" Range="3" BeginPosX="189" BeginPosY="113" EndPosX="193" EndPosY="117" Direction="-1" Quantity="3" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="488" Range="3" BeginPosX="219" BeginPosY="123" EndPosX="223" EndPosY="127" Direction="-1" Quantity="2" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="52" BeginPosY="149" EndPosX="56" EndPosY="153" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="83" BeginPosY="14" EndPosX="87" EndPosY="18" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="37" BeginPosY="228" EndPosX="41" EndPosY="232" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="51" BeginPosY="173" EndPosX="55" EndPosY="177" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="79" BeginPosY="38" EndPosX="83" EndPosY="42" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="34" BeginPosY="196" EndPosX="38" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="45" BeginPosY="160" EndPosX="49" EndPosY="164" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="33" BeginPosY="130" EndPosX="37" EndPosY="134" Direction="-1" Quantity="3" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="482" Range="3" BeginPosX="65" BeginPosY="183" EndPosX="69" EndPosY="187" Direction="-1" Quantity="2" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="186" BeginPosY="174" EndPosX="190" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="213" BeginPosY="111" EndPosX="217" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="197" BeginPosY="108" EndPosX="201" EndPosY="112" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="213" BeginPosY="221" EndPosX="217" EndPosY="225" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="177" BeginPosY="223" EndPosX="181" EndPosY="227" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="174" BeginPosY="107" EndPosX="178" EndPosY="111" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="234" BeginPosY="119" EndPosX="238" EndPosY="123" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="132" BeginPosY="208" EndPosX="136" EndPosY="212" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="204" BeginPosY="138" EndPosX="208" EndPosY="142" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="199" BeginPosY="188" EndPosX="203" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="486" Range="3" BeginPosX="227" BeginPosY="181" EndPosX="231" EndPosY="185" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="149" BeginPosY="84" EndPosX="153" EndPosY="88" Direction="-1" Quantity="4" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="208" BeginPosY="25" EndPosX="212" EndPosY="29" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="189" BeginPosY="15" EndPosX="193" EndPosY="19" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="187" BeginPosY="40" EndPosX="191" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="170" BeginPosY="46" EndPosX="174" EndPosY="50" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="233" BeginPosY="57" EndPosX="237" EndPosY="61" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="151" BeginPosY="14" EndPosX="155" EndPosY="18" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="153" BeginPosY="55" EndPosX="157" EndPosY="59" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="212" BeginPosY="64" EndPosX="216" EndPosY="68" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="489" Range="3" BeginPosX="183" BeginPosY="64" EndPosX="187" EndPosY="68" Direction="-1" Quantity="3" Element="0" /> <!-- "Burning Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="487" Range="3" BeginPosX="199" BeginPosY="125" EndPosX="203" EndPosY="129" Direction="-1" Quantity="3" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="487" Range="3" BeginPosX="217" BeginPosY="115" EndPosX="221" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="487" Range="3" BeginPosX="193" BeginPosY="103" EndPosX="197" EndPosY="107" Direction="-1" Quantity="3" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="487" Range="3" BeginPosX="182" BeginPosY="120" EndPosX="186" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="487" Range="3" BeginPosX="211" BeginPosY="181" EndPosX="215" EndPosY="185" Direction="-1" Quantity="3" Element="0" /> <!-- "Cruel Blood Assassin" (Mu Chila: grupo) -->
+		<Config Class="490" Range="3" BeginPosX="162" BeginPosY="77" EndPosX="166" EndPosY="81" Direction="-1" Quantity="3" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="490" Range="3" BeginPosX="190" BeginPosY="40" EndPosX="194" EndPosY="44" Direction="-1" Quantity="3" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="490" Range="3" BeginPosX="235" BeginPosY="50" EndPosX="239" EndPosY="54" Direction="-1" Quantity="3" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="490" Range="3" BeginPosX="207" BeginPosY="20" EndPosX="211" EndPosY="24" Direction="-1" Quantity="3" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="490" Range="3" BeginPosX="173" BeginPosY="66" EndPosX="177" EndPosY="70" Direction="-1" Quantity="2" Element="0" /> <!-- "Ruthless Lava Giant" (Mu Chila: grupo) -->
+		<Config Class="484" Range="3" BeginPosX="92" BeginPosY="180" EndPosX="98" EndPosY="186" Direction="-1" Quantity="12" Element="0" /> <!-- "Ash Slaughterer" (Mu Chila: farm) -->
+		<Config Class="480" Range="3" BeginPosX="68" BeginPosY="57" EndPosX="74" EndPosY="63" Direction="-1" Quantity="12" Element="0" /> <!-- "Zombie Fighter" (Mu Chila: farm) -->
+		<Config Class="482" Range="3" BeginPosX="55" BeginPosY="126" EndPosX="61" EndPosY="132" Direction="-1" Quantity="12" Element="0" /> <!-- "Resurrected Gladiator" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

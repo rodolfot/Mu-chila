@@ -6,11 +6,15 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="409" Range="3" BeginPosX="105" BeginPosY="96" EndPosX="109" EndPosY="100" Direction="-1" Quantity="6" Element="0" /> <!-- "Balram (Trainee Soldier)" (Mu Chila: grupo) -->
-		<Config Class="409" Range="3" BeginPosX="34" BeginPosY="100" EndPosX="38" EndPosY="104" Direction="-1" Quantity="5" Element="0" /> <!-- "Balram (Trainee Soldier)" (Mu Chila: grupo) -->
-		<Config Class="410" Range="3" BeginPosX="140" BeginPosY="147" EndPosX="144" EndPosY="151" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Spirit (Trainee Soldier)" (Mu Chila: grupo) -->
-		<Config Class="410" Range="3" BeginPosX="39" BeginPosY="122" EndPosX="43" EndPosY="126" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Spirit (Trainee Soldier)" (Mu Chila: grupo) -->
-		<Config Class="411" Range="3" BeginPosX="127" BeginPosY="145" EndPosX="131" EndPosY="149" Direction="-1" Quantity="7" Element="0" /> <!-- "Soram (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="409" Range="3" BeginPosX="87" BeginPosY="76" EndPosX="91" EndPosY="80" Direction="-1" Quantity="3" Element="0" /> <!-- "Balram (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="409" Range="3" BeginPosX="45" BeginPosY="105" EndPosX="49" EndPosY="109" Direction="-1" Quantity="3" Element="0" /> <!-- "Balram (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="409" Range="3" BeginPosX="59" BeginPosY="131" EndPosX="63" EndPosY="135" Direction="-1" Quantity="3" Element="0" /> <!-- "Balram (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="409" Range="3" BeginPosX="107" BeginPosY="99" EndPosX="111" EndPosY="103" Direction="-1" Quantity="2" Element="0" /> <!-- "Balram (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="410" Range="3" BeginPosX="136" BeginPosY="141" EndPosX="140" EndPosY="145" Direction="-1" Quantity="4" Element="0" /> <!-- "Death Spirit (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="410" Range="3" BeginPosX="45" BeginPosY="123" EndPosX="49" EndPosY="127" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Spirit (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="410" Range="3" BeginPosX="119" BeginPosY="116" EndPosX="123" EndPosY="120" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Spirit (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="411" Range="3" BeginPosX="114" BeginPosY="101" EndPosX="118" EndPosY="105" Direction="-1" Quantity="4" Element="0" /> <!-- "Soram (Trainee Soldier)" (Mu Chila: grupo) -->
+		<Config Class="411" Range="3" BeginPosX="124" BeginPosY="157" EndPosX="128" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Soram (Trainee Soldier)" (Mu Chila: grupo) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

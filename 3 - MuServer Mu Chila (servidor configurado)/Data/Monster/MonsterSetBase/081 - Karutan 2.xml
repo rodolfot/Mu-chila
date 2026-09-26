@@ -5,31 +5,47 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="571" Range="3" BeginPosX="206" BeginPosY="157" EndPosX="210" EndPosY="161" Direction="-1" Quantity="6" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
-		<Config Class="571" Range="3" BeginPosX="48" BeginPosY="166" EndPosX="52" EndPosY="170" Direction="-1" Quantity="6" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
-		<Config Class="571" Range="3" BeginPosX="127" BeginPosY="112" EndPosX="131" EndPosY="116" Direction="-1" Quantity="5" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
-		<Config Class="571" Range="3" BeginPosX="137" BeginPosY="157" EndPosX="141" EndPosY="161" Direction="-1" Quantity="5" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
-		<Config Class="572" Range="3" BeginPosX="62" BeginPosY="166" EndPosX="66" EndPosY="170" Direction="-1" Quantity="5" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
-		<Config Class="572" Range="3" BeginPosX="217" BeginPosY="132" EndPosX="221" EndPosY="136" Direction="-1" Quantity="5" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
-		<Config Class="572" Range="3" BeginPosX="135" BeginPosY="112" EndPosX="139" EndPosY="116" Direction="-1" Quantity="5" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="76" BeginPosY="100" EndPosX="80" EndPosY="104" Direction="-1" Quantity="6" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="222" BeginPosY="43" EndPosX="226" EndPosY="47" Direction="-1" Quantity="6" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="208" BeginPosY="127" EndPosX="212" EndPosY="131" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="131" BeginPosY="44" EndPosX="135" EndPosY="48" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="144" BeginPosY="109" EndPosX="148" EndPosY="113" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="66" BeginPosY="38" EndPosX="70" EndPosY="42" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="177" BeginPosY="69" EndPosX="181" EndPosY="73" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="53" BeginPosY="141" EndPosX="57" EndPosY="145" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="170" BeginPosY="25" EndPosX="174" EndPosY="29" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="114" BeginPosY="81" EndPosX="118" EndPosY="85" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="212" BeginPosY="90" EndPosX="216" EndPosY="94" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="575" Range="3" BeginPosX="96" BeginPosY="53" EndPosX="100" EndPosY="57" Direction="-1" Quantity="5" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
-		<Config Class="576" Range="3" BeginPosX="92" BeginPosY="77" EndPosX="96" EndPosY="81" Direction="-1" Quantity="6" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
-		<Config Class="576" Range="3" BeginPosX="218" BeginPosY="123" EndPosX="222" EndPosY="127" Direction="-1" Quantity="6" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
-		<Config Class="576" Range="3" BeginPosX="185" BeginPosY="33" EndPosX="189" EndPosY="37" Direction="-1" Quantity="6" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
-		<Config Class="576" Range="3" BeginPosX="147" BeginPosY="121" EndPosX="151" EndPosY="125" Direction="-1" Quantity="6" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
-		<Config Class="576" Range="3" BeginPosX="64" BeginPosY="141" EndPosX="68" EndPosY="145" Direction="-1" Quantity="5" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
-		<Config Class="576" Range="3" BeginPosX="137" BeginPosY="52" EndPosX="141" EndPosY="56" Direction="-1" Quantity="5" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="202" BeginPosY="84" EndPosX="206" EndPosY="88" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="56" BeginPosY="136" EndPosX="60" EndPosY="140" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="57" BeginPosY="54" EndPosX="61" EndPosY="58" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="137" BeginPosY="108" EndPosX="141" EndPosY="112" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="177" BeginPosY="64" EndPosX="181" EndPosY="68" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="97" BeginPosY="99" EndPosX="101" EndPosY="103" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="160" BeginPosY="34" EndPosX="164" EndPosY="38" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="95" BeginPosY="55" EndPosX="99" EndPosY="59" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="76" BeginPosY="95" EndPosX="80" EndPosY="99" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="207" BeginPosY="41" EndPosX="211" EndPosY="45" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="183" BeginPosY="42" EndPosX="187" EndPosY="46" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="101" BeginPosY="80" EndPosX="105" EndPosY="84" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="75" BeginPosY="48" EndPosX="79" EndPosY="52" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="122" BeginPosY="53" EndPosX="126" EndPosY="57" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="208" BeginPosY="121" EndPosX="212" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="204" BeginPosY="60" EndPosX="208" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="66" BeginPosY="126" EndPosX="70" EndPosY="130" Direction="-1" Quantity="2" Element="0" /> <!-- "Condra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="77" BeginPosY="106" EndPosX="81" EndPosY="110" Direction="-1" Quantity="4" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="51" BeginPosY="127" EndPosX="55" EndPosY="131" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="149" BeginPosY="114" EndPosX="153" EndPosY="118" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="185" BeginPosY="79" EndPosX="189" EndPosY="83" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="139" BeginPosY="54" EndPosX="143" EndPosY="58" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="125" BeginPosY="83" EndPosX="129" EndPosY="87" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="106" BeginPosY="57" EndPosX="110" EndPosY="61" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="193" BeginPosY="59" EndPosX="197" EndPosY="63" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="215" BeginPosY="120" EndPosX="219" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="148" BeginPosY="82" EndPosX="152" EndPosY="86" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="576" Range="3" BeginPosX="63" BeginPosY="88" EndPosX="67" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Narcondra" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="137" BeginPosY="151" EndPosX="141" EndPosY="155" Direction="-1" Quantity="4" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="64" BeginPosY="172" EndPosX="68" EndPosY="176" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="206" BeginPosY="165" EndPosX="210" EndPosY="169" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="127" BeginPosY="119" EndPosX="131" EndPosY="123" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="54" BeginPosY="161" EndPosX="58" EndPosY="165" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="201" BeginPosY="156" EndPosX="205" EndPosY="160" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="134" BeginPosY="140" EndPosX="138" EndPosY="144" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="572" Range="3" BeginPosX="199" BeginPosY="164" EndPosX="203" EndPosY="168" Direction="-1" Quantity="3" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
+		<Config Class="572" Range="3" BeginPosX="145" BeginPosY="142" EndPosX="149" EndPosY="146" Direction="-1" Quantity="3" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
+		<Config Class="572" Range="3" BeginPosX="136" BeginPosY="135" EndPosX="140" EndPosY="139" Direction="-1" Quantity="3" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
+		<Config Class="572" Range="3" BeginPosX="63" BeginPosY="161" EndPosX="67" EndPosY="165" Direction="-1" Quantity="3" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
+		<Config Class="572" Range="3" BeginPosX="211" BeginPosY="133" EndPosX="215" EndPosY="137" Direction="-1" Quantity="3" Element="0" /> <!-- "Gollock" (Mu Chila: grupo) -->
+		<Config Class="575" Range="3" BeginPosX="134" BeginPosY="75" EndPosX="140" EndPosY="81" Direction="-1" Quantity="12" Element="0" /> <!-- "Condra" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

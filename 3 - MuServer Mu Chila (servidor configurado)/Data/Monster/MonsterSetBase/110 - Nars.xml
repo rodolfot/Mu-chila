@@ -6,28 +6,42 @@
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
 		<Config Class="716" Range="30" BeginPosX="147" BeginPosY="141" EndPosX="152" EndPosY="147" Direction="-1" Quantity="1" Element="6" /> <!-- "Core Magriffy" -->
-		<Config Class="713" Range="3" BeginPosX="18" BeginPosY="130" EndPosX="22" EndPosY="134" Direction="-1" Quantity="6" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="713" Range="3" BeginPosX="243" BeginPosY="220" EndPosX="247" EndPosY="224" Direction="-1" Quantity="6" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="713" Range="3" BeginPosX="196" BeginPosY="13" EndPosX="200" EndPosY="17" Direction="-1" Quantity="6" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="713" Range="3" BeginPosX="112" BeginPosY="229" EndPosX="116" EndPosY="233" Direction="-1" Quantity="6" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="713" Range="3" BeginPosX="220" BeginPosY="107" EndPosX="224" EndPosY="111" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="233" BeginPosY="59" EndPosX="237" EndPosY="63" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="19" BeginPosY="164" EndPosX="23" EndPosY="168" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="202" BeginPosY="239" EndPosX="206" EndPosY="243" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="83" BeginPosY="25" EndPosX="87" EndPosY="29" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="120" BeginPosY="193" EndPosX="124" EndPosY="197" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="10" BeginPosY="83" EndPosX="14" EndPosY="87" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="180" BeginPosY="11" EndPosX="184" EndPosY="15" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="230" BeginPosY="180" EndPosX="234" EndPosY="184" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="714" Range="3" BeginPosX="175" BeginPosY="74" EndPosX="179" EndPosY="78" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="17" BeginPosY="133" EndPosX="21" EndPosY="137" Direction="-1" Quantity="6" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="238" BeginPosY="235" EndPosX="242" EndPosY="239" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="196" BeginPosY="13" EndPosX="200" EndPosY="17" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="112" BeginPosY="229" EndPosX="116" EndPosY="233" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="82" BeginPosY="28" EndPosX="86" EndPosY="32" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="220" BeginPosY="107" EndPosX="224" EndPosY="111" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="30" BeginPosY="68" EndPosX="34" EndPosY="72" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="715" Range="3" BeginPosX="175" BeginPosY="71" EndPosX="179" EndPosY="75" Direction="-1" Quantity="5" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="209" BeginPosY="103" EndPosX="213" EndPosY="107" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="182" BeginPosY="43" EndPosX="186" EndPosY="47" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="23" BeginPosY="146" EndPosX="27" EndPosY="150" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="83" BeginPosY="26" EndPosX="87" EndPosY="30" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="83" BeginPosY="41" EndPosX="87" EndPosY="45" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="181" BeginPosY="232" EndPosX="185" EndPosY="236" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="227" BeginPosY="51" EndPosX="231" EndPosY="55" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="138" BeginPosY="149" EndPosX="142" EndPosY="153" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="30" BeginPosY="84" EndPosX="34" EndPosY="88" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="233" BeginPosY="211" EndPosX="237" EndPosY="215" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="120" BeginPosY="57" EndPosX="124" EndPosY="61" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="126" BeginPosY="200" EndPosX="130" EndPosY="204" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="21" BeginPosY="131" EndPosX="25" EndPosY="135" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="205" BeginPosY="46" EndPosX="209" EndPosY="50" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="226" BeginPosY="30" EndPosX="230" EndPosY="34" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="73" BeginPosY="42" EndPosX="77" EndPosY="46" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="213" BeginPosY="235" EndPosX="217" EndPosY="239" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="188" BeginPosY="14" EndPosX="192" EndPosY="18" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="119" BeginPosY="76" EndPosX="123" EndPosY="80" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="200" BeginPosY="73" EndPosX="204" EndPosY="77" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="216" BeginPosY="104" EndPosX="220" EndPosY="108" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="34" BeginPosY="73" EndPosX="38" EndPosY="77" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="20" BeginPosY="207" EndPosX="24" EndPosY="211" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="210" BeginPosY="128" EndPosX="214" EndPosY="132" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="715" Range="3" BeginPosX="24" BeginPosY="161" EndPosX="28" EndPosY="165" Direction="-1" Quantity="2" Element="2" /> <!-- "Nars Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="24" BeginPosY="89" EndPosX="28" EndPosY="93" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="21" BeginPosY="138" EndPosX="25" EndPosY="142" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="88" BeginPosY="34" EndPosX="92" EndPosY="38" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="119" BeginPosY="229" EndPosX="123" EndPosY="233" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="72" BeginPosY="22" EndPosX="76" EndPosY="26" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="151" BeginPosY="145" EndPosX="155" EndPosY="149" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="89" BeginPosY="44" EndPosX="93" EndPosY="48" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="232" BeginPosY="69" EndPosX="236" EndPosY="73" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="14" BeginPosY="86" EndPosX="18" EndPosY="90" Direction="-1" Quantity="3" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="713" Range="3" BeginPosX="132" BeginPosY="144" EndPosX="136" EndPosY="148" Direction="-1" Quantity="2" Element="2" /> <!-- "Nars Devil Fairy" (Mu Chila: grupo) -->
+		<Config Class="714" Range="3" BeginPosX="120" BeginPosY="83" EndPosX="126" EndPosY="89" Direction="-1" Quantity="12" Element="2" /> <!-- "Nars Elemental Beast" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

@@ -5,60 +5,87 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="769" Range="3" BeginPosX="183" BeginPosY="56" EndPosX="187" EndPosY="60" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="243" BeginPosY="244" EndPosX="247" EndPosY="248" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="9" BeginPosY="3" EndPosX="13" EndPosY="7" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="245" BeginPosY="141" EndPosX="249" EndPosY="145" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="105" BeginPosY="0" EndPosX="109" EndPosY="3" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="156" BeginPosY="141" EndPosX="160" EndPosY="145" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="110" BeginPosY="85" EndPosX="114" EndPosY="89" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="238" BeginPosY="11" EndPosX="242" EndPosY="15" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="60" BeginPosY="42" EndPosX="64" EndPosY="46" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="218" BeginPosY="192" EndPosX="222" EndPosY="196" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="158" BeginPosY="10" EndPosX="162" EndPosY="14" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="200" BeginPosY="114" EndPosX="204" EndPosY="118" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="138" BeginPosY="50" EndPosX="142" EndPosY="54" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="163" BeginPosY="93" EndPosX="167" EndPosY="97" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="198" BeginPosY="0" EndPosX="202" EndPosY="4" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="222" BeginPosY="47" EndPosX="226" EndPosY="51" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="207" BeginPosY="152" EndPosX="211" EndPosY="156" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="215" BeginPosY="229" EndPosX="219" EndPosY="233" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="98" BeginPosY="28" EndPosX="102" EndPosY="32" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="769" Range="3" BeginPosX="197" BeginPosY="30" EndPosX="201" EndPosY="34" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="90" BeginPosY="37" EndPosX="94" EndPosY="41" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="245" BeginPosY="202" EndPosX="249" EndPosY="206" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="239" BeginPosY="2" EndPosX="243" EndPosY="6" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="187" BeginPosY="104" EndPosX="191" EndPosY="108" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="160" BeginPosY="0" EndPosX="164" EndPosY="4" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="21" BeginPosY="3" EndPosX="25" EndPosY="7" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="247" BeginPosY="73" EndPosX="251" EndPosY="77" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="241" BeginPosY="135" EndPosX="245" EndPosY="139" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="132" BeginPosY="82" EndPosX="136" EndPosY="86" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="196" BeginPosY="48" EndPosX="200" EndPosY="52" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="197" BeginPosY="168" EndPosX="201" EndPosY="172" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="153" BeginPosY="44" EndPosX="157" EndPosY="48" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="146" BeginPosY="121" EndPosX="150" EndPosY="125" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="62" BeginPosY="6" EndPosX="66" EndPosY="10" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="199" BeginPosY="8" EndPosX="203" EndPosY="12" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="128" BeginPosY="17" EndPosX="132" EndPosY="21" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="223" BeginPosY="100" EndPosX="227" EndPosY="104" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="774" Range="3" BeginPosX="177" BeginPosY="139" EndPosX="181" EndPosY="143" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="246" BeginPosY="84" EndPosX="250" EndPosY="88" Direction="-1" Quantity="6" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="42" BeginPosY="0" EndPosX="46" EndPosY="4" Direction="-1" Quantity="6" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="200" BeginPosY="248" EndPosX="204" EndPosY="252" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="127" BeginPosY="82" EndPosX="131" EndPosY="86" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="183" BeginPosY="10" EndPosX="187" EndPosY="14" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="195" BeginPosY="158" EndPosX="199" EndPosY="162" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="239" BeginPosY="201" EndPosX="243" EndPosY="205" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="95" BeginPosY="30" EndPosX="99" EndPosY="34" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="186" BeginPosY="97" EndPosX="190" EndPosY="101" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="242" BeginPosY="19" EndPosX="246" EndPosY="23" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="145" BeginPosY="38" EndPosX="149" EndPosY="42" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="204" BeginPosY="59" EndPosX="208" EndPosY="63" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="91" BeginPosY="68" EndPosX="95" EndPosY="72" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="164" BeginPosY="68" EndPosX="168" EndPosY="72" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="77" BeginPosY="0" EndPosX="81" EndPosY="4" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
-		<Config Class="775" Range="3" BeginPosX="175" BeginPosY="130" EndPosX="179" EndPosY="134" Direction="-1" Quantity="5" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="223" BeginPosY="232" EndPosX="227" EndPosY="236" Direction="-1" Quantity="4" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="20" BeginPosY="10" EndPosX="24" EndPosY="14" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="99" BeginPosY="23" EndPosX="103" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="165" BeginPosY="97" EndPosX="169" EndPosY="101" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="233" BeginPosY="17" EndPosX="237" EndPosY="21" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="242" BeginPosY="144" EndPosX="246" EndPosY="148" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="213" BeginPosY="141" EndPosX="217" EndPosY="145" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="115" BeginPosY="89" EndPosX="119" EndPosY="93" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="125" BeginPosY="61" EndPosX="129" EndPosY="65" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="182" BeginPosY="151" EndPosX="186" EndPosY="155" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="206" BeginPosY="25" EndPosX="210" EndPosY="29" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="202" BeginPosY="119" EndPosX="206" EndPosY="123" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="162" BeginPosY="15" EndPosX="166" EndPosY="19" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="219" BeginPosY="188" EndPosX="223" EndPosY="192" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="145" BeginPosY="55" EndPosX="149" EndPosY="59" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="139" BeginPosY="4" EndPosX="143" EndPosY="8" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="186" BeginPosY="61" EndPosX="190" EndPosY="65" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="242" BeginPosY="160" EndPosX="246" EndPosY="164" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="202" BeginPosY="6" EndPosX="206" EndPosY="10" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="117" BeginPosY="9" EndPosX="121" EndPosY="13" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="217" BeginPosY="119" EndPosX="221" EndPosY="123" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="104" BeginPosY="2" EndPosX="108" EndPosY="6" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="230" BeginPosY="136" EndPosX="234" EndPosY="140" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="243" BeginPosY="236" EndPosX="247" EndPosY="240" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="149" BeginPosY="32" EndPosX="153" EndPosY="36" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="160" BeginPosY="138" EndPosX="164" EndPosY="142" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="222" BeginPosY="42" EndPosX="226" EndPosY="46" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="202" BeginPosY="145" EndPosX="206" EndPosY="149" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="65" BeginPosY="38" EndPosX="69" EndPosY="42" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="96" BeginPosY="76" EndPosX="100" EndPosY="80" Direction="-1" Quantity="4" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="235" BeginPosY="92" EndPosX="239" EndPosY="96" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="161" BeginPosY="62" EndPosX="165" EndPosY="66" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="244" BeginPosY="68" EndPosX="248" EndPosY="72" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="123" BeginPosY="77" EndPosX="127" EndPosY="81" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="178" BeginPosY="14" EndPosX="182" EndPosY="18" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="86" BeginPosY="43" EndPosX="90" EndPosY="47" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="232" BeginPosY="210" EndPosX="236" EndPosY="214" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="176" BeginPosY="35" EndPosX="180" EndPosY="39" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="57" BeginPosY="2" EndPosX="61" EndPosY="6" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="243" BeginPosY="42" EndPosX="247" EndPosY="46" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="58" BeginPosY="11" EndPosX="62" EndPosY="15" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="207" BeginPosY="77" EndPosX="211" EndPosY="81" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="116" BeginPosY="34" EndPosX="120" EndPosY="38" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="180" BeginPosY="115" EndPosX="184" EndPosY="119" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="244" BeginPosY="80" EndPosX="248" EndPosY="84" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="209" BeginPosY="244" EndPosX="213" EndPosY="248" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="46" BeginPosY="6" EndPosX="50" EndPosY="10" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="180" BeginPosY="93" EndPosX="184" EndPosY="97" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="82" BeginPosY="2" EndPosX="86" EndPosY="6" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="207" BeginPosY="161" EndPosX="211" EndPosY="165" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="239" BeginPosY="184" EndPosX="243" EndPosY="188" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="775" Range="3" BeginPosX="101" BeginPosY="64" EndPosX="105" EndPosY="68" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="164" BeginPosY="111" EndPosX="168" EndPosY="115" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="204" BeginPosY="134" EndPosX="208" EndPosY="138" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="176" BeginPosY="141" EndPosX="180" EndPosY="145" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="135" BeginPosY="109" EndPosX="139" EndPosY="113" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="160" BeginPosY="41" EndPosX="164" EndPosY="45" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="192" BeginPosY="85" EndPosX="196" EndPosY="89" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="227" BeginPosY="4" EndPosX="231" EndPosY="8" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="93" BeginPosY="11" EndPosX="97" EndPosY="15" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="214" BeginPosY="102" EndPosX="218" EndPosY="106" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="74" BeginPosY="18" EndPosX="78" EndPosY="22" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="107" BeginPosY="50" EndPosX="111" EndPosY="54" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="243" BeginPosY="109" EndPosX="247" EndPosY="113" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="232" BeginPosY="33" EndPosX="236" EndPosY="37" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="136" BeginPosY="21" EndPosX="140" EndPosY="25" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="66" BeginPosY="18" EndPosX="70" EndPosY="22" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="192" BeginPosY="143" EndPosX="196" EndPosY="147" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="172" BeginPosY="104" EndPosX="176" EndPosY="108" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="242" BeginPosY="199" EndPosX="246" EndPosY="203" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="183" BeginPosY="72" EndPosX="187" EndPosY="76" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="163" BeginPosY="26" EndPosX="167" EndPosY="30" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="245" BeginPosY="126" EndPosX="249" EndPosY="130" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="36" BeginPosY="15" EndPosX="40" EndPosY="19" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="175" BeginPosY="136" EndPosX="179" EndPosY="140" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="145" BeginPosY="87" EndPosX="149" EndPosY="91" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="234" BeginPosY="107" EndPosX="238" EndPosY="111" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="774" Range="3" BeginPosX="218" BeginPosY="177" EndPosX="222" EndPosY="181" Direction="-1" Quantity="3" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: grupo) -->
+		<Config Class="769" Range="3" BeginPosX="167" BeginPosY="82" EndPosX="173" EndPosY="88" Direction="-1" Quantity="12" Element="1" /> <!-- "Deep Dungeon Elite Skeleton War" (Mu Chila: farm) -->
+		<Config Class="774" Range="3" BeginPosX="191" BeginPosY="50" EndPosX="197" EndPosY="56" Direction="-1" Quantity="12" Element="1" /> <!-- "Deep Dungeon Hell Spider" (Mu Chila: farm) -->
+		<Config Class="775" Range="3" BeginPosX="177" BeginPosY="128" EndPosX="183" EndPosY="134" Direction="-1" Quantity="12" Element="1" /> <!-- "Deep Dungeon Thunder Lich" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

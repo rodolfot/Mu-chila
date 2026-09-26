@@ -32,7 +32,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Data\Lang\Portuguese.xml` (novo) + `Data\LangManager.xml` | 548 mensagens do servidor em português (arquivo em Windows-1252, que é o que o cliente lê); os idiomas 0 e 2 apontam para ele | Pedido: jogo em português (os personagens usam o idioma 0) |
 | `Data\Lang\Portuguese.xml` e `Data\Lang\English.xml` | 17 avisos de invasão (IDs 192–200, 202–207, 210, 211) copiados de `<Message>` para `<InvacionMsg>` | O servidor procura ali os avisos do `InvasionManager.dat`; o jogo mostrava "Could not find message 194/197/200" |
 | Cliente: `Idioma - Portugues.reg` / `Idioma - Ingles.reg` (novos) | Trocam o `LangSelection` do cliente | O cliente já tem textos `Por` oficiais |
-| `Data\Monster\MonsterSetBase\*.xml` (43 mapas) | Spawns de SPOT/MONSTER viram 1.676 grupos de 5+ em chão livre (`tools\Agrupar-Spawns.ps1`) | Pedido: monstros agrupados em vez de espalhados |
+| `Data\Monster\MonsterSetBase\*.xml` (43 mapas) | Spawns de SPOT/MONSTER refeitos a partir do kit: 2.602 grupos de 3 espalhados por igual (k-means) e 84 pontos de farm de 12 monstros, mesmo total de monstros (`tools\Distribuir-Spawns.py`) | 26/09/2026: o agrupamento de 23/09 (grupos de 5 no "ponto mais distante") deixava o meio dos mapas vazio; pedido: respawn equilibrado e pontos de farm |
 | `Startup - Iniciar Server.lnk` | Aponta para `C:\MuServer\2 - Ligar Servidor\Ligar Servidor.exe` | Apontava para uma pasta de Downloads de outro PC |
 | `Criar Conta.bat` / `Criar Conta.ps1` | Novos | Criar conta de jogo pelo ODBC |
 | `Cliente Season 14 - main.lnk` | Novo | Atalho para o cliente |

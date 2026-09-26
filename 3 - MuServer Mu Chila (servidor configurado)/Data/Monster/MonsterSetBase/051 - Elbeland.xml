@@ -20,51 +20,80 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="3" Range="3" BeginPosX="41" BeginPosY="133" EndPosX="45" EndPosY="137" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="129" BeginPosY="232" EndPosX="133" EndPosY="236" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="100" BeginPosY="192" EndPosX="104" EndPosY="196" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="139" BeginPosY="194" EndPosX="143" EndPosY="198" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="54" BeginPosY="166" EndPosX="58" EndPosY="170" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="3" Range="3" BeginPosX="21" BeginPosY="158" EndPosX="25" EndPosY="162" Direction="-1" Quantity="5" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
-		<Config Class="418" Range="3" BeginPosX="135" BeginPosY="208" EndPosX="139" EndPosY="212" Direction="-1" Quantity="6" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
-		<Config Class="418" Range="3" BeginPosX="19" BeginPosY="139" EndPosX="23" EndPosY="143" Direction="-1" Quantity="6" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
-		<Config Class="418" Range="3" BeginPosX="82" BeginPosY="165" EndPosX="86" EndPosY="169" Direction="-1" Quantity="6" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
-		<Config Class="418" Range="3" BeginPosX="59" BeginPosY="131" EndPosX="63" EndPosY="135" Direction="-1" Quantity="6" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
-		<Config Class="418" Range="3" BeginPosX="95" BeginPosY="204" EndPosX="99" EndPosY="208" Direction="-1" Quantity="5" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
-		<Config Class="418" Range="3" BeginPosX="118" BeginPosY="176" EndPosX="122" EndPosY="180" Direction="-1" Quantity="5" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="122" BeginPosY="114" EndPosX="126" EndPosY="118" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="127" BeginPosY="170" EndPosX="131" EndPosY="174" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="170" BeginPosY="125" EndPosX="174" EndPosY="129" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="158" BeginPosY="86" EndPosX="162" EndPosY="90" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="97" BeginPosY="140" EndPosX="101" EndPosY="144" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="92" BeginPosY="100" EndPosX="96" EndPosY="104" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="140" BeginPosY="141" EndPosX="144" EndPosY="145" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="419" Range="3" BeginPosX="128" BeginPosY="85" EndPosX="132" EndPosY="89" Direction="-1" Quantity="5" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
-		<Config Class="420" Range="3" BeginPosX="80" BeginPosY="56" EndPosX="84" EndPosY="60" Direction="-1" Quantity="6" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
-		<Config Class="420" Range="3" BeginPosX="103" BeginPosY="107" EndPosX="107" EndPosY="111" Direction="-1" Quantity="6" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
-		<Config Class="420" Range="3" BeginPosX="41" BeginPosY="83" EndPosX="45" EndPosY="87" Direction="-1" Quantity="5" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
-		<Config Class="421" Range="3" BeginPosX="114" BeginPosY="142" EndPosX="118" EndPosY="146" Direction="-1" Quantity="6" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
-		<Config Class="421" Range="3" BeginPosX="28" BeginPosY="126" EndPosX="32" EndPosY="130" Direction="-1" Quantity="6" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
-		<Config Class="421" Range="3" BeginPosX="134" BeginPosY="214" EndPosX="138" EndPosY="218" Direction="-1" Quantity="6" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
-		<Config Class="421" Range="3" BeginPosX="85" BeginPosY="89" EndPosX="89" EndPosY="93" Direction="-1" Quantity="6" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
-		<Config Class="421" Range="3" BeginPosX="162" BeginPosY="167" EndPosX="166" EndPosY="171" Direction="-1" Quantity="5" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
-		<Config Class="421" Range="3" BeginPosX="70" BeginPosY="155" EndPosX="74" EndPosY="159" Direction="-1" Quantity="5" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
-		<Config Class="422" Range="3" BeginPosX="101" BeginPosY="49" EndPosX="105" EndPosY="53" Direction="-1" Quantity="6" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
-		<Config Class="422" Range="3" BeginPosX="136" BeginPosY="90" EndPosX="140" EndPosY="94" Direction="-1" Quantity="6" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
-		<Config Class="422" Range="3" BeginPosX="72" BeginPosY="10" EndPosX="76" EndPosY="14" Direction="-1" Quantity="5" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
-		<Config Class="423" Range="3" BeginPosX="187" BeginPosY="140" EndPosX="191" EndPosY="144" Direction="-1" Quantity="6" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
-		<Config Class="423" Range="3" BeginPosX="202" BeginPosY="194" EndPosX="206" EndPosY="198" Direction="-1" Quantity="6" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
-		<Config Class="423" Range="3" BeginPosX="228" BeginPosY="115" EndPosX="232" EndPosY="119" Direction="-1" Quantity="5" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
-		<Config Class="423" Range="3" BeginPosX="166" BeginPosY="175" EndPosX="170" EndPosY="179" Direction="-1" Quantity="5" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
-		<Config Class="424" Range="3" BeginPosX="172" BeginPosY="86" EndPosX="176" EndPosY="90" Direction="-1" Quantity="6" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
-		<Config Class="424" Range="3" BeginPosX="196" BeginPosY="28" EndPosX="200" EndPosY="32" Direction="-1" Quantity="6" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
-		<Config Class="424" Range="3" BeginPosX="148" BeginPosY="46" EndPosX="152" EndPosY="50" Direction="-1" Quantity="5" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
-		<Config Class="424" Range="3" BeginPosX="166" BeginPosY="125" EndPosX="170" EndPosY="129" Direction="-1" Quantity="5" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
-		<Config Class="425" Range="3" BeginPosX="221" BeginPosY="51" EndPosX="225" EndPosY="55" Direction="-1" Quantity="6" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
-		<Config Class="425" Range="3" BeginPosX="163" BeginPosY="19" EndPosX="167" EndPosY="23" Direction="-1" Quantity="6" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
-		<Config Class="425" Range="3" BeginPosX="205" BeginPosY="11" EndPosX="209" EndPosY="15" Direction="-1" Quantity="5" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
-		<Config Class="425" Range="3" BeginPosX="190" BeginPosY="45" EndPosX="194" EndPosY="49" Direction="-1" Quantity="5" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
-		<Config Class="425" Range="3" BeginPosX="216" BeginPosY="75" EndPosX="220" EndPosY="79" Direction="-1" Quantity="5" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="144" BeginPosY="139" EndPosX="148" EndPosY="143" Direction="-1" Quantity="4" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="100" BeginPosY="133" EndPosX="104" EndPosY="137" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="115" BeginPosY="159" EndPosX="119" EndPosY="163" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="130" BeginPosY="196" EndPosX="134" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="113" BeginPosY="111" EndPosX="117" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="77" BeginPosY="139" EndPosX="81" EndPosY="143" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="31" BeginPosY="128" EndPosX="35" EndPosY="132" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="152" BeginPosY="156" EndPosX="156" EndPosY="160" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="92" BeginPosY="107" EndPosX="96" EndPosY="111" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="112" BeginPosY="95" EndPosX="116" EndPosY="99" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="421" Range="3" BeginPosX="126" BeginPosY="139" EndPosX="130" EndPosY="143" Direction="-1" Quantity="3" Element="0" /> <!-- "Polluted Butterfly" (Mu Chila: grupo) -->
+		<Config Class="418" Range="3" BeginPosX="52" BeginPosY="153" EndPosX="56" EndPosY="157" Direction="-1" Quantity="4" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
+		<Config Class="418" Range="3" BeginPosX="110" BeginPosY="212" EndPosX="114" EndPosY="216" Direction="-1" Quantity="3" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
+		<Config Class="418" Range="3" BeginPosX="62" BeginPosY="137" EndPosX="66" EndPosY="141" Direction="-1" Quantity="3" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
+		<Config Class="418" Range="3" BeginPosX="104" BeginPosY="192" EndPosX="108" EndPosY="196" Direction="-1" Quantity="3" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
+		<Config Class="418" Range="3" BeginPosX="26" BeginPosY="152" EndPosX="30" EndPosY="156" Direction="-1" Quantity="3" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
+		<Config Class="418" Range="3" BeginPosX="65" BeginPosY="167" EndPosX="69" EndPosY="171" Direction="-1" Quantity="3" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
+		<Config Class="418" Range="3" BeginPosX="72" BeginPosY="155" EndPosX="76" EndPosY="159" Direction="-1" Quantity="3" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="130" BeginPosY="210" EndPosX="134" EndPosY="214" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="125" BeginPosY="228" EndPosX="129" EndPosY="232" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="39" BeginPosY="136" EndPosX="43" EndPosY="140" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="105" BeginPosY="219" EndPosX="109" EndPosY="223" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="44" BeginPosY="156" EndPosX="48" EndPosY="160" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="20" BeginPosY="144" EndPosX="24" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="119" BeginPosY="219" EndPosX="123" EndPosY="223" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="48" BeginPosY="142" EndPosX="52" EndPosY="146" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="26" BeginPosY="136" EndPosX="30" EndPosY="140" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="3" Range="3" BeginPosX="34" BeginPosY="157" EndPosX="38" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Spider" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="164" BeginPosY="120" EndPosX="168" EndPosY="124" Direction="-1" Quantity="4" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="149" BeginPosY="126" EndPosX="153" EndPosY="130" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="133" BeginPosY="108" EndPosX="137" EndPosY="112" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="127" BeginPosY="129" EndPosX="131" EndPosY="133" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="110" BeginPosY="126" EndPosX="114" EndPosY="130" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="152" BeginPosY="93" EndPosX="156" EndPosY="97" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="147" BeginPosY="111" EndPosX="151" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="137" BeginPosY="99" EndPosX="141" EndPosY="103" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="129" BeginPosY="88" EndPosX="133" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: grupo) -->
+		<Config Class="424" Range="3" BeginPosX="186" BeginPosY="91" EndPosX="190" EndPosY="95" Direction="-1" Quantity="4" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
+		<Config Class="424" Range="3" BeginPosX="169" BeginPosY="88" EndPosX="173" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
+		<Config Class="424" Range="3" BeginPosX="193" BeginPosY="31" EndPosX="197" EndPosY="35" Direction="-1" Quantity="3" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
+		<Config Class="424" Range="3" BeginPosX="154" BeginPosY="77" EndPosX="158" EndPosY="81" Direction="-1" Quantity="3" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
+		<Config Class="424" Range="3" BeginPosX="151" BeginPosY="52" EndPosX="155" EndPosY="56" Direction="-1" Quantity="3" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
+		<Config Class="424" Range="3" BeginPosX="179" BeginPosY="74" EndPosX="183" EndPosY="78" Direction="-1" Quantity="3" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
+		<Config Class="424" Range="3" BeginPosX="164" BeginPosY="67" EndPosX="168" EndPosY="71" Direction="-1" Quantity="3" Element="0" /> <!-- "Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="166" BeginPosY="22" EndPosX="170" EndPosY="26" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="218" BeginPosY="72" EndPosX="222" EndPosY="76" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="225" BeginPosY="46" EndPosX="229" EndPosY="50" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="208" BeginPosY="36" EndPosX="212" EndPosY="40" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="173" BeginPosY="32" EndPosX="177" EndPosY="36" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="205" BeginPosY="18" EndPosX="209" EndPosY="22" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="210" BeginPosY="50" EndPosX="214" EndPosY="54" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="197" BeginPosY="49" EndPosX="201" EndPosY="53" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="425" Range="3" BeginPosX="183" BeginPosY="18" EndPosX="187" EndPosY="22" Direction="-1" Quantity="3" Element="0" /> <!-- "Captain Grizzly" (Mu Chila: grupo) -->
+		<Config Class="423" Range="3" BeginPosX="172" BeginPosY="175" EndPosX="176" EndPosY="179" Direction="-1" Quantity="4" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
+		<Config Class="423" Range="3" BeginPosX="209" BeginPosY="126" EndPosX="213" EndPosY="130" Direction="-1" Quantity="3" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
+		<Config Class="423" Range="3" BeginPosX="210" BeginPosY="148" EndPosX="214" EndPosY="152" Direction="-1" Quantity="3" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
+		<Config Class="423" Range="3" BeginPosX="193" BeginPosY="150" EndPosX="197" EndPosY="154" Direction="-1" Quantity="3" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
+		<Config Class="423" Range="3" BeginPosX="226" BeginPosY="143" EndPosX="230" EndPosY="147" Direction="-1" Quantity="3" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
+		<Config Class="423" Range="3" BeginPosX="225" BeginPosY="125" EndPosX="229" EndPosY="129" Direction="-1" Quantity="3" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
+		<Config Class="423" Range="3" BeginPosX="197" BeginPosY="189" EndPosX="201" EndPosY="193" Direction="-1" Quantity="3" Element="0" /> <!-- "Totem Golem" (Mu Chila: grupo) -->
+		<Config Class="422" Range="3" BeginPosX="130" BeginPosY="23" EndPosX="134" EndPosY="27" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
+		<Config Class="422" Range="3" BeginPosX="102" BeginPosY="63" EndPosX="106" EndPosY="67" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
+		<Config Class="422" Range="3" BeginPosX="97" BeginPosY="33" EndPosX="101" EndPosY="37" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
+		<Config Class="422" Range="3" BeginPosX="76" BeginPosY="14" EndPosX="80" EndPosY="18" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
+		<Config Class="422" Range="3" BeginPosX="105" BeginPosY="47" EndPosX="109" EndPosY="51" Direction="-1" Quantity="3" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
+		<Config Class="422" Range="3" BeginPosX="124" BeginPosY="38" EndPosX="128" EndPosY="42" Direction="-1" Quantity="2" Element="0" /> <!-- "Cursed Lich" (Mu Chila: grupo) -->
+		<Config Class="420" Range="3" BeginPosX="55" BeginPosY="89" EndPosX="59" EndPosY="93" Direction="-1" Quantity="3" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
+		<Config Class="420" Range="3" BeginPosX="68" BeginPosY="59" EndPosX="72" EndPosY="63" Direction="-1" Quantity="3" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
+		<Config Class="420" Range="3" BeginPosX="63" BeginPosY="73" EndPosX="67" EndPosY="77" Direction="-1" Quantity="3" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
+		<Config Class="420" Range="3" BeginPosX="46" BeginPosY="74" EndPosX="50" EndPosY="78" Direction="-1" Quantity="3" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
+		<Config Class="420" Range="3" BeginPosX="84" BeginPosY="52" EndPosX="88" EndPosY="56" Direction="-1" Quantity="3" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
+		<Config Class="420" Range="3" BeginPosX="71" BeginPosY="81" EndPosX="75" EndPosY="85" Direction="-1" Quantity="2" Element="0" /> <!-- "Werewolf" (Mu Chila: grupo) -->
+		<Config Class="419" Range="3" BeginPosX="128" BeginPosY="116" EndPosX="134" EndPosY="122" Direction="-1" Quantity="12" Element="0" /> <!-- "Hideous Rabbit" (Mu Chila: farm) -->
+		<Config Class="418" Range="3" BeginPosX="84" BeginPosY="173" EndPosX="90" EndPosY="179" Direction="-1" Quantity="12" Element="0" /> <!-- "Strange Rabbit" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

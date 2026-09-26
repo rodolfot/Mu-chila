@@ -26,61 +26,89 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="19" Range="3" BeginPosX="51" BeginPosY="146" EndPosX="55" EndPosY="150" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="19" Range="3" BeginPosX="164" BeginPosY="4" EndPosX="168" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="19" Range="3" BeginPosX="164" BeginPosY="238" EndPosX="168" EndPosY="242" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="19" Range="3" BeginPosX="48" BeginPosY="27" EndPosX="52" EndPosY="31" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="19" Range="3" BeginPosX="164" BeginPosY="120" EndPosX="168" EndPosY="124" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="19" Range="3" BeginPosX="66" BeginPosY="242" EndPosX="70" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="19" Range="3" BeginPosX="115" BeginPosY="62" EndPosX="119" EndPosY="66" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="19" Range="3" BeginPosX="118" BeginPosY="179" EndPosX="122" EndPosY="183" Direction="-1" Quantity="5" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="54" BeginPosY="35" EndPosX="58" EndPosY="39" Direction="-1" Quantity="6" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="200" BeginPosY="243" EndPosX="204" EndPosY="247" Direction="-1" Quantity="6" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="4" BeginPosY="226" EndPosX="8" EndPosY="230" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="164" BeginPosY="113" EndPosX="168" EndPosY="117" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="159" BeginPosY="4" EndPosX="163" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="62" BeginPosY="139" EndPosX="66" EndPosY="143" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="102" BeginPosY="234" EndPosX="106" EndPosY="238" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="228" BeginPosY="165" EndPosX="232" EndPosY="169" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="4" BeginPosY="91" EndPosX="8" EndPosY="95" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="156" BeginPosY="185" EndPosX="160" EndPosY="189" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="118" BeginPosY="61" EndPosX="122" EndPosY="65" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="55" BeginPosY="197" EndPosX="59" EndPosY="201" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="102" BeginPosY="4" EndPosX="106" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="118" BeginPosY="144" EndPosX="122" EndPosY="148" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="7" BeginPosY="146" EndPosX="11" EndPosY="150" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="20" Range="3" BeginPosX="53" BeginPosY="85" EndPosX="57" EndPosY="89" Direction="-1" Quantity="5" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
-		<Config Class="21" Range="3" BeginPosX="94" BeginPosY="154" EndPosX="98" EndPosY="158" Direction="-1" Quantity="5" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
-		<Config Class="21" Range="3" BeginPosX="164" BeginPosY="4" EndPosX="168" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
-		<Config Class="21" Range="3" BeginPosX="48" BeginPosY="41" EndPosX="52" EndPosY="45" Direction="-1" Quantity="5" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
-		<Config Class="21" Range="3" BeginPosX="164" BeginPosY="238" EndPosX="168" EndPosY="242" Direction="-1" Quantity="5" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
-		<Config Class="21" Range="3" BeginPosX="48" BeginPosY="242" EndPosX="52" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
-		<Config Class="21" Range="3" BeginPosX="164" BeginPosY="95" EndPosX="168" EndPosY="99" Direction="-1" Quantity="5" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="65" BeginPosY="39" EndPosX="69" EndPosY="43" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="164" BeginPosY="238" EndPosX="168" EndPosY="242" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="48" BeginPosY="183" EndPosX="52" EndPosY="187" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="164" BeginPosY="114" EndPosX="168" EndPosY="118" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="164" BeginPosY="4" EndPosX="168" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="86" BeginPosY="115" EndPosX="90" EndPosY="119" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="121" BeginPosY="179" EndPosX="125" EndPosY="183" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="22" Range="3" BeginPosX="78" BeginPosY="242" EndPosX="82" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="114" BeginPosY="146" EndPosX="118" EndPosY="150" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="48" BeginPosY="4" EndPosX="52" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="243" BeginPosY="78" EndPosX="247" EndPosY="82" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="224" BeginPosY="198" EndPosX="228" EndPosY="202" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="48" BeginPosY="242" EndPosX="52" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="160" BeginPosY="4" EndPosX="164" EndPosY="8" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="142" BeginPosY="242" EndPosX="146" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="23" Range="3" BeginPosX="50" BeginPosY="89" EndPosX="54" EndPosY="93" Direction="-1" Quantity="5" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
-		<Config Class="24" Range="3" BeginPosX="184" BeginPosY="104" EndPosX="188" EndPosY="108" Direction="-1" Quantity="6" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
-		<Config Class="24" Range="3" BeginPosX="242" BeginPosY="198" EndPosX="246" EndPosY="202" Direction="-1" Quantity="6" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
-		<Config Class="24" Range="3" BeginPosX="165" BeginPosY="1" EndPosX="169" EndPosY="5" Direction="-1" Quantity="5" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
-		<Config Class="24" Range="3" BeginPosX="168" BeginPosY="179" EndPosX="172" EndPosY="183" Direction="-1" Quantity="5" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
-		<Config Class="24" Range="3" BeginPosX="243" BeginPosY="75" EndPosX="247" EndPosY="79" Direction="-1" Quantity="5" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
-		<Config Class="24" Range="3" BeginPosX="237" BeginPosY="136" EndPosX="241" EndPosY="140" Direction="-1" Quantity="5" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
-		<Config Class="24" Range="3" BeginPosX="156" BeginPosY="56" EndPosX="160" EndPosY="60" Direction="-1" Quantity="5" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
-		<Config Class="25" Range="3" BeginPosX="77" BeginPosY="227" EndPosX="81" EndPosY="231" Direction="-1" Quantity="6" Element="0" /> <!-- "Ice Queen" (Mu Chila: grupo) -->
-		<Config Class="25" Range="3" BeginPosX="4" BeginPosY="185" EndPosX="8" EndPosY="189" Direction="-1" Quantity="5" Element="0" /> <!-- "Ice Queen" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="203" BeginPosY="210" EndPosX="207" EndPosY="214" Direction="-1" Quantity="4" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="70" BeginPosY="159" EndPosX="74" EndPosY="163" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="66" BeginPosY="17" EndPosX="70" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="13" BeginPosY="115" EndPosX="17" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="117" BeginPosY="24" EndPosX="121" EndPosY="28" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="68" BeginPosY="117" EndPosX="72" EndPosY="121" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="149" BeginPosY="211" EndPosX="153" EndPosY="215" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="147" BeginPosY="96" EndPosX="151" EndPosY="100" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="156" BeginPosY="48" EndPosX="160" EndPosY="52" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="155" BeginPosY="19" EndPosX="159" EndPosY="23" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="32" BeginPosY="195" EndPosX="36" EndPosY="199" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="145" BeginPosY="169" EndPosX="149" EndPosY="173" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="23" BeginPosY="143" EndPosX="27" EndPosY="147" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="61" BeginPosY="223" EndPosX="65" EndPosY="227" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="118" BeginPosY="224" EndPosX="122" EndPosY="228" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="58" BeginPosY="66" EndPosX="62" EndPosY="70" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="22" BeginPosY="60" EndPosX="26" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="106" BeginPosY="180" EndPosX="110" EndPosY="184" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="22" BeginPosY="226" EndPosX="26" EndPosY="230" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="62" BeginPosY="39" EndPosX="66" EndPosY="43" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="21" BeginPosY="87" EndPosX="25" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="208" BeginPosY="166" EndPosX="212" EndPosY="170" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="115" BeginPosY="60" EndPosX="119" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Elite Yeti" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="223" BeginPosY="119" EndPosX="227" EndPosY="123" Direction="-1" Quantity="4" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="220" BeginPosY="85" EndPosX="224" EndPosY="89" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="115" BeginPosY="155" EndPosX="119" EndPosY="159" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="194" BeginPosY="149" EndPosX="198" EndPosY="153" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="109" BeginPosY="13" EndPosX="113" EndPosY="17" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="131" BeginPosY="79" EndPosX="135" EndPosY="83" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="178" BeginPosY="110" EndPosX="182" EndPosY="114" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="125" BeginPosY="196" EndPosX="129" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="23" Range="3" BeginPosX="147" BeginPosY="230" EndPosX="151" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Hommerd" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="87" BeginPosY="172" EndPosX="91" EndPosY="176" Direction="-1" Quantity="4" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="155" BeginPosY="119" EndPosX="159" EndPosY="123" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="129" BeginPosY="163" EndPosX="133" EndPosY="167" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="74" BeginPosY="230" EndPosX="78" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="65" BeginPosY="104" EndPosX="69" EndPosY="108" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="113" BeginPosY="236" EndPosX="117" EndPosY="240" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="57" BeginPosY="196" EndPosX="61" EndPosY="200" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="93" BeginPosY="109" EndPosX="97" EndPosY="113" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="153" BeginPosY="188" EndPosX="157" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="53" BeginPosY="16" EndPosX="57" EndPosY="20" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="132" BeginPosY="111" EndPosX="136" EndPosY="115" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="61" BeginPosY="139" EndPosX="65" EndPosY="143" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="19" Range="3" BeginPosX="153" BeginPosY="146" EndPosX="157" EndPosY="150" Direction="-1" Quantity="3" Element="0" /> <!-- "Yeti" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="114" BeginPosY="130" EndPosX="118" EndPosY="134" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="115" BeginPosY="43" EndPosX="119" EndPosY="47" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="103" BeginPosY="201" EndPosX="107" EndPosY="205" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="132" BeginPosY="146" EndPosX="136" EndPosY="150" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="79" BeginPosY="135" EndPosX="83" EndPosY="139" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="158" BeginPosY="9" EndPosX="162" EndPosY="13" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="129" BeginPosY="180" EndPosX="133" EndPosY="184" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="132" BeginPosY="230" EndPosX="136" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="56" BeginPosY="236" EndPosX="60" EndPosY="240" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="21" Range="3" BeginPosX="94" BeginPosY="154" EndPosX="98" EndPosY="158" Direction="-1" Quantity="3" Element="0" /> <!-- "Assassin" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="70" BeginPosY="176" EndPosX="74" EndPosY="180" Direction="-1" Quantity="4" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="101" BeginPosY="50" EndPosX="105" EndPosY="54" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="129" BeginPosY="44" EndPosX="133" EndPosY="48" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="110" BeginPosY="143" EndPosX="114" EndPosY="147" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="156" BeginPosY="133" EndPosX="160" EndPosY="137" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="79" BeginPosY="28" EndPosX="83" EndPosY="32" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="108" BeginPosY="74" EndPosX="112" EndPosY="78" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="158" BeginPosY="96" EndPosX="162" EndPosY="100" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="22" Range="3" BeginPosX="75" BeginPosY="66" EndPosX="79" EndPosY="70" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Monster" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="172" BeginPosY="187" EndPosX="176" EndPosY="191" Direction="-1" Quantity="4" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="177" BeginPosY="87" EndPosX="181" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="191" BeginPosY="110" EndPosX="195" EndPosY="114" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="236" BeginPosY="124" EndPosX="240" EndPosY="128" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="207" BeginPosY="188" EndPosX="211" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="230" BeginPosY="186" EndPosX="234" EndPosY="190" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="219" BeginPosY="159" EndPosX="223" EndPosY="163" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="200" BeginPosY="83" EndPosX="204" EndPosY="87" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="238" BeginPosY="87" EndPosX="242" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="207" BeginPosY="115" EndPosX="211" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="192" BeginPosY="168" EndPosX="196" EndPosY="172" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="24" Range="3" BeginPosX="173" BeginPosY="123" EndPosX="177" EndPosY="127" Direction="-1" Quantity="3" Element="0" /> <!-- "Worm" (Mu Chila: grupo) -->
+		<Config Class="25" Range="3" BeginPosX="14" BeginPosY="212" EndPosX="18" EndPosY="216" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Queen" (Mu Chila: grupo) -->
+		<Config Class="25" Range="3" BeginPosX="13" BeginPosY="192" EndPosX="17" EndPosY="196" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Queen" (Mu Chila: grupo) -->
+		<Config Class="25" Range="3" BeginPosX="40" BeginPosY="218" EndPosX="44" EndPosY="222" Direction="-1" Quantity="3" Element="0" /> <!-- "Ice Queen" (Mu Chila: grupo) -->
+		<Config Class="25" Range="3" BeginPosX="111" BeginPosY="228" EndPosX="115" EndPosY="232" Direction="-1" Quantity="2" Element="0" /> <!-- "Ice Queen" (Mu Chila: grupo) -->
+		<Config Class="20" Range="3" BeginPosX="95" BeginPosY="133" EndPosX="101" EndPosY="139" Direction="-1" Quantity="12" Element="0" /> <!-- "Elite Yeti" (Mu Chila: farm) -->
+		<Config Class="23" Range="3" BeginPosX="135" BeginPosY="130" EndPosX="141" EndPosY="136" Direction="-1" Quantity="12" Element="0" /> <!-- "Hommerd" (Mu Chila: farm) -->
+		<Config Class="22" Range="3" BeginPosX="111" BeginPosY="96" EndPosX="117" EndPosY="102" Direction="-1" Quantity="12" Element="0" /> <!-- "Ice Monster" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

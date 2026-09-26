@@ -14,20 +14,31 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="810" Range="3" BeginPosX="157" BeginPosY="61" EndPosX="161" EndPosY="65" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Digger" (Mu Chila: grupo) -->
-		<Config Class="810" Range="3" BeginPosX="239" BeginPosY="9" EndPosX="243" EndPosY="13" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Digger" (Mu Chila: grupo) -->
-		<Config Class="810" Range="3" BeginPosX="187" BeginPosY="118" EndPosX="191" EndPosY="122" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Digger" (Mu Chila: grupo) -->
-		<Config Class="811" Range="3" BeginPosX="188" BeginPosY="78" EndPosX="192" EndPosY="82" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
-		<Config Class="811" Range="3" BeginPosX="139" BeginPosY="3" EndPosX="143" EndPosY="7" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
-		<Config Class="811" Range="3" BeginPosX="237" BeginPosY="11" EndPosX="241" EndPosY="15" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
-		<Config Class="812" Range="3" BeginPosX="132" BeginPosY="52" EndPosX="136" EndPosY="56" Direction="-1" Quantity="7" Element="1" /> <!-- "Mine Porter" (Mu Chila: grupo) -->
-		<Config Class="812" Range="3" BeginPosX="119" BeginPosY="94" EndPosX="123" EndPosY="98" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Porter" (Mu Chila: grupo) -->
-		<Config Class="813" Range="3" BeginPosX="106" BeginPosY="56" EndPosX="110" EndPosY="60" Direction="-1" Quantity="6" Element="1" /> <!-- "Mine Driller" (Mu Chila: grupo) -->
-		<Config Class="813" Range="3" BeginPosX="227" BeginPosY="41" EndPosX="231" EndPosY="45" Direction="-1" Quantity="5" Element="1" /> <!-- "Mine Driller" (Mu Chila: grupo) -->
-		<Config Class="814" Range="3" BeginPosX="165" BeginPosY="75" EndPosX="169" EndPosY="79" Direction="-1" Quantity="7" Element="1" /> <!-- "Dead Digger" (Mu Chila: grupo) -->
-		<Config Class="815" Range="3" BeginPosX="146" BeginPosY="67" EndPosX="150" EndPosY="71" Direction="-1" Quantity="6" Element="1" /> <!-- "Dead Shoveler" (Mu Chila: grupo) -->
-		<Config Class="815" Range="3" BeginPosX="219" BeginPosY="24" EndPosX="223" EndPosY="28" Direction="-1" Quantity="6" Element="1" /> <!-- "Dead Shoveler" (Mu Chila: grupo) -->
-		<Config Class="816" Range="3" BeginPosX="103" BeginPosY="77" EndPosX="107" EndPosY="81" Direction="-1" Quantity="7" Element="1" /> <!-- "Dead Porter" (Mu Chila: grupo) -->
+		<Config Class="811" Range="3" BeginPosX="203" BeginPosY="86" EndPosX="207" EndPosY="90" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
+		<Config Class="811" Range="3" BeginPosX="145" BeginPosY="6" EndPosX="149" EndPosY="10" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
+		<Config Class="811" Range="3" BeginPosX="165" BeginPosY="12" EndPosX="169" EndPosY="16" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
+		<Config Class="811" Range="3" BeginPosX="133" BeginPosY="64" EndPosX="137" EndPosY="68" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
+		<Config Class="811" Range="3" BeginPosX="167" BeginPosY="52" EndPosX="171" EndPosY="56" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
+		<Config Class="811" Range="3" BeginPosX="177" BeginPosY="76" EndPosX="181" EndPosY="80" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Carrier" (Mu Chila: grupo) -->
+		<Config Class="810" Range="3" BeginPosX="182" BeginPosY="109" EndPosX="186" EndPosY="113" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Digger" (Mu Chila: grupo) -->
+		<Config Class="810" Range="3" BeginPosX="224" BeginPosY="23" EndPosX="228" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Digger" (Mu Chila: grupo) -->
+		<Config Class="812" Range="3" BeginPosX="125" BeginPosY="90" EndPosX="129" EndPosY="94" Direction="-1" Quantity="4" Element="1" /> <!-- "Mine Porter" (Mu Chila: grupo) -->
+		<Config Class="812" Range="3" BeginPosX="139" BeginPosY="33" EndPosX="143" EndPosY="37" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Porter" (Mu Chila: grupo) -->
+		<Config Class="812" Range="3" BeginPosX="111" BeginPosY="57" EndPosX="115" EndPosY="61" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Porter" (Mu Chila: grupo) -->
+		<Config Class="812" Range="3" BeginPosX="125" BeginPosY="53" EndPosX="129" EndPosY="57" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Porter" (Mu Chila: grupo) -->
+		<Config Class="813" Range="3" BeginPosX="222" BeginPosY="43" EndPosX="226" EndPosY="47" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Driller" (Mu Chila: grupo) -->
+		<Config Class="813" Range="3" BeginPosX="110" BeginPosY="70" EndPosX="114" EndPosY="74" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Driller" (Mu Chila: grupo) -->
+		<Config Class="813" Range="3" BeginPosX="110" BeginPosY="75" EndPosX="114" EndPosY="79" Direction="-1" Quantity="3" Element="1" /> <!-- "Mine Driller" (Mu Chila: grupo) -->
+		<Config Class="813" Range="3" BeginPosX="176" BeginPosY="35" EndPosX="180" EndPosY="39" Direction="-1" Quantity="2" Element="1" /> <!-- "Mine Driller" (Mu Chila: grupo) -->
+		<Config Class="815" Range="3" BeginPosX="146" BeginPosY="67" EndPosX="150" EndPosY="71" Direction="-1" Quantity="3" Element="1" /> <!-- "Dead Shoveler" (Mu Chila: grupo) -->
+		<Config Class="815" Range="3" BeginPosX="213" BeginPosY="25" EndPosX="217" EndPosY="29" Direction="-1" Quantity="3" Element="1" /> <!-- "Dead Shoveler" (Mu Chila: grupo) -->
+		<Config Class="815" Range="3" BeginPosX="195" BeginPosY="23" EndPosX="199" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Dead Shoveler" (Mu Chila: grupo) -->
+		<Config Class="815" Range="3" BeginPosX="154" BeginPosY="29" EndPosX="158" EndPosY="33" Direction="-1" Quantity="3" Element="1" /> <!-- "Dead Shoveler" (Mu Chila: grupo) -->
+		<Config Class="814" Range="3" BeginPosX="152" BeginPosY="96" EndPosX="156" EndPosY="100" Direction="-1" Quantity="4" Element="1" /> <!-- "Dead Digger" (Mu Chila: grupo) -->
+		<Config Class="814" Range="3" BeginPosX="92" BeginPosY="56" EndPosX="96" EndPosY="60" Direction="-1" Quantity="3" Element="1" /> <!-- "Dead Digger" (Mu Chila: grupo) -->
+		<Config Class="816" Range="3" BeginPosX="103" BeginPosY="79" EndPosX="107" EndPosY="83" Direction="-1" Quantity="4" Element="1" /> <!-- "Dead Porter" (Mu Chila: grupo) -->
+		<Config Class="816" Range="3" BeginPosX="85" BeginPosY="52" EndPosX="89" EndPosY="56" Direction="-1" Quantity="3" Element="1" /> <!-- "Dead Porter" (Mu Chila: grupo) -->
+		<Config Class="810" Range="3" BeginPosX="182" BeginPosY="30" EndPosX="188" EndPosY="36" Direction="-1" Quantity="12" Element="1" /> <!-- "Mine Digger" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

@@ -17,47 +17,73 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="57" Range="3" BeginPosX="112" BeginPosY="75" EndPosX="116" EndPosY="79" Direction="-1" Quantity="6" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
-		<Config Class="57" Range="3" BeginPosX="16" BeginPosY="93" EndPosX="20" EndPosY="97" Direction="-1" Quantity="6" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
-		<Config Class="57" Range="3" BeginPosX="60" BeginPosY="59" EndPosX="64" EndPosY="63" Direction="-1" Quantity="6" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
-		<Config Class="57" Range="3" BeginPosX="55" BeginPosY="100" EndPosX="59" EndPosY="104" Direction="-1" Quantity="5" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="105" BeginPosY="144" EndPosX="109" EndPosY="148" Direction="-1" Quantity="6" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="17" BeginPosY="245" EndPosX="21" EndPosY="249" Direction="-1" Quantity="6" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="177" BeginPosY="215" EndPosX="181" EndPosY="219" Direction="-1" Quantity="6" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="24" BeginPosY="93" EndPosX="28" EndPosY="97" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="33" BeginPosY="170" EndPosX="37" EndPosY="174" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="93" BeginPosY="194" EndPosX="97" EndPosY="198" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="59" BeginPosY="129" EndPosX="63" EndPosY="133" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="52" BeginPosY="205" EndPosX="56" EndPosY="209" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="15" BeginPosY="128" EndPosX="19" EndPosY="132" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="3" BeginPosY="214" EndPosX="7" EndPosY="218" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="121" BeginPosY="174" EndPosX="125" EndPosY="178" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="58" Range="3" BeginPosX="65" BeginPosY="162" EndPosX="69" EndPosY="166" Direction="-1" Quantity="5" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
-		<Config Class="60" Range="3" BeginPosX="109" BeginPosY="30" EndPosX="113" EndPosY="34" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
-		<Config Class="60" Range="3" BeginPosX="180" BeginPosY="123" EndPosX="184" EndPosY="127" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
-		<Config Class="60" Range="3" BeginPosX="116" BeginPosY="98" EndPosX="120" EndPosY="102" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
-		<Config Class="60" Range="3" BeginPosX="69" BeginPosY="76" EndPosX="73" EndPosY="80" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
-		<Config Class="60" Range="3" BeginPosX="149" BeginPosY="61" EndPosX="153" EndPosY="65" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
-		<Config Class="60" Range="3" BeginPosX="103" BeginPosY="65" EndPosX="107" EndPosY="69" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="73" BeginPosY="164" EndPosX="77" EndPosY="168" Direction="-1" Quantity="6" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="174" BeginPosY="221" EndPosX="178" EndPosY="225" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="7" BeginPosY="247" EndPosX="11" EndPosY="251" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="104" BeginPosY="226" EndPosX="108" EndPosY="230" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="132" BeginPosY="174" EndPosX="136" EndPosY="178" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="43" BeginPosY="208" EndPosX="47" EndPosY="212" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="68" BeginPosY="120" EndPosX="72" EndPosY="124" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="2" BeginPosY="205" EndPosX="6" EndPosY="209" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="166" BeginPosY="186" EndPosX="170" EndPosY="190" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="79" BeginPosY="199" EndPosX="83" EndPosY="203" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="61" Range="3" BeginPosX="50" BeginPosY="242" EndPosX="54" EndPosY="246" Direction="-1" Quantity="5" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="205" BeginPosY="100" EndPosX="209" EndPosY="104" Direction="-1" Quantity="6" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="129" BeginPosY="11" EndPosX="133" EndPosY="15" Direction="-1" Quantity="5" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="146" BeginPosY="156" EndPosX="150" EndPosY="160" Direction="-1" Quantity="5" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="133" BeginPosY="84" EndPosX="137" EndPosY="88" Direction="-1" Quantity="5" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="166" BeginPosY="117" EndPosX="170" EndPosY="121" Direction="-1" Quantity="5" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="156" BeginPosY="41" EndPosX="160" EndPosY="45" Direction="-1" Quantity="5" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="129" BeginPosY="54" EndPosX="133" EndPosY="58" Direction="-1" Quantity="5" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
-		<Config Class="62" Range="3" BeginPosX="159" BeginPosY="78" EndPosX="163" EndPosY="82" Direction="-1" Quantity="5" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="120" BeginPosY="136" EndPosX="124" EndPosY="140" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="165" BeginPosY="214" EndPosX="169" EndPosY="218" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="33" BeginPosY="88" EndPosX="37" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="9" BeginPosY="214" EndPosX="13" EndPosY="218" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="26" BeginPosY="124" EndPosX="30" EndPosY="128" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="50" BeginPosY="202" EndPosX="54" EndPosY="206" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="77" BeginPosY="122" EndPosX="81" EndPosY="126" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="116" BeginPosY="163" EndPosX="120" EndPosY="167" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="48" BeginPosY="160" EndPosX="52" EndPosY="164" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="69" BeginPosY="182" EndPosX="73" EndPosY="186" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="49" BeginPosY="121" EndPosX="53" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="102" BeginPosY="139" EndPosX="106" EndPosY="143" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="36" BeginPosY="170" EndPosX="40" EndPosY="174" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="65" BeginPosY="138" EndPosX="69" EndPosY="142" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="27" BeginPosY="230" EndPosX="31" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="103" BeginPosY="120" EndPosX="107" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="30" BeginPosY="152" EndPosX="34" EndPosY="156" Direction="-1" Quantity="3" Element="0" /> <!-- "Tantalos" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="122" BeginPosY="191" EndPosX="126" EndPosY="195" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="158" BeginPosY="188" EndPosX="162" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="35" BeginPosY="211" EndPosX="39" EndPosY="215" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="47" BeginPosY="231" EndPosX="51" EndPosY="235" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="151" BeginPosY="207" EndPosX="155" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="172" BeginPosY="203" EndPosX="176" EndPosY="207" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="104" BeginPosY="217" EndPosX="108" EndPosY="221" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="88" BeginPosY="145" EndPosX="92" EndPosY="149" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="7" BeginPosY="236" EndPosX="11" EndPosY="240" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="111" BeginPosY="208" EndPosX="115" EndPosY="212" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="175" BeginPosY="194" EndPosX="179" EndPosY="198" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="120" BeginPosY="209" EndPosX="124" EndPosY="213" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="81" BeginPosY="185" EndPosX="85" EndPosY="189" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="128" BeginPosY="174" EndPosX="132" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="61" Range="3" BeginPosX="14" BeginPosY="203" EndPosX="18" EndPosY="207" Direction="-1" Quantity="2" Element="0" /> <!-- "Beam Knight" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="198" BeginPosY="105" EndPosX="202" EndPosY="109" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="165" BeginPosY="131" EndPosX="169" EndPosY="135" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="134" BeginPosY="18" EndPosX="138" EndPosY="22" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="133" BeginPosY="86" EndPosX="137" EndPosY="90" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="148" BeginPosY="43" EndPosX="152" EndPosY="47" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="132" BeginPosY="60" EndPosX="136" EndPosY="64" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="153" BeginPosY="147" EndPosX="157" EndPosY="151" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="181" BeginPosY="113" EndPosX="185" EndPosY="117" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="155" BeginPosY="81" EndPosX="159" EndPosY="85" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="143" BeginPosY="96" EndPosX="147" EndPosY="100" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="143" BeginPosY="69" EndPosX="147" EndPosY="73" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="146" BeginPosY="31" EndPosX="150" EndPosY="35" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="150" BeginPosY="123" EndPosX="154" EndPosY="127" Direction="-1" Quantity="3" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="62" Range="3" BeginPosX="162" BeginPosY="106" EndPosX="166" EndPosY="110" Direction="-1" Quantity="2" Element="0" /> <!-- "Mutant" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="109" BeginPosY="35" EndPosX="113" EndPosY="39" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="92" BeginPosY="81" EndPosX="96" EndPosY="85" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="122" BeginPosY="94" EndPosX="126" EndPosY="98" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="92" BeginPosY="32" EndPosX="96" EndPosY="36" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="99" BeginPosY="65" EndPosX="103" EndPosY="69" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="96" BeginPosY="47" EndPosX="100" EndPosY="51" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="106" BeginPosY="56" EndPosX="110" EndPosY="60" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="126" BeginPosY="41" EndPosX="130" EndPosY="45" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="129" BeginPosY="71" EndPosX="133" EndPosY="75" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="105" BeginPosY="85" EndPosX="109" EndPosY="89" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="60" Range="3" BeginPosX="72" BeginPosY="79" EndPosX="76" EndPosY="83" Direction="-1" Quantity="2" Element="0" /> <!-- "Bloody wolf" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="65" BeginPosY="59" EndPosX="69" EndPosY="63" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="54" BeginPosY="95" EndPosX="58" EndPosY="99" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="38" BeginPosY="66" EndPosX="42" EndPosY="70" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="82" BeginPosY="64" EndPosX="86" EndPosY="68" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="28" BeginPosY="76" EndPosX="32" EndPosY="80" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="20" BeginPosY="87" EndPosX="24" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="57" BeginPosY="71" EndPosX="61" EndPosY="75" Direction="-1" Quantity="3" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="57" Range="3" BeginPosX="88" BeginPosY="48" EndPosX="92" EndPosY="52" Direction="-1" Quantity="2" Element="0" /> <!-- "Iron Wheel" (Mu Chila: grupo) -->
+		<Config Class="58" Range="3" BeginPosX="64" BeginPosY="158" EndPosX="70" EndPosY="164" Direction="-1" Quantity="12" Element="0" /> <!-- "Tantalos" (Mu Chila: farm) -->
+		<Config Class="61" Range="3" BeginPosX="92" BeginPosY="201" EndPosX="98" EndPosY="207" Direction="-1" Quantity="12" Element="0" /> <!-- "Beam Knight" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

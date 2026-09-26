@@ -5,20 +5,29 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="69" Range="3" BeginPosX="7" BeginPosY="24" EndPosX="11" EndPosY="28" Direction="-1" Quantity="5" Element="0" /> <!-- "Alquamos" (Mu Chila: grupo) -->
-		<Config Class="69" Range="3" BeginPosX="81" BeginPosY="42" EndPosX="85" EndPosY="46" Direction="-1" Quantity="5" Element="0" /> <!-- "Alquamos" (Mu Chila: grupo) -->
-		<Config Class="69" Range="3" BeginPosX="43" BeginPosY="37" EndPosX="47" EndPosY="41" Direction="-1" Quantity="5" Element="0" /> <!-- "Alquamos" (Mu Chila: grupo) -->
-		<Config Class="70" Range="3" BeginPosX="71" BeginPosY="81" EndPosX="75" EndPosY="85" Direction="-1" Quantity="7" Element="0" /> <!-- "Queen Rainier" (Mu Chila: grupo) -->
-		<Config Class="70" Range="3" BeginPosX="85" BeginPosY="31" EndPosX="89" EndPosY="35" Direction="-1" Quantity="6" Element="0" /> <!-- "Queen Rainier" (Mu Chila: grupo) -->
-		<Config Class="71" Range="3" BeginPosX="82" BeginPosY="46" EndPosX="86" EndPosY="50" Direction="-1" Quantity="7" Element="0" /> <!-- "Mega Crust" (Mu Chila: grupo) -->
-		<Config Class="71" Range="3" BeginPosX="48" BeginPosY="22" EndPosX="52" EndPosY="26" Direction="-1" Quantity="6" Element="0" /> <!-- "Mega Crust" (Mu Chila: grupo) -->
-		<Config Class="72" Range="3" BeginPosX="42" BeginPosY="123" EndPosX="46" EndPosY="127" Direction="-1" Quantity="6" Element="0" /> <!-- "Phantom Knight" (Mu Chila: grupo) -->
-		<Config Class="72" Range="3" BeginPosX="31" BeginPosY="227" EndPosX="35" EndPosY="231" Direction="-1" Quantity="6" Element="0" /> <!-- "Phantom Knight" (Mu Chila: grupo) -->
-		<Config Class="73" Range="3" BeginPosX="40" BeginPosY="73" EndPosX="44" EndPosY="77" Direction="-1" Quantity="5" Element="0" /> <!-- "Drakan" (Mu Chila: grupo) -->
-		<Config Class="74" Range="3" BeginPosX="38" BeginPosY="81" EndPosX="42" EndPosY="85" Direction="-1" Quantity="6" Element="0" /> <!-- "Alpha Crust" (Mu Chila: grupo) -->
-		<Config Class="75" Range="3" BeginPosX="41" BeginPosY="208" EndPosX="45" EndPosY="212" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
-		<Config Class="75" Range="3" BeginPosX="60" BeginPosY="158" EndPosX="64" EndPosY="162" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
-		<Config Class="75" Range="3" BeginPosX="39" BeginPosY="239" EndPosX="43" EndPosY="243" Direction="-1" Quantity="5" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
+		<Config Class="69" Range="3" BeginPosX="16" BeginPosY="29" EndPosX="20" EndPosY="33" Direction="-1" Quantity="3" Element="0" /> <!-- "Alquamos" (Mu Chila: grupo) -->
+		<Config Class="75" Range="3" BeginPosX="46" BeginPosY="201" EndPosX="50" EndPosY="205" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
+		<Config Class="75" Range="3" BeginPosX="50" BeginPosY="166" EndPosX="54" EndPosY="170" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
+		<Config Class="75" Range="3" BeginPosX="28" BeginPosY="226" EndPosX="32" EndPosY="230" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
+		<Config Class="75" Range="3" BeginPosX="54" BeginPosY="185" EndPosX="58" EndPosY="189" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
+		<Config Class="75" Range="3" BeginPosX="44" BeginPosY="229" EndPosX="48" EndPosY="233" Direction="-1" Quantity="3" Element="0" /> <!-- "Great Drakan" (Mu Chila: grupo) -->
+		<Config Class="71" Range="3" BeginPosX="54" BeginPosY="30" EndPosX="58" EndPosY="34" Direction="-1" Quantity="4" Element="0" /> <!-- "Mega Crust" (Mu Chila: grupo) -->
+		<Config Class="71" Range="3" BeginPosX="86" BeginPosY="68" EndPosX="90" EndPosY="72" Direction="-1" Quantity="3" Element="0" /> <!-- "Mega Crust" (Mu Chila: grupo) -->
+		<Config Class="71" Range="3" BeginPosX="85" BeginPosY="45" EndPosX="89" EndPosY="49" Direction="-1" Quantity="3" Element="0" /> <!-- "Mega Crust" (Mu Chila: grupo) -->
+		<Config Class="71" Range="3" BeginPosX="71" BeginPosY="34" EndPosX="75" EndPosY="38" Direction="-1" Quantity="3" Element="0" /> <!-- "Mega Crust" (Mu Chila: grupo) -->
+		<Config Class="70" Range="3" BeginPosX="57" BeginPosY="68" EndPosX="61" EndPosY="72" Direction="-1" Quantity="4" Element="0" /> <!-- "Queen Rainier" (Mu Chila: grupo) -->
+		<Config Class="70" Range="3" BeginPosX="65" BeginPosY="81" EndPosX="69" EndPosY="85" Direction="-1" Quantity="3" Element="0" /> <!-- "Queen Rainier" (Mu Chila: grupo) -->
+		<Config Class="70" Range="3" BeginPosX="75" BeginPosY="80" EndPosX="79" EndPosY="84" Direction="-1" Quantity="3" Element="0" /> <!-- "Queen Rainier" (Mu Chila: grupo) -->
+		<Config Class="70" Range="3" BeginPosX="70" BeginPosY="70" EndPosX="74" EndPosY="74" Direction="-1" Quantity="3" Element="0" /> <!-- "Queen Rainier" (Mu Chila: grupo) -->
+		<Config Class="72" Range="3" BeginPosX="41" BeginPosY="119" EndPosX="45" EndPosY="123" Direction="-1" Quantity="3" Element="0" /> <!-- "Phantom Knight" (Mu Chila: grupo) -->
+		<Config Class="72" Range="3" BeginPosX="45" BeginPosY="144" EndPosX="49" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Phantom Knight" (Mu Chila: grupo) -->
+		<Config Class="72" Range="3" BeginPosX="34" BeginPosY="224" EndPosX="38" EndPosY="228" Direction="-1" Quantity="3" Element="0" /> <!-- "Phantom Knight" (Mu Chila: grupo) -->
+		<Config Class="72" Range="3" BeginPosX="39" BeginPosY="216" EndPosX="43" EndPosY="220" Direction="-1" Quantity="3" Element="0" /> <!-- "Phantom Knight" (Mu Chila: grupo) -->
+		<Config Class="74" Range="3" BeginPosX="33" BeginPosY="104" EndPosX="37" EndPosY="108" Direction="-1" Quantity="3" Element="0" /> <!-- "Alpha Crust" (Mu Chila: grupo) -->
+		<Config Class="74" Range="3" BeginPosX="33" BeginPosY="87" EndPosX="37" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Alpha Crust" (Mu Chila: grupo) -->
+		<Config Class="73" Range="3" BeginPosX="27" BeginPosY="68" EndPosX="31" EndPosY="72" Direction="-1" Quantity="3" Element="0" /> <!-- "Drakan" (Mu Chila: grupo) -->
+		<Config Class="73" Range="3" BeginPosX="40" BeginPosY="72" EndPosX="44" EndPosY="76" Direction="-1" Quantity="2" Element="0" /> <!-- "Drakan" (Mu Chila: grupo) -->
+		<Config Class="69" Range="3" BeginPosX="31" BeginPosY="31" EndPosX="37" EndPosY="37" Direction="-1" Quantity="12" Element="0" /> <!-- "Alquamos" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

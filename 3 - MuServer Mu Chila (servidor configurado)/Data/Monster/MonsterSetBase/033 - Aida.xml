@@ -13,52 +13,80 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="304" Range="3" BeginPosX="136" BeginPosY="126" EndPosX="140" EndPosY="130" Direction="-1" Quantity="6" Element="0" /> <!-- "Witch Queen" (Mu Chila: grupo) -->
-		<Config Class="305" Range="3" BeginPosX="90" BeginPosY="149" EndPosX="94" EndPosY="153" Direction="-1" Quantity="6" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
-		<Config Class="305" Range="3" BeginPosX="195" BeginPosY="14" EndPosX="199" EndPosY="18" Direction="-1" Quantity="6" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
-		<Config Class="305" Range="3" BeginPosX="231" BeginPosY="133" EndPosX="235" EndPosY="137" Direction="-1" Quantity="6" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
-		<Config Class="305" Range="3" BeginPosX="87" BeginPosY="40" EndPosX="91" EndPosY="44" Direction="-1" Quantity="6" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
-		<Config Class="305" Range="3" BeginPosX="149" BeginPosY="93" EndPosX="153" EndPosY="97" Direction="-1" Quantity="5" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
-		<Config Class="305" Range="3" BeginPosX="164" BeginPosY="170" EndPosX="168" EndPosY="174" Direction="-1" Quantity="5" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
-		<Config Class="305" Range="3" BeginPosX="92" BeginPosY="87" EndPosX="96" EndPosY="91" Direction="-1" Quantity="5" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="232" BeginPosY="144" EndPosX="236" EndPosY="148" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="95" BeginPosY="53" EndPosX="99" EndPosY="57" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="85" BeginPosY="204" EndPosX="89" EndPosY="208" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="225" BeginPosY="7" EndPosX="229" EndPosY="11" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="137" BeginPosY="139" EndPosX="141" EndPosY="143" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="187" BeginPosY="84" EndPosX="191" EndPosY="88" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="184" BeginPosY="180" EndPosX="188" EndPosY="184" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="306" Range="3" BeginPosX="84" BeginPosY="110" EndPosX="88" EndPosY="114" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
-		<Config Class="307" Range="3" BeginPosX="157" BeginPosY="45" EndPosX="161" EndPosY="49" Direction="-1" Quantity="6" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
-		<Config Class="307" Range="3" BeginPosX="84" BeginPosY="171" EndPosX="88" EndPosY="175" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
-		<Config Class="307" Range="3" BeginPosX="235" BeginPosY="156" EndPosX="239" EndPosY="160" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
-		<Config Class="307" Range="3" BeginPosX="235" BeginPosY="31" EndPosX="239" EndPosY="35" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
-		<Config Class="307" Range="3" BeginPosX="194" BeginPosY="103" EndPosX="198" EndPosY="107" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
-		<Config Class="307" Range="3" BeginPosX="121" BeginPosY="17" EndPosX="125" EndPosY="21" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
-		<Config Class="307" Range="3" BeginPosX="188" BeginPosY="12" EndPosX="192" EndPosY="16" Direction="-1" Quantity="5" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
-		<Config Class="308" Range="3" BeginPosX="211" BeginPosY="109" EndPosX="215" EndPosY="113" Direction="-1" Quantity="6" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
-		<Config Class="308" Range="3" BeginPosX="98" BeginPosY="11" EndPosX="102" EndPosY="15" Direction="-1" Quantity="6" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
-		<Config Class="308" Range="3" BeginPosX="227" BeginPosY="6" EndPosX="231" EndPosY="10" Direction="-1" Quantity="6" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
-		<Config Class="308" Range="3" BeginPosX="164" BeginPosY="49" EndPosX="168" EndPosY="53" Direction="-1" Quantity="6" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
-		<Config Class="308" Range="3" BeginPosX="153" BeginPosY="8" EndPosX="157" EndPosY="12" Direction="-1" Quantity="5" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
-		<Config Class="309" Range="3" BeginPosX="105" BeginPosY="147" EndPosX="109" EndPosY="151" Direction="-1" Quantity="5" Element="0" /> <!-- "Hell Maine" (Mu Chila: grupo) -->
-		<Config Class="549" Range="3" BeginPosX="161" BeginPosY="194" EndPosX="165" EndPosY="198" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
-		<Config Class="549" Range="3" BeginPosX="35" BeginPosY="225" EndPosX="39" EndPosY="229" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
-		<Config Class="549" Range="3" BeginPosX="238" BeginPosY="237" EndPosX="242" EndPosY="241" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
-		<Config Class="549" Range="3" BeginPosX="83" BeginPosY="229" EndPosX="87" EndPosY="233" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
-		<Config Class="550" Range="3" BeginPosX="165" BeginPosY="200" EndPosX="169" EndPosY="204" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
-		<Config Class="550" Range="3" BeginPosX="21" BeginPosY="49" EndPosX="25" EndPosY="53" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
-		<Config Class="550" Range="3" BeginPosX="28" BeginPosY="223" EndPosX="32" EndPosY="227" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
-		<Config Class="550" Range="3" BeginPosX="27" BeginPosY="135" EndPosX="31" EndPosY="139" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
-		<Config Class="550" Range="3" BeginPosX="94" BeginPosY="198" EndPosX="98" EndPosY="202" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
-		<Config Class="551" Range="3" BeginPosX="22" BeginPosY="59" EndPosX="26" EndPosY="63" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
-		<Config Class="551" Range="3" BeginPosX="237" BeginPosY="233" EndPosX="241" EndPosY="237" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
-		<Config Class="551" Range="3" BeginPosX="40" BeginPosY="223" EndPosX="44" EndPosY="227" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
-		<Config Class="551" Range="3" BeginPosX="139" BeginPosY="183" EndPosX="143" EndPosY="187" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
-		<Config Class="551" Range="3" BeginPosX="56" BeginPosY="121" EndPosX="60" EndPosY="125" Direction="-1" Quantity="5" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
-		<Config Class="552" Range="3" BeginPosX="22" BeginPosY="181" EndPosX="26" EndPosY="185" Direction="-1" Quantity="7" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
-		<Config Class="552" Range="3" BeginPosX="47" BeginPosY="49" EndPosX="51" EndPosY="53" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
-		<Config Class="552" Range="3" BeginPosX="55" BeginPosY="118" EndPosX="59" EndPosY="122" Direction="-1" Quantity="6" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="225" BeginPosY="61" EndPosX="229" EndPosY="65" Direction="-1" Quantity="4" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="199" BeginPosY="167" EndPosX="203" EndPosY="171" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="173" BeginPosY="125" EndPosX="177" EndPosY="129" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="114" BeginPosY="55" EndPosX="118" EndPosY="59" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="231" BeginPosY="28" EndPosX="235" EndPosY="32" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="131" BeginPosY="145" EndPosX="135" EndPosY="149" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="229" BeginPosY="147" EndPosX="233" EndPosY="151" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="90" BeginPosY="174" EndPosX="94" EndPosY="178" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="85" BeginPosY="125" EndPosX="89" EndPosY="129" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Rider" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="108" BeginPosY="94" EndPosX="112" EndPosY="98" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="85" BeginPosY="63" EndPosX="89" EndPosY="67" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="192" BeginPosY="17" EndPosX="196" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="163" BeginPosY="167" EndPosX="167" EndPosY="171" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="131" BeginPosY="131" EndPosX="135" EndPosY="135" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="190" BeginPosY="148" EndPosX="194" EndPosY="152" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="89" BeginPosY="153" EndPosX="93" EndPosY="157" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="127" BeginPosY="70" EndPosX="131" EndPosY="74" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="305" Range="3" BeginPosX="105" BeginPosY="155" EndPosX="109" EndPosY="159" Direction="-1" Quantity="3" Element="0" /> <!-- "Blue Golem" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="155" BeginPosY="12" EndPosX="159" EndPosY="16" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="127" BeginPosY="25" EndPosX="131" EndPosY="29" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="232" BeginPosY="120" EndPosX="236" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="212" BeginPosY="8" EndPosX="216" EndPosY="12" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="164" BeginPosY="57" EndPosX="168" EndPosY="61" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="205" BeginPosY="120" EndPosX="209" EndPosY="124" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="191" BeginPosY="36" EndPosX="195" EndPosY="40" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="307" Range="3" BeginPosX="85" BeginPosY="169" EndPosX="89" EndPosY="173" Direction="-1" Quantity="3" Element="0" /> <!-- "Forest Orc" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="156" BeginPosY="223" EndPosX="160" EndPosY="227" Direction="-1" Quantity="4" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="130" BeginPosY="222" EndPosX="134" EndPosY="226" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="41" BeginPosY="207" EndPosX="45" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="203" BeginPosY="198" EndPosX="207" EndPosY="202" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="100" BeginPosY="201" EndPosX="104" EndPosY="205" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="76" BeginPosY="223" EndPosX="80" EndPosY="227" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="155" BeginPosY="194" EndPosX="159" EndPosY="198" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="123" BeginPosY="195" EndPosX="127" EndPosY="199" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="550" Range="3" BeginPosX="27" BeginPosY="113" EndPosX="31" EndPosY="117" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Death Rider" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="49" BeginPosY="46" EndPosX="53" EndPosY="50" Direction="-1" Quantity="4" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="23" BeginPosY="50" EndPosX="27" EndPosY="54" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="219" BeginPosY="230" EndPosX="223" EndPosY="234" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="23" BeginPosY="188" EndPosX="27" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="49" BeginPosY="58" EndPosX="53" EndPosY="62" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="74" BeginPosY="208" EndPosX="78" EndPosY="212" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="39" BeginPosY="178" EndPosX="43" EndPosY="182" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="53" BeginPosY="118" EndPosX="57" EndPosY="122" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="551" Range="3" BeginPosX="20" BeginPosY="125" EndPosX="24" EndPosY="129" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Golem" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="215" BeginPosY="35" EndPosX="219" EndPosY="39" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="113" BeginPosY="12" EndPosX="117" EndPosY="16" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="198" BeginPosY="69" EndPosX="202" EndPosY="73" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="135" BeginPosY="14" EndPosX="139" EndPosY="18" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="215" BeginPosY="86" EndPosX="219" EndPosY="90" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="174" BeginPosY="17" EndPosX="178" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="196" BeginPosY="94" EndPosX="200" EndPosY="98" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="159" BeginPosY="18" EndPosX="163" EndPosY="22" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="200" BeginPosY="28" EndPosX="204" EndPosY="32" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="308" Range="3" BeginPosX="210" BeginPosY="35" EndPosX="214" EndPosY="39" Direction="-1" Quantity="2" Element="0" /> <!-- "Death Tree" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="181" BeginPosY="207" EndPosX="185" EndPosY="211" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="71" BeginPosY="220" EndPosX="75" EndPosY="224" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="236" BeginPosY="231" EndPosX="240" EndPosY="235" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="158" BeginPosY="234" EndPosX="162" EndPosY="238" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="215" BeginPosY="221" EndPosX="219" EndPosY="225" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="228" BeginPosY="216" EndPosX="232" EndPosY="220" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="38" BeginPosY="222" EndPosX="42" EndPosY="226" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="549" Range="3" BeginPosX="65" BeginPosY="225" EndPosX="69" EndPosY="229" Direction="-1" Quantity="2" Element="0" /> <!-- "Bloody Orc" (Mu Chila: grupo) -->
+		<Config Class="552" Range="3" BeginPosX="29" BeginPosY="51" EndPosX="33" EndPosY="55" Direction="-1" Quantity="4" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="552" Range="3" BeginPosX="35" BeginPosY="88" EndPosX="39" EndPosY="92" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="552" Range="3" BeginPosX="41" BeginPosY="129" EndPosX="45" EndPosY="133" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="552" Range="3" BeginPosX="37" BeginPosY="146" EndPosX="41" EndPosY="150" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="552" Range="3" BeginPosX="51" BeginPosY="157" EndPosX="55" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="552" Range="3" BeginPosX="24" BeginPosY="144" EndPosX="28" EndPosY="148" Direction="-1" Quantity="3" Element="0" /> <!-- "Bloody Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="304" Range="3" BeginPosX="86" BeginPosY="71" EndPosX="90" EndPosY="75" Direction="-1" Quantity="3" Element="0" /> <!-- "Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="304" Range="3" BeginPosX="122" BeginPosY="80" EndPosX="126" EndPosY="84" Direction="-1" Quantity="3" Element="0" /> <!-- "Witch Queen" (Mu Chila: grupo) -->
+		<Config Class="309" Range="3" BeginPosX="110" BeginPosY="45" EndPosX="114" EndPosY="49" Direction="-1" Quantity="3" Element="0" /> <!-- "Hell Maine" (Mu Chila: grupo) -->
+		<Config Class="306" Range="3" BeginPosX="180" BeginPosY="89" EndPosX="186" EndPosY="95" Direction="-1" Quantity="12" Element="0" /> <!-- "Death Rider" (Mu Chila: farm) -->
+		<Config Class="305" Range="3" BeginPosX="130" BeginPosY="104" EndPosX="136" EndPosY="110" Direction="-1" Quantity="12" Element="0" /> <!-- "Blue Golem" (Mu Chila: farm) -->
+		<Config Class="307" Range="3" BeginPosX="189" BeginPosY="50" EndPosX="195" EndPosY="56" Direction="-1" Quantity="12" Element="0" /> <!-- "Forest Orc" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

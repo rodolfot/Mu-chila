@@ -132,17 +132,33 @@ Itens e skills marcados com `2` nas colunas de classe do `Item.txt` exigem a 2ª
 Para evoluir, digite **`/change`** no chat. É grátis e vai até a 3ª classe (`CommandChangeLimit = 3` em `GameServerInfo - Command.dat`).
 Cada uso sobe uma classe e responde "You successfully evolved".
 
-## Spawn de monstros em grupos
+## Spawn de monstros (grupos espalhados + pontos de farm)
 
-Os spawns dos mapas de caça foram reorganizados em **grupos de 5 ou mais** do mesmo monstro, num quadrado de 5×5 tiles:
-- **Números:** 1.676 grupos, com o total de monstros praticamente igual (8.895 → 8.899).
-- **Posições:** os grupos ficam nas mesmas regiões onde cada monstro já nascia, sempre em chão livre (validado pelo arquivo `Data\Terrain\TerrainN.att`).
-- **Ficaram como estavam:**
-  - chefes e raros, com 1 ou 2 no mapa ou respawn de 10 minutos ou mais (Kundun, Erohim, Balrog...);
+Desde 26/09/2026 os spawns dos mapas de caça são gerados por `tools\Distribuir-Spawns.py` a partir dos arquivos **originais do kit**:
+
+- **Grupos de 3** do mesmo monstro, cada um numa caixa de 5×5 tiles, espalhados por igual na área onde o monstro nascia no kit.
+  - Os centros saem de um k-means sobre o chão livre, então ocupam o meio da área e não as bordas.
+  - Monstros que dividem a mesma área não repetem o mesmo lugar.
+- **Pontos de farm:** 12 monstros numa caixa de 7×7.
+  - Quantidade: 1 a 5 por mapa (1 a cada 100 monstros).
+  - Monstro: os mais numerosos do mapa.
+  - Posição: pelo menos 18 tiles da cidade e 40 tiles entre um farm e outro.
+- **Números:** 2.602 grupos e 84 farms. O total de monstros de cada mapa é igual ao do kit.
+  - O GameServer aceita no máximo 10.000 monstros e está com cerca de 9.080; o título da janela mostra `MonsterCount`.
+- **Ficam como no kit:**
+  - chefes e raros (1 ou 2 no mapa, ou respawn de 10 minutos ou mais);
   - armadilhas;
   - Crywolf e o Refúgio de Balgass.
-- **Aplicar mudanças no ar:** Reload Monster (recria todos os monstros e limpa invasões em andamento).
-- **Refazer a partir dos arquivos originais do kit:** `.\tools\Agrupar-Spawns.ps1` (sem `-Apply` só simula; com `-Apply` grava, com backup).
+- **Cobertura:** medida na memória do GameServer, é a parte do chão livre com monstro vivo a até 10 tiles.
+  - Lorencia foi de 36% para 62%, Noria de 44% para 70% e Devias de 38% para 70%.
+  - Os mapas altos ficaram entre 80% e 93%.
+- **Uso:** `python tools\Distribuir-Spawns.py` só simula e mostra a cobertura antes e depois.
+  - `--png <pasta>` desenha os mapas: grupos em vermelho, farms em amarelo.
+  - `--grupo N` muda o tamanho do grupo.
+  - `--gravar` grava, com backup `.bak-*`.
+- **Aplicar no ar:** Reload Monster no GameServer (recria todos os monstros e limpa invasões em andamento).
+  - Land of Trials (31) e Barracks (41) ficam no servidor do Castle Siege e só mudam quando ele reinicia. Não use Reload Monster no Castle Siege, que recria também os monstros do cerco.
+- **Histórico:** em 23/09 os spawns tinham virado 1.676 grupos de 5, com centros escolhidos pelo "ponto mais distante". Esse método empurrava os grupos para as bordas e cantos de cada área e deixava o meio dos mapas vazio.
 
 ## Drops de monstros
 

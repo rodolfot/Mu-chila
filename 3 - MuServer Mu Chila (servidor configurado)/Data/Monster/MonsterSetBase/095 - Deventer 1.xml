@@ -10,28 +10,41 @@
 		<Config Class="613" Range="30" BeginPosX="46" BeginPosY="3" EndPosX="241" EndPosY="113" Direction="-1" Quantity="1" Element="3" /> <!-- "Silla" -->
 		<Config Class="614" Range="30" BeginPosX="51" BeginPosY="2" EndPosX="249" EndPosY="117" Direction="-1" Quantity="1" Element="4" /> <!-- "Normus" -->
 		<Config Class="615" Range="30" BeginPosX="42" BeginPosY="5" EndPosX="239" EndPosY="115" Direction="-1" Quantity="1" Element="5" /> <!-- "Muff" -->
-		<Config Class="608" Range="3" BeginPosX="153" BeginPosY="51" EndPosX="157" EndPosY="55" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="22" BeginPosY="18" EndPosX="26" EndPosY="22" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="241" BeginPosY="82" EndPosX="245" EndPosY="86" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="72" BeginPosY="97" EndPosX="76" EndPosY="101" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="89" BeginPosY="28" EndPosX="93" EndPosY="32" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="207" BeginPosY="11" EndPosX="211" EndPosY="15" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="186" BeginPosY="96" EndPosX="190" EndPosY="100" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="30" BeginPosY="68" EndPosX="34" EndPosY="72" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="122" BeginPosY="91" EndPosX="126" EndPosY="95" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="133" BeginPosY="11" EndPosX="137" EndPosY="15" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="608" Range="3" BeginPosX="243" BeginPosY="37" EndPosX="247" EndPosY="41" Direction="-1" Quantity="5" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
-		<Config Class="609" Range="3" BeginPosX="123" BeginPosY="79" EndPosX="127" EndPosY="83" Direction="-1" Quantity="6" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="609" Range="3" BeginPosX="239" BeginPosY="47" EndPosX="243" EndPosY="51" Direction="-1" Quantity="6" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="609" Range="3" BeginPosX="32" BeginPosY="19" EndPosX="36" EndPosY="23" Direction="-1" Quantity="6" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="609" Range="3" BeginPosX="110" BeginPosY="6" EndPosX="114" EndPosY="10" Direction="-1" Quantity="6" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="609" Range="3" BeginPosX="191" BeginPosY="100" EndPosX="195" EndPosY="104" Direction="-1" Quantity="5" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="609" Range="3" BeginPosX="177" BeginPosY="18" EndPosX="181" EndPosY="22" Direction="-1" Quantity="5" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="609" Range="3" BeginPosX="55" BeginPosY="80" EndPosX="59" EndPosY="84" Direction="-1" Quantity="5" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
-		<Config Class="610" Range="3" BeginPosX="173" BeginPosY="56" EndPosX="177" EndPosY="60" Direction="-1" Quantity="6" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="610" Range="3" BeginPosX="41" BeginPosY="65" EndPosX="45" EndPosY="69" Direction="-1" Quantity="5" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="610" Range="3" BeginPosX="110" BeginPosY="25" EndPosX="114" EndPosY="29" Direction="-1" Quantity="5" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
-		<Config Class="610" Range="3" BeginPosX="227" BeginPosY="89" EndPosX="231" EndPosY="93" Direction="-1" Quantity="5" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="236" BeginPosY="42" EndPosX="240" EndPosY="46" Direction="-1" Quantity="4" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="77" BeginPosY="27" EndPosX="81" EndPosY="31" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="183" BeginPosY="91" EndPosX="187" EndPosY="95" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="131" BeginPosY="88" EndPosX="135" EndPosY="92" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="37" BeginPosY="60" EndPosX="41" EndPosY="64" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="187" BeginPosY="19" EndPosX="191" EndPosY="23" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="88" BeginPosY="59" EndPosX="92" EndPosY="63" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="119" BeginPosY="18" EndPosX="123" EndPosY="22" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="38" BeginPosY="20" EndPosX="42" EndPosY="24" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="209" BeginPosY="45" EndPosX="213" EndPosY="49" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="235" BeginPosY="82" EndPosX="239" EndPosY="86" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="152" BeginPosY="59" EndPosX="156" EndPosY="63" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="172" BeginPosY="42" EndPosX="176" EndPosY="46" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="70" BeginPosY="88" EndPosX="74" EndPosY="92" Direction="-1" Quantity="3" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="61" BeginPosY="46" EndPosX="65" EndPosY="50" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="140" BeginPosY="23" EndPosX="144" EndPosY="27" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="204" BeginPosY="62" EndPosX="208" EndPosY="66" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="163" BeginPosY="55" EndPosX="167" EndPosY="59" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="141" BeginPosY="85" EndPosX="145" EndPosY="89" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="170" BeginPosY="83" EndPosX="174" EndPosY="87" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="157" BeginPosY="90" EndPosX="161" EndPosY="94" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="81" BeginPosY="90" EndPosX="85" EndPosY="94" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="203" BeginPosY="8" EndPosX="207" EndPosY="12" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="168" BeginPosY="100" EndPosX="172" EndPosY="104" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="211" BeginPosY="85" EndPosX="215" EndPosY="89" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="149" BeginPosY="17" EndPosX="153" EndPosY="21" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="609" Range="3" BeginPosX="231" BeginPosY="77" EndPosX="235" EndPosY="81" Direction="-1" Quantity="3" Element="1" /> <!-- "Deventer Elemental Beast" (Mu Chila: grupo) -->
+		<Config Class="610" Range="3" BeginPosX="229" BeginPosY="50" EndPosX="233" EndPosY="54" Direction="-1" Quantity="3" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="610" Range="3" BeginPosX="118" BeginPosY="28" EndPosX="122" EndPosY="32" Direction="-1" Quantity="3" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="610" Range="3" BeginPosX="111" BeginPosY="51" EndPosX="115" EndPosY="55" Direction="-1" Quantity="3" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="610" Range="3" BeginPosX="202" BeginPosY="75" EndPosX="206" EndPosY="79" Direction="-1" Quantity="3" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="610" Range="3" BeginPosX="97" BeginPosY="53" EndPosX="101" EndPosY="57" Direction="-1" Quantity="3" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="610" Range="3" BeginPosX="156" BeginPosY="100" EndPosX="160" EndPosY="104" Direction="-1" Quantity="3" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="610" Range="3" BeginPosX="214" BeginPosY="31" EndPosX="218" EndPosY="35" Direction="-1" Quantity="3" Element="5" /> <!-- "Debenter Elemental Knight" (Mu Chila: grupo) -->
+		<Config Class="608" Range="3" BeginPosX="119" BeginPosY="54" EndPosX="125" EndPosY="60" Direction="-1" Quantity="12" Element="1" /> <!-- "Debenter Devilfairy" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>
