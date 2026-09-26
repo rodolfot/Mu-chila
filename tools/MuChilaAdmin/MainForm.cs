@@ -97,7 +97,7 @@ public sealed class MainForm : Form
             Btn("Levar à seleção de personagem", () =>
             {
                 if (gridOnline.CurrentRow?.Cells["Personagem"].Value is not string c) { Log("Selecione um jogador na lista \"Jogadores online\"."); return; }
-                if (Confirm($"Levar {c} para a seleção de personagem? É o mesmo que o jogador escolher \"Trocar personagem\": em 5 segundos o personagem é salvo e o jogo volta para a seleção, sem desconectar."))
+                if (Confirm($"Levar {c} para a seleção de personagem? É o mesmo que o jogador escolher \"Trocar personagem\", mas na hora: o personagem é salvo e o jogo volta para a seleção, sem desconectar."))
                     Log(ResetWatcher.SendToCharacterSelect(c));
             }),
             Btn("Desconectar todos os jogadores", () => { if (Confirm("Desconectar todos os jogadores (os personagens sao salvos)?")) LogAll(ServerControl.DisconnectAll()); }),

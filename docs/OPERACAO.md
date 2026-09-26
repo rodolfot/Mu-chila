@@ -61,7 +61,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
   - corrige a checagem de ataques do MuDevs no GameServer e no Castle Siege sempre que encontra um servidor novo (issue #12, ver PROBLEMAS-E-SOLUCOES). **Se o vigia não estiver rodando quando o GameServer religar, as skills evoluídas voltam a travar;**
   - depois do `/reset`, leva o jogador à seleção de personagem (issue #7). **Ligado desde 26/09/2026**.
     - O arquivo vazio `C:\MuServer\MuChilaAdmin\vigia-reset-selecao.ligado` liga; apagar o arquivo desliga.
-    - Dispara quando o personagem cai de nível ≥ 50 para ≤ 10.
+    - Dispara quando o personagem cai de nível ≥ 50 para ≤ 10. A troca é imediata: o Vigia confere a cada 250 ms e marca a contagem de saída em 1, sem os 5 s de contagem na tela que o "Trocar personagem" do menu tem (a pedido do dono, 26/09).
     - Testado com o Mario: `/reset` às 16:04:44; às 16:04:50 foi para a seleção sem desconectar (`DelCharacterInfo` no log do GameServer).
   - Registro: `C:\MuServer\MuChilaAdmin\vigia.log`. Conferir sem mexer em nada: `MuChilaAdmin.exe --vigia-sondar C:\temp\vigia.txt`.
   - Botão "Levar à seleção de personagem" (aba Servidor): o mesmo que o jogador escolher "Trocar personagem" no jogo, sem desconectar.

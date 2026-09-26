@@ -93,7 +93,7 @@ public static class ResetWatcher
                 }
             }
             catch (Exception ex) { Log("erro: " + ex.Message); }
-            Thread.Sleep(1000);
+            Thread.Sleep(250);   // o /reset é percebido em até 1/4 de segundo
         }
     }
 
@@ -259,8 +259,8 @@ public static class ResetWatcher
         // o tipo primeiro e a contagem por último: o servidor só olha o tipo quando a contagem é maior que zero
         bool ok = Write(t, ptr + OffCloseType, new byte[] { CharacterSelect })
                && Write(t, ptr + OffEnableDel, BitConverter.GetBytes(1))
-               && Write(t, ptr + OffCloseCount, new byte[] { 6 });
-        return ok ? $"{name} ({t.Process.ProcessName}): {why}; indo para a seleção de personagem em 5 s"
+               && Write(t, ptr + OffCloseCount, new byte[] { 1 });   // 1 = troca no próximo segundo do servidor, sem contagem na tela (o menu do jogo usa 6 = 5 s)
+        return ok ? $"{name} ({t.Process.ProcessName}): {why}; indo para a seleção de personagem agora"
                   : $"{name}: {why}; falha ao gravar na memória do {t.Process.ProcessName} (erro {Marshal.GetLastWin32Error()})";
     }
 
