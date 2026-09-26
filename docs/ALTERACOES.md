@@ -32,7 +32,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Data\Lang\Portuguese.xml` (novo) + `Data\LangManager.xml` | 548 mensagens do servidor em português (arquivo em Windows-1252, que é o que o cliente lê); os idiomas 0 e 2 apontam para ele | Pedido: jogo em português (os personagens usam o idioma 0) |
 | `Data\Lang\Portuguese.xml` e `Data\Lang\English.xml` | 17 avisos de invasão (IDs 192–200, 202–207, 210, 211) copiados de `<Message>` para `<InvacionMsg>` | O servidor procura ali os avisos do `InvasionManager.dat`; o jogo mostrava "Could not find message 194/197/200" |
 | Cliente: `Idioma - Portugues.reg` / `Idioma - Ingles.reg` (novos) | Trocam o `LangSelection` do cliente | O cliente já tem textos `Por` oficiais |
-| `Data\Monster\MonsterSetBase\*.xml` (43 mapas) | Spawns de SPOT/MONSTER refeitos a partir do kit: 2.602 grupos de 3 espalhados por igual (k-means) e 84 pontos de farm de 12 monstros, mesmo total de monstros (`tools\Distribuir-Spawns.py`). Raklion: área de cada monstro +10 tiles e +40 monstros (120 → 160); Nars: monstros no mapa todo e +60 (115 → 175); para compensar, Lost Tower −20, Deep Dungeon 5 −40 e Swamp of Darkness −40 (o GameServer só usa os índices 0–9169 para monstros) | 26/09/2026: o agrupamento de 23/09 (grupos de 5 no "ponto mais distante") deixava o meio dos mapas vazio; pedido: respawn equilibrado e pontos de farm |
+| `Data\Monster\MonsterSetBase\*.xml` (43 mapas) | Spawns de SPOT/MONSTER refeitos a partir do kit (`tools\Distribuir-Spawns.py`): grupos de 3 espalhados por igual (k-means) e pontos de farm de 12 monstros, mesmo total de monstros do kit (o GameServer só usa os índices 0–9169 para monstros). Raklion (+10 tiles de área) e Nars (mapa todo) com área maior; cerca de 13% dos monstros de mapas onde ninguém caça (Deep Dungeon 1–5, Swamp of Darkness, Kalima 1–7) foram para os mapas de caça (Raklion, Nars, Kanturu 1, Tarkan, Karutan 1, Kubera Mine 1, Atlans) | 26/09/2026: o agrupamento de 23/09 (grupos de 5 no "ponto mais distante") deixava o meio dos mapas vazio; pedido: respawn equilibrado e pontos de farm |
 | `Startup - Iniciar Server.lnk` | Aponta para `C:\MuServer\2 - Ligar Servidor\Ligar Servidor.exe` | Apontava para uma pasta de Downloads de outro PC |
 | `Criar Conta.bat` / `Criar Conta.ps1` | Novos | Criar conta de jogo pelo ODBC |
 | `Cliente Season 14 - main.lnk` | Novo | Atalho para o cliente |
@@ -69,6 +69,12 @@ Formato dos `.bmd`: registros de 41 bytes (`WORD índice` + `nome[32]` + 7 bytes
 ## Site (`C:\MuServer\Site`, novo em 25/09/2026)
 
 WebEngine CMS 1.2.7 + código do Mu Chila (loja de VIP e cash em modo de teste, agenda real de eventos), Apache 2.4.68 e PHP 8.5.11. Detalhes, segurança e como recriar: [SITE.md](SITE.md).
+
+26/09/2026:
+
+- **Página Informações:** refeita com os valores reais do servidor (planos, Chaos Machine, reset, comandos).
+- **Downloads:** cliente, patch e LEIA-ME, servidos pelo Apache em `/arquivos/`.
+- **Desligados:** reset pelo site, comprar zen, votar e "esqueci a senha".
 
 ## Máquina do dono (fora do repositório)
 

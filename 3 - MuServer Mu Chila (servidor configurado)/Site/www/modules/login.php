@@ -41,7 +41,7 @@ try {
 				echo '<label for="webengineLogin2" class="col-sm-4 control-label">'.lang('login_txt_2',true).'</label>';
 				echo '<div class="col-sm-8">';
 					echo '<input type="password" class="form-control" id="webengineLogin2" name="webengineLogin_pwd" required>';
-					echo '<span id="helpBlock" class="help-block"><a href="'.__BASE_URL__.'forgotpassword/">'.lang('login_txt_4',true).'</a></span>';
+					echo '<span id="helpBlock" class="help-block">Esqueceu a senha? Peça ao administrador do servidor.</span>'; // Mu Chila: sem e-mail para recuperar senha
 				echo '</div>';
 			echo '</div>';
 			echo '<div class="form-group">';

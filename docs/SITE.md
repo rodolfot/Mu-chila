@@ -19,6 +19,34 @@ Base: **WebEngine CMS 1.2.7** (código aberto, MIT), com o código do Mu Chila p
 A conta criada pelo site é igual à do `Criar Conta.bat` (senha em texto no `MEMB_INFO`, que é o que o jogo lê).
 Conta e senha: até **10 caracteres** (limite do jogo). Não há verificação de e-mail nem captcha (o PC não tem servidor de e-mail; o site só é acessível pelo Radmin).
 
+## Páginas (26/09/2026)
+
+- **Informações** (`muchila\www\modules\info.php`): lê os valores direto dos arquivos do servidor e da tabela da loja. Mostra:
+  - nível máximo, reset e evolução de classe;
+  - planos com taxas, preço e Zen;
+  - chances da Chaos Machine;
+  - comandos ligados.
+  A página original do WebEngine era um modelo com "x%" e comandos de outro servidor.
+- **Downloads:**
+  - Oferece o cliente completo, o patch e o LEIA-ME da pasta `C:\MuServer\Cliente para amigos`.
+  - O Apache serve essa pasta em `/arquivos/` (`Alias` no `httpd.conf`, mesmo bloqueio do site, sem listar a pasta). Ela fica fora do `www` para o cliente de 1,3 GB não entrar no sincronismo do repositório.
+  - Trocou um arquivo da pasta: rode `Instalar-Modulos.ps1`, que atualiza o tamanho e o cache da página.
+- **Desligados:**
+  - Reset pelo site: o jogo tem `/reset` e reset automático com outras regras (`Command.dat` + `ResetTable.txt`).
+  - Comprar zen e votar: dependem do sistema de créditos do WebEngine, que não está configurado (a moeda do Mu Chila é o cash).
+  - Esqueci a senha: manda e-mail. No login aparece "Esqueceu a senha? Peça ao administrador do servidor."
+- **Continuam ligados:**
+  - Área do jogador: distribuir pontos, zerar pontos, limpar PK, zerar árvore master, desbugar personagem, trocar senha e e-mail.
+  - Rankings, perfis, notícias e Castle Siege.
+
+## Pendências
+
+1. **Preços do cash:** os três pacotes (R$ 5, R$ 25, R$ 50) são de exemplo e esperam a tabela do dono.
+2. **Mercado Pago (PIX real):** pronto, mas nunca testado contra a API. Passos na seção abaixo; o dono pediu para continuar no modo de teste por enquanto.
+3. **Teste pelo navegador (`teste-site.ps1`):** precisa da senha da conta admin do site e só roda com ela. O teste do núcleo da loja (`teste-loja.php`) passou 19 de 19 em 26/09.
+4. **Notícias:** não há nenhuma publicada. A página inicial mostra só o quadro de eventos e os rankings.
+5. **Segundo servidor (se for criado):** status e jogadores online do site contam só o GameServer principal.
+
 ## Loja de VIP e cash
 
 Área do jogador > **Loja: VIP e Cash** (ou "Loja" no menu do topo).
@@ -87,9 +115,10 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\includes\cron\muchila_zen.php` | Tarefa do agendador: Zen pendente do VIP (registrada pelo `Instalar-Modulos.ps1` com o MD5 do arquivo) |
 | `testes\teste-loja.php` | Teste do núcleo (19 cenários, conta descartável `lojateste`) |
 | `testes\teste-site.ps1` | Teste pelo navegador (10 cenários, conta descartável `sitetest1`): `.\teste-site.ps1 -Admin yolaxd -AdminSenha <senha>` |
+| `www\modules\info.php` | Página Informações com os valores reais do servidor |
 
-Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "Loja" no menu do topo e item "Loja: VIP e Cash" no menu do jogador; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin.
-Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas (2000x/2000x/100%), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
+Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "Loja" no menu do topo e item "Loja: VIP e Cash" no menu do jogador; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin; módulos sem suporte desligados e link de senha do login; downloads da pasta "Cliente para amigos" e cache da página.
+Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas ("100x (VIP até 2000x)", drop "50% (VIP até 150%)"), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
 
 **Atualizar o WebEngine**: baixar a versão nova, conferir, copiar por cima de `www` (sem `install`), rodar `Instalar-Modulos.ps1` e os dois testes.
 
