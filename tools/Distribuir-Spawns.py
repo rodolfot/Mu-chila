@@ -20,7 +20,7 @@ DESTINO = os.path.join(SERVIDOR, 'Monster', 'MonsterSetBase')
 GRUPO, FARM = 3, 12                 # monstros por grupo e por ponto de farm (--grupo N muda o tamanho do grupo)
 MEIA_GRUPO, MEIA_FARM = 2, 3        # caixas 5x5 e 7x7
 MIN_LIVRE_GRUPO, MIN_LIVRE_FARM = 13, 40
-FARM_POR_MONSTROS = 100             # 1 ponto de farm a cada 100 monstros agrupados no mapa (1 a 5)
+FARM_POR_MONSTROS = 100             # 1 ponto de farm a cada 100 monstros agrupados no mapa (1 a 5; nenhum abaixo de 70)
 DIST_FARM, DIST_CIDADE = 40, 18     # distância mínima entre farms e da zona segura (farm não fica na saída da cidade)
 DIST_CIDADE_GRUPO = 3
 ALIAS_TERRENO = {25: 24, 26: 24, 27: 24, 28: 24, 29: 24, 124: 123, 125: 123, 126: 123, 127: 123}
@@ -32,8 +32,15 @@ MAPA_TODO = -1
 AMPLIAR = {57: 10, 110: MAPA_TODO}  # Raklion: kit com pontos soltos; Nars: kit só nas bordas (3 monstros do mesmo nível)
 # Monstros a mais (ou a menos) por mapa, divididos entre os monstros do mapa. A soma tem que ficar em 0: o GameServer só usa
 # os índices de objeto 0-9169 para monstros (spawns + invasões); com +100 líquidos o último mapa (127) perdeu 66 monstros
-# e a invasão Golden (66) deixa de caber. Os 100 de Raklion/Nars saem dos mapas mais cheios (cobertura 88-91%).
-EXTRA = {57: 40, 110: 60, 4: -20, 120: -40, 122: -40}
+# e a invasão Golden (66) deixa de caber.
+# 26/09: Raklion/Nars ganharam área; depois, pelos registros de caçada (Hunting Record no log do GS), cerca de 13% dos monstros
+# de mapas sem ninguém caçando (Deep Dungeon 1-5, Swamp of Darkness, Kalima 1-7) foram para os mapas onde o pessoal caça.
+EXTRA = {
+    57: 80, 110: 60, 37: 40, 8: 35, 80: 35, 123: 30, 7: 15,          # Raklion, Nars, Kanturu 1, Tarkan, Karutan 1, Kubera 1, Atlans
+    116: -44, 117: -38, 118: -42, 119: -35, 120: -40, 122: -40,       # Deep Dungeon 1-5, Swamp of Darkness
+    24: -8, 25: -8, 26: -8, 27: -8, 28: -8, 29: -8, 36: -8,           # Kalima 1-7
+}
+assert sum(EXTRA.values()) == 0
 
 def info_monstros():
     info = {}
@@ -170,7 +177,7 @@ def planejar(mapa, xml_kit, xml_atual, info):
     for cls in sorted(mover, key=lambda c: -mover[c]['n'])[:sobra]: mover[cls]['n'] += 1
     # ---- pontos de farm: os monstros mais numerosos, no ponto mais central da área de cada um
     total = sum(m['n'] for m in mover.values())
-    nfarm = max(1, min(5, round(total / FARM_POR_MONSTROS)))
+    nfarm = 0 if total < 70 else max(1, min(5, round(total / FARM_POR_MONSTROS)))   # mapa pequeno: o farm comeria boa parte dos monstros
     farms, usados = [], collections.Counter()
     fila = sorted(mover, key=lambda c: -mover[c]['n'])
     for rodada in range(2):

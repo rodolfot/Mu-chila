@@ -10,44 +10,52 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
+		<Config Class="570" Range="3" BeginPosX="219" BeginPosY="169" EndPosX="223" EndPosY="173" Direction="-1" Quantity="4" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="66" BeginPosY="121" EndPosX="70" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
 		<Config Class="570" Range="3" BeginPosX="181" BeginPosY="175" EndPosX="185" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="89" BeginPosY="76" EndPosX="93" EndPosY="80" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="104" BeginPosY="177" EndPosX="108" EndPosY="181" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="169" BeginPosY="52" EndPosX="173" EndPosY="56" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="146" BeginPosY="163" EndPosX="150" EndPosY="167" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="189" BeginPosY="61" EndPosX="193" EndPosY="65" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="168" BeginPosY="81" EndPosX="172" EndPosY="85" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="66" BeginPosY="118" EndPosX="70" EndPosY="122" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="205" BeginPosY="100" EndPosX="209" EndPosY="104" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="219" BeginPosY="169" EndPosX="223" EndPosY="173" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="91" BeginPosY="70" EndPosX="95" EndPosY="74" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="89" BeginPosY="177" EndPosX="93" EndPosY="181" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="198" BeginPosY="32" EndPosX="202" EndPosY="36" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="169" BeginPosY="53" EndPosX="173" EndPosY="57" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="118" BeginPosY="175" EndPosX="122" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="216" BeginPosY="104" EndPosX="220" EndPosY="108" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="140" BeginPosY="157" EndPosX="144" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
 		<Config Class="570" Range="3" BeginPosX="130" BeginPosY="65" EndPosX="134" EndPosY="69" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
-		<Config Class="570" Range="3" BeginPosX="198" BeginPosY="32" EndPosX="202" EndPosY="36" Direction="-1" Quantity="2" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="189" BeginPosY="61" EndPosX="193" EndPosY="65" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="84" BeginPosY="84" EndPosX="88" EndPosY="88" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="155" BeginPosY="165" EndPosX="159" EndPosY="169" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="199" BeginPosY="97" EndPosX="203" EndPosY="101" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
+		<Config Class="570" Range="3" BeginPosX="168" BeginPosY="85" EndPosX="172" EndPosY="89" Direction="-1" Quantity="3" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: grupo) -->
 		<Config Class="569" Range="3" BeginPosX="170" BeginPosY="154" EndPosX="174" EndPosY="158" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
 		<Config Class="569" Range="3" BeginPosX="189" BeginPosY="155" EndPosX="193" EndPosY="159" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
-		<Config Class="569" Range="3" BeginPosX="147" BeginPosY="71" EndPosX="151" EndPosY="75" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="569" Range="3" BeginPosX="143" BeginPosY="76" EndPosX="147" EndPosY="80" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
 		<Config Class="569" Range="3" BeginPosX="87" BeginPosY="116" EndPosX="91" EndPosY="120" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
-		<Config Class="569" Range="3" BeginPosX="161" BeginPosY="176" EndPosX="165" EndPosY="180" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="569" Range="3" BeginPosX="108" BeginPosY="188" EndPosX="112" EndPosY="192" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
 		<Config Class="569" Range="3" BeginPosX="212" BeginPosY="32" EndPosX="216" EndPosY="36" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
 		<Config Class="569" Range="3" BeginPosX="184" BeginPosY="41" EndPosX="188" EndPosY="45" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
-		<Config Class="569" Range="3" BeginPosX="88" BeginPosY="180" EndPosX="92" EndPosY="184" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
-		<Config Class="569" Range="3" BeginPosX="60" BeginPosY="121" EndPosX="64" EndPosY="125" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
-		<Config Class="569" Range="3" BeginPosX="181" BeginPosY="95" EndPosX="185" EndPosY="99" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="569" Range="3" BeginPosX="97" BeginPosY="175" EndPosX="101" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="569" Range="3" BeginPosX="174" BeginPosY="115" EndPosX="178" EndPosY="119" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
+		<Config Class="569" Range="3" BeginPosX="209" BeginPosY="90" EndPosX="213" EndPosY="94" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
 		<Config Class="569" Range="3" BeginPosX="70" BeginPosY="129" EndPosX="74" EndPosY="133" Direction="-1" Quantity="3" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
-		<Config Class="569" Range="3" BeginPosX="214" BeginPosY="94" EndPosX="218" EndPosY="98" Direction="-1" Quantity="2" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: grupo) -->
-		<Config Class="573" Range="3" BeginPosX="39" BeginPosY="143" EndPosX="43" EndPosY="147" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
+		<Config Class="573" Range="3" BeginPosX="34" BeginPosY="157" EndPosX="38" EndPosY="161" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
 		<Config Class="573" Range="3" BeginPosX="36" BeginPosY="65" EndPosX="40" EndPosY="69" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
+		<Config Class="573" Range="3" BeginPosX="33" BeginPosY="137" EndPosX="37" EndPosY="141" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
 		<Config Class="573" Range="3" BeginPosX="41" BeginPosY="91" EndPosX="45" EndPosY="95" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
-		<Config Class="573" Range="3" BeginPosX="53" BeginPosY="65" EndPosX="57" EndPosY="69" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
+		<Config Class="573" Range="3" BeginPosX="38" BeginPosY="181" EndPosX="42" EndPosY="185" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
 		<Config Class="573" Range="3" BeginPosX="58" BeginPosY="173" EndPosX="62" EndPosY="177" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
-		<Config Class="573" Range="3" BeginPosX="36" BeginPosY="175" EndPosX="40" EndPosY="179" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
-		<Config Class="574" Range="3" BeginPosX="27" BeginPosY="152" EndPosX="31" EndPosY="156" Direction="-1" Quantity="4" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
-		<Config Class="574" Range="3" BeginPosX="42" BeginPosY="158" EndPosX="46" EndPosY="162" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
-		<Config Class="574" Range="3" BeginPosX="30" BeginPosY="131" EndPosX="34" EndPosY="135" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
-		<Config Class="574" Range="3" BeginPosX="53" BeginPosY="158" EndPosX="57" EndPosY="162" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
-		<Config Class="571" Range="3" BeginPosX="203" BeginPosY="177" EndPosX="207" EndPosY="181" Direction="-1" Quantity="4" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
-		<Config Class="571" Range="3" BeginPosX="79" BeginPosY="125" EndPosX="83" EndPosY="129" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="573" Range="3" BeginPosX="49" BeginPosY="64" EndPosX="53" EndPosY="68" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
+		<Config Class="573" Range="3" BeginPosX="56" BeginPosY="66" EndPosX="60" EndPosY="70" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypta" (Mu Chila: grupo) -->
+		<Config Class="574" Range="3" BeginPosX="27" BeginPosY="149" EndPosX="31" EndPosY="153" Direction="-1" Quantity="4" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
+		<Config Class="574" Range="3" BeginPosX="36" BeginPosY="171" EndPosX="40" EndPosY="175" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
+		<Config Class="574" Range="3" BeginPosX="50" BeginPosY="158" EndPosX="54" EndPosY="162" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
+		<Config Class="574" Range="3" BeginPosX="27" BeginPosY="155" EndPosX="31" EndPosY="159" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
+		<Config Class="574" Range="3" BeginPosX="34" BeginPosY="83" EndPosX="38" EndPosY="87" Direction="-1" Quantity="3" Element="0" /> <!-- "Crypos" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="203" BeginPosY="177" EndPosX="207" EndPosY="181" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="178" BeginPosY="100" EndPosX="182" EndPosY="104" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
 		<Config Class="571" Range="3" BeginPosX="180" BeginPosY="186" EndPosX="184" EndPosY="190" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
+		<Config Class="571" Range="3" BeginPosX="91" BeginPosY="110" EndPosX="95" EndPosY="114" Direction="-1" Quantity="3" Element="0" /> <!-- "Orcus" (Mu Chila: grupo) -->
 		<Config Class="570" Range="3" BeginPosX="184" BeginPosY="114" EndPosX="190" EndPosY="120" Direction="-1" Quantity="12" Element="0" /> <!-- "Bone Scorpion" (Mu Chila: farm) -->
+		<Config Class="569" Range="3" BeginPosX="149" BeginPosY="66" EndPosX="155" EndPosY="72" Direction="-1" Quantity="12" Element="0" /> <!-- "Venomous Chain Scorpion" (Mu Chila: farm) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

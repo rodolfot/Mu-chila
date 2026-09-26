@@ -6,26 +6,23 @@
 	</NPC>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<SPOT>
-		<Config Class="185" Range="3" BeginPosX="51" BeginPosY="10" EndPosX="55" EndPosY="14" Direction="-1" Quantity="3" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
-		<Config Class="185" Range="3" BeginPosX="33" BeginPosY="16" EndPosX="37" EndPosY="20" Direction="-1" Quantity="3" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
+		<Config Class="185" Range="3" BeginPosX="52" BeginPosY="16" EndPosX="56" EndPosY="20" Direction="-1" Quantity="4" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
+		<Config Class="185" Range="3" BeginPosX="34" BeginPosY="16" EndPosX="38" EndPosY="20" Direction="-1" Quantity="3" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
 		<Config Class="185" Range="3" BeginPosX="28" BeginPosY="73" EndPosX="32" EndPosY="77" Direction="-1" Quantity="3" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
-		<Config Class="185" Range="3" BeginPosX="51" BeginPosY="20" EndPosX="55" EndPosY="24" Direction="-1" Quantity="2" Element="0" /> <!-- "Aegis" (Mu Chila: grupo) -->
-		<Config Class="188" Range="3" BeginPosX="42" BeginPosY="106" EndPosX="46" EndPosY="110" Direction="-1" Quantity="4" Element="0" /> <!-- "Schriker" (Mu Chila: grupo) -->
+		<Config Class="188" Range="3" BeginPosX="42" BeginPosY="106" EndPosX="46" EndPosY="110" Direction="-1" Quantity="3" Element="0" /> <!-- "Schriker" (Mu Chila: grupo) -->
 		<Config Class="188" Range="3" BeginPosX="43" BeginPosY="93" EndPosX="47" EndPosY="97" Direction="-1" Quantity="3" Element="0" /> <!-- "Schriker" (Mu Chila: grupo) -->
 		<Config Class="188" Range="3" BeginPosX="33" BeginPosY="85" EndPosX="37" EndPosY="89" Direction="-1" Quantity="3" Element="0" /> <!-- "Schriker" (Mu Chila: grupo) -->
 		<Config Class="182" Range="3" BeginPosX="106" BeginPosY="87" EndPosX="110" EndPosY="91" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Angel" (Mu Chila: grupo) -->
 		<Config Class="182" Range="3" BeginPosX="112" BeginPosY="68" EndPosX="116" EndPosY="72" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Angel" (Mu Chila: grupo) -->
-		<Config Class="182" Range="3" BeginPosX="114" BeginPosY="52" EndPosX="118" EndPosY="56" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Angel" (Mu Chila: grupo) -->
-		<Config Class="186" Range="3" BeginPosX="107" BeginPosY="17" EndPosX="111" EndPosY="21" Direction="-1" Quantity="4" Element="0" /> <!-- "Rogue Centurion" (Mu Chila: grupo) -->
+		<Config Class="182" Range="3" BeginPosX="114" BeginPosY="52" EndPosX="118" EndPosY="56" Direction="-1" Quantity="2" Element="0" /> <!-- "Death Angel" (Mu Chila: grupo) -->
+		<Config Class="186" Range="3" BeginPosX="107" BeginPosY="17" EndPosX="111" EndPosY="21" Direction="-1" Quantity="3" Element="0" /> <!-- "Rogue Centurion" (Mu Chila: grupo) -->
 		<Config Class="186" Range="3" BeginPosX="91" BeginPosY="11" EndPosX="95" EndPosY="15" Direction="-1" Quantity="3" Element="0" /> <!-- "Rogue Centurion" (Mu Chila: grupo) -->
 		<Config Class="186" Range="3" BeginPosX="73" BeginPosY="14" EndPosX="77" EndPosY="18" Direction="-1" Quantity="3" Element="0" /> <!-- "Rogue Centurion" (Mu Chila: grupo) -->
 		<Config Class="187" Range="3" BeginPosX="77" BeginPosY="77" EndPosX="81" EndPosY="81" Direction="-1" Quantity="3" Element="0" /> <!-- "Necron" (Mu Chila: grupo) -->
 		<Config Class="187" Range="3" BeginPosX="90" BeginPosY="85" EndPosX="94" EndPosY="89" Direction="-1" Quantity="3" Element="0" /> <!-- "Necron" (Mu Chila: grupo) -->
-		<Config Class="187" Range="3" BeginPosX="105" BeginPosY="102" EndPosX="109" EndPosY="106" Direction="-1" Quantity="2" Element="0" /> <!-- "Necron" (Mu Chila: grupo) -->
-		<Config Class="184" Range="3" BeginPosX="111" BeginPosY="10" EndPosX="115" EndPosY="14" Direction="-1" Quantity="4" Element="0" /> <!-- "Blood Soldier" (Mu Chila: grupo) -->
+		<Config Class="184" Range="3" BeginPosX="111" BeginPosY="10" EndPosX="115" EndPosY="14" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Soldier" (Mu Chila: grupo) -->
 		<Config Class="184" Range="3" BeginPosX="111" BeginPosY="32" EndPosX="115" EndPosY="36" Direction="-1" Quantity="3" Element="0" /> <!-- "Blood Soldier" (Mu Chila: grupo) -->
-		<Config Class="183" Range="3" BeginPosX="56" BeginPosY="72" EndPosX="60" EndPosY="76" Direction="-1" Quantity="3" Element="0" /> <!-- "Death Centurion" (Mu Chila: grupo) -->
-		<Config Class="183" Range="3" BeginPosX="65" BeginPosY="74" EndPosX="69" EndPosY="78" Direction="-1" Quantity="2" Element="0" /> <!-- "Death Centurion" (Mu Chila: grupo) -->
+		<Config Class="183" Range="3" BeginPosX="59" BeginPosY="72" EndPosX="63" EndPosY="76" Direction="-1" Quantity="4" Element="0" /> <!-- "Death Centurion" (Mu Chila: grupo) -->
 	</SPOT>
 <!-- ================================================================================================================================================================================================================================================================================= -->
 	<MONSTER>

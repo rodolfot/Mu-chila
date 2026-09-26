@@ -41,6 +41,41 @@ public static class MuWin {
 }
 "@
 
+# Reload Monster com uma invasao no ar: os monstros da invasao seguram vagas enquanto os spawns sao recriados e o ultimo
+# mapa carregado (127, Kubera Mine 5) fica sem parte dos monstros ate a proxima recarga (o GameServer so usa os indices
+# 0-9169 para monstros). Por isso o Reload Monster espera acabar a invasao que estiver no ar (agenda do InvasionManager.dat).
+function Get-FimInvasaoAtiva([datetime]$agora) {
+    $arq = 'C:\MuServer\Data\Event\InvasionManager.dat'
+    $blocos = @{}; $atual = $null
+    foreach ($l in Get-Content $arq) {
+        $l = ($l -replace '//.*$', '').Trim()
+        if (-not $l) { continue }
+        if ($null -eq $atual -and $l -match '^\d+$') { $atual = [int]$l; $blocos[$atual] = @(); continue }
+        if ($l -eq 'end') { $atual = $null; continue }
+        if ($null -ne $atual) { $blocos[$atual] += , ($l -split '\s+') }
+    }
+    $duracao = @{}; foreach ($c in $blocos[1]) { $duracao[$c[0]] = [int]$c[5] }
+    $fim = $null
+    foreach ($c in $blocos[0]) {   # Index Year Month Day DoW Hour Minute Second ('*' = qualquer)
+        $d = $duracao[$c[0]]; if (-not $d) { continue }
+        for ($t = $agora.AddSeconds(-$d); $t -le $agora; $t = $t.AddMinutes(1)) {
+            $ok = ($c[1] -eq '*' -or [int]$c[1] -eq $t.Year) -and ($c[2] -eq '*' -or [int]$c[2] -eq $t.Month) -and
+                  ($c[3] -eq '*' -or [int]$c[3] -eq $t.Day) -and ($c[5] -eq '*' -or [int]$c[5] -eq $t.Hour) -and ($c[6] -eq '*' -or [int]$c[6] -eq $t.Minute)
+            if (-not $ok) { continue }
+            $inicio = Get-Date -Year $t.Year -Month $t.Month -Day $t.Day -Hour $t.Hour -Minute $t.Minute -Second ([int]($c[7] -replace '\*', '0')) -Millisecond 0
+            $termino = $inicio.AddSeconds($d + 15)
+            if ($inicio -le $agora -and $termino -gt $agora -and ($null -eq $fim -or $termino -gt $fim)) { $fim = $termino }
+        }
+    }
+    $fim
+}
+if ($Item -eq 'Monster' -and $Servidor -eq 'GameServer') {
+    while ($fim = Get-FimInvasaoAtiva (Get-Date)) {
+        Write-Host ("Invasao no ar ate {0:HH:mm:ss}; o Reload Monster espera ela acabar..." -f $fim)
+        Start-Sleep -Seconds ([math]::Max(1, [math]::Ceiling(($fim - (Get-Date)).TotalSeconds)))
+    }
+}
+
 $proc = Get-Process -Name $processos[$Servidor] -ErrorAction Stop
 $janela = [MuWin]::FindMenuWindow($proc.Id)
 if ($janela -eq [IntPtr]::Zero) { throw "Janela do $Servidor nao encontrada." }

@@ -145,11 +145,18 @@ Desde 26/09/2026 os spawns dos mapas de caça são gerados por `tools\Distribuir
   - Posição: pelo menos 18 tiles da cidade e 40 tiles entre um farm e outro.
 - **Chão que conta:** só o que é alcançável andando a partir da cidade ou de algum ponto de chegada de portal (`Data\Move\Gate.txt`, portais com `TargetGate = 0`). Nenhum grupo ou farm fica a menos de 6 tiles de um portal.
 - **Ajustes por mapa** (`AMPLIAR` e `EXTRA` no início do script):
-  - **Raklion:** a área de cada monstro cresce 10 tiles em volta dos pontos do kit e o mapa ganhou 40 monstros (120 → 160). O kit usa pontos soltos e sobravam corredores vazios.
-  - **Nars:** os monstros usam o mapa todo e o mapa ganhou 60 monstros (115 → 175). O kit só tinha retângulos pequenos nas bordas; os 3 monstros de Nars têm nível 116–120.
-  - **De onde saíram os 100 monstros:** Lost Tower −20 (440 → 420), Deep Dungeon 5 −40 (636 → 596) e Swamp of Darkness −40 (527 → 487), que eram os mapas mais cheios.
-  - **Cobertura ao vivo:** Raklion foi de 31% para 62% e Nars de 17% para 56%.
-- **Números:** 2.596 grupos (2.413 de 3 monstros, 100 de 4 e 83 de 2) e 86 farms de 12. O total de monstros é igual ao do kit (9.078 nos spawns).
+  - **Área maior:**
+    - **Raklion:** a área de cada monstro cresce 10 tiles em volta dos pontos do kit, que usa pontos soltos e deixava corredores vazios.
+    - **Nars:** os monstros usam o mapa todo. O kit só tinha retângulos pequenos nas bordas, e os 3 monstros de Nars têm nível 116–120.
+  - **Monstros movidos para onde o pessoal caça** (26/09, pelo tempo de caçada nos logs):
+    - Os mapas onde se caça mais ganharam monstros: Raklion +80 (120 → 200), Nars +60, Kanturu 1 +40, Tarkan +35, Karutan 1 +35, Kubera Mine 1 +30 e Atlans +15.
+    - Os monstros saíram de mapas onde ninguém caçou, cerca de 13% em cada, para não enfraquecer os mapas: Deep Dungeon 1–5 (−44, −38, −42, −35, −40), Swamp of Darkness −40 e Kalima 1–7 (−8 cada).
+    - Para refazer com dados novos: cada caçada grava uma linha `DB Save Hunting Record Info - MapIndex:N ... Second:... MonsterKillCount:...` no log do GameServer.
+  - **Mapas com menos de 70 monstros** (Kalima, Kanturu 2) não têm farm, porque ele levaria boa parte dos monstros do mapa.
+  - **Cobertura ao vivo:**
+    - Raklion 31% → 74%, Nars 17% → 56%.
+    - Kanturu 1 45% → 83%, Tarkan 50% → 85%, Karutan 1 36% → 77%, Kubera Mine 1 54% → 95%.
+- **Números:** grupos de 3 monstros (alguns de 2 ou 4, pelo arredondamento) e farms de 12. O total de monstros é igual ao do kit (9.078 nos spawns).
 - **Limite de monstros (não passe do total do kit):**
   - O título da janela mostra `MonsterCount x/10000`, mas na prática o GameServer só usa os índices de objeto 0–9169 para os monstros dos spawns **e** das invasões.
   - Os spawns ocupam uns 9.080. Sobram cerca de 90 vagas, que a invasão Golden (66 monstros a cada 10 minutos) usa.
@@ -169,6 +176,9 @@ Desde 26/09/2026 os spawns dos mapas de caça são gerados por `tools\Distribuir
   - `--gravar` grava, com backup `.bak-*`.
   - `--mapas 57,110` limita a esses mapas; os outros não são tocados.
 - **Aplicar no ar:** Reload Monster no GameServer (recria todos os monstros e limpa invasões em andamento).
+  - **Nunca com invasão no ar.** Os monstros da invasão seguram vagas enquanto os spawns são recriados, e o último mapa carregado (127, Kubera Mine 5) fica sem parte dos monstros até a próxima recarga.
+  - Com a Golden a cada 10 minutos (9 no ar), sobra só o minuto xx:x9.
+  - `.\tools\Recarregar-Servidor.ps1 -Servidor GameServer -Item Monster` lê a agenda do `InvasionManager.dat` e espera sozinho a invasão acabar. O menu da janela do GameServer não espera.
   - Land of Trials (31) e Barracks (41) ficam no servidor do Castle Siege e só mudam quando ele reinicia. Não use Reload Monster no Castle Siege, que recria também os monstros do cerco.
 - **Histórico:** em 23/09 os spawns tinham virado 1.676 grupos de 5, com centros escolhidos pelo "ponto mais distante". Esse método empurrava os grupos para as bordas e cantos de cada área e deixava o meio dos mapas vazio.
 
