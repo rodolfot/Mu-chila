@@ -32,3 +32,6 @@ Thumbs.db
 **/Site/www/includes/cache/
 **/includes/config/webengine.json
 *.original
+
+# Despejos de memoria de queda dos servidores (podem ter dados de contas)
+*.dmp

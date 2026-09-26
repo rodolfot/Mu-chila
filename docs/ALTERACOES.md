@@ -70,5 +70,6 @@ WebEngine CMS 1.2.7 + código do Mu Chila (loja de VIP e cash em modo de teste, 
 ## Máquina do dono (fora do repositório)
 
 - Registro `HKCU\Software\Webzen\Mu\Config`: `DisplayDeviceModeIndex = 9`, `FullScreenMode = 0` (1920x1080 em janela).
+- Atalho "Mu Chila - Vigia" na pasta Inicializar do usuário (`MuChilaAdmin.exe --vigia-reset`, 25/09/2026): corrige a checagem de ataques do GameServer/Castle Siege (issue #12) sempre que eles ligam. Sem ele rodando, as skills evoluídas voltam a travar depois de um reinício.
 - Site: regra do firewall "Mu Chila - Site (porta 80, so Radmin)" (entrada TCP 80 só de 26.0.0.0/8, só para o `httpd.exe` do site) e tarefa agendada "Mu Chila\Site - rankings" (a cada minuto). Módulo Python `capstone` (desmontador, usado nas análises do GameServer): `python -m pip uninstall capstone` para remover.
 - Ferramenta de diagnóstico Frida instalada no Python do usuário. Para remover: `python -m pip uninstall frida`.
