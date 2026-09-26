@@ -51,7 +51,7 @@ Conta e senha: até **10 caracteres** (limite do jogo). Não há verificação d
 
 Área do jogador > **Loja: VIP e Cash** (ou "Loja" no menu do topo).
 
-- **Pacotes e preços**: `www\includes\config\muchila.pacotes.json` (os preços atuais são **de exemplo**). VIP 1/2/3 por N dias; cash vai para o `WCoinC` (saldo da Cash Shop do jogo).
+- **Pacotes e preços**: `www\includes\config\muchila.pacotes.json` (VIP R$ 35/40/50 por 30 dias; cash 200/500/1.000 por R$ 37/45/60, definidos pelo dono). VIP 1/2/3 por N dias; cash vai para o `WCoinC` (saldo da Cash Shop do jogo).
 - **Regras**: VIP do mesmo nível soma aos dias restantes; outro nível só depois que o atual acabar. Cada pagamento é entregue uma vez só (a troca de situação e a entrega ficam na mesma transação). Até 3 pedidos aguardando pagamento por conta. O PIX expira em 30 min (`usercp.loja.xml`), mas pagamento que chegar depois ainda é entregue.
 - **VIP e cash no jogo**: o VIP vale a partir do próximo login; o cash aparece ao abrir a Cash Shop (se não, relogar).
 - **Situações**: aguardando pagamento → pago e entregue / cancelado / expirado / com problema. "Com problema" = pago, mas a entrega falhou (o motivo fica em Observações); o painel tem **Entregar** (reentrega) e **Cancelar**.
@@ -78,12 +78,14 @@ O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatu
 
 ### Planos (definidos pelo dono em 25/09/2026)
 
-| Plano | Tipo de conta | Experiência (e master) | Drop | Zen no baú | Preço (30 dias) |
-|---|---|---|---|---|---|
-| Free | `_AL0` | 100x | 50% | — | — |
-| Vipzinho | `_AL1` | 300x | 80% | 200.000.000 | R$ 35 |
-| Vip | `_AL2` | 850x | 110% | 500.000.000 | R$ 40 |
-| Vipzão | `_AL3` | 2000x | 150% | 2.000.000.000 | R$ 50 |
+| Plano | Tipo de conta | Experiência | Experiência master | Drop | Zen no baú | Preço (30 dias) |
+|---|---|---|---|---|---|---|
+| Free | `_AL0` | 100x | 7x | 50% | — | — |
+| Vipzinho | `_AL1` | 300x | 20x | 80% | 200.000.000 | R$ 35 |
+| Vip | `_AL2` | 850x | 57x | 110% | 500.000.000 | R$ 40 |
+| Vipzão | `_AL3` | 2000x | 133x | 150% | 2.000.000.000 | R$ 50 |
+
+**EXP master** (26/09/2026, pedido do dono: "extremamente difícil"): a taxa normal dividida por 15. Um Vipzão jogando ~18 h por dia (como o Mario) leva ~3 semanas do master 0 ao 600, antes eram ~2 dias; um Free leva ~1 ano nesse ritmo. O `/reset` zera só o nível 1–400: os níveis de master continuam, que é o padrão do MU (issue #14).
 
 **Zen do VIP**: vai para o baú da conta (`warehouse.Money`, limite de 2 bilhões; se a conta nunca abriu o baú, ele é criado vazio). Só entra com a conta **fora do jogo** há 30 s: com o baú aberto, o servidor regravaria o valor antigo ao fechar. Comprado durante o jogo, o Zen fica "aguardando sair do jogo" e é entregue pela tarefa "Mu Chila - Zen do VIP" do agendador do site (a cada minuto) ou quando a pessoa abre a loja. O painel mostra a situação na coluna Entrega; o registro fica em `Site\logs\loja.log`.
 
