@@ -58,6 +58,11 @@ if (-not ($itens | Where-Object link -eq 'usercp/resets')) {
                                         icon = 'reset.png'; visibility = 'user'; newtab = $false; order = 6 })
     "aplicado: item Resets no menu do jogador"
 } else { "ja feito: item Resets no menu do jogador" }
+if (-not ($itens | Where-Object link -eq 'usercp/mercado')) {
+    $itens.Insert(1, [pscustomobject]@{ active = $true; type = 'internal'; phrase = 'usercp_menu_txt_muchila_mercado'; link = 'usercp/mercado'
+                                        icon = 'donate.png'; visibility = 'user'; newtab = $false; order = 5 })
+    "aplicado: item Mercado no menu do jogador"
+} else { "ja feito: item Mercado no menu do jogador" }
 foreach ($i in $itens | Where-Object link -eq 'donation') { $i.active = $false }
 [IO.File]::WriteAllText($menu, ($itens | ConvertTo-Json -Depth 4), $utf8)
 
@@ -82,7 +87,7 @@ Ajustar 'api\events.php' 'muchila/eventos.php' {
 } 'agenda real no quadro de eventos'
 
 # 4. idioma
-$frases = [ordered]@{ usercp_menu_txt_muchila_loja = 'Loja: VIP e Cash'; menu_txt_muchila_loja = 'Loja'; usercp_menu_txt_muchila_resets = 'Resets' }
+$frases = [ordered]@{ usercp_menu_txt_muchila_loja = 'Loja: VIP e Cash'; menu_txt_muchila_loja = 'Loja'; usercp_menu_txt_muchila_resets = 'Resets'; usercp_menu_txt_muchila_mercado = 'Mercado entre jogadores' }
 foreach ($idioma in 'pt', 'en') {
     foreach ($chave in $frases.Keys) {
         $linha = "`$lang['$chave'] = '$($frases[$chave])'; // Mu Chila"
@@ -118,11 +123,30 @@ ELSE BEGIN INSERT INTO WEBENGINE_CRON (cron_name, cron_description, cron_file_ru
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao registrar a tarefa de Credito Master Reset' }
 $rb
 
+# 4d. mercado entre jogadores: tabelas (reaplicável) e tarefa "Mu Chila - Mercado" (expira PIX e entrega pendências)
+sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -f 65001 -i (Join-Path $PSScriptRoot 'sql\MUCHILA_MERCADO.sql') | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao aplicar sql\MUCHILA_MERCADO.sql' }
+$md5c = (Get-FileHash (Join-Path $www 'includes\cron\muchila_mercado.php') -Algorithm MD5).Hash.ToLower()
+$rc = sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -h -1 -W -Q @"
+SET NOCOUNT ON;
+IF EXISTS (SELECT 1 FROM WEBENGINE_CRON WHERE cron_file_run = 'muchila_mercado.php')
+BEGIN UPDATE WEBENGINE_CRON SET cron_file_md5 = '$md5c' WHERE cron_file_run = 'muchila_mercado.php' AND cron_file_md5 <> '$md5c'; SELECT 'ja feito: tarefa Mercado' + CASE WHEN @@ROWCOUNT > 0 THEN ' (MD5 atualizado)' ELSE '' END; END
+ELSE BEGIN INSERT INTO WEBENGINE_CRON (cron_name, cron_description, cron_file_run, cron_run_time, cron_last_run, cron_status, cron_protected, cron_file_md5)
+    VALUES ('Mu Chila - Mercado', 'Expira PIX vencidos do mercado e entrega compras pagas quando o comprador sai do jogo', 'muchila_mercado.php', '60', NULL, 1, 0, '$md5c');
+    SELECT 'aplicado: tarefa Mercado no agendador'; END
+"@
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao registrar a tarefa do Mercado' }
+$rc
+
 # 5. painel admin
 Ajustar 'admincp\index.php' 'muchila_pedidos' {
     param($t)
     $t.Replace('$admincpSidebar = array(', "`$admincpSidebar = array(`n`tarray(`"Mu Chila`", array(`n`t`t`"muchila_pedidos`" => `"Pedidos da loja`",`n`t), `"fa-shopping-cart`"),")
 } 'menu do painel admin'
+Ajustar 'admincp\index.php' 'muchila_mercado' {
+    param($t)
+    $t.Replace("`"muchila_pedidos`" => `"Pedidos da loja`",", "`"muchila_pedidos`" => `"Pedidos da loja`",`n`t`t`"muchila_mercado`" => `"Mercado entre jogadores`",")
+} 'menu do painel admin: mercado'
 
 # 6. módulos que não funcionam neste servidor ficam desligados (26/09/2026):
 #    - usercp.reset: o jogo tem /reset e reset automático com outras regras (Command.dat + ResetTable.txt); o do site daria outro resultado

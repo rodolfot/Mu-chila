@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mu Chila: loja entre jogadores (modules/usercp/mercado.php, includes/muchila/MuChilaMercado.php). -->
+<settings>
+	<active>1</active>
+	<!-- simulado = modo de teste (nenhum dinheiro); mercadopago = PIX real com split (precisa do domínio HTTPS e do app do Mercado Pago) -->
+	<provedor>simulado</provedor>
+	<!-- taxa da loja, em %, cobrada do vendedor (application_fee do Mercado Pago) -->
+	<taxa>10</taxa>
+	<!-- minutos para pagar o PIX; enquanto isso o anúncio fica reservado para o comprador -->
+	<expira_minutos>30</expira_minutos>
+	<max_pendentes>3</max_pendentes>
+	<valor_minimo>1.00</valor_minimo>
+	<valor_maximo>5000.00</valor_maximo>
+	<!-- e-mail usado no Mercado Pago quando a conta não tem e-mail -->
+	<email_padrao></email_padrao>
+	<!-- endereço público (HTTPS) do api/muchila-mercado-mp.php (aviso de pagamento) -->
+	<mp_notification_url></mp_notification_url>
+	<!-- endereço público (HTTPS) do api/muchila-mercado-oauth.php (volta da autorização do vendedor) -->
+	<mp_redirect_uri></mp_redirect_uri>
+</settings>

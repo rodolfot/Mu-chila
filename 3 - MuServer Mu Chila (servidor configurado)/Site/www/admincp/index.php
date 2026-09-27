@@ -40,6 +40,7 @@ try {
 $admincpSidebar = array(
 	array("Mu Chila", array(
 		"muchila_pedidos" => "Pedidos da loja",
+		"muchila_mercado" => "Mercado entre jogadores",
 	), "fa-shopping-cart"),
 	array("News Management", array(
 		"addnews" => "Publish",

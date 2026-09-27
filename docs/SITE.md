@@ -81,9 +81,11 @@ O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatu
 | Plano | Tipo de conta | Experiência | Experiência master | Drop | Zen no baú | Preço (30 dias) |
 |---|---|---|---|---|---|---|
 | Free | `_AL0` | 100x | 7x | 50% | — | — |
-| Vipzinho | `_AL1` | 300x | 20x | 80% | 200.000.000 | R$ 35 |
-| Vip | `_AL2` | 850x | 57x | 110% | 500.000.000 | R$ 40 |
-| Vipzão | `_AL3` | 2000x | 133x | 150% | 2.000.000.000 | R$ 50 |
+| Vipzinho | `_AL1` | 300x | 20x | 80% | — (era 200.000.000) | R$ 35 |
+| Vip | `_AL2` | 850x | 57x | 110% | — (era 500.000.000) | R$ 40 |
+| Vipzão | `_AL3` | 2000x | 133x | 150% | — (era 2.000.000.000) | R$ 50 |
+
+**27/09/2026:** o VIP **não dá mais Zen** (pedido do Mario, aprovado pelo dono): `zen = 0` nos pacotes. O mecanismo abaixo continua no código, caso volte.
 
 **EXP master** (26/09/2026, pedido do dono: "extremamente difícil"): a taxa normal dividida por 15. Um Vipzão jogando ~18 h por dia (como o Mario) leva ~3 semanas do master 0 ao 600, antes eram ~2 dias; um Free leva ~1 ano nesse ritmo. O `/reset` zera só o nível 1–400: os níveis de master continuam, que é o padrão do MU (issue #14).
 
@@ -92,6 +94,30 @@ O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatu
 Taxas em `AddExperienceRate_ALn`, `AddMasterExperienceRate_ALn` e `ItemDropRate_ALn` do `GameServerInfo - Common.dat` (três GameServers), aplicadas com Reload Common. Antes todas as contas tinham 2000x/100%, e o VIP ainda perdia o ataque automático (`CustomAttackEnable_AL1..3 = 0`, agora 1) e tinha o `CommandPostSellLevel_AL1` digitado errado (corrigido).
 
 **Não aplicado (decisão do dono, 25/09/2026)**: a redução de experiência e drop pela metade depois de N resets (Free 10, Vipzinho/Vip 150, Vipzão 1000). O emulador só tem redução de experiência por reset igual para todos os tipos de conta (`Data\Util\ExperienceTable.txt`: MinReset/MaxReset → ExperienceRate) e nenhuma redução de drop por reset; o servidor não guarda taxa por jogador (lê a do tipo de conta na hora), então uma regra diferente por plano exigiria alterar o executável.
+
+## Mercado entre jogadores (issue #22, 27/09/2026)
+
+Página **Painel do jogador → Mercado entre jogadores** (`usercp/mercado`): jogadores vendem **itens do baú** e **personagens** por **dinheiro real** (PIX do Mercado Pago). A loja fica com **10%** (`<taxa>` em `usercp.mercado.xml`). Núcleo: `www\includes\muchila\MuChilaMercado.php` (+ `MuChilaItens.php`); tabelas `MUCHILA_MERCADO_ANUNCIOS`, `_PEDIDOS`, `_VENDEDORES` (`muchila\sql\MUCHILA_MERCADO.sql`).
+
+- **Pagamento com split**: cada vendedor liga a própria conta do Mercado Pago (OAuth). O PIX é gerado **com o token do vendedor** e a taxa da loja em `application_fee`: o dinheiro cai direto na conta dele e os 10% na conta da loja. O site nunca guarda nem repassa dinheiro. Tokens dos vendedores ficam **criptografados** (AES-256-GCM).
+- **Custódia (contra duplicação)**: ao anunciar, o item **sai do baú** e fica só no anúncio; o personagem sai das vagas e vai para a conta de custódia `MUCHILAMKT` (ninguém entra nela). Vendido → baú/vaga do comprador (o personagem leva junto os presentes da Gremory, registros de caça e de restauração). Cancelado → volta para o vendedor.
+- **Reserva**: comprar reserva o anúncio enquanto o PIX está aberto (30 min); só um comprador consegue. PIX vencido ou recusado → o anúncio volta à venda. Pago depois de vencer, com o anúncio já vendido a outro → compra "com problema" para **reembolsar** no Mercado Pago (aparece no admin).
+- **Sempre fora do jogo** para anunciar, cancelar e receber. Pago com o comprador no jogo, sem espaço no baú ou sem vaga de personagem (máx. 8) → fica "pago" e a tarefa **Mu Chila - Mercado** (a cada minuto) entrega depois.
+- **Não vendáveis**: pentagramas e errtels (os dados ficam presos ao personagem), itens com prazo da loja de cash (`CashShopPeriodItem`), personagens com `CtlCode` (GM/bloqueado). Muuns não entram (ficam em outro inventário).
+- **Admin**: AdminCP → Mu Chila → **Mercado entre jogadores** (compras, taxa do mês, entregar de novo, cancelar).
+- **Testes**: `muchila\testes\teste-mercado.php` (núcleo, 26 casos: custódia, disputa, recusa, vencimento, pagamento atrasado, personagem, comprador online) e `teste-mercado-site.ps1` (pelo site como jogador, 15 casos). Os dois criam e apagam contas de teste.
+
+### Mercado: modo de teste (atual)
+
+`<provedor>simulado</provedor>`: o vendedor "liga" a conta sem Mercado Pago de verdade e a compra mostra um PIX falso com os botões de simular pagamento.
+
+### Ligar o split real do Mercado Pago — depende do domínio com HTTPS
+
+1. No Mercado Pago (Suas integrações), criar a aplicação da loja com **OAuth** e pegar `client_id` e `client_secret`; cadastrar a **URL de redirecionamento** `https://SEUDOMINIO/api/muchila-mercado-oauth.php` e o webhook de **Pagamentos** `https://SEUDOMINIO/api/muchila-mercado-mp.php` (pegar o segredo da assinatura).
+2. Gerar a chave de criptografia dos tokens: `php -r "echo base64_encode(random_bytes(32));"`.
+3. Em `Site\config-local\mercadopago.json` (fora do repositório) acrescentar: `"client_id": "...", "client_secret": "...", "mercado_chave": "<a chave do passo 2>"` (o `webhook_secret` já é usado pela loja). **Não perder a chave**: sem ela os tokens guardados não abrem e os vendedores precisam ligar de novo.
+4. Em `usercp.mercado.xml`: `<mp_redirect_uri>` e `<mp_notification_url>` com as URLs do passo 1, `<email_padrao>` e `<provedor>mercadopago</provedor>`. O `curl.cainfo` do `php.ini` precisa estar configurado (igual à loja).
+5. Testar com contas de teste do próprio Mercado Pago (um vendedor e um comprador) antes de abrir para os jogadores; conferir `Site\logs\mercado.log`.
 
 ## Segurança
 

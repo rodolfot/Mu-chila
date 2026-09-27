@@ -12,6 +12,16 @@
   {
     "active": true,
     "type": "internal",
+    "phrase": "usercp_menu_txt_muchila_mercado",
+    "link": "usercp/mercado",
+    "icon": "donate.png",
+    "visibility": "user",
+    "newtab": false,
+    "order": 5
+  },
+  {
+    "active": true,
+    "type": "internal",
     "phrase": "usercp_menu_txt_muchila_resets",
     "link": "usercp/resets",
     "icon": "reset.png",
