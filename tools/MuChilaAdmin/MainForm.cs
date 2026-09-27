@@ -590,7 +590,8 @@ public sealed class MainForm : Form
         page.Controls.Add(gridCmds);
         page.Controls.Add(help);
         page.Controls.Add(bar);
-        FillCommands("");
+        // só depois de a janela existir: antes disso a grade não gera as colunas e Columns["..."] vem nulo
+        Shown += (_, _) => Safe(() => FillCommands(""));
         return page;
     }
 

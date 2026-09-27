@@ -169,6 +169,7 @@ static class Program
             catch (Exception ex) { failures++; sb.AppendLine($"FALHA {name}: {ex.Message}"); }
         }
 
+        Check("Janela do painel", () => { using var f = new MainForm(); return $"{f.Controls.OfType<TabControl>().Single().TabCount} abas"; });
         Check("Banco (contas)", () => $"{Accounts.List().Rows.Count} contas");
         Check("Banco (online)", () => $"{Accounts.Online().Rows.Count} online");
         Check("Servidores", () => string.Join(", ", ServerControl.Servers.Select(s => $"{s.Display}={(ServerControl.Find(s.Process, s.Folder) != null ? "rodando" : "parado")}")));
