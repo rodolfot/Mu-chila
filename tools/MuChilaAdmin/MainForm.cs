@@ -1,4 +1,5 @@
 using System.Data;
+using System.IO;
 
 namespace MuChilaAdmin;
 
@@ -40,6 +41,17 @@ public sealed class MainForm : Form
     int shopShown = -1;
     bool shopDirty;
 
+    // Loja de Cash
+    readonly DataGridView gridCash = new()
+    {
+        Dock = DockStyle.Fill, AllowUserToAddRows = false, AllowUserToDeleteRows = false, SelectionMode = DataGridViewSelectionMode.CellSelect,
+        RowHeadersVisible = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = SystemColors.Window,
+    };
+    readonly TextBox txtCashFind = new() { Width = 220, PlaceholderText = "filtrar por nome..." };
+    readonly Label lblCash = new() { AutoSize = true, Padding = new Padding(0, 6, 0, 0), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
+    List<CashShop.Package> cashAll = new();
+    bool cashDirty;
+
     // Itens e baú
     readonly ComboBox cmbItemAccount = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 140 };
     readonly ComboBox cmbItemPlace = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 170 };
@@ -64,6 +76,7 @@ public sealed class MainForm : Form
         tabs.TabPages.Add(EventsTab());
         tabs.TabPages.Add(BonusTab());
         tabs.TabPages.Add(ShopsTab());
+        tabs.TabPages.Add(CashShopTab());
         tabs.TabPages.Add(ItemsTab());
         tabs.TabPages.Add(AccountsTab());
         Controls.Add(tabs);
@@ -379,6 +392,109 @@ public sealed class MainForm : Form
         Log($"Loja {shops[shopShown].Name} salva ({items.Count} itens; backup .bak-* ao lado do arquivo).");
         LogAll(ServerControl.Reload("Shop"));
         shopDirty = false; UpdateShopStatus();
+    }
+
+    // ---------------- Loja de Cash ----------------
+    TabPage CashShopTab()
+    {
+        var page = new TabPage("Loja de Cash");
+        gridCash.CellValueChanged += (_, e) => { if (e.RowIndex >= 0 && cashAll.Count > 0) { cashDirty = true; UpdateCashStatus(); } };
+        gridCash.CurrentCellDirtyStateChanged += (_, _) => { if (gridCash.IsCurrentCellDirty && gridCash.CurrentCell is DataGridViewCheckBoxCell) gridCash.CommitEdit(DataGridViewDataErrorContexts.Commit); };
+        gridCash.DataError += (_, e) => { Log("Preço inválido: use só números."); e.Cancel = true; };
+        txtCashFind.TextChanged += (_, _) => Safe(() => FillCash(txtCashFind.Text));
+
+        var bar = Bar(
+            new Label { Text = "Loja de Cash (tecla X no jogo):", AutoSize = true, Padding = new Padding(0, 6, 6, 0) }, txtCashFind,
+            Btn("Salvar e aplicar", SaveCash),
+            Btn("Recarregar da pasta", () => { cashDirty = false; LoadCash(); }),
+            Btn("Gerar patch p/ amigos", GenerateCashPatch),
+            lblCash);
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
+            Text = "O preço é em W Coin/Goblin (a moeda de cada pacote). Quem cobra é o servidor; o cliente só mostra. " +
+                   "\"Na loja\" desmarcado esconde o pacote (dá para voltar depois). \"Salvar e aplicar\" faz backup, grava servidor + cliente e " +
+                   "recarrega a loja nos GameServers. Depois use \"Gerar patch\" para os amigos verem os nomes/preços novos.",
+        };
+        page.Controls.Add(gridCash);
+        page.Controls.Add(help);
+        page.Controls.Add(bar);
+        Shown += (_, _) => Safe(LoadCash);
+        return page;
+    }
+
+    void LoadCash()
+    {
+        cashAll = CashShop.List();
+        FillCash(txtCashFind.Text);
+        cashDirty = false;
+        UpdateCashStatus();
+    }
+
+    void FillCash(string filter)
+    {
+        var t = new DataTable();
+        t.Columns.Add("Pacote"); t.Columns.Add("Moeda"); t.Columns.Add("Preço", typeof(int)); t.Columns.Add("Na loja", typeof(bool));
+        t.Columns.Add("cat", typeof(int)); t.Columns.Add("main", typeof(int));
+        foreach (var p in cashAll)
+        {
+            if (filter.Length > 0 && !(p.Name.Contains(filter, StringComparison.OrdinalIgnoreCase))) continue;
+            t.Rows.Add(p.HasClient ? p.Name : $"(pacote {p.Category},{p.Main} — sem tela no cliente)", p.CoinLabel, p.Price, !p.Hidden, p.Category, p.Main);
+        }
+        gridCash.DataSource = t;
+        foreach (var c in new[] { "Pacote", "Moeda", "cat", "main" }) gridCash.Columns[c]!.ReadOnly = true;
+        gridCash.Columns["cat"]!.Visible = gridCash.Columns["main"]!.Visible = false;
+        gridCash.Columns["Pacote"]!.FillWeight = 260; gridCash.Columns["Moeda"]!.FillWeight = 90;
+        gridCash.Columns["Preço"]!.FillWeight = 70; gridCash.Columns["Na loja"]!.FillWeight = 60;
+    }
+
+    void UpdateCashStatus()
+    {
+        int na = cashAll.Count(p => !p.Hidden);
+        lblCash.Text = $"   {cashAll.Count} pacotes ({na} na loja)" +
+                       (CashShop.ClientAvailable ? "" : "   — cliente não encontrado: só o preço do servidor será gravado") +
+                       (cashDirty ? "   (não salvo)" : "");
+    }
+
+    /// <summary>Passa os preços/estado da grade de volta para a lista cashAll (casando por categoria+main das colunas ocultas).</summary>
+    void ApplyCashGrid()
+    {
+        if (gridCash.DataSource is not DataTable t) return;
+        var byKey = cashAll.ToDictionary(p => (p.Category, p.Main));
+        foreach (DataRow r in t.Rows)
+        {
+            if (r["cat"] is not int cat || r["main"] is not int main) continue;
+            if (!byKey.TryGetValue((cat, main), out var p)) continue;
+            p.Price = r["Preço"] is int pr ? pr : p.Price;
+            p.Hidden = r["Na loja"] is bool b && !b;
+        }
+    }
+
+    void SaveCash()
+    {
+        gridCash.EndEdit();
+        ApplyCashGrid();
+        var somenteServidor = !CashShop.ClientAvailable;
+        if (somenteServidor && !Confirm($"O cliente não foi encontrado em:\n{CashShop.ClientDir}\n\nVou gravar só no servidor (o jogo cobra o preço novo, mas a tela do cliente mostra o antigo). Continuar?")) return;
+        Log(CashShop.Save(cashAll));
+        LogAll(ServerControl.Reload("CashShop"));
+        if (!somenteServidor) Log("Cliente atualizado. Use \"Gerar patch p/ amigos\" para empacotar os arquivos novos.");
+        cashDirty = false; UpdateCashStatus();
+    }
+
+    void GenerateCashPatch()
+    {
+        if (!CashShop.ClientAvailable) { Log($"Cliente não encontrado em {CashShop.ClientDir}; nada a empacotar."); return; }
+        var script = Path.Combine(ServerControl.ServerRoot, @"..\Projetos\MuServer-Season14\tools\atualiza_zips2.ps1");
+        var repoScript = @"C:\Projetos\MuServer-Season14\tools\atualiza_zips2.ps1";
+        var used = File.Exists(repoScript) ? repoScript : script;
+        if (!File.Exists(used)) { Log($"Script de patch não encontrado ({used}). Gere o patch pelo tools\\atualiza_zips2.ps1."); return; }
+        if (!Confirm("Gerar o patch e o cliente completo dos amigos com os arquivos da loja novos? Pode levar alguns minutos (o cliente completo é grande).")) return;
+        const string sub = @"Data\InGameShopScript\512.2011.006\";
+        var args = $"-NoProfile -ExecutionPolicy Bypass -File \"{used}\" -Arquivos \"{sub}IBSPackage.txt\",\"{sub}IBSProduct.txt\",\"{sub}IBSCategory.txt\"";
+        Log("Gerando patch dos amigos em segundo plano (atualiza_zips2.ps1)...");
+        var psi = new System.Diagnostics.ProcessStartInfo("powershell.exe", args) { UseShellExecute = true };
+        System.Diagnostics.Process.Start(psi);
     }
 
     // ---------------- Itens e baú ----------------

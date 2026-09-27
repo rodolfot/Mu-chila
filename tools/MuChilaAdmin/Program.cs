@@ -91,6 +91,29 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[4], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "--testar-cashshop <preço> <arquivo>": grava um preço novo em um pacote de teste da loja de cash e regrava,
+        // conferindo o formato. Só roda contra uma cópia (MUCHILA_ROOT), nunca contra C:\MuServer.
+        if (args.Length == 3 && args[0] == "--testar-cashshop")
+        {
+            try
+            {
+                if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null) { File.WriteAllText(args[2], "ERRO: use MUCHILA_ROOT apontando para uma cópia de testes"); return 1; }
+                var lista = CashShop.List();
+                var antes = lista.Select(p => (p.Category, p.Main, p.Price)).ToList();
+                var alvo = lista.FirstOrDefault(p => p.HasClient) ?? lista.First();
+                int original = alvo.Price;
+                alvo.Price = int.Parse(args[1]);
+                var msg = CashShop.Save(lista);
+                var depois = CashShop.List();
+                var mudou = depois.First(p => p.Category == alvo.Category && p.Main == alvo.Main).Price;
+                bool resto = depois.Where(p => !(p.Category == alvo.Category && p.Main == alvo.Main))
+                    .All(p => antes.Any(a => a.Category == p.Category && a.Main == p.Main && a.Price == p.Price));
+                File.WriteAllText(args[2], $"{msg}\r\npacotes: {lista.Count} -> {depois.Count}\r\nalvo {alvo.Name} [{alvo.Category},{alvo.Main}] {original} -> {mudou} (esperado {args[1]})\r\ndemais preços intactos: {resto}");
+                return mudou == int.Parse(args[1]) && depois.Count == lista.Count && resto ? 0 : 1;
+            }
+            catch (Exception ex) { File.WriteAllText(args[2], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "--vigia-reset": laço do vigia do /reset (sem janela; uma instância só)
         if (args.Length == 1 && args[0] == "--vigia-reset")
             return ResetWatcher.Run();
@@ -130,6 +153,7 @@ static class Program
         Check("GameServers", ServerControl.GameServerCounts);
         Check("Agendas de eventos", () => $"{EventScheduler.Pending().Count} disparo(s) registrados");
         Check("Bônus", () => $"{BonusScheduler.List().Count} bônus deste programa no BonusManager.dat");
+        Check("Loja de Cash", () => { var l = CashShop.List(); return $"{l.Count} pacotes ({l.Count(p => p.HasClient)} com tela no cliente){(CashShop.ClientAvailable ? "" : "; cliente não encontrado")}"; });
         Check("Vigia do /reset", () => ResetWatcher.IsRunning() ? "rodando" : "parado");
         Check("MuEditor", () => File.Exists(ServerControl.MuEditorPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.MuEditorPath));
         Check("Launcher", () => File.Exists(ServerControl.LauncherPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.LauncherPath));

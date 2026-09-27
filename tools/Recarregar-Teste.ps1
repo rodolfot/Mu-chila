@@ -1,6 +1,6 @@
 # Recarrega um item SÓ no GameServer de testes (processos em C:\MuServerTeste, ver Criar-ServidorTeste.ps1). Nunca toca nos servidores reais.
-param([Parameter(Mandatory)][ValidateSet('Event', 'Shop', 'Common', 'Item', 'Monster', 'EventItemBag', 'Util', 'Move')][string]$Item)
-$ids = @{ Common = 32780; Event = 32782; EventItemBag = 32783; Item = 32785; Monster = 32786; Move = 32787; Shop = 32789; Util = 32791 }
+param([Parameter(Mandatory)][ValidateSet('CashShop', 'Event', 'Shop', 'Common', 'Item', 'Monster', 'EventItemBag', 'Util', 'Move')][string]$Item)
+$ids = @{ CashShop = 32776; Common = 32780; Event = 32782; EventItemBag = 32783; Item = 32785; Monster = 32786; Move = 32787; Shop = 32789; Util = 32791 }
 Add-Type -TypeDefinition @"
 using System; using System.Runtime.InteropServices;
 public static class MuWinTeste {
