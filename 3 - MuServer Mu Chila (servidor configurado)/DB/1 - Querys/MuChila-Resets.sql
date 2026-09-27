@@ -221,5 +221,20 @@ BEGIN
 END;
 GO
 
+/* 6) Permissoes: o usuario do site precisa poder EXECUTAR as procedures (o acesso as tabelas
+   dentro delas vem por ownership chaining, mesmo dono dbo). Ajuste o nome se o login for outro. */
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = 'muchila_site')
+BEGIN
+    GRANT EXECUTE ON dbo.MuChila_Reset             TO [muchila_site];
+    GRANT EXECUTE ON dbo.MuChila_MasterReset       TO [muchila_site];
+    GRANT EXECUTE ON dbo.MuChila_SupremeReset      TO [muchila_site];
+    GRANT EXECUTE ON dbo.MuChila_CreditarMasterResets TO [muchila_site];
+    GRANT SELECT, INSERT, UPDATE ON dbo.MuChila_Creditos TO [muchila_site];
+    GRANT SELECT ON dbo.MuChila_BaseStats TO [muchila_site];
+    PRINT 'permissoes concedidas a muchila_site';
+END
+ELSE PRINT 'AVISO: usuario muchila_site nao existe neste banco; ajuste o GRANT.';
+GO
+
 PRINT 'MuChila-Resets.sql aplicado. Confira dbo.MuChila_BaseStats antes de usar o Supreme em personagem real.';
 GO

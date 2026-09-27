@@ -511,3 +511,4 @@ $lang['footer_webzen_copyright'] = 'Este site não está de forma alguma associa
 // Mu Chila
 $lang['usercp_menu_txt_muchila_loja'] = 'Loja: VIP e Cash';
 $lang['menu_txt_muchila_loja'] = 'Loja'; // Mu Chila
+$lang['usercp_menu_txt_muchila_resets'] = 'Resets'; // Mu Chila

@@ -12,6 +12,16 @@
   {
     "active": true,
     "type": "internal",
+    "phrase": "usercp_menu_txt_muchila_resets",
+    "link": "usercp/resets",
+    "icon": "reset.png",
+    "visibility": "user",
+    "newtab": false,
+    "order": 6
+  },
+  {
+    "active": true,
+    "type": "internal",
     "phrase": "usercp_menu_txt_1",
     "link": "usercp/myaccount",
     "icon": "account.png",

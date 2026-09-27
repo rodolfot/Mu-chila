@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mu Chila: Master Reset e Supreme Reset (modules/usercp/resets.php). Valores: includes/config/muchila.resets.json; procedures MuChila_* no banco -->
+<settings>
+	<active>1</active>
+</settings>

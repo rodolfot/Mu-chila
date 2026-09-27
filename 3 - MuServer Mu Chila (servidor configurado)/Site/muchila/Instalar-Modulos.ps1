@@ -53,6 +53,11 @@ if (-not ($itens | Where-Object link -eq 'usercp/loja')) {
                                         icon = 'donate.png'; visibility = 'user'; newtab = $false; order = 5 })
     "aplicado: item Loja no menu do jogador"
 } else { "ja feito: item Loja no menu do jogador" }
+if (-not ($itens | Where-Object link -eq 'usercp/resets')) {
+    $itens.Insert(1, [pscustomobject]@{ active = $true; type = 'internal'; phrase = 'usercp_menu_txt_muchila_resets'; link = 'usercp/resets'
+                                        icon = 'reset.png'; visibility = 'user'; newtab = $false; order = 6 })
+    "aplicado: item Resets no menu do jogador"
+} else { "ja feito: item Resets no menu do jogador" }
 foreach ($i in $itens | Where-Object link -eq 'donation') { $i.active = $false }
 [IO.File]::WriteAllText($menu, ($itens | ConvertTo-Json -Depth 4), $utf8)
 
@@ -77,7 +82,7 @@ Ajustar 'api\events.php' 'muchila/eventos.php' {
 } 'agenda real no quadro de eventos'
 
 # 4. idioma
-$frases = [ordered]@{ usercp_menu_txt_muchila_loja = 'Loja: VIP e Cash'; menu_txt_muchila_loja = 'Loja' }
+$frases = [ordered]@{ usercp_menu_txt_muchila_loja = 'Loja: VIP e Cash'; menu_txt_muchila_loja = 'Loja'; usercp_menu_txt_muchila_resets = 'Resets' }
 foreach ($idioma in 'pt', 'en') {
     foreach ($chave in $frases.Keys) {
         $linha = "`$lang['$chave'] = '$($frases[$chave])'; // Mu Chila"
