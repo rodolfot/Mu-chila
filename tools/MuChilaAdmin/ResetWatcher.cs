@@ -31,6 +31,18 @@ public static class ResetWatcher
     public static readonly string ResetSwitchPath = Path.Combine(AppContext.BaseDirectory, "vigia-reset-selecao.ligado");
     static bool ResetToSelectEnabled => File.Exists(ResetSwitchPath);
 
+    /// <summary>Comandos curtos de atributo (/f /a /v /e /c). Liga com este arquivo; desliga apagando-o e reiniciando o GameServer.</summary>
+    public static readonly string ShortCmdSwitchPath = Path.Combine(AppContext.BaseDirectory, "vigia-comandos-curtos.ligado");
+    static bool ShortCommandsEnabled => File.Exists(ShortCmdSwitchPath);
+
+    /// <summary>
+    /// Renomeia os comandos de distribuir pontos no binário (a sintaxe é fixa; o kit só liga/desliga). Cada comando é uma
+    /// std::string: [id 4][texto 16][tamanho 4][capacidade 4]. Trocamos o texto E o campo de tamanho (a comparação usa o
+    /// tamanho). O nome novo é mais curto, então cabe no lugar e nada é deslocado. Há 2 cópias da tabela; as duas são trocadas.
+    /// </summary>
+    static readonly (string Antigo, string Novo)[] CommandRenames =
+        { ("/addstr", "/f"), ("/addagi", "/a"), ("/addvit", "/v"), ("/addene", "/e"), ("/addcmd", "/c") };
+
     /// <summary>
     /// Issue #12 (causa comprovada em 25/09/2026): a checagem anti-hack de ataques do MuDevs (código protegido, 0x40ED40 no
     /// GameServer, 0x40ED60 no Castle Siege) passa a recusar todos os ataques de um jogador depois de usar skills evoluídas.
@@ -60,6 +72,7 @@ public static class ResetWatcher
         public DateTime NextTry;
         public bool ApplyAttackFix;          // só o laço do vigia aplica; sondagem e botão do painel só leem
         public string AttackFixState = "checagem de ataques ainda não verificada";
+        public string CommandFixState = "comandos curtos: não verificado";
         public readonly Dictionary<int, (string Name, int Level)> Seen = new();
     }
 
@@ -130,6 +143,7 @@ public static class ResetWatcher
                     Attach(t);
                     sb.AppendLine(t.Table == 0 ? $"{name} (pid {p.Id}): versão não reconhecida" : $"{name} (pid {p.Id}): tabela 0x{t.Table:X}");
                     sb.AppendLine($"   {t.AttackFixState}");
+                    sb.AppendLine($"   {t.CommandFixState}");
                     sb.AppendLine($"   /reset leva à seleção de personagem: {(ResetToSelectEnabled ? "ligado" : "desligado (falta testar a #7)")}");
                     if (t.Table == 0) continue;
                     foreach (var (idx, obj) in Players(t))
@@ -158,6 +172,10 @@ public static class ResetWatcher
         var (state, changed) = AttackCheckFix(t, image, t.ApplyAttackFix);
         t.AttackFixState = state;
         if (changed) Log($"{t.Process.ProcessName} (pid {t.Process.Id}): {state}");
+
+        var (cmdState, cmdChanged) = CommandNameFix(t, image, apply: t.ApplyAttackFix);
+        t.CommandFixState = cmdState;
+        if (cmdChanged) Log($"{t.Process.ProcessName} (pid {t.Process.Id}): {cmdState}");
 
         var hits = new List<int>();
         for (int i = image.AsSpan().IndexOf(CloseSetBytes); i >= 0; )
@@ -209,6 +227,47 @@ public static class ResetWatcher
             if (Write(t, (uint)(s.At + 7), Enumerable.Repeat((byte)0x90, s.Long ? 6 : 2).ToArray())) ok++;
         FlushInstructionCache(t.Handle, IntPtr.Zero, UIntPtr.Zero);
         return ($"checagem de ataques 0x{check:X}: recusa desligada agora em {ok} de {pending} ponto(s); {6 - pending + ok} de 6 no total (issue #12)", true);
+    }
+
+    /// <summary>
+    /// Acha cada comando de atributo (texto seguido de \0, com o campo tamanho = comprimento certo logo depois do buffer de
+    /// 16 bytes) e, com apply, troca o texto pelo curto e ajusta o tamanho. Só age se o arquivo de liga estiver presente.
+    /// Devolve (situação, algo mudou).
+    /// </summary>
+    static (string State, bool Changed) CommandNameFix(Target t, byte[] image, bool apply)
+    {
+        if (!ShortCommandsEnabled) return ("comandos curtos: desligado", false);
+        int pendentes = 0, trocados = 0, prontos = 0;
+        foreach (var (antigo, novo) in CommandRenames)
+        {
+            var alvo = Encoding.ASCII.GetBytes(antigo).Concat(new byte[] { 0 }).ToArray();   // "/addstr\0"
+            var curto = Encoding.ASCII.GetBytes(novo).Concat(new byte[] { 0 }).ToArray();     // "/f\0"
+            // conta as cópias já trocadas (texto curto com o tamanho novo no lugar)
+            for (int i = image.AsSpan().IndexOf(curto); i >= 0; )
+            {
+                if (i + 20 <= image.Length && BitConverter.ToInt32(image, i + 16) == novo.Length && image[i + novo.Length + 1] == 0) prontos++;
+                int n = image.AsSpan(i + 1).IndexOf(curto); i = n < 0 ? -1 : i + 1 + n;
+            }
+            // acha e troca as que ainda têm o nome antigo (tamanho == comprimento antigo confirma que é a entrada da tabela)
+            for (int i = image.AsSpan().IndexOf(alvo); i >= 0; )
+            {
+                if (i + 20 <= image.Length && BitConverter.ToInt32(image, i + 16) == antigo.Length)
+                {
+                    pendentes++;
+                    if (apply)
+                    {
+                        var buf = new byte[antigo.Length + 1];                 // apaga o texto antigo inteiro
+                        Encoding.ASCII.GetBytes(novo).CopyTo(buf, 0);          // resto fica 0 (fim de string)
+                        if (Write(t, (uint)(ImageStart + i), buf) && Write(t, (uint)(ImageStart + i + 16), BitConverter.GetBytes(novo.Length))) trocados++;
+                    }
+                }
+                int n = image.AsSpan(i + 1).IndexOf(alvo); i = n < 0 ? -1 : i + 1 + n;
+            }
+        }
+        string mapa = string.Join(" ", CommandRenames.Select(c => $"{c.Antigo}→{c.Novo}"));
+        if (apply && trocados > 0) return ($"comandos curtos aplicados ({trocados} entrada(s)): {mapa}", true);
+        if (pendentes == 0 && prontos > 0) return ($"comandos curtos já aplicados: {mapa}", false);
+        return ($"comandos curtos: {pendentes} entrada(s) a trocar ({mapa})", false);
     }
 
     static readonly HashSet<string> logged = new();

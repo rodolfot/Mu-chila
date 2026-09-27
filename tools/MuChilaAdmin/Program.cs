@@ -114,6 +114,28 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[2], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "--testar-monstros <arquivo>": carrega, regrava e recarrega da cópia dada, conferindo que os spawns voltam
+        // iguais e que NPC/SPOT/EVENT continuam lá. Passe uma CÓPIA de um mapa, nunca o arquivo real.
+        if (args.Length == 2 && args[0] == "--testar-monstros")
+        {
+            try
+            {
+                var antes = Monsters.Load(args[1]);
+                var doc0 = System.Xml.Linq.XDocument.Load(args[1]);
+                int npc0 = doc0.Root!.Element("NPC")?.Elements("Config").Count() ?? 0;
+                Monsters.Save(args[1], antes);
+                var depois = Monsters.Load(args[1]);
+                var doc1 = System.Xml.Linq.XDocument.Load(args[1]);
+                int npc1 = doc1.Root!.Element("NPC")?.Elements("Config").Count() ?? 0;
+                bool preservados = npc1 == npc0 && doc1.Root!.Element("MONSTER") != null && doc1.Root!.Element("EVENT") != null;
+                bool ok = depois.Count == antes.Count && depois.Sum(s => s.Quantity) == antes.Sum(s => s.Quantity) && preservados;
+                var res = $"{(ok ? "OK" : "FALHA")}: spawns {antes.Count}->{depois.Count}, monstros {antes.Sum(s => s.Quantity)}->{depois.Sum(s => s.Quantity)}, NPCs {npc0}->{npc1}, MONSTER/EVENT preservados={preservados}";
+                Console.WriteLine(res); File.WriteAllText(args[1] + ".resultado.txt", res);
+                return ok ? 0 : 1;
+            }
+            catch (Exception ex) { Console.WriteLine("FALHA: " + ex.Message); return 1; }
+        }
+
         // "--vigia-reset": laço do vigia do /reset (sem janela; uma instância só)
         if (args.Length == 1 && args[0] == "--vigia-reset")
             return ResetWatcher.Run();
@@ -154,6 +176,8 @@ static class Program
         Check("Agendas de eventos", () => $"{EventScheduler.Pending().Count} disparo(s) registrados");
         Check("Bônus", () => $"{BonusScheduler.List().Count} bônus deste programa no BonusManager.dat");
         Check("Loja de Cash", () => { var l = CashShop.List(); return $"{l.Count} pacotes ({l.Count(p => p.HasClient)} com tela no cliente){(CashShop.ClientAvailable ? "" : "; cliente não encontrado")}"; });
+        Check("Monstros (respawn)", () => { var m = Monsters.Maps(); return $"{m.Count} mapas, {m.Sum(x => x.Total)} monstros no total"; });
+        Check("Comandos", () => $"{Commands.All.Count} comandos catalogados");
         Check("Vigia do /reset", () => ResetWatcher.IsRunning() ? "rodando" : "parado");
         Check("MuEditor", () => File.Exists(ServerControl.MuEditorPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.MuEditorPath));
         Check("Launcher", () => File.Exists(ServerControl.LauncherPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.LauncherPath));

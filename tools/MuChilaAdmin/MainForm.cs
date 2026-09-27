@@ -52,6 +52,24 @@ public sealed class MainForm : Form
     List<CashShop.Package> cashAll = new();
     bool cashDirty;
 
+    // Comandos (consulta)
+    readonly DataGridView gridCmds = Grid();
+    readonly TextBox txtCmdFind = new() { Width = 240, PlaceholderText = "filtrar comando ou descrição..." };
+
+    // Monstros (respawn + densidade)
+    readonly DataGridView gridMaps = Grid();
+    readonly DataGridView gridMon = new()
+    {
+        Dock = DockStyle.Fill, AllowUserToAddRows = false, AllowUserToDeleteRows = false, SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+        MultiSelect = false, RowHeadersVisible = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = SystemColors.Window,
+    };
+    readonly Panel pnlDensidade = new() { Dock = DockStyle.Fill, BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
+    readonly Label lblMon = new() { AutoSize = true, Padding = new Padding(0, 6, 0, 0), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
+    List<MapDensity> mapas = new();
+    DataTable monTable = new();
+    string? monFile;
+    bool monDirty;
+
     // Resets (valores do site)
     readonly NumericUpDown numMasterCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
     readonly NumericUpDown numSupremeCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
@@ -84,6 +102,8 @@ public sealed class MainForm : Form
         tabs.TabPages.Add(ShopsTab());
         tabs.TabPages.Add(CashShopTab());
         tabs.TabPages.Add(ResetsTab());
+        tabs.TabPages.Add(MonstersTab());
+        tabs.TabPages.Add(CommandsTab());
         tabs.TabPages.Add(ItemsTab());
         tabs.TabPages.Add(AccountsTab());
         Controls.Add(tabs);
@@ -550,6 +570,150 @@ public sealed class MainForm : Form
             SupremeCreditos = (int)numSupremeCred.Value,
             MaxStat = (int)numMaxStat.Value,
         }));
+    }
+
+    // ---------------- Comandos (consulta) ----------------
+    TabPage CommandsTab()
+    {
+        var page = new TabPage("Comandos");
+        txtCmdFind.TextChanged += (_, _) => Safe(() => FillCommands(txtCmdFind.Text));
+        var bar = Bar(new Label { Text = "Comandos do jogo (consulta):", AutoSize = true, Padding = new Padding(0, 6, 6, 0) }, txtCmdFind);
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 40, Padding = new Padding(6),
+            Text = "A sintaxe fica no executável (o kit só liga/desliga). Comandos de GM exigem conta nível 32. "
+                 + "Os de atributo viram /f /a /v /e /c quando os comandos curtos do vigia estão ligados.",
+        };
+        gridCmds.Dock = DockStyle.Fill;
+        page.Controls.Add(gridCmds);
+        page.Controls.Add(help);
+        page.Controls.Add(bar);
+        FillCommands("");
+        return page;
+    }
+
+    void FillCommands(string filtro)
+    {
+        var t = new DataTable();
+        t.Columns.Add("Comando"); t.Columns.Add("Grupo"); t.Columns.Add("O que faz");
+        foreach (var c in Commands.All)
+            if (filtro.Length == 0 || c.Cmd.Contains(filtro, StringComparison.OrdinalIgnoreCase) || c.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase))
+                t.Rows.Add(c.Cmd, c.Grupo, c.Descricao);
+        gridCmds.DataSource = t;
+        gridCmds.Columns["Comando"]!.FillWeight = 60; gridCmds.Columns["Grupo"]!.FillWeight = 45; gridCmds.Columns["O que faz"]!.FillWeight = 230;
+    }
+
+    // ---------------- Monstros (respawn + densidade) ----------------
+    static readonly string[] MonCols = { "Classe", "Monstro", "IniX", "IniY", "FimX", "FimY", "Qtd" };
+
+    TabPage MonstersTab()
+    {
+        var page = new TabPage("Monstros");
+        gridMaps.SelectionChanged += (_, _) => Safe(ShowMap);
+        gridMon.CellValueChanged += (_, e) => { if (e.RowIndex >= 0 && monFile != null) { monDirty = true; pnlDensidade.Invalidate(); UpdateMonStatus(); } };
+        gridMon.DataError += (_, e) => { Log("Valor inválido: use só números."); e.Cancel = true; };
+        pnlDensidade.Paint += (_, e) => DrawDensidade(e.Graphics, pnlDensidade.ClientSize);
+
+        var bar = Bar(
+            Btn("Adicionar spawn", AddMonster),
+            Btn("Remover", () => { if (gridMon.CurrentRow is { } r) { monTable.Rows.RemoveAt(r.Index); monDirty = true; pnlDensidade.Invalidate(); UpdateMonStatus(); } }),
+            Btn("Salvar e recarregar", SaveMonsters),
+            Btn("Descartar", () => { monDirty = false; ShowMap(force: true); }),
+            lblMon);
+        var direita = new SplitContainer { Dock = DockStyle.Fill, Orientation = Orientation.Horizontal };
+        direita.Panel1.Controls.Add(Titled("Densidade (área de spawn no mapa 256×256)", pnlDensidade));
+        var baixo = new Panel { Dock = DockStyle.Fill }; baixo.Controls.Add(gridMon); baixo.Controls.Add(bar);
+        direita.Panel2.Controls.Add(Titled("Spawns deste mapa (edite a quantidade e a área)", baixo));
+        direita.SizeChanged += (_, _) => { if (direita.Height > 100) direita.SplitterDistance = (int)(direita.Height * 0.42); };
+
+        page.Controls.Add(Split(Titled("Mapas (densidade)", gridMaps), direita, 0.34));
+        Shown += (_, _) => Safe(LoadMaps);
+        return page;
+    }
+
+    void LoadMaps()
+    {
+        mapas = Monsters.Maps();
+        var t = new DataTable();
+        t.Columns.Add("Mapa"); t.Columns.Add("Monstros", typeof(int)); t.Columns.Add("Spawns", typeof(int)); t.Columns.Add("Code", typeof(int));
+        foreach (var m in mapas) t.Rows.Add($"{m.Code:000} {m.Name}", m.Total, m.Pontos, m.Code);
+        gridMaps.DataSource = t;
+        gridMaps.Columns["Code"]!.Visible = false;
+        gridMaps.Columns["Mapa"]!.FillWeight = 130; gridMaps.Columns["Monstros"]!.FillWeight = 55; gridMaps.Columns["Spawns"]!.FillWeight = 45;
+        int total = mapas.Sum(m => m.Total);
+        Log($"Densidade carregada: {mapas.Count} mapas, {total} monstros no total (limite ~9078).");
+    }
+
+    void ShowMap() => ShowMap(force: false);
+    void ShowMap(bool force)
+    {
+        if (gridMaps.CurrentRow?.Cells["Code"].Value is not int code) return;
+        var m = mapas.FirstOrDefault(x => x.Code == code);
+        if (m == null) return;
+        if (!force && monFile == m.File) return;
+        if (monDirty && monFile != m.File && !Confirm("O mapa atual tem alterações não salvas. Descartar?")) return;
+        monDirty = false;
+        var t = new DataTable();
+        t.Columns.Add(MonCols[0], typeof(int)); t.Columns.Add(MonCols[1]); for (int i = 2; i < MonCols.Length; i++) t.Columns.Add(MonCols[i], typeof(int));
+        foreach (var s in Monsters.Load(m.File)) t.Rows.Add(s.Class, s.Name, s.BeginX, s.BeginY, s.EndX, s.EndY, s.Quantity);
+        monFile = null;   // evita marcar dirty durante a carga
+        gridMon.DataSource = monTable = t;
+        gridMon.Columns["Monstro"]!.ReadOnly = true; gridMon.Columns["Monstro"]!.FillWeight = 160;
+        monFile = m.File;
+        pnlDensidade.Invalidate(); UpdateMonStatus();
+    }
+
+    List<MonsterSpawn> MonFromGrid() => monTable.Rows.Cast<DataRow>().Select(r => new MonsterSpawn
+    {
+        Class = (int)r["Classe"], Name = (string)r["Monstro"], BeginX = (int)r["IniX"], BeginY = (int)r["IniY"],
+        EndX = (int)r["FimX"], EndY = (int)r["FimY"], Quantity = (int)r["Qtd"],
+    }).ToList();
+
+    void UpdateMonStatus()
+    {
+        if (monFile == null) return;
+        int total = MonFromGrid().Sum(s => s.Quantity);
+        lblMon.Text = $"   {monTable.Rows.Count} spawns, {total} monstros neste mapa" + (monDirty ? "   (não salvo)" : "");
+    }
+
+    void AddMonster()
+    {
+        if (monFile == null) return;
+        monTable.Rows.Add(0, "Classe 0", 100, 100, 110, 110, 10);
+        monDirty = true; pnlDensidade.Invalidate(); UpdateMonStatus();
+        gridMon.CurrentCell = gridMon.Rows[^1].Cells[0];
+    }
+
+    void SaveMonsters()
+    {
+        if (monFile == null) return;
+        gridMon.EndEdit();
+        Monsters.Save(monFile, MonFromGrid());
+        Log($"Respawn salvo ({monTable.Rows.Count} spawns; backup .bak-* ao lado do arquivo). Recarregando monstros...");
+        LogAll(ServerControl.Reload("Monster"));
+        monDirty = false; UpdateMonStatus();
+        LoadMaps();   // atualiza a densidade
+    }
+
+    /// <summary>Desenha as áreas de spawn do mapa selecionado num quadro 256×256; sobreposições ficam mais escuras (densidade).</summary>
+    void DrawDensidade(Graphics g, Size size)
+    {
+        g.Clear(Color.White);
+        if (monFile == null || monTable.Rows.Count == 0) return;
+        int lado = Math.Min(size.Width, size.Height) - 2;
+        if (lado < 20) return;
+        float esc = lado / (float)Monsters.MapTiles;
+        using var borda = new Pen(Color.Gainsboro);
+        g.DrawRectangle(borda, 0, 0, lado, lado);
+        using var fill = new SolidBrush(Color.FromArgb(40, 30, 90, 200));   // translúcido: sobreposição escurece
+        foreach (DataRow r in monTable.Rows)
+        {
+            int x1 = (int)r["IniX"], y1 = (int)r["IniY"], x2 = (int)r["FimX"], y2 = (int)r["FimY"], q = (int)r["Qtd"];
+            int lx = Math.Min(x1, x2), ly = Math.Min(y1, y2), w = Math.Abs(x2 - x1) + 1, h = Math.Abs(y2 - y1) + 1;
+            var rect = new RectangleF(lx * esc, ly * esc, Math.Max(2, w * esc), Math.Max(2, h * esc));
+            g.FillRectangle(fill, rect);   // mais spawns no mesmo lugar = azul mais forte
+            if (q >= 15) g.FillRectangle(fill, rect);   // farm (muitos): reforça a cor
+        }
     }
 
     // ---------------- Itens e baú ----------------
