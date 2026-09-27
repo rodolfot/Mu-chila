@@ -105,6 +105,19 @@ ELSE BEGIN INSERT INTO WEBENGINE_CRON (cron_name, cron_description, cron_file_ru
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao registrar a tarefa do Zen' }
 $r
 
+# 4c. tarefa "Mu Chila - Credito Master Reset" (credita master resets feitos no jogo; os do site ja saem pagos)
+$md5b = (Get-FileHash (Join-Path $www 'includes\cron\muchila_creditos_masterreset.php') -Algorithm MD5).Hash.ToLower()
+$rb = sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -h -1 -W -Q @"
+SET NOCOUNT ON;
+IF EXISTS (SELECT 1 FROM WEBENGINE_CRON WHERE cron_file_run = 'muchila_creditos_masterreset.php')
+BEGIN UPDATE WEBENGINE_CRON SET cron_file_md5 = '$md5b' WHERE cron_file_run = 'muchila_creditos_masterreset.php' AND cron_file_md5 <> '$md5b'; SELECT 'ja feito: tarefa Credito Master Reset' + CASE WHEN @@ROWCOUNT > 0 THEN ' (MD5 atualizado)' ELSE '' END; END
+ELSE BEGIN INSERT INTO WEBENGINE_CRON (cron_name, cron_description, cron_file_run, cron_run_time, cron_last_run, cron_status, cron_protected, cron_file_md5)
+    VALUES ('Mu Chila - Credito Master Reset', 'Credita os Master Resets feitos no jogo ainda nao pagos', 'muchila_creditos_masterreset.php', '60', NULL, 1, 0, '$md5b');
+    SELECT 'aplicado: tarefa Credito Master Reset no agendador'; END
+"@
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao registrar a tarefa de Credito Master Reset' }
+$rb
+
 # 5. painel admin
 Ajustar 'admincp\index.php' 'muchila_pedidos' {
     param($t)

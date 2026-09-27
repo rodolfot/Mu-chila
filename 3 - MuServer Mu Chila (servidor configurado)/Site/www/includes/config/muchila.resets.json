@@ -1,7 +1,7 @@
 {
-  "_comentario": "Resets pelo site (Master e Supreme). Recompensa em creditos do site (WEBENGINE_CREDITS / tabela MuChila_Creditos). Ajuste os valores; o Reset normal continua sendo /reset no jogo.",
+  "_comentario": "Resets pelo site (Master e Supreme). Recompensa em creditos do site (tabela MuChila_Creditos). O Reset normal continua sendo /reset no jogo. Ajustavel tambem pelo Mu Chila Admin.",
   "ativo": true,
-  "master_creditos": 0,
-  "supreme_creditos": 0,
-  "max_stat": 32767
+  "master_creditos": 25,
+  "supreme_creditos": 250,
+  "max_stat": 65000
 }

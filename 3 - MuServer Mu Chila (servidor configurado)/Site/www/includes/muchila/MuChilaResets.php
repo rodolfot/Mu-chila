@@ -99,6 +99,14 @@ class MuChilaResets
         return $this->mensagem($r, 'Supreme Reset feito! Tudo reiniciado e ' . (int)$this->cfg['supreme_creditos'] . ' créditos adicionados.');
     }
 
+    /** Cron: credita os Master Resets feitos NO JOGO ainda nao pagos (os do site ja saem creditados e marcados). */
+    public function creditarMasterResets(?int $coins = null): void
+    {
+        $c = $coins ?? (int)$this->cfg['master_creditos'];
+        $st = $this->db->prepare("EXEC MuChila_CreditarMasterResets @CoinsPorReset = ?");
+        $st->execute([$c]);
+    }
+
     /** Traduz o codigo de retorno das procedures em mensagem para o jogador. */
     private function mensagem(int $r, string $ok): string
     {

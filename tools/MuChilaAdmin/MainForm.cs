@@ -52,6 +52,12 @@ public sealed class MainForm : Form
     List<CashShop.Package> cashAll = new();
     bool cashDirty;
 
+    // Resets (valores do site)
+    readonly NumericUpDown numMasterCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
+    readonly NumericUpDown numSupremeCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
+    readonly NumericUpDown numMaxStat = new() { Minimum = 0, Maximum = 65535, Width = 100 };
+    readonly CheckBox chkResetsAtivo = new() { Text = "Resets pelo site ativos", AutoSize = true };
+
     // Itens e baú
     readonly ComboBox cmbItemAccount = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 140 };
     readonly ComboBox cmbItemPlace = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 170 };
@@ -77,6 +83,7 @@ public sealed class MainForm : Form
         tabs.TabPages.Add(BonusTab());
         tabs.TabPages.Add(ShopsTab());
         tabs.TabPages.Add(CashShopTab());
+        tabs.TabPages.Add(ResetsTab());
         tabs.TabPages.Add(ItemsTab());
         tabs.TabPages.Add(AccountsTab());
         Controls.Add(tabs);
@@ -495,6 +502,54 @@ public sealed class MainForm : Form
         Log("Gerando patch dos amigos em segundo plano (atualiza_zips2.ps1)...");
         var psi = new System.Diagnostics.ProcessStartInfo("powershell.exe", args) { UseShellExecute = true };
         System.Diagnostics.Process.Start(psi);
+    }
+
+    // ---------------- Resets ----------------
+    TabPage ResetsTab()
+    {
+        var page = new TabPage("Resets");
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 96, Padding = new Padding(8), AutoSize = false,
+            Text = "Valores dos resets feitos pelo site (área do jogador):\r\n"
+                 + "• Master Reset (Master Level 600) e Supreme Reset (nível 400 + Master 600 + atributos no máximo) dão créditos do site.\r\n"
+                 + "• O Reset normal continua sendo /reset no jogo.\r\n"
+                 + "• \"Atributo máximo\" é o valor que cada atributo precisa ter para liberar o Supreme (o servidor usa 65000).\r\n"
+                 + "Salvar aqui vale na hora para o site; o cron do master reset usa o novo valor no próximo minuto.",
+        };
+        Label L(string t) => new() { Text = t, AutoSize = true, Padding = new Padding(0, 6, 6, 0) };
+        var grid = new TableLayoutPanel { Dock = DockStyle.Top, AutoSize = true, ColumnCount = 2, Padding = new Padding(8) };
+        grid.Controls.Add(L("Créditos por Master Reset:"), 0, 0); grid.Controls.Add(numMasterCred, 1, 0);
+        grid.Controls.Add(L("Créditos por Supreme Reset:"), 0, 1); grid.Controls.Add(numSupremeCred, 1, 1);
+        grid.Controls.Add(L("Atributo máximo (libera o Supreme):"), 0, 2); grid.Controls.Add(numMaxStat, 1, 2);
+        grid.Controls.Add(new Label { Width = 1 }, 0, 3); grid.Controls.Add(chkResetsAtivo, 1, 3);
+
+        var bar = Bar(Btn("Salvar", SaveResetConfig), Btn("Recarregar", LoadResetConfig));
+        page.Controls.Add(grid);
+        page.Controls.Add(bar);
+        page.Controls.Add(help);
+        Shown += (_, _) => Safe(LoadResetConfig);
+        return page;
+    }
+
+    void LoadResetConfig()
+    {
+        var v = ResetConfig.Carregar();
+        numMasterCred.Value = Math.Min(numMasterCred.Maximum, v.MasterCreditos);
+        numSupremeCred.Value = Math.Min(numSupremeCred.Maximum, v.SupremeCreditos);
+        numMaxStat.Value = Math.Min(numMaxStat.Maximum, v.MaxStat);
+        chkResetsAtivo.Checked = v.Ativo;
+    }
+
+    void SaveResetConfig()
+    {
+        Log(ResetConfig.Salvar(new ResetConfig.Valores
+        {
+            Ativo = chkResetsAtivo.Checked,
+            MasterCreditos = (int)numMasterCred.Value,
+            SupremeCreditos = (int)numSupremeCred.Value,
+            MaxStat = (int)numMaxStat.Value,
+        }));
     }
 
     // ---------------- Itens e baú ----------------

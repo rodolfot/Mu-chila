@@ -166,14 +166,21 @@ BEGIN
     SELECT @ML = MasterLevel FROM dbo.MasterSkillTree WHERE Name=@Name;
     IF ISNULL(@ML,0) <> 600 RETURN 4;
 
+    DECLARE @novo int;
     BEGIN TRAN;
       UPDATE dbo.MasterSkillTree
          SET MasterLevel=0, MasterExperience=0, MasterPoint=0, MasterSkill=0x
        WHERE Name=@Name;
       UPDATE dbo.[Character] SET MasterResetCount=MasterResetCount+1 WHERE Name=@Name;
+      SELECT @novo = MasterResetCount FROM dbo.[Character] WHERE Name=@Name;
       IF NOT EXISTS (SELECT 1 FROM dbo.MuChila_Creditos WHERE AccountID=@Acc)
           INSERT dbo.MuChila_Creditos(AccountID,Creditos) VALUES(@Acc,0);
       UPDATE dbo.MuChila_Creditos SET Creditos=Creditos+@Coins WHERE AccountID=@Acc;
+      -- marca este master reset como JA PAGO, para o cron de reconciliacao nao creditar de novo
+      MERGE dbo.MuChila_MasterResetPago AS d
+      USING (SELECT @Name AS Name, @novo AS PagoAte) AS s ON d.Name=s.Name
+      WHEN MATCHED THEN UPDATE SET PagoAte=s.PagoAte
+      WHEN NOT MATCHED THEN INSERT(Name,PagoAte) VALUES(s.Name,s.PagoAte);
     COMMIT TRAN;
     RETURN 0;
 END;
