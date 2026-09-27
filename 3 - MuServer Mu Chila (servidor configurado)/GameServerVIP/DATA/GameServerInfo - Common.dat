@@ -192,10 +192,10 @@ ItemDropRate_AL3 = 150
 ; Money Drop Settings
 ;==================================================
 MoneyDropTime = 30
-MoneyAmountDropRate_AL0 = 50
-MoneyAmountDropRate_AL1 = 50
-MoneyAmountDropRate_AL2 = 50
-MoneyAmountDropRate_AL3 = 50
+MoneyAmountDropRate_AL0 = 1
+MoneyAmountDropRate_AL1 = 1
+MoneyAmountDropRate_AL2 = 1
+MoneyAmountDropRate_AL3 = 1
 
 ;==================================================
 ; Item Durability Settings
@@ -330,11 +330,11 @@ HelperActiveLevel = 1
 HelperActiveMessageBox = 1
 HelperRunWithOpenInventory = 0
 HelperActiveDelay = 5
-HelperActiveMoney1 = 12500
-HelperActiveMoney2 = 12500
-HelperActiveMoney3 = 12500
-HelperActiveMoney4 = 12500
-HelperActiveMoney5 = 12500
+HelperActiveMoney1 = 625000
+HelperActiveMoney2 = 625000
+HelperActiveMoney3 = 625000
+HelperActiveMoney4 = 625000
+HelperActiveMoney5 = 625000
 
 ;==================================================
 ; Cash Shop Settings
