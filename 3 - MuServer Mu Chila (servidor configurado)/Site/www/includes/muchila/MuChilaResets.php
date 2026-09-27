@@ -80,6 +80,17 @@ class MuChilaResets
         return -1;
     }
 
+    public function reset(string $name, string $conta): string
+    {
+        if (!$this->ehDaConta($name, $conta)) throw new Exception('Esse personagem não é da sua conta.');
+        $sql = "DECLARE @r int; EXEC @r = MuChila_Reset @Name = ?; SELECT @r AS r";
+        $st = $this->db->prepare($sql);
+        $st->execute([$name]);
+        $r = -1;
+        do { $row = $st->fetch(PDO::FETCH_ASSOC); if (is_array($row) && array_key_exists('r', $row)) { $r = (int)$row['r']; break; } } while ($st->nextRowset());
+        return $this->mensagem($r, 'Reset feito! Nível de volta a 1, atributos zerados e pontos escaláveis adicionados.');
+    }
+
     public function masterReset(string $name, string $conta): string
     {
         if (!$this->ehDaConta($name, $conta)) throw new Exception('Esse personagem não é da sua conta.');

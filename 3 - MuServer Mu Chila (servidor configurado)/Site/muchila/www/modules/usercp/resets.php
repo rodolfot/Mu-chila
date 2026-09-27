@@ -17,9 +17,10 @@ try {
 	if($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if(!hash_equals($csrf, (string)($_POST['csrf'] ?? ''))) throw new Exception('Sessão expirada. Abra a página de novo.');
 		$nome = (string)($_POST['personagem'] ?? '');
+		if(isset($_POST['reset']))   $_SESSION['muchila_msg'] = $svc->reset($nome, $conta);
 		if(isset($_POST['master']))  $_SESSION['muchila_msg'] = $svc->masterReset($nome, $conta);
 		if(isset($_POST['supreme'])) $_SESSION['muchila_msg'] = $svc->supremeReset($nome, $conta);
-		if(isset($_POST['master']) || isset($_POST['supreme'])) redirect(1, 'usercp/resets');
+		if(isset($_POST['reset']) || isset($_POST['master']) || isset($_POST['supreme'])) redirect(1, 'usercp/resets');
 	}
 } catch(Exception $ex) { $erro = $ex->getMessage(); }
 
@@ -30,9 +31,11 @@ if(empty($svc->cfg['ativo'])) { message('warning', 'Os resets pelo site estão d
 if(!empty($_SESSION['muchila_msg'])) { message('success', $h($_SESSION['muchila_msg'])); unset($_SESSION['muchila_msg']); }
 
 $maxStat = (int)$svc->cfg['max_stat'];
-message('info', 'O <strong>Reset normal</strong> é feito no jogo com <strong>/reset</strong> (nível 400). '
-	.'Aqui você faz o <strong>Master Reset</strong> (Master Level 600) e o <strong>Supreme Reset</strong> '
-	.'(nível 400 + Master 600 + atributos no máximo). Para resetar, é preciso <strong>sair do jogo</strong>.');
+message('info', 'Aqui você reseta com a conta <strong>fora do jogo</strong>: '
+	.'<strong>Reset</strong> (nível 400 → 1, com pontos escaláveis), '
+	.'<strong>Master Reset</strong> (Master Level 600) e '
+	.'<strong>Supreme Reset</strong> (nível 400 + Master 600 + atributos no máximo). '
+	.'Se a conta estiver online, o botão avisa para sair do jogo.');
 
 echo '<div class="panel panel-general"><div class="panel-body">';
 echo '<p><strong>Conta:</strong> '.$h($conta).' &nbsp;|&nbsp; <strong>Créditos:</strong> '.number_format($svc->creditos($conta),0,',','.').'</p>';
@@ -46,9 +49,11 @@ echo '<table class="table table-condensed"><thead><tr>'
 	.'</tr></thead><tbody>';
 foreach($chars as $c) {
 	$online = (int)$c['Online'] === 1;
-	$podeMaster  = !$online && (int)$c['MasterLevel'] === 600;
+	// os botões são habilitados pelo REQUISITO (a checagem de "fora do jogo" é feita ao clicar, com aviso claro)
 	$statsMax = (int)$c['Strength']>=$maxStat && (int)$c['Dexterity']>=$maxStat && (int)$c['Vitality']>=$maxStat && (int)$c['Energy']>=$maxStat;
-	$podeSupreme = !$online && (int)$c['cLevel'] === 400 && (int)$c['MasterLevel'] === 600 && $statsMax;
+	$podeReset   = (int)$c['cLevel'] === 400;
+	$podeMaster  = (int)$c['MasterLevel'] === 600;
+	$podeSupreme = (int)$c['cLevel'] === 400 && (int)$c['MasterLevel'] === 600 && $statsMax;
 
 	echo '<tr>';
 	echo '<td><strong>'.$h($c['Name']).'</strong>'.($online ? ' <span class="label label-warning">online</span>' : '').'</td>';
@@ -56,14 +61,14 @@ foreach($chars as $c) {
 	echo '<td>'.(int)$c['ResetCount'].'</td><td>'.(int)$c['MasterResetCount'].'</td><td>'.(int)$c['SupremeResetCount'].'</td>';
 	echo '<td>';
 	$f = '<form method="post" style="display:inline"><input type="hidden" name="csrf" value="'.$h($csrf).'"><input type="hidden" name="personagem" value="'.$h($c['Name']).'">';
-	// Master Reset
+	echo $f.'<button name="reset" class="btn btn-xs btn-default" '.($podeReset?'':'disabled').' '
+		.'onclick="return confirm(\'Reset em '.$h($c['Name']).'? Volta ao nível 1, zera os atributos e dá os pontos escaláveis.\')">Reset</button></form> ';
 	echo $f.'<button name="master" class="btn btn-xs btn-primary" '.($podeMaster?'':'disabled').' '
 		.'onclick="return confirm(\'Master Reset em '.$h($c['Name']).'? O Master Level e a árvore de skills serão zerados.\')">Master Reset</button></form> ';
-	// Supreme Reset
 	echo $f.'<button name="supreme" class="btn btn-xs btn-danger" '.($podeSupreme?'':'disabled').' '
 		.'onclick="return confirm(\'Supreme Reset em '.$h($c['Name']).'? TUDO será reiniciado (inclusive os resets normais voltam a 0).\')">Supreme Reset</button></form>';
 	echo '</td></tr>';
 }
 echo '</tbody></table>';
-echo '<p><small>Botões desativados = requisito não atingido ou conta online. Master: Master Level 600. '
-	.'Supreme: nível 400 + Master 600 + atributos no máximo ('.number_format($maxStat,0,',','.').').</small></p>';
+echo '<p><small>Reset: nível 400. Master: Master Level 600. Supreme: nível 400 + Master 600 + atributos no máximo ('.number_format($maxStat,0,',','.').'). '
+	.'Se a conta estiver <strong>online</strong>, o botão avisa para sair do jogo — não precisa ficar cinza.</small></p>';

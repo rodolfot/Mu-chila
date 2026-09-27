@@ -9,7 +9,7 @@
       "vip_dias": 30,
       "valor": 35.0,
       "ativo": true,
-      "zen": 200000000
+      "zen": 0
     },
     {
       "id": "vip2-30",
@@ -19,7 +19,7 @@
       "vip_dias": 30,
       "valor": 40.0,
       "ativo": true,
-      "zen": 500000000
+      "zen": 0
     },
     {
       "id": "vip3-30",
@@ -29,7 +29,7 @@
       "vip_dias": 30,
       "valor": 50.0,
       "ativo": true,
-      "zen": 2000000000
+      "zen": 0
     },
     {
       "id": "cash-200",

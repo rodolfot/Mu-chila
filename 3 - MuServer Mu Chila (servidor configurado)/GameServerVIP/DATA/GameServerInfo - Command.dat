@@ -159,7 +159,7 @@ CommandWareNumber_AL3 = 1
 ;==================================================
 ; Reset Command Settings
 ;==================================================
-CommandResetSwitch = 1
+CommandResetSwitch = 0
 CommandResetType = 0
 CommandResetEnable_AL0 = 1
 CommandResetEnable_AL1 = 1
