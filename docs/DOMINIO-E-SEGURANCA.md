@@ -75,7 +75,12 @@ Situação de partida (27/09/2026): tudo roda no IP do Radmin `26.139.39.123`. I
    .\Firewall-Servidor.ps1 -Aplicar -Jogo   # aplica (Caminho A). No Caminho B, sem -Jogo.
    ```
    Libera tudo pela rede do Radmin (ninguém cai), abre só as portas do jogo na internet e bloqueia SQL/RDP/DataServer/JoinServer/site.
-2. **Apache/PHP em produção**: `ServerTokens Prod`, `ServerSignature Off`, sem listagem de diretório, `display_errors=Off`. (Posso preparar o patch do `httpd.conf`/`php.ini` quando quiser.)
+2. **Apache/PHP em produção** — **já aplicado** (rodar de novo após reinstalar o site):
+   ```
+   .\Endurecer-Site.ps1            # mostra o que faria
+   .\Endurecer-Site.ps1 -Aplicar   # desliga listagem de pasta, cabecalhos de seguranca, use_strict_mode; valida e reinicia
+   ```
+   Já estavam ok no kit: `ServerTokens Prod`, `ServerSignature Off`, `TraceEnable Off`, `expose_php Off`, `display_errors Off`, `cookie_httponly`. Quando o HTTPS estiver 100%, descomentar o HSTS no `httpd.conf` e ligar `session.cookie_secure` no `php.ini`.
 3. **Anti-abuso** no site: limite de tentativas de login/cadastro e captcha no registro.
 4. Revisar a senha do admin do site e do SQL; segredos seguem fora do repositório.
 
