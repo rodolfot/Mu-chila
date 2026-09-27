@@ -150,7 +150,9 @@ $downloads = @(
     @{ arquivo = 'Patch Mu Chila - para quem ja tem o cliente.zip'; tipo = 2; titulo = 'Patch Mu Chila'
        descricao = 'Para quem já tem o cliente: extraia na pasta do cliente, substituindo os arquivos.' },
     @{ arquivo = 'LEIA-ME - Como jogar.txt'; tipo = 3; titulo = 'LEIA-ME: como jogar'
-       descricao = 'Radmin VPN, instalação, idioma português, resolução e comandos úteis.' }
+       descricao = 'Radmin VPN, instalação, idioma português, resolução e comandos úteis.' },
+    @{ arquivo = 'MuChilaLauncher.exe'; tipo = 2; titulo = 'Launcher Mu Chila (atualiza sozinho)'
+       descricao = 'Coloque na pasta do cliente, ao lado do main.exe, e abra: atualiza os arquivos e inicia o jogo.' }
 )
 $sql = New-Object Text.StringBuilder
 [void]$sql.AppendLine('SET NOCOUNT ON;')

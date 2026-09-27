@@ -141,6 +141,7 @@ public sealed class MainForm : Form
                     Log(ResetWatcher.SendToCharacterSelect(c));
             }),
             Btn("Desconectar todos os jogadores", () => { if (Confirm("Desconectar todos os jogadores (os personagens sao salvos)?")) LogAll(ServerControl.DisconnectAll()); }),
+            Btn("Publicar atualização do cliente", PublishClientUpdate),
             Btn("Abrir MuEditor", () => ServerControl.Open(ServerControl.MuEditorPath)),
             Btn("Abrir launcher", () => ServerControl.Open(ServerControl.LauncherPath)));
 
@@ -434,14 +435,14 @@ public sealed class MainForm : Form
             new Label { Text = "Loja de Cash (tecla X no jogo):", AutoSize = true, Padding = new Padding(0, 6, 6, 0) }, txtCashFind,
             Btn("Salvar e aplicar", SaveCash),
             Btn("Recarregar da pasta", () => { cashDirty = false; LoadCash(); }),
-            Btn("Gerar patch p/ amigos", GenerateCashPatch),
+            Btn("Publicar p/ launcher", GenerateCashPatch),
             lblCash);
         var help = new Label
         {
             Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
             Text = "O preço é em W Coin/Goblin (a moeda de cada pacote). Quem cobra é o servidor; o cliente só mostra. " +
                    "\"Na loja\" desmarcado esconde o pacote (dá para voltar depois). \"Salvar e aplicar\" faz backup, grava servidor + cliente e " +
-                   "recarrega a loja nos GameServers. Depois use \"Gerar patch\" para os amigos verem os nomes/preços novos.",
+                   "recarrega a loja nos GameServers. Depois use \"Publicar p/ launcher\" para os amigos receberem os nomes/preços novos.",
         };
         page.Controls.Add(gridCash);
         page.Controls.Add(help);
@@ -505,22 +506,23 @@ public sealed class MainForm : Form
         if (somenteServidor && !Confirm($"O cliente não foi encontrado em:\n{CashShop.ClientDir}\n\nVou gravar só no servidor (o jogo cobra o preço novo, mas a tela do cliente mostra o antigo). Continuar?")) return;
         Log(CashShop.Save(cashAll));
         LogAll(ServerControl.Reload("CashShop"));
-        if (!somenteServidor) Log("Cliente atualizado. Use \"Gerar patch p/ amigos\" para empacotar os arquivos novos.");
+        if (!somenteServidor) Log("Cliente atualizado. Use \"Publicar p/ launcher\" para enviar os arquivos novos aos amigos.");
         cashDirty = false; UpdateCashStatus();
     }
 
-    void GenerateCashPatch()
+    void GenerateCashPatch() => PublishClientUpdate();
+
+    /// <summary>
+    /// Publica a pasta do cliente do repositório para o Launcher (tools\Publicar-Launcher.ps1): espelha os arquivos em
+    /// Cliente para amigos\launcher e regrava o manifesto. Quem abre o jogo pelo MuChilaLauncher.exe recebe as mudanças.
+    /// </summary>
+    void PublishClientUpdate()
     {
-        if (!CashShop.ClientAvailable) { Log($"Cliente não encontrado em {CashShop.ClientDir}; nada a empacotar."); return; }
-        var script = Path.Combine(ServerControl.ServerRoot, @"..\Projetos\MuServer-Season14\tools\atualiza_zips2.ps1");
-        var repoScript = @"C:\Projetos\MuServer-Season14\tools\atualiza_zips2.ps1";
-        var used = File.Exists(repoScript) ? repoScript : script;
-        if (!File.Exists(used)) { Log($"Script de patch não encontrado ({used}). Gere o patch pelo tools\\atualiza_zips2.ps1."); return; }
-        if (!Confirm("Gerar o patch e o cliente completo dos amigos com os arquivos da loja novos? Pode levar alguns minutos (o cliente completo é grande).")) return;
-        const string sub = @"Data\InGameShopScript\512.2011.006\";
-        var args = $"-NoProfile -ExecutionPolicy Bypass -File \"{used}\" -Arquivos \"{sub}IBSPackage.txt\",\"{sub}IBSProduct.txt\",\"{sub}IBSCategory.txt\"";
-        Log("Gerando patch dos amigos em segundo plano (atualiza_zips2.ps1)...");
-        var psi = new System.Diagnostics.ProcessStartInfo("powershell.exe", args) { UseShellExecute = true };
+        const string script = @"C:\Projetos\MuServer-Season14\tools\Publicar-Launcher.ps1";
+        if (!File.Exists(script)) { Log($"Script não encontrado: {script}"); return; }
+        if (!Confirm("Publicar a atualização do cliente para o Launcher?\n\nCopia as mudanças da pasta do cliente do repositório (loja de cash, item.bmd, serverlist...) e gera a lista nova. Quem abrir o jogo pelo MuChilaLauncher.exe recebe na hora.")) return;
+        Log("Publicando a atualização do cliente em segundo plano (Publicar-Launcher.ps1)...");
+        var psi = new System.Diagnostics.ProcessStartInfo("powershell.exe", $"-NoProfile -ExecutionPolicy Bypass -NoExit -File \"{script}\"") { UseShellExecute = true };
         System.Diagnostics.Process.Start(psi);
     }
 
