@@ -8,4 +8,5 @@
   <Process Run="True" Delay="1000" Path="C:\MuServer\GameServerCS\Castle Siege Server.exe" Parameters="" />
   <Process Run="True" Delay="1000" Path="C:\MuServer\GameServer\Game Server S14.exe" Parameters="" />
   <Process Run="True" Delay="1000" Path="C:\MuServer\GameServerNonPvP\Game Server S14.exe" Parameters="" />
+  <Process Run="True" Delay="1000" Path="C:\MuServer\GameServerVIP\Game Server S14.exe" Parameters="" />
 </Processes>

@@ -31,6 +31,27 @@ Um segundo GameServer, **"Mu Chila Non-PvP"**. No cliente, ao clicar em "Mu Chil
 - **Mudança no `MapServerInfo.dat`:** exige reiniciar o Castle Siege, para ele saber devolver os jogadores ao 21.
 - **Histórico:** no primeiro dia foi montado com o código 80, como uma linha própria na lista ("Mu Chila Non-PvP", grupo 4 renomeado no cliente). O dono preferiu como sub-servidor do Mu Chila. Então virou o 21, e os arquivos do cliente voltaram ao original.
 
+## Servidor VIP (desde 27/09/2026)
+
+Terceiro GameServer, **"Mu Chila VIP"** (Mu Chila-3 no cliente): **sem PvP** e só para contas **Vip e Vipzão**.
+
+| O quê | Onde |
+|---|---|
+| Programa | `C:\MuServer\GameServerVIP` (cópia do Non-PvP); o launcher liga os três GameServers |
+| Identidade | `GameServerVIP\DATA\GameServerInfo - Common.dat`: `ServerName = Mu Chila VIP`, `ServerCode = 22`, `ServerPort = 55903`, `NonPK = 1`, **`ServerLock = 2`**, `IsArcaWarServer = 0` |
+| Lista de servidores | `ConnectServer\ServerList.dat`: linha 22 (era "Mu Chila 3", reservada pelo kit), `PasiveServer = 1` para o cliente mostrar "Non-PvP" |
+| Mapas | `Data\MapServerInfo.dat`: o 22 hospeda todos os mapas e manda os 48 de evento e de cerco para o Castle Siege, igual ao 20 e ao 21 |
+
+**`ServerLock` = nível mínimo de conta para entrar.** É um recurso do próprio MuDevs, descoberto lendo o código do GameServer em 27/09/2026:
+
+- O valor fica no objeto de configuração, `ServerInfo+0x6c` (0xB91B9C).
+- **Login (0x495F80 e 0x4963EE):** se `ServerLock` for maior que o nível da conta, o login é recusado com o código 9.
+- **Atualização da conta durante o jogo (0x49658F):** se o VIP vencer e o nível cair abaixo do `ServerLock`, o servidor tira o jogador em 5 segundos. O nível da conta fica no objeto do jogador em `+0x654`, e a validade, como texto, em `+0x658`.
+- **Status para o ConnectServer (0x496B07):** o servidor envia um sinal de "servidor travado".
+- **Valores:** 0 = todos; 1 = qualquer VIP; 2 = Vip e Vipzão; 3 = só Vipzão.
+
+Mudar a trava depois: edite o `ServerLock` no `Common.dat` do servidor e reinicie esse GameServer. Não conferi se o Reload Common também aplica.
+
 ## Painel Mu Chila Admin
 
 Atalho: `C:\MuServer\Mu Chila Admin.lnk` (programa em `C:\MuServer\MuChilaAdmin`, código em `tools\MuChilaAdmin`).
@@ -38,7 +59,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 
 | Aba | O que faz |
 |---|---|
-| **Servidor** | Mostra os 7 processos (os dois GameServers separados), os jogadores online (conta, personagem, IP) e jogadores e monstros de cada GameServer. Atualiza a cada 5 s. |
+| **Servidor** | Mostra os 8 processos (os três GameServers separados), os jogadores online (conta, personagem, IP) e jogadores e monstros de cada GameServer. Atualiza a cada 5 s. |
 | | Botões: iniciar e parar tudo pelo launcher, desconectar todos os jogadores (os personagens são salvos), abrir o MuEditor e o launcher. |
 | | "Recarregar sem reiniciar": manda o Reload escolhido para os dois GameServers **e** o Castle Siege ao mesmo tempo. |
 | **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |

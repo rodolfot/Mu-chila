@@ -26,6 +26,7 @@ public static class ServerControl
         ("Castle Siege Server", "Castle Siege Server", null),
         ("GameServer", "Game Server S14", "GameServer"),
         ("GameServer Non-PvP", "Game Server S14", "GameServerNonPvP"),
+        ("GameServer VIP", "Game Server S14", "GameServerVIP"),
     };
 
     public const string GameServerProcess = "Game Server S14";
@@ -92,7 +93,8 @@ public static class ServerControl
         foreach (var p in Process.GetProcessesByName(GameServerProcess).Where(UnderRoot).OrderBy(FolderOf))
         {
             var title = WindowTitle(FindMenuWindow(p.Id));
-            var nome = FolderOf(p).EndsWith("NonPvP", StringComparison.OrdinalIgnoreCase) ? "Non-PvP" : "Mu Chila";
+            var pasta = FolderOf(p);
+            var nome = pasta.EndsWith("NonPvP", StringComparison.OrdinalIgnoreCase) ? "Non-PvP" : pasta.EndsWith("VIP", StringComparison.OrdinalIgnoreCase) ? "VIP" : "Mu Chila";
             var players = Regex.Match(title, @"PlayerCount : ([^)]+)").Groups[1].Value;
             var monsters = Regex.Match(title, @"MonsterCount : (\d+)").Groups[1].Value;
             partes.Add($"{nome}: {(players == "" ? "-" : players)} jog., {(monsters == "" ? "-" : monsters)} mon.");

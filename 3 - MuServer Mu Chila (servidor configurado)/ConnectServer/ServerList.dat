@@ -12,7 +12,7 @@
 //ServerCode   PasiveServer	ServerName         ServerAddress      ServerPort       ServerType
 20             0 		"Mu Chila"       "26.139.39.123"        55901            "SHOW"
 21             1 		"Mu Chila Non-PvP"       "26.139.39.123"       55902            "SHOW"
-22             0 		"Mu Chila 3"       "26.139.39.123"       55903            "SHOW"
+22             1 		"Mu Chila VIP"       "26.139.39.123"       55903            "SHOW"
 120            0	        "Mu Chila BattleCore"       "26.139.39.123"        55904            "SHOW"
 19             0		"Mu Chila CastleSiege"     "26.139.39.123"        55919            "HIDE"
 end
