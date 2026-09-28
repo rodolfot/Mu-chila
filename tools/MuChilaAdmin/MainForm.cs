@@ -1379,7 +1379,7 @@ public sealed class MainForm : Form
 
         var note = new Label
         {
-            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
+            Dock = DockStyle.Top, Height = 74, Padding = new Padding(6),
             Text = "VIP e ban valem no próximo login da conta. Benefícios de cada nível (experiência, drop, pontos...) ficam nas linhas *_AL1/_AL2/_AL3 " +
                    "do GameServerInfo - Common.dat. Personagens, inventário e baú: use o MuEditor (aba Servidor). " +
                    "\"Dar pontos\": soma (ou tira, com número negativo) pontos de atributo ou master a um personagem. " +
