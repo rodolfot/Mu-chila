@@ -89,13 +89,8 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
     - Testado com o Mario: `/reset` às 16:04:44; às 16:04:50 foi para a seleção sem desconectar (`DelCharacterInfo` no log do GameServer).
   - Registro: `C:\MuServer\MuChilaAdmin\vigia.log`. Conferir sem mexer em nada: `MuChilaAdmin.exe --vigia-sondar C:\temp\vigia.txt`.
   - Botão "Levar à seleção de personagem" (aba Servidor): o mesmo que o jogador escolher "Trocar personagem" no jogo, sem desconectar.
-- Para recompilar depois de mudar o código:
-
-  ```powershell
-  dotnet publish .\tools\MuChilaAdmin\MuChilaAdmin.csproj -c Release -r win-x64 --self-contained false -o C:\MuServer\MuChilaAdmin
-  ```
-
-  Feche o painel antes, porque o `.exe` fica travado enquanto ele está aberto.
+  - Também: resets pedidos pelo site com o jogo aberto, bônus por tempo, avisos "enviar agora", [Passe dos Mapas](#passe-dos-mapas-acima-do-nível-400) (`vigia-passe-mapas.ligado`) e Magic Backpack (`vigia-mochila.ligado`).
+- Para publicar depois de mudar o código: feche o painel e rode `.\tools\Publicar-Painel.ps1`. Ele fecha o vigia, publica em `C:\MuServer\MuChilaAdmin`, cria as chaves `.ligado` que faltarem, refaz o atalho da pasta Inicializar, liga o vigia e mostra a sonda.
 
 ## Bônus de EXP e drop
 
