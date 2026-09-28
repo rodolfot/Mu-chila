@@ -222,6 +222,23 @@ static class Program
             return f;
         }
 
+        // "--cash-esconder <saida> <categoria:main> [...]": esconde pacotes da loja de cash (servidor e cliente), como o botão da
+        // aba Loja de Cash; a linha original fica guardada para poder voltar. Não recarrega (use Reload CashShop depois).
+        if (args.Length >= 3 && args[0] == "--cash-esconder")
+        {
+            try
+            {
+                var alvo = args.Skip(2).Select(a => a.Split(':')).Select(p => (int.Parse(p[0]), int.Parse(p[1]))).ToHashSet();
+                var lista = CashShop.List();
+                var achados = lista.Where(p => alvo.Contains((p.Category, p.Main))).ToList();
+                if (achados.Count != alvo.Count) throw new InvalidOperationException($"achei {achados.Count} de {alvo.Count} pacotes");
+                foreach (var p in achados) p.Hidden = true;
+                File.WriteAllText(args[1], "OK: " + CashShop.Save(lista) + Environment.NewLine + string.Join(Environment.NewLine, achados.Select(p => $"escondido: {p.Category},{p.Main} {p.Name} (preço {p.Price})")));
+                return 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "--criar-item <seção> <índice base> <nome> <saida>": cria um item novo a partir do base (use MUCHILA_ROOT/MUCHILA_CLIENTE
         // de CÓPIAS para testar; sem eles, mexe no servidor e no cliente de verdade, como o botão do painel).
         if (args.Length == 5 && args[0] == "--criar-item")
