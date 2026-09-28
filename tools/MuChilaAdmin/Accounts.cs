@@ -77,6 +77,39 @@ public static class Accounts
                $"pontos master agora = {(hasTree ? level : 0)} (antes {points}). Backup em {backup}";
     }
 
+    public static readonly string[] PointKinds = { "Pontos de atributo", "Pontos master" };
+
+    /// <summary>
+    /// Soma pontos livres ao personagem: kind 0 = Character.LevelUpPoint (distribuir em força, agilidade...),
+    /// kind 1 = MasterSkillTree.MasterPoint (árvore master; só quem já tem registro master). Quantidade negativa tira
+    /// (sem deixar abaixo de 0). A conta precisa estar offline: o servidor grava o personagem ao sair e desfaria a mudança.
+    /// Cada entrega fica em DB\muchila-pontos-dados.csv.
+    /// </summary>
+    public static string GivePoints(string account, string character, int kind, int amount)
+    {
+        if (amount == 0) throw new ArgumentException("Informe uma quantidade diferente de 0.");
+        if (Db.IsOnline(account)) throw new InvalidOperationException($"A conta {account} está online. Peça para sair do jogo e tente de novo.");
+        const string offline = "NOT EXISTS (SELECT 1 FROM MEMB_STAT WHERE memb___id = @a AND ConnectStat = 1)";
+        var (table, column) = kind == 1 ? ("MasterSkillTree", "MasterPoint") : ("Character", "LevelUpPoint");
+        var owner = kind == 1 ? "EXISTS (SELECT 1 FROM Character c WHERE c.Name = t.Name AND c.AccountID = @a)" : "t.AccountID = @a";
+
+        var t = Db.Query($"SELECT ISNULL(t.{column}, 0) AS P FROM {table} t WHERE t.Name = @n AND {owner}", ("@n", character), ("@a", account));
+        if (t.Rows.Count == 0)
+            return kind == 1 ? $"{character}: ainda não tem árvore master (precisa chegar ao nível 400 e entrar no jogo uma vez); nada foi alterado."
+                             : $"{character}: personagem não encontrado na conta {account}.";
+        long before = Convert.ToInt64(t.Rows[0]["P"]);
+        long after = Math.Clamp(before + amount, 0, int.MaxValue);
+
+        int n = Db.Execute($"UPDATE t SET t.{column} = @v FROM {table} t WHERE t.Name = @n AND {owner} AND ISNULL(t.{column}, 0) = @old AND {offline}",
+            ("@v", (int)after), ("@n", character), ("@a", account), ("@old", (int)before));
+        if (n != 1) throw new InvalidOperationException($"A conta {account} entrou no jogo (ou os pontos mudaram) durante a operação; nada foi alterado.");
+
+        var log = Path.Combine(ServerControl.ServerRoot, "DB", "muchila-pontos-dados.csv");
+        File.AppendAllText(log, $"{DateTime.Now:s};{account};{character};{PointKinds[kind]};{amount};{before};{after}{Environment.NewLine}");
+        var verb = amount > 0 ? $"+{amount}" : $"{amount}";
+        return $"{character}: {PointKinds[kind].ToLowerInvariant()} {verb} ({before} → {after}). Registro em {log}";
+    }
+
     static bool IsEmptySlot(byte[] b, int i) => b[i] == 0xFF && b[i + 1] == 0 && b[i + 2] == 0xFF;
 
     static Dictionary<int, int>? replaceMap;

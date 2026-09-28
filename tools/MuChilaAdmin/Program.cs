@@ -34,6 +34,17 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[3], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "MuChilaAdmin.exe --dar-pontos <conta> <personagem> <atributo|master> <quantidade> <arquivo>": o mesmo que o botao "Dar pontos"
+        if (args.Length == 6 && args[0] == "--dar-pontos")
+        {
+            try
+            {
+                int kind = args[3] switch { "atributo" => 0, "master" => 1, _ => throw new ArgumentException("tipo deve ser atributo ou master") };
+                File.WriteAllText(args[5], Accounts.GivePoints(args[1], args[2], kind, int.Parse(args[4]))); return 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[5], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "--agendar-bonus <tipos: 0=EXP,1=master,2=drop, ex. 0,1> <multiplicador> <minutos> <começa-em-minutos> <arquivo>":
         // só grava o BonusManager.dat e as mensagens (não recarrega nada). Usado para testar contra a cópia de testes (MUCHILA_ROOT).
         if (args.Length == 6 && args[0] == "--agendar-bonus")
