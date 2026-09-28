@@ -251,6 +251,20 @@ As caixas novas do S14 que abrem com o botão direito (Ruud Box, Earring Box, Gi
   - Os nomes e dicas de itens continuam em inglês, porque `item_por` e `itemtooltip_por` são cópias do inglês.
   - O texto da interface fica no `Data\Lang.mpr`, que é criptografado.
 
+## Resets pelo site (inclusive com o jogo aberto)
+
+Reset, Master Reset e Supreme Reset ficam em **Painel do jogador → Resets** (`modules\usercp\resets.php` + `includes\muchila\MuChilaResets.php`), pelas procedures `MuChila_Reset`, `MuChila_MasterReset` e `MuChila_SupremeReset` (`DB\1 - Querys\MuChila-Resets.sql`). O `/reset` do jogo está desligado. Comandos novos no jogo não são possíveis, porque o GameServer é fechado e nem registra o que o jogador digita.
+
+**Com a conta online (desde 28/09/2026):**
+1. O site grava um pedido em `dbo.MuChila_ResetPedido`, se o vigia estiver vivo (`dbo.MuChila_VigiaStatus`, atualizado a cada ~5 s).
+2. O vigia (`MuChilaAdmin --vigia-reset`) confere os pedidos a cada 1 s. Se o personagem estiver jogando, manda para a **seleção de personagem na hora** (a mesma rotina da opção "Trocar personagem", sem contagem na tela).
+3. Com o personagem fora do jogo há 2 s (tempo de o servidor gravá-lo), o vigia chama a procedure com `@IgnorarOnline = 1` e grava o resultado.
+4. A página mostra o andamento e se atualiza sozinha; o jogador entra de novo já resetado.
+
+- O vigia só age com **todos** os GameServers e o Castle Siege lidos, porque só assim tem certeza de que o personagem saiu do jogo.
+- Se o jogador entrar de novo antes do reset, o vigia espera ele sair outra vez. Pedido com mais de 3 minutos expira.
+- Sem o vigia, o site volta a pedir para sair do jogo.
+
 ## Evolução de classe (missões; `/change` desligado)
 
 **DW, DK, Elfa e Summoner já nascem na 2ª classe** (gatilho `TR_MuChila_ClasseInicial` no banco), porque o cliente S14 mostra a básica e a 2ª com o mesmo nome.

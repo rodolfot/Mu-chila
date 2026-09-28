@@ -92,10 +92,19 @@ public static class ResetWatcher
         var targets = new Dictionary<int, Target>();
         var nextHousekeeping = DateTime.MinValue;
         var nextBonus = DateTime.MinValue;
+        var nextQueue = DateTime.MinValue; var nextQueueError = DateTime.MinValue;
         while (true)
         {
             try
             {
+                // a cada 1 s: resets pedidos pelo site com a conta online (manda para a seleção e aplica)
+                if (DateTime.Now >= nextQueue)
+                {
+                    nextQueue = DateTime.Now.AddSeconds(1);
+                    try { foreach (var l in ProcessResetRequests(targets.Values.ToList())) Log("reset pelo site: " + l); }
+                    catch (Exception ex) { if (DateTime.Now >= nextQueueError) { nextQueueError = DateTime.Now.AddMinutes(5); Log("reset pelo site: " + ex.Message); } }
+                }
+
                 // a cada 5 s: bônus por tempo (liga e desliga as taxas na hora certa, avisa os jogadores)
                 if (DateTime.Now >= nextBonus)
                 {
@@ -329,6 +338,83 @@ public static class ResetWatcher
         }
         foreach (var gone in t.Seen.Keys.Where(k => !alive.Contains(k)).ToList()) t.Seen.Remove(gone);
     }
+
+    // ---------------- reset pelo site sem deslogar ----------------
+    // pedido → (quando mandou para a seleção, quando viu o personagem fora do jogo)
+    static readonly Dictionary<int, (DateTime Sent, DateTime? Left)> requests = new();
+    static DateTime nextBeat = DateTime.MinValue;
+
+    /// <summary>
+    /// Pedidos de reset feitos pelo site com a conta online (dbo.MuChila_ResetPedido). Personagem jogando → vai para a seleção
+    /// de personagem na hora (Trigger). Fora do jogo há 2 s (o servidor já gravou) → chama a procedure com @IgnorarOnline=1.
+    /// Só age quando TODOS os GameServers/Castle Siege rodando estão com a tabela de objetos lida (senão não dá para ter certeza
+    /// de que o personagem está fora do jogo). Pedido com mais de 3 minutos expira.
+    /// </summary>
+    static List<string> ProcessResetRequests(List<Target> targets)
+    {
+        var log = new List<string>();
+        if (DateTime.Now >= nextBeat)
+        {
+            nextBeat = DateTime.Now.AddSeconds(5);
+            Db.Execute("MERGE dbo.MuChila_VigiaStatus AS d USING (SELECT 1 AS Id) AS s ON d.Id = s.Id " +
+                       "WHEN MATCHED THEN UPDATE SET Batida = GETDATE() WHEN NOT MATCHED THEN INSERT (Id, Batida) VALUES (1, GETDATE());");
+        }
+        var pend = Db.Query("SELECT Id, Personagem, Tipo, Coins, MaxStat, Criado FROM dbo.MuChila_ResetPedido WHERE Status = 'pendente' ORDER BY Id");
+        if (pend.Rows.Count == 0) { requests.Clear(); return log; }
+
+        int running = new[] { ServerControl.GameServerProcess, ServerControl.CastleSiegeProcess }.Sum(n => Process.GetProcessesByName(n).Length);
+        var ready = targets.Where(t => t.Table != 0 && !t.Process.HasExited).ToList();
+        if (ready.Count < running) return log;   // algum servidor ainda não foi lido: espera
+        var playing = new Dictionary<string, (Target T, int Idx)>(StringComparer.OrdinalIgnoreCase);
+        foreach (var t in ready) foreach (var (idx, obj) in Players(t)) if (ReadName(obj) is { } n) playing[n] = (t, idx);
+
+        foreach (System.Data.DataRow r in pend.Rows)
+        {
+            int id = (int)r["Id"]; string name = (string)r["Personagem"], kind = (string)r["Tipo"];
+            if ((DateTime)r["Criado"] < DateTime.Now.AddMinutes(-3))
+            {
+                FinishRequest(id, "expirado", null, "O personagem não saiu do jogo a tempo. Peça de novo.");
+                requests.Remove(id); log.Add($"{name}: pedido {id} ({kind}) expirou"); continue;
+            }
+            if (playing.TryGetValue(name, out var p))
+            {
+                if (!requests.TryGetValue(id, out var st) || (st.Left == null && DateTime.Now - st.Sent > TimeSpan.FromSeconds(8)))
+                {   // manda (ou manda de novo, se não saiu em 8 s) para a seleção de personagem
+                    log.Add(Trigger(p.T, p.Idx, name, $"{kind} pedido pelo site"));
+                    requests[id] = (DateTime.Now, null);
+                }
+                else if (st.Left != null) requests[id] = (st.Sent, null);   // entrou de novo antes do reset: espera sair outra vez
+                continue;
+            }
+            if (requests.TryGetValue(id, out var a))
+            {
+                if (a.Left == null) { requests[id] = (a.Sent, DateTime.Now); continue; }
+                if (DateTime.Now - a.Left.Value < TimeSpan.FromSeconds(2)) continue;   // tempo para o servidor gravar o personagem
+            }
+            int res = RunReset(name, kind, (int)r["Coins"], (int)r["MaxStat"]);
+            FinishRequest(id, res == 0 ? "feito" : "erro", res, null);
+            requests.Remove(id);
+            log.Add($"{name}: {kind} aplicado (retorno {res})");
+        }
+        return log;
+    }
+
+    static int RunReset(string name, string kind, int coins, int maxStat)
+    {
+        string sql = kind switch
+        {
+            "reset" => "DECLARE @r int; EXEC @r = dbo.MuChila_Reset @Name = @n, @IgnorarOnline = 1; SELECT @r AS r",
+            "master" => "DECLARE @r int; EXEC @r = dbo.MuChila_MasterReset @Name = @n, @Coins = @c, @IgnorarOnline = 1; SELECT @r AS r",
+            "supreme" => "DECLARE @r int; EXEC @r = dbo.MuChila_SupremeReset @Name = @n, @Coins = @c, @MaxStat = @m, @IgnorarOnline = 1; SELECT @r AS r",
+            _ => throw new InvalidOperationException($"tipo de reset desconhecido: {kind}"),
+        };
+        var t = Db.Query(sql, ("@n", name), ("@c", coins), ("@m", maxStat));
+        return t.Rows.Count > 0 ? Convert.ToInt32(t.Rows[^1]["r"]) : -1;
+    }
+
+    static void FinishRequest(int id, string status, int? result, string? message) =>
+        Db.Execute("UPDATE dbo.MuChila_ResetPedido SET Status = @s, Resultado = @r, Mensagem = @m, Atualizado = GETDATE() WHERE Id = @id",
+            ("@s", status), ("@r", (object?)result ?? DBNull.Value), ("@m", (object?)message ?? DBNull.Value), ("@id", id));
 
     static string Trigger(Target t, int idx, string name, string why)
     {

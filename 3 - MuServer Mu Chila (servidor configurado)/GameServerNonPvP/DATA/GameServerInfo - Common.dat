@@ -159,9 +159,9 @@ ElfBufferDefenseConstB = 3
 ; Experience Settings
 ;==================================================
 AddExperienceRate_AL0 = 100
-AddExperienceRate_AL1 = 300
-AddExperienceRate_AL2 = 850
-AddExperienceRate_AL3 = 2000
+AddExperienceRate_AL1 = 130
+AddExperienceRate_AL2 = 150
+AddExperienceRate_AL3 = 180
 AddMasterExperienceRate_AL0 = 7
 AddMasterExperienceRate_AL1 = 20
 AddMasterExperienceRate_AL2 = 57
@@ -249,10 +249,10 @@ PlusStatPoint = 1
 CharacterCreateSwitch = 1
 MGCreateType = 0				
 DLCreateType = 0		
-SUCreateType = 0
-RFCreateType = 0
-GLCreateType = 0
-RWCreateType = 0
+SUCreateType = 1
+RFCreateType = 1
+GLCreateType = 1
+RWCreateType = 1
 MGCreateLevel_AL0 = 1
 MGCreateLevel_AL1 = 1
 MGCreateLevel_AL2 = 1

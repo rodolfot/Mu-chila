@@ -1,9 +1,9 @@
 <?php
 /**
- * Mu Chila - Resets avancados (Master e Supreme) pela area do jogador.
- * O Reset normal e feito no jogo (/reset). Master e Supreme sao feitos aqui, com o personagem OFFLINE,
- * chamando as procedures do banco (MuChila-Resets.sql): MuChila_MasterReset e MuChila_SupremeReset.
- * As procedures validam pre-requisitos e offline; ESTA classe valida que o personagem e da conta logada.
+ * Mu Chila - Reset, Master Reset e Supreme Reset pela area do jogador, chamando as procedures do banco
+ * (MuChila-Resets.sql). As procedures validam pre-requisitos e que a conta esta offline; ESTA classe valida que o
+ * personagem e da conta logada. Conta ONLINE: vira pedido (MuChila_ResetPedido) que o vigia do servidor aplica,
+ * mandando o personagem para a selecao de personagem na hora (reset sem deslogar, 28/09/2026).
  * Valores (creditos de recompensa, atributo maximo) ficam em includes/config/muchila.resets.json.
  */
 class MuChilaResets
@@ -88,14 +88,16 @@ class MuChilaResets
         $st->execute([$name]);
         $r = -1;
         do { $row = $st->fetch(PDO::FETCH_ASSOC); if (is_array($row) && array_key_exists('r', $row)) { $r = (int)$row['r']; break; } } while ($st->nextRowset());
+        if ($r === 2) return $this->pedir('reset', $name, $conta);
         return $this->mensagem($r, 'Reset feito! Nível de volta a 1, atributos zerados e pontos escaláveis adicionados.');
     }
 
     public function masterReset(string $name, string $conta): string
     {
         if (!$this->ehDaConta($name, $conta)) throw new Exception('Esse personagem não é da sua conta.');
-        return $this->mensagem($this->executar('MuChila_MasterReset', $name, (int)$this->cfg['master_creditos']),
-            'Master Reset feito! Master level e árvore de skills zerados; ' . (int)$this->cfg['master_creditos'] . ' créditos adicionados.');
+        $r = $this->executar('MuChila_MasterReset', $name, (int)$this->cfg['master_creditos']);
+        if ($r === 2) return $this->pedir('master', $name, $conta);
+        return $this->mensagem($r, 'Master Reset feito! Master level e árvore de skills zerados; ' . (int)$this->cfg['master_creditos'] . ' créditos adicionados.');
     }
 
     public function supremeReset(string $name, string $conta): string
@@ -107,7 +109,50 @@ class MuChilaResets
         $st->execute([$name, (int)$this->cfg['supreme_creditos'], (int)$this->cfg['max_stat']]);
         $r = -1;
         do { $row = $st->fetch(PDO::FETCH_ASSOC); if (is_array($row) && array_key_exists('r', $row)) { $r = (int)$row['r']; break; } } while ($st->nextRowset());
+        if ($r === 2) return $this->pedir('supreme', $name, $conta);
         return $this->mensagem($r, 'Supreme Reset feito! Tudo reiniciado e ' . (int)$this->cfg['supreme_creditos'] . ' créditos adicionados.');
+    }
+
+    // ---------- reset com a conta online (o vigia do servidor aplica) ----------
+    /** O vigia (programa do servidor) atualiza um sinal a cada ~5 s; sem ele não dá para resetar com a conta online. */
+    public function vigiaVivo(): bool
+    {
+        $v = $this->db->query("SELECT DATEDIFF(second, Batida, GETDATE()) FROM MuChila_VigiaStatus WHERE Id = 1")->fetchColumn();
+        return $v !== false && (int)$v < 20;
+    }
+
+    /**
+     * Conta online: grava o pedido. O vigia manda o personagem para a tela de seleção de personagem na hora (se ele estiver
+     * jogando), espera o servidor gravar e aplica o reset; o jogador entra de novo já resetado.
+     */
+    private function pedir(string $tipo, string $name, string $conta): string
+    {
+        if (!$this->vigiaVivo()) throw new Exception('Você precisa SAIR do jogo para resetar agora (o reset pelo jogo aberto está indisponível no momento).');
+        $st = $this->db->prepare("SELECT COUNT(*) FROM MuChila_ResetPedido WHERE Personagem = ? AND Status = 'pendente'");
+        $st->execute([$name]);
+        if ((int)$st->fetchColumn() > 0) return "Já tem um pedido em andamento para {$name}. Aguarde alguns segundos.";
+        $coins = $tipo === 'master' ? (int)$this->cfg['master_creditos'] : ($tipo === 'supreme' ? (int)$this->cfg['supreme_creditos'] : 0);
+        $st = $this->db->prepare("INSERT INTO MuChila_ResetPedido (Conta, Personagem, Tipo, Coins, MaxStat) VALUES (?, ?, ?, ?, ?)");
+        $st->execute([$conta, $name, $tipo, $coins, (int)$this->cfg['max_stat']]);
+        return "Pedido enviado! Se {$name} estiver no jogo, ele vai para a tela de seleção de personagem em instantes; "
+             . 'o reset é aplicado ali e é só entrar de novo. Acompanhe abaixo.';
+    }
+
+    /** Pedidos recentes da conta (últimos 30 minutos) com o resultado em texto. */
+    public function pedidos(string $conta): array
+    {
+        $st = $this->db->prepare("SELECT TOP 5 Id, Personagem, Tipo, Criado, Status, Resultado, Mensagem FROM MuChila_ResetPedido
+                                   WHERE Conta = ? AND Criado >= DATEADD(minute, -30, GETDATE()) ORDER BY Id DESC");
+        $st->execute([$conta]);
+        $out = [];
+        foreach ($st->fetchAll(PDO::FETCH_ASSOC) as $p) {
+            if ($p['Status'] === 'feito') $p['Texto'] = 'Feito! Entre de novo com o personagem.';
+            elseif ($p['Status'] === 'pendente') $p['Texto'] = 'Aguardando o personagem ir para a seleção de personagem...';
+            elseif ($p['Status'] === 'expirado') $p['Texto'] = (string)$p['Mensagem'];
+            else { try { $this->mensagem((int)$p['Resultado'], ''); $p['Texto'] = 'Erro.'; } catch (Exception $e) { $p['Texto'] = 'Não foi feito: ' . $e->getMessage(); } }
+            $out[] = $p;
+        }
+        return $out;
     }
 
     /** Cron: credita os Master Resets feitos NO JOGO ainda nao pagos (os do site ja saem creditados e marcados). */

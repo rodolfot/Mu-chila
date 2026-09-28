@@ -66,7 +66,8 @@ GO
 CREATE PROCEDURE dbo.MuChila_SupremeReset
     @Name varchar(10),
     @Coins int,          -- recompensa em creditos (o site define o valor)
-    @MaxStat int = 32767 -- "valor maximo permitido"; ajuste ao teto real do servidor
+    @MaxStat int = 32767, -- "valor maximo permitido"; ajuste ao teto real do servidor
+    @IgnorarOnline bit = 0 -- 1 so pelo vigia, depois de conferir que o personagem saiu do jogo (reset sem deslogar)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -79,7 +80,7 @@ BEGIN
     IF @Acc IS NULL RETURN 1;
 
     -- conta precisa estar deslogada (o GameServer sobrescreve o banco enquanto online)
-    IF EXISTS (SELECT 1 FROM dbo.MEMB_STAT WHERE memb___id=@Acc AND ConnectStat=1) RETURN 2;
+    IF @IgnorarOnline = 0 AND EXISTS (SELECT 1 FROM dbo.MEMB_STAT WHERE memb___id=@Acc AND ConnectStat=1) RETURN 2;
 
     SELECT @ML = MasterLevel FROM dbo.MasterSkillTree WHERE Name=@Name;
     SET @ML = ISNULL(@ML,0);
@@ -121,14 +122,15 @@ IF OBJECT_ID('dbo.MuChila_Reset') IS NOT NULL DROP PROCEDURE dbo.MuChila_Reset;
 GO
 CREATE PROCEDURE dbo.MuChila_Reset
     @Name varchar(10),
-    @PontosPorReset int = 300
+    @PontosPorReset int = 300,
+    @IgnorarOnline bit = 0   -- 1 so pelo vigia (reset sem deslogar)
 AS
 BEGIN
     SET NOCOUNT ON;
     DECLARE @Acc varchar(10), @Class tinyint, @Level int, @Novo int;
     SELECT @Acc=AccountID, @Class=Class, @Level=cLevel FROM dbo.[Character] WHERE Name=@Name;
     IF @Acc IS NULL RETURN 1;
-    IF EXISTS (SELECT 1 FROM dbo.MEMB_STAT WHERE memb___id=@Acc AND ConnectStat=1) RETURN 2;
+    IF @IgnorarOnline = 0 AND EXISTS (SELECT 1 FROM dbo.MEMB_STAT WHERE memb___id=@Acc AND ConnectStat=1) RETURN 2;
     IF @Level <> 400 RETURN 3;
     IF NOT EXISTS (SELECT 1 FROM dbo.MuChila_BaseStats WHERE Familia=(@Class/16)*16) RETURN 6;
 
@@ -566,14 +568,15 @@ IF OBJECT_ID('dbo.MuChila_MasterReset') IS NOT NULL DROP PROCEDURE dbo.MuChila_M
 GO
 CREATE PROCEDURE dbo.MuChila_MasterReset
     @Name varchar(10),
-    @Coins int
+    @Coins int,
+    @IgnorarOnline bit = 0   -- 1 so pelo vigia (reset sem deslogar)
 AS
 BEGIN
     SET NOCOUNT ON;
     DECLARE @Acc varchar(10), @ML int;
     SELECT @Acc=AccountID FROM dbo.[Character] WHERE Name=@Name;
     IF @Acc IS NULL RETURN 1;
-    IF EXISTS (SELECT 1 FROM dbo.MEMB_STAT WHERE memb___id=@Acc AND ConnectStat=1) RETURN 2;
+    IF @IgnorarOnline = 0 AND EXISTS (SELECT 1 FROM dbo.MEMB_STAT WHERE memb___id=@Acc AND ConnectStat=1) RETURN 2;
     SELECT @ML = MasterLevel FROM dbo.MasterSkillTree WHERE Name=@Name;
     IF ISNULL(@ML,0) <> 600 RETURN 4;
 
@@ -644,6 +647,20 @@ BEGIN
 END;
 GO
 
+/* 5b) Reset pelo site SEM deslogar (28/09/2026): com a conta online, o site grava um pedido aqui; o vigia
+   (MuChilaAdmin --vigia-reset) manda o personagem para a selecao de personagem, espera o servidor grava-lo e
+   chama a procedure com @IgnorarOnline=1. Status: pendente | feito | erro | expirado.
+   MuChila_VigiaStatus: o vigia atualiza a Batida a cada ~5 s; o site so aceita pedido com o vigia vivo. */
+IF OBJECT_ID('dbo.MuChila_ResetPedido') IS NULL
+    CREATE TABLE dbo.MuChila_ResetPedido (
+        Id int IDENTITY PRIMARY KEY, Conta varchar(10) NOT NULL, Personagem varchar(10) NOT NULL,
+        Tipo varchar(10) NOT NULL, Coins int NOT NULL DEFAULT (0), MaxStat int NOT NULL DEFAULT (0),
+        Criado datetime NOT NULL DEFAULT (GETDATE()), Status varchar(12) NOT NULL DEFAULT ('pendente'),
+        Resultado int NULL, Mensagem varchar(200) NULL, Atualizado datetime NULL);
+IF OBJECT_ID('dbo.MuChila_VigiaStatus') IS NULL
+    CREATE TABLE dbo.MuChila_VigiaStatus (Id int NOT NULL PRIMARY KEY, Batida datetime NOT NULL);
+GO
+
 /* 6) Permissoes: o usuario do site precisa poder EXECUTAR as procedures (o acesso as tabelas
    dentro delas vem por ownership chaining, mesmo dono dbo). Ajuste o nome se o login for outro. */
 IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = 'muchila_site')
@@ -654,6 +671,8 @@ BEGIN
     GRANT EXECUTE ON dbo.MuChila_CreditarMasterResets TO [muchila_site];
     GRANT SELECT, INSERT, UPDATE ON dbo.MuChila_Creditos TO [muchila_site];
     GRANT SELECT ON dbo.MuChila_BaseStats TO [muchila_site];
+    GRANT SELECT, INSERT ON dbo.MuChila_ResetPedido TO [muchila_site];
+    GRANT SELECT ON dbo.MuChila_VigiaStatus TO [muchila_site];
     PRINT 'permissoes concedidas a muchila_site';
 END
 ELSE PRINT 'AVISO: usuario muchila_site nao existe neste banco; ajuste o GRANT.';

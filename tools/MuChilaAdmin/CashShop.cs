@@ -189,5 +189,6 @@ public static class CashShop
             : $"Cash Shop salvo só no SERVIDOR (o cliente não foi achado em {ClientDir}). O jogo vai cobrar o preço novo, mas a tela mostra o antigo até você atualizar o cliente.";
     }
 
-    static void Backup(string file) => File.Copy(file, $"{file}.bak-{DateTime.Now:yyyyMMdd-HHmmss}", overwrite: false);
+    // milissegundos no nome: dois salvamentos no mesmo segundo (script + painel) não colidem
+    static void Backup(string file) => File.Copy(file, $"{file}.bak-{DateTime.Now:yyyyMMdd-HHmmss-fff}", overwrite: false);
 }

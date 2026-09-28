@@ -81,9 +81,9 @@ O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatu
 | Plano | Tipo de conta | Experiência | Experiência master | Drop | Zen no baú | Preço (30 dias) |
 |---|---|---|---|---|---|---|
 | Free | `_AL0` | 100x | 7x | 50% | — | — |
-| Vipzinho | `_AL1` | 300x | 20x | 80% | — (era 200.000.000) | R$ 35 |
-| Vip | `_AL2` | 850x | 57x | 110% | — (era 500.000.000) | R$ 40 |
-| Vipzão | `_AL3` | 2000x | 133x | 150% | — (era 2.000.000.000) | R$ 50 |
+| Vipzinho | `_AL1` | 130x | 20x | 80% | — (era 200.000.000) | R$ 35 |
+| Vip | `_AL2` | 150x | 57x | 110% | — (era 500.000.000) | R$ 40 |
+| Vipzão | `_AL3` | 180x | 133x | 150% | — (era 2.000.000.000) | R$ 50 |
 
 **27/09/2026:** o VIP **não dá mais Zen** (pedido do Mario, aprovado pelo dono): `zen = 0` nos pacotes. O mecanismo abaixo continua no código, caso volte.
 
@@ -146,7 +146,7 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\modules\info.php` | Página Informações com os valores reais do servidor |
 
 Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "Loja" no menu do topo e item "Loja: VIP e Cash" no menu do jogador; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin; módulos sem suporte desligados e link de senha do login; downloads da pasta "Cliente para amigos" e cache da página.
-Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas ("100x (VIP até 2000x)", drop "50% (VIP até 150%)"), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
+Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas ("100x dinâmico (VIP até +80%)", antes "100x (VIP até 2000x)", drop "50% (VIP até 150%)"), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
 
 **Atualizar o WebEngine**: baixar a versão nova, conferir, copiar por cima de `www` (sem `install`), rodar `Instalar-Modulos.ps1` e os dois testes.
 

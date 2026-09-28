@@ -31,11 +31,25 @@ if(empty($svc->cfg['ativo'])) { message('warning', 'Os resets pelo site estão d
 if(!empty($_SESSION['muchila_msg'])) { message('success', $h($_SESSION['muchila_msg'])); unset($_SESSION['muchila_msg']); }
 
 $maxStat = (int)$svc->cfg['max_stat'];
-message('info', 'Aqui você reseta com a conta <strong>fora do jogo</strong>: '
-	.'<strong>Reset</strong> (nível 400 → 1, com pontos escaláveis), '
+message('info', '<strong>Reset</strong> (nível 400 → 1, com pontos escaláveis), '
 	.'<strong>Master Reset</strong> (Master Level 600) e '
 	.'<strong>Supreme Reset</strong> (nível 400 + Master 600 + atributos no máximo). '
-	.'Se a conta estiver online, o botão avisa para sair do jogo.');
+	.'Pode resetar com o jogo aberto: o personagem vai para a <strong>tela de seleção de personagem</strong> na hora, '
+	.'o reset é aplicado e é só entrar de novo.');
+
+$pedidos = $svc->pedidos($conta);
+if($pedidos) {
+	$pendente = false;
+	echo '<table class="table table-condensed"><thead><tr><th>Pedido</th><th>Personagem</th><th>Tipo</th><th>Situação</th></tr></thead><tbody>';
+	$tipos = ['reset' => 'Reset', 'master' => 'Master Reset', 'supreme' => 'Supreme Reset'];
+	foreach($pedidos as $p) {
+		if($p['Status'] === 'pendente') $pendente = true;
+		$cls = ['feito' => 'success', 'pendente' => 'info', 'erro' => 'danger', 'expirado' => 'warning'][$p['Status']] ?? 'default';
+		echo '<tr class="'.$cls.'"><td>'.date('H:i:s', strtotime((string)$p['Criado'])).'</td><td>'.$h($p['Personagem']).'</td><td>'.$h($tipos[$p['Tipo']] ?? $p['Tipo']).'</td><td>'.$h($p['Texto']).'</td></tr>';
+	}
+	echo '</tbody></table>';
+	if($pendente) echo '<meta http-equiv="refresh" content="3">';   // acompanha até o vigia aplicar
+}
 
 echo '<div class="panel panel-general"><div class="panel-body">';
 echo '<p><strong>Conta:</strong> '.$h($conta).' &nbsp;|&nbsp; <strong>Créditos:</strong> '.number_format($svc->creditos($conta),0,',','.').'</p>';
@@ -71,4 +85,4 @@ foreach($chars as $c) {
 }
 echo '</tbody></table>';
 echo '<p><small>Reset: nível 400. Master: Master Level 600. Supreme: nível 400 + Master 600 + atributos no máximo ('.number_format($maxStat,0,',','.').'). '
-	.'Se a conta estiver <strong>online</strong>, o botão avisa para sair do jogo — não precisa ficar cinza.</small></p>';
+	.'Com o jogo aberto, o personagem vai para a seleção de personagem por alguns segundos enquanto o reset é aplicado.</small></p>';
