@@ -1374,6 +1374,7 @@ public sealed class MainForm : Form
                 return null;
             })),
             Btn("Desbanir", () => ForSelectedAccount(a => { Accounts.SetBanned(a, false); return $"{a}: desbanida"; })),
+            Btn("Dar pontos", () => ForSelectedAccount(GivePoints)),
             Btn("Zerar habilidades master", () => ForSelectedAccount(ClearMasterSkills)));
 
         var note = new Label
@@ -1381,7 +1382,8 @@ public sealed class MainForm : Form
             Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
             Text = "VIP e ban valem no próximo login da conta. Benefícios de cada nível (experiência, drop, pontos...) ficam nas linhas *_AL1/_AL2/_AL3 " +
                    "do GameServerInfo - Common.dat. Personagens, inventário e baú: use o MuEditor (aba Servidor). " +
-                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo. Com a conta online, o painel oferece forçar o logout.",
+                   "\"Dar pontos\": soma (ou tira, com número negativo) pontos de atributo ou master a um personagem. " +
+                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo. Com a conta online, esses dois oferecem forçar o logout.",
         };
         page.Controls.Add(Titled("Contas", gridAccounts));
         page.Controls.Add(bar);
@@ -1411,18 +1413,54 @@ public sealed class MainForm : Form
         Safe(RefreshServer, quiet: true);
     }
 
+    /// <summary>
+    /// O servidor grava o personagem ao sair: a conta precisa sair ANTES de mexer, senao a alteracao e desfeita.
+    /// Online → oferece forcar o logout. Devolve false se a conta continuar online.
+    /// </summary>
+    bool EnsureOffline(string account, string what)
+    {
+        if (!Db.IsOnline(account)) return true;
+        if (!Confirm($"A conta {account} está online. Para {what}, o jogador precisa sair do jogo antes.\n\n" +
+                     $"Forçar o logout e continuar?{SameIpWarning(account)}"))
+            return false;
+        RunForceLogout(account);
+        Thread.Sleep(3000);   // margem para o DataServer terminar de gravar o personagem
+        if (Db.IsOnline(account)) { Log($"{account} ainda aparece online; nada foi alterado. Tente de novo em alguns segundos."); return false; }
+        return true;
+    }
+
+    string? GivePoints(string account)
+    {
+        var names = Accounts.Characters(account);
+        if (names.Length == 0) { MessageBox.Show($"A conta {account} não tem personagens.", "Mu Chila Admin"); return null; }
+        using var dlg = new Form
+        {
+            Text = $"Dar pontos - conta {account}", FormBorderStyle = FormBorderStyle.FixedDialog, StartPosition = FormStartPosition.CenterParent,
+            MinimizeBox = false, MaximizeBox = false, ClientSize = new Size(340, 160), Font = new Font("Segoe UI", 9),
+        };
+        Label L(string text, int top) => new() { Text = text, Left = 12, Top = top + 3, AutoSize = true };
+        var chars = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Left = 110, Top = 12, Width = 218 };
+        chars.Items.AddRange(names.Cast<object>().ToArray()); chars.SelectedIndex = 0;
+        var kind = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Left = 110, Top = 44, Width = 218 };
+        kind.Items.AddRange(Accounts.PointKinds); kind.SelectedIndex = 0;
+        var amount = new NumericUpDown { Left = 110, Top = 76, Width = 100, Minimum = -100000, Maximum = 100000, Value = 100, ThousandsSeparator = true };
+        var ok = new Button { Text = "Dar", DialogResult = DialogResult.OK, Left = 172, Top = 122, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 253, Top = 122, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { L("Personagem:", 12), chars, L("Tipo:", 44), kind, L("Quantidade:", 76), amount,
+                                              new Label { Text = "(negativo tira)", Left = 216, Top = 79, AutoSize = true }, ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        if (dlg.ShowDialog() != DialogResult.OK) return null;
+
+        var character = (string)chars.SelectedItem!; int k = kind.SelectedIndex, n = (int)amount.Value;
+        if (n == 0) return "Quantidade 0: nada foi alterado.";
+        if (!Confirm($"{(n > 0 ? "Dar" : "Tirar")} {Math.Abs(n)} {Accounts.PointKinds[k].ToLowerInvariant()} {(n > 0 ? "a" : "de")} {character}?")) return null;
+        if (!EnsureOffline(account, "receber os pontos")) return null;
+        return Accounts.GivePoints(account, character, k, n);
+    }
+
     string? ClearMasterSkills(string account)
     {
-        if (Db.IsOnline(account))
-        {
-            // O servidor grava o personagem ao sair: a conta precisa sair ANTES de mexer, senao a alteracao e desfeita
-            if (!Confirm($"A conta {account} está online. Para zerar as habilidades master, o jogador precisa sair do jogo antes.\n\n" +
-                         $"Forçar o logout e continuar?{SameIpWarning(account)}"))
-                return null;
-            RunForceLogout(account);
-            Thread.Sleep(3000);   // margem para o DataServer terminar de gravar o personagem
-            if (Db.IsOnline(account)) { Log($"{account} ainda aparece online; nada foi alterado. Tente de novo em alguns segundos."); return null; }
-        }
+        if (!EnsureOffline(account, "zerar as habilidades master")) return null;
         var character = PickCharacter(account);
         if (character == null) return null;
         if (!Confirm($"Zerar as habilidades master de {character}?\n\nA árvore master é apagada, os pontos voltam a ficar livres (1 por Master Level) e os poderes master " +
