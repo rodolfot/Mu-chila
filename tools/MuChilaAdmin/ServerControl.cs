@@ -60,18 +60,60 @@ public static class ServerControl
     }
 
     /// <summary>Todos os GameServers e o Castle Siege rodando em ServerRoot (a pasta Data é compartilhada), com um rótulo para o log.</summary>
-    static IEnumerable<(string Label, Process Process)> GameServerProcesses()
+    static IEnumerable<(string Label, Process Process)> GameServerProcesses(bool withCastleSiege = true)
     {
-        foreach (var name in new[] { GameServerProcess, CastleSiegeProcess })
+        foreach (var name in withCastleSiege ? new[] { GameServerProcess, CastleSiegeProcess } : new[] { GameServerProcess })
             foreach (var p in Process.GetProcessesByName(name).Where(UnderRoot))
                 yield return (name == GameServerProcess ? $"{name} ({FolderOf(p)})" : name, p);
     }
 
-    /// <summary>Envia um comando de menu para todos os GameServers e o Castle Siege.</summary>
-    public static List<string> SendToGameServers(int menuId)
+    /// <summary>
+    /// Reload Monster SÓ nos GameServers: no Castle Siege ele recria os NPCs do castelo, e os mapas 31 e 41 que ele hospeda
+    /// pegam a mudança quando ele reinicia. Chame fora da invasão (InvasionEnd): com uma no ar, os monstros dela seguram
+    /// vagas e o último mapa carregado (127) fica sem parte dos monstros.
+    /// </summary>
+    public static List<string> ReloadMonstersNow() => SendToGameServers(ReloadIds["Monster"], withCastleSiege: false);
+
+    /// <summary>
+    /// Fim (com 15 s de folga) da invasão que estiver no ar pela agenda do Data\Event\InvasionManager.dat, ou null.
+    /// Mesma conta do Get-FimInvasaoAtiva do tools\Recarregar-Servidor.ps1: bloco 0 = agenda (Index Year Month Day DoW
+    /// Hour Minute Second, "*" = qualquer), bloco 1 = duração em segundos na coluna 5.
+    /// </summary>
+    public static DateTime? InvasionEnd(DateTime now)
+    {
+        var blocks = new Dictionary<int, List<string[]>>(); int? cur = null;
+        foreach (var raw in File.ReadLines(Path.Combine(ServerRoot, @"Data\Event\InvasionManager.dat"), Encoding.Latin1))
+        {
+            var l = Regex.Replace(raw, "//.*$", "").Trim();
+            if (l.Length == 0) continue;
+            if (cur == null && Regex.IsMatch(l, @"^\d+$")) { cur = int.Parse(l); blocks[cur.Value] = new(); continue; }
+            if (l.Equals("end", StringComparison.OrdinalIgnoreCase)) { cur = null; continue; }
+            if (cur != null) blocks[cur.Value].Add(Regex.Split(l, @"\s+"));
+        }
+        if (!blocks.TryGetValue(0, out var agenda) || !blocks.TryGetValue(1, out var duracoes)) return null;
+        var dur = new Dictionary<string, int>();
+        foreach (var c in duracoes) if (c.Length > 5 && int.TryParse(c[5], out var d)) dur[c[0]] = d;
+        static bool M(string v, int x) => v == "*" || (int.TryParse(v, out var n) && n == x);
+        DateTime? end = null;
+        foreach (var c in agenda)
+        {
+            if (c.Length < 8 || !dur.TryGetValue(c[0], out var d) || d <= 0) continue;
+            for (var t = now.AddSeconds(-d); t <= now; t = t.AddMinutes(1))
+            {
+                if (!(M(c[1], t.Year) && M(c[2], t.Month) && M(c[3], t.Day) && M(c[5], t.Hour) && M(c[6], t.Minute))) continue;
+                var start = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, int.TryParse(c[7].Replace("*", "0"), out var s) ? s : 0);
+                var fim = start.AddSeconds(d + 15);
+                if (start <= now && fim > now && (end == null || fim > end)) end = fim;
+            }
+        }
+        return end;
+    }
+
+    /// <summary>Envia um comando de menu para todos os GameServers e (por padrão) o Castle Siege.</summary>
+    public static List<string> SendToGameServers(int menuId, bool withCastleSiege = true)
     {
         var result = new List<string>();
-        foreach (var (label, p) in GameServerProcesses())
+        foreach (var (label, p) in GameServerProcesses(withCastleSiege))
         {
             var hwnd = FindMenuWindow(p.Id);
             if (hwnd == IntPtr.Zero) { result.Add($"{label}: janela não encontrada"); continue; }

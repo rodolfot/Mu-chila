@@ -136,6 +136,14 @@ static class Program
             catch (Exception ex) { Console.WriteLine("FALHA: " + ex.Message); return 1; }
         }
 
+        // "--testar-drops <saida>": roda contra MUCHILA_ROOT (use uma CÓPIA de Data\Item\ItemDrop.txt e Data\Monster\Monster.txt).
+        // Regravar sem mudar tem de sair idêntico; depois muda uma chance, cria e remove regra, troca taxas de um monstro e confere.
+        if (args.Length == 2 && args[0] == "--testar-drops")
+        {
+            int f = TestDrops(args[1]);
+            return f;
+        }
+
         // "--vigia-reset": laço do vigia do /reset (sem janela; uma instância só)
         if (args.Length == 1 && args[0] == "--vigia-reset")
             return ResetWatcher.Run();
@@ -159,6 +167,61 @@ static class Program
         return 0;
     }
 
+    static int TestDrops(string output)
+    {
+        var sb = new StringBuilder();
+        int failures = 0;
+        void Check(string name, bool ok, string extra = "") { if (!ok) failures++; sb.AppendLine($"{(ok ? "OK   " : "FALHA")} {name} {extra}"); }
+        try
+        {
+            if (!ServerControl.ServerRoot.Contains("teste", StringComparison.OrdinalIgnoreCase) && !ServerControl.ServerRoot.Contains("Temp", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException($"MUCHILA_ROOT ({ServerControl.ServerRoot}) não parece uma cópia de teste; nada foi feito.");
+            static string[] Lines(string f) => File.ReadAllText(f, System.Text.Encoding.Latin1).Split("\r\n");
+            static int Diff(string[] a, string[] b) => a.GroupBy(x => x).Sum(g => Math.Max(0, g.Count() - b.Count(y => y == g.Key)));
+
+            // ItemDrop.txt
+            var orig = File.ReadAllBytes(Drops.DropFile);
+            var rules = Drops.Load();
+            Drops.Save(rules);
+            Check("ItemDrop regravado sem mudança sai idêntico", File.ReadAllBytes(Drops.DropFile).SequenceEqual(orig), $"({rules.Count} regras)");
+
+            var antes = Lines(Drops.DropFile);
+            rules = Drops.Load();
+            int rate0 = rules[0].Rate, total = rules.Count;
+            rules[0].Rate = rate0 + 1;
+            var removida = rules[1];
+            rules.Remove(removida);
+            rules.Add(new DropRule { Item = 14 * 512 + 13, Monster = "354", Rate = Drops.ParsePercent("0,5"), Comment = "Jewel of Bless - teste" });
+            Drops.Save(rules);
+            var depois = Drops.Load();
+            var linhas = Lines(Drops.DropFile);
+            Check("quantidade de regras (1 removida, 1 nova)", depois.Count == total, $"{total} -> {depois.Count}");
+            Check("chance alterada gravada", depois[0].Rate == rate0 + 1);
+            var nova = depois.FirstOrDefault(r => r.Item == 14 * 512 + 13 && r.Monster == "354");
+            Check("regra nova lida de volta (0,5% = 5000)", nova != null && nova.Rate == 5000 && nova.Comment == "Jewel of Bless - teste");
+            Check("regra nova antes do \"end\" e arquivo termina em end+CRLF", linhas.Length >= 2 && linhas[^2].Trim() == "end" && linhas[^1] == "" && nova != null && Array.FindIndex(linhas, l => l.Contains("Jewel of Bless - teste")) < linhas.Length - 2);
+            Check("só 2 linhas mudaram de cada lado (alterada + removida / alterada + nova)", Diff(antes, linhas) == 2 && Diff(linhas, antes) == 2, $"saíram {Diff(antes, linhas)}, entraram {Diff(linhas, antes)}");
+            Check("Percent/ParsePercent", Drops.Percent(10000) == "1" && Drops.ParsePercent("1%") == 10000 && Drops.ParsePercent("0.1") == 1000);
+
+            // Monster.txt
+            var m0 = File.ReadAllText(Drops.MonsterFile, System.Text.Encoding.Latin1).Split("\r\n");
+            var rates = Drops.MonsterRates();
+            var bh = rates.First(r => r.Index == 354);
+            Drops.SaveMonsterRates(new[] { bh with { ItemRate = 999, MaxItemLevel = 12 } });
+            var m1 = File.ReadAllText(Drops.MonsterFile, System.Text.Encoding.Latin1).Split("\r\n");
+            var bh2 = Drops.MonsterRates().First(r => r.Index == 354);
+            Check("taxas do Blade Hunter gravadas", bh2.ItemRate == 999 && bh2.MaxItemLevel == 12 && bh2.MoneyRate == bh.MoneyRate, $"{bh.ItemRate}/{bh.MoneyRate}/{bh.MaxItemLevel} -> {bh2.ItemRate}/{bh2.MoneyRate}/{bh2.MaxItemLevel}");
+            int li = Array.FindIndex(m0, l => l.StartsWith("354 "));
+            Check("só a linha do Blade Hunter mudou", m0.Length == m1.Length && Enumerable.Range(0, m0.Length).Count(i => m0[i] != m1[i]) == 1 && m0[li] != m1[li]);
+            Check("colunas seguintes continuam alinhadas", m0[li].Length == m1[li].Length, $"({m0[li].Length} -> {m1[li].Length} caracteres)");
+            Check("demais monstros iguais", rates.Where(r => r.Index != 354).SequenceEqual(Drops.MonsterRates().Where(r => r.Index != 354)));
+        }
+        catch (Exception ex) { failures++; sb.AppendLine("FALHA inesperada: " + ex.Message); }
+        sb.AppendLine($"{failures} falha(s)");
+        File.WriteAllText(output, sb.ToString());
+        return failures;
+    }
+
     static int SelfTest(string output)
     {
         var sb = new StringBuilder();
@@ -169,7 +232,12 @@ static class Program
             catch (Exception ex) { failures++; sb.AppendLine($"FALHA {name}: {ex.Message}"); }
         }
 
-        Check("Janela do painel", () => { using var f = new MainForm(); return $"{f.Controls.OfType<TabControl>().Single().TabCount} abas"; });
+        Check("Janela do painel", () =>
+        {
+            using var f = new MainForm();
+            if (f.SafeErrors.Count > 0) throw new InvalidOperationException("erro ao montar a janela: " + string.Join("; ", f.SafeErrors));
+            return $"{f.Controls.OfType<TabControl>().Single().TabCount} abas";
+        });
         Check("Banco (contas)", () => $"{Accounts.List().Rows.Count} contas");
         Check("Banco (online)", () => $"{Accounts.Online().Rows.Count} online");
         Check("Servidores", () => string.Join(", ", ServerControl.Servers.Select(s => $"{s.Display}={(ServerControl.Find(s.Process, s.Folder) != null ? "rodando" : "parado")}")));
@@ -179,6 +247,8 @@ static class Program
         Check("Loja de Cash", () => { var l = CashShop.List(); return $"{l.Count} pacotes ({l.Count(p => p.HasClient)} com tela no cliente){(CashShop.ClientAvailable ? "" : "; cliente não encontrado")}"; });
         Check("Monstros (respawn)", () => { var m = Monsters.Maps(); return $"{m.Count} mapas, {m.Sum(x => x.Total)} monstros no total"; });
         Check("Comandos", () => $"{Commands.All.Count} comandos catalogados");
+        Check("Drops", () => $"{Drops.Load().Count} regras de item, {Drops.MonsterRates().Count} monstros com taxas");
+        Check("Invasão no ar", () => ServerControl.InvasionEnd(DateTime.Now) is { } fim ? $"até {fim:HH:mm:ss}" : "nenhuma");
         Check("Vigia do /reset", () => ResetWatcher.IsRunning() ? "rodando" : "parado");
         Check("MuEditor", () => File.Exists(ServerControl.MuEditorPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.MuEditorPath));
         Check("Launcher", () => File.Exists(ServerControl.LauncherPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.LauncherPath));

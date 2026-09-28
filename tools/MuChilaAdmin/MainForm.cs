@@ -70,6 +70,27 @@ public sealed class MainForm : Form
     string? monFile;
     bool monDirty;
 
+    // Drops (ItemDrop.txt + taxas do Monster.txt)
+    readonly DataGridView gridDrops = new()
+    {
+        Dock = DockStyle.Fill, AllowUserToAddRows = false, AllowUserToDeleteRows = false, SelectionMode = DataGridViewSelectionMode.CellSelect,
+        RowHeadersVisible = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = SystemColors.Window,
+    };
+    readonly DataGridView gridRates = new()
+    {
+        Dock = DockStyle.Fill, AllowUserToAddRows = false, AllowUserToDeleteRows = false, SelectionMode = DataGridViewSelectionMode.CellSelect,
+        RowHeadersVisible = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = SystemColors.Window,
+    };
+    readonly TextBox txtDropFind = new() { Width = 220, PlaceholderText = "filtrar item, monstro, mapa..." };
+    readonly TextBox txtRateFind = new() { Width = 220, PlaceholderText = "filtrar monstro..." };
+    readonly Label lblDrops = new() { AutoSize = true, Padding = new Padding(0, 6, 0, 0), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
+    readonly Label lblRates = new() { AutoSize = true, Padding = new Padding(0, 6, 0, 0), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
+    DataTable dropTable = new(), rateTable = new();
+    readonly Dictionary<DataRow, DropRule> dropRows = new();
+    Dictionary<int, string> monsterNames = new(), mapNames = new();
+    bool dropDirty, rateDirty, dropLoading;
+    System.Windows.Forms.Timer? monsterReloadTimer;
+
     // Resets (valores do site)
     readonly NumericUpDown numMasterCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
     readonly NumericUpDown numSupremeCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
@@ -103,6 +124,7 @@ public sealed class MainForm : Form
         tabs.TabPages.Add(CashShopTab());
         tabs.TabPages.Add(ResetsTab());
         tabs.TabPages.Add(MonstersTab());
+        tabs.TabPages.Add(DropsTab());
         tabs.TabPages.Add(CommandsTab());
         tabs.TabPages.Add(ItemsTab());
         tabs.TabPages.Add(AccountsTab());
@@ -148,7 +170,11 @@ public sealed class MainForm : Form
         cmbReload.Items.AddRange(ServerControl.ReloadIds.Keys.Cast<object>().ToArray());
         cmbReload.SelectedIndex = 0;
         var reloadBar = Bar(new Label { Text = "Recarregar sem reiniciar:", AutoSize = true, Padding = new Padding(0, 6, 0, 0) }, cmbReload,
-            Btn("Recarregar (GameServers + Castle Siege)", () => LogAll(ServerControl.Reload((string)cmbReload.SelectedItem!))), lblCounts);
+            Btn("Recarregar (GameServers + Castle Siege)", () =>
+            {
+                if ((string)cmbReload.SelectedItem! == "Monster") ReloadMonstersSafe();   // só GameServers e fora da invasão
+                else LogAll(ServerControl.Reload((string)cmbReload.SelectedItem!));
+            }), lblCounts);
 
         page.Controls.Add(Split(Titled("Processos", gridServers), Titled("Jogadores online", gridOnline), 0.5));
         page.Controls.Add(reloadBar);
@@ -321,7 +347,8 @@ public sealed class MainForm : Form
         right.Controls.Add(bar);
         page.Controls.Add(Split(Titled("NPC", lstShops), Titled("Itens à venda", right), 0.28));
         page.Controls.Add(help);
-        if (lstShops.Items.Count > 0) lstShops.SelectedIndex = 0;
+        // só depois de a janela existir (antes disso a grade não gera as colunas)
+        Shown += (_, _) => { if (lstShops.Items.Count > 0 && lstShops.SelectedIndex < 0) lstShops.SelectedIndex = 0; };
         return page;
     }
 
@@ -574,6 +601,262 @@ public sealed class MainForm : Form
         }));
     }
 
+    // ---------------- Drops (ItemDrop.txt + drop comum/zen do Monster.txt) ----------------
+    static readonly string[] DropOptCols = { "Op0", "Op1", "Op2", "Op3", "Op4", "Op5", "Op6" };
+    record Choice(string Value, string Text);
+
+    TabPage DropsTab()
+    {
+        var page = new TabPage("Drops");
+        var inner = new TabControl { Dock = DockStyle.Fill };
+
+        // 1) regras de item (ItemDrop.txt)
+        var p1 = new TabPage("Itens que os monstros dropam");
+        gridDrops.CellValueChanged += (_, e) => Safe(() => DropCellChanged(e));
+        gridDrops.DataError += (_, e) => { Log("Valor inválido."); e.Cancel = true; };
+        txtDropFind.TextChanged += (_, _) => Safe(FilterDrops);
+        var bar1 = Bar(txtDropFind,
+            Btn("Adicionar regra...", AddDropRule),
+            Btn("Escolher monstro...", () => PickForDrop(monstro: true)),
+            Btn("Escolher mapa...", () => PickForDrop(monstro: false)),
+            Btn("Remover", RemoveDropRule),
+            Btn("Salvar e aplicar", SaveDrops),
+            Btn("Descartar", () => { if (!dropDirty || Confirm("Descartar as alterações nos drops?")) LoadDrops(); }),
+            lblDrops);
+        var help1 = new Label
+        {
+            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
+            Text = "Cada linha: o item cai dos monstros que se encaixam em Mapa, Monstro e Nível mín/máx do monstro (\"*\" = qualquer), com a Chance em % " +
+                   "(1% = 1 em cada 100 monstros desses). Nível do item 0-15; Grade e Op0-Op6 como no cabeçalho do ItemDrop.txt (\"*\" = sorteado). " +
+                   "\"Salvar e aplicar\" faz backup do arquivo e recarrega os itens nos servidores, sem reiniciar.",
+        };
+        p1.Controls.Add(gridDrops); p1.Controls.Add(help1); p1.Controls.Add(bar1);
+
+        // 2) drop comum e zen por monstro (Monster.txt)
+        var p2 = new TabPage("Drop comum e zen por monstro");
+        gridRates.CellValueChanged += (_, e) => { if (!dropLoading && e.RowIndex >= 0) { rateDirty = true; UpdateRateStatus(); } };
+        gridRates.DataError += (_, e) => { Log("Valor inválido: use só números."); e.Cancel = true; };
+        txtRateFind.TextChanged += (_, _) => Safe(() => rateTable.DefaultView.RowFilter = txtRateFind.Text.Length == 0 ? "" : $"Monstro LIKE '%{LikeEsc(txtRateFind.Text)}%'");
+        var bar2 = Bar(txtRateFind,
+            Btn("Salvar e aplicar", SaveRates),
+            Btn("Descartar", () => { if (!rateDirty || Confirm("Descartar as alterações nas taxas?")) LoadRates(); }),
+            lblRates);
+        var help2 = new Label
+        {
+            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
+            Text = "Drop comum = chance de o monstro soltar um item comum sorteado, até o \"Nível máx. do item\"; Zen = chance de soltar zen " +
+                   "(o valor do zen segue a taxa de zen de cada plano). Números do kit: maior = mais vezes. \"Salvar e aplicar\" faz backup do Monster.txt " +
+                   "e recarrega os monstros nos GameServers assim que não houver invasão no ar (a dourada fica 9 de cada 10 minutos).",
+        };
+        p2.Controls.Add(gridRates); p2.Controls.Add(help2); p2.Controls.Add(bar2);
+
+        inner.TabPages.Add(p1); inner.TabPages.Add(p2);
+        page.Controls.Add(inner);
+        Shown += (_, _) => { Safe(LoadDrops); Safe(LoadRates); };
+        FormClosing += (_, e) =>
+        {
+            if (monsterReloadTimer != null && !Confirm("Há uma recarga de monstros esperando a invasão acabar. Se fechar agora, ela não acontece. Fechar mesmo assim?")) e.Cancel = true;
+            else if ((dropDirty || rateDirty) && !Confirm("Há alterações nos drops não salvas. Fechar mesmo assim?")) e.Cancel = true;
+        };
+        return page;
+    }
+
+    static string LikeEsc(string s) => string.Concat(s.Select(ch => ch is '*' or '%' or '[' or ']' ? $"[{ch}]" : ch == '\'' ? "''" : ch.ToString()));
+    string MapName(string v) => v == "*" ? "(todos)" : int.TryParse(v, out var n) && mapNames.TryGetValue(n, out var s) ? s : "(?)";
+    string MonName(string v) => v == "*" ? "(todos)" : int.TryParse(v, out var n) && monsterNames.TryGetValue(n, out var s) ? s : "(não existe)";
+
+    void LoadDrops()
+    {
+        monsterNames = Drops.MonsterNames();
+        mapNames = Monsters.Maps().GroupBy(m => m.Code).ToDictionary(g => g.Key, g => g.First().Name);
+        var t = new DataTable();
+        foreach (var c in new[] { "Item", "Código", "Nível", "Grade" }.Concat(DropOptCols)
+                     .Concat(new[] { "Duração", "Mapa", "Nome do mapa", "Monstro", "Nome do monstro", "Nível mín", "Nível máx", "Chance %", "Comentário" }))
+            t.Columns.Add(c);
+        dropRows.Clear();
+        foreach (var r in Drops.Load())
+        {
+            var row = t.NewRow();
+            row["Item"] = Shops.Name(r.Section, r.Type); row["Código"] = $"{r.Section},{r.Type}";
+            row["Nível"] = r.Level; row["Grade"] = r.Grade;
+            for (int i = 0; i < DropOptCols.Length; i++) row[DropOptCols[i]] = r.Options[i];
+            row["Duração"] = r.Duration; row["Mapa"] = r.Map; row["Nome do mapa"] = MapName(r.Map);
+            row["Monstro"] = r.Monster; row["Nome do monstro"] = MonName(r.Monster);
+            row["Nível mín"] = r.LevelMin; row["Nível máx"] = r.LevelMax;
+            row["Chance %"] = Drops.Percent(r.Rate).Replace('.', ','); row["Comentário"] = r.Comment;
+            t.Rows.Add(row); dropRows[row] = r;
+        }
+        dropLoading = true;
+        gridDrops.DataSource = dropTable = t;
+        foreach (var c in new[] { "Item", "Código", "Nome do mapa", "Nome do monstro" }) gridDrops.Columns[c]!.ReadOnly = true;
+        var pesos = new Dictionary<string, float> { ["Item"] = 170, ["Código"] = 45, ["Nome do mapa"] = 90, ["Nome do monstro"] = 110, ["Chance %"] = 50, ["Comentário"] = 150, ["Duração"] = 45, ["Monstro"] = 45 };
+        foreach (DataGridViewColumn c in gridDrops.Columns) c.FillWeight = pesos.TryGetValue(c.Name, out var w) ? w : 35;
+        dropLoading = false; dropDirty = false;
+        FilterDrops(); UpdateDropStatus();
+    }
+
+    void FilterDrops()
+    {
+        var f = LikeEsc(txtDropFind.Text.Trim());
+        dropTable.DefaultView.RowFilter = f.Length == 0 ? "" :
+            $"[Item] LIKE '%{f}%' OR [Nome do mapa] LIKE '%{f}%' OR [Nome do monstro] LIKE '%{f}%' OR [Comentário] LIKE '%{f}%' OR [Código] LIKE '%{f}%'";
+    }
+
+    void UpdateDropStatus() => lblDrops.Text = $"   {dropTable.Rows.Count} regras" + (dropDirty ? "   (não salvo)" : "");
+    void UpdateRateStatus() => lblRates.Text = $"   {rateTable.Rows.Count} monstros" + (rateDirty ? "   (não salvo)" : "");
+
+    void DropCellChanged(DataGridViewCellEventArgs e)
+    {
+        if (dropLoading || e.RowIndex < 0 || gridDrops.Rows[e.RowIndex].DataBoundItem is not DataRowView drv) return;
+        var col = gridDrops.Columns[e.ColumnIndex].Name;
+        dropLoading = true;
+        try
+        {
+            if (col == "Mapa") drv.Row["Nome do mapa"] = MapName((drv.Row["Mapa"] as string ?? "").Trim());
+            if (col == "Monstro") drv.Row["Nome do monstro"] = MonName((drv.Row["Monstro"] as string ?? "").Trim());
+        }
+        finally { dropLoading = false; }
+        dropDirty = true; UpdateDropStatus();
+    }
+
+    T? Pick<T>(string title, IReadOnlyList<T> all, Func<T, string> text) where T : class
+    {
+        using var dlg = new Form { Text = title, Width = 540, Height = 470, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        var search = new TextBox { Left = 12, Top = 12, Width = 500, PlaceholderText = "Digite parte do nome..." };
+        var list = new ListBox { Left = 12, Top = 42, Width = 500, Height = 340 };
+        void Filter()
+        {
+            list.BeginUpdate(); list.Items.Clear();
+            foreach (var x in all.Where(x => search.Text.Length == 0 || text(x).Contains(search.Text, StringComparison.OrdinalIgnoreCase)).Take(500)) list.Items.Add(x);
+            list.EndUpdate();
+        }
+        list.Format += (_, e) => { if (e.ListItem is T x) e.Value = text(x); };
+        list.DoubleClick += (_, _) => { if (list.SelectedItem != null) dlg.DialogResult = DialogResult.OK; };
+        search.TextChanged += (_, _) => Filter();
+        var ok = new Button { Text = "OK", DialogResult = DialogResult.OK, Left = 356, Top = 392, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 437, Top = 392, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { search, list, ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        Filter();
+        return dlg.ShowDialog(this) == DialogResult.OK ? list.SelectedItem as T : null;
+    }
+
+    void AddDropRule()
+    {
+        var item = Pick("Nova regra de drop: escolha o item", Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList(), d => $"{d.Name}   [{d.Section},{d.Type}]");
+        if (item == null) return;
+        var r = new DropRule { Item = item.Section * 512 + item.Type, Rate = 1000, Comment = item.Name + " - Mu Chila" };
+        txtDropFind.Text = "";
+        var row = dropTable.NewRow();
+        dropLoading = true;
+        row["Item"] = item.Name; row["Código"] = $"{item.Section},{item.Type}"; row["Nível"] = r.Level; row["Grade"] = r.Grade;
+        for (int i = 0; i < DropOptCols.Length; i++) row[DropOptCols[i]] = r.Options[i];
+        row["Duração"] = r.Duration; row["Mapa"] = r.Map; row["Nome do mapa"] = MapName(r.Map); row["Monstro"] = r.Monster; row["Nome do monstro"] = MonName(r.Monster);
+        row["Nível mín"] = r.LevelMin; row["Nível máx"] = r.LevelMax; row["Chance %"] = Drops.Percent(r.Rate).Replace('.', ','); row["Comentário"] = r.Comment;
+        dropTable.Rows.Add(row); dropRows[row] = r;
+        dropLoading = false;
+        dropDirty = true; UpdateDropStatus();
+        gridDrops.CurrentCell = gridDrops.Rows[^1].Cells["Monstro"];
+        Log($"Regra nova para {item.Name} (0,1%, qualquer monstro). Escolha o monstro ou o mapa e a chance, e salve.");
+    }
+
+    void PickForDrop(bool monstro)
+    {
+        if (gridDrops.CurrentRow?.DataBoundItem is not DataRowView drv) { Log("Clique numa regra primeiro."); return; }
+        var opcoes = new List<Choice> { new("*", "(todos)") };
+        opcoes.AddRange(monstro
+            ? monsterNames.OrderBy(k => k.Key).Select(k => new Choice(k.Key.ToString(), $"{k.Key} - {k.Value}"))
+            : mapNames.OrderBy(k => k.Key).Select(k => new Choice(k.Key.ToString(), $"{k.Key:000} - {k.Value}")));
+        var c = Pick(monstro ? "Escolha o monstro" : "Escolha o mapa", opcoes, x => x.Text);
+        if (c == null) return;
+        dropLoading = true;
+        if (monstro) { drv.Row["Monstro"] = c.Value; drv.Row["Nome do monstro"] = MonName(c.Value); }
+        else { drv.Row["Mapa"] = c.Value; drv.Row["Nome do mapa"] = MapName(c.Value); }
+        dropLoading = false;
+        dropDirty = true; UpdateDropStatus();
+    }
+
+    void RemoveDropRule()
+    {
+        if (gridDrops.CurrentRow?.DataBoundItem is not DataRowView drv) return;
+        dropRows.Remove(drv.Row); dropTable.Rows.Remove(drv.Row);
+        dropDirty = true; UpdateDropStatus();
+    }
+
+    void SaveDrops()
+    {
+        gridDrops.EndEdit();
+        var rules = new List<DropRule>();
+        foreach (DataRow row in dropTable.Rows)
+        {
+            var r = dropRows[row];
+            string S(string c) => (row[c] as string ?? "").Trim();
+            string V(string c, int min, int max) => Drops.Valid(S(c), min, max) ? S(c) : throw new InvalidOperationException($"{row["Item"]}: \"{c}\" inválido ({S(c)}). Use \"*\" ou um número de {min} a {max}.");
+            r.Level = V("Nível", 0, 15); r.Grade = V("Grade", 0, 255);
+            for (int i = 0; i < DropOptCols.Length; i++) r.Options[i] = V(DropOptCols[i], 0, 255);
+            r.Duration = V("Duração", 0, int.MaxValue); r.Map = V("Mapa", 0, 255); r.Monster = V("Monstro", 0, 65535);
+            r.LevelMin = V("Nível mín", 0, 1000); r.LevelMax = V("Nível máx", 0, 1000);
+            r.Rate = Drops.ParsePercent(S("Chance %"));
+            r.Comment = row["Comentário"] as string ?? "";
+            rules.Add(r);
+        }
+        var backup = Drops.Save(rules);
+        Log($"Drops salvos ({rules.Count} regras; backup {Path.GetFileName(backup)}).");
+        LogAll(ServerControl.Reload("Item"));
+        LoadDrops();
+    }
+
+    void LoadRates()
+    {
+        var t = new DataTable();
+        t.Columns.Add("Índice", typeof(int)); t.Columns.Add("Monstro"); t.Columns.Add("Nível", typeof(int));
+        t.Columns.Add("Drop comum", typeof(int)); t.Columns.Add("Zen", typeof(int)); t.Columns.Add("Nível máx. do item", typeof(int));
+        foreach (var m in Drops.MonsterRates()) t.Rows.Add(m.Index, m.Name, m.Level, m.ItemRate, m.MoneyRate, m.MaxItemLevel);
+        t.AcceptChanges();
+        dropLoading = true;
+        gridRates.DataSource = rateTable = t;
+        foreach (var c in new[] { "Índice", "Monstro", "Nível" }) gridRates.Columns[c]!.ReadOnly = true;
+        gridRates.Columns["Monstro"]!.FillWeight = 200;
+        dropLoading = false; rateDirty = false;
+        UpdateRateStatus();
+    }
+
+    void SaveRates()
+    {
+        gridRates.EndEdit();
+        if (rateTable.GetChanges(DataRowState.Modified) is not { } mudou) { Log("Nenhuma taxa mudou."); return; }
+        var list = new List<MonsterRate>();
+        foreach (DataRow r in mudou.Rows)
+        {
+            var m = new MonsterRate((int)r["Índice"], (string)r["Monstro"], (int)r["Nível"], (int)r["Drop comum"], (int)r["Zen"], (int)r["Nível máx. do item"]);
+            if (m.ItemRate < 0 || m.MoneyRate < 0 || m.MaxItemLevel is < 0 or > 15)
+                throw new InvalidOperationException($"{m.Name}: taxas não podem ser negativas e o nível máximo do item vai de 0 a 15.");
+            list.Add(m);
+        }
+        var (n, backup) = Drops.SaveMonsterRates(list);
+        Log($"Taxas de {n} monstro(s) salvas (backup {Path.GetFileName(backup)}).");
+        ReloadMonstersSafe();
+        LoadRates();
+    }
+
+    /// <summary>Reload Monster só nos GameServers e fora da invasão: com uma no ar, agenda para quando ela acabar (o painel precisa ficar aberto).</summary>
+    void ReloadMonstersSafe()
+    {
+        var fim = ServerControl.InvasionEnd(DateTime.Now);
+        if (fim == null)
+        {
+            monsterReloadTimer?.Dispose(); monsterReloadTimer = null;
+            LogAll(ServerControl.ReloadMonstersNow());
+            Log("Monstros recarregados nos GameServers. O Castle Siege (mapas 31 e 41) pega a mudança quando reiniciar.");
+            return;
+        }
+        if (monsterReloadTimer != null) { Log($"A recarga dos monstros já está agendada para depois da invasão (até {fim:HH:mm:ss})."); return; }
+        Log($"Invasão no ar até {fim:HH:mm:ss}: os monstros recarregam sozinhos depois dela. Deixe o painel aberto até lá.");
+        monsterReloadTimer = new System.Windows.Forms.Timer { Interval = (int)Math.Clamp((fim.Value - DateTime.Now).TotalMilliseconds + 1000, 1000, int.MaxValue) };
+        monsterReloadTimer.Tick += (_, _) => { monsterReloadTimer?.Dispose(); monsterReloadTimer = null; Safe(ReloadMonstersSafe); };
+        monsterReloadTimer.Start();
+    }
+
     // ---------------- Comandos (consulta) ----------------
     TabPage CommandsTab()
     {
@@ -692,8 +975,8 @@ public sealed class MainForm : Form
         if (monFile == null) return;
         gridMon.EndEdit();
         Monsters.Save(monFile, MonFromGrid());
-        Log($"Respawn salvo ({monTable.Rows.Count} spawns; backup .bak-* ao lado do arquivo). Recarregando monstros...");
-        LogAll(ServerControl.Reload("Monster"));
+        Log($"Respawn salvo ({monTable.Rows.Count} spawns; backup .bak-* ao lado do arquivo).");
+        ReloadMonstersSafe();
         monDirty = false; UpdateMonStatus();
         LoadMaps();   // atualiza a densidade
     }
@@ -992,9 +1275,18 @@ public sealed class MainForm : Form
     void Log(string text) => log.AppendText($"[{DateTime.Now:HH:mm:ss}] {text}{Environment.NewLine}");
     void LogAll(IEnumerable<string> lines) { foreach (var l in lines) Log(l); }
 
+    /// <summary>Erros engolidos pelo Safe (o autoteste confere que a janela abre sem nenhum).</summary>
+    internal readonly List<string> SafeErrors = new();
+
     void Safe(Action action, bool quiet = false)
     {
         try { action(); }
-        catch (Exception ex) { if (!quiet) Log("ERRO: " + ex.Message); }
+        catch (Exception ex)
+        {
+            SafeErrors.Add(ex.Message);
+            if (!quiet) Log("ERRO: " + ex.Message);
+            // detalhe completo (onde aconteceu) para diagnóstico, ao lado do executável
+            try { File.AppendAllText(Path.Combine(AppContext.BaseDirectory, "painel-erros.log"), $"{DateTime.Now:s} {ex}{Environment.NewLine}{Environment.NewLine}"); } catch { }
+        }
     }
 }
