@@ -237,4 +237,5 @@
 7387      *       *       300000        //Erohim's Nightmare
 7388      *       *       300000        //Hell Maine's Insanity
 7389      *       *       300000        //Kundun's Greed
+7293      *       *       20000000      //Package Box (Mu Chila, issue #29: caixa de prêmios)
 end

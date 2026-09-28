@@ -1,0 +1,21 @@
+//====================================================
+// Mu Chila - issue #29: caixa de prêmios
+//=====================================================
+0
+//EventName              DropZen   ItemDropRate   ItemDropCount   SetItemDropRate   ItemDropType   Fireworks
+"Package Box"
+	 0	   100		  1		  0		    0		   0
+end
+
+1
+//Section   Type   MinLevel   MaxLevel   Skill   Luck   Option   Excellent
+12          15     0          0          0       0      0        0
+12          15     0          0          0       0      0        0
+12          15     0          0          0       0      0        0
+14          13     0          0          0       0      0        0
+14          14     0          0          0       0      0        0
+14          70     0          0          0       0      0        0
+14          70     0          0          0       0      0        0
+14          71     0          0          0       0      0        0
+14          71     0          0          0       0      0        0
+end

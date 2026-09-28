@@ -2051,7 +2051,7 @@ end
 274 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Master EXP Potion (2)"			0 	 0 	 
 275 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Master EXP Potion (3)"			0 	 0 	 
 276 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Master EXP Potion (4)"			0 	 0 	 
-277 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Special Card"					0 	 0 	 
+277 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Special Card"					0 	 0 	 
 278 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Piece of Summoning Scroll"			0 	 0 	 
 279 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Master EXP Potion (5)"			0 	 0 	 
 280 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Master EXP Potion (6)"			0 	 0 	 
@@ -2161,7 +2161,7 @@ end
 426 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "60-Day Mastery Armor Box"			0 	 0 	 
 427 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "30-Day Mastery Armor Box"			0 	 0 	 
 428 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "3-Day Mastery Armor Box"			0 	 0 	 
-429 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "+11 3rd Wings Chest (Bound)"			0 	 0 	 
+429 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "+11 3rd Wings Chest (Bound)"			0 	 0 	 
 430 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Elena's Letter"				0 	 0 	 
 431 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Key of Dimension"				0 	 0 	 
 432 	 * 	 0 	 1 	 2 		 1 		 1 		 1 		 "[Boost] Arcanum of Health"			0 	 0 	 
