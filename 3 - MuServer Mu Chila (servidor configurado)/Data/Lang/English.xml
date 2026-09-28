@@ -508,6 +508,12 @@
 		<Msg ID="692" Text="The item restore function is currently disabled." />
 		<Msg ID="693" Text="Failed to load current item restore DB information." />
 		<Msg ID="694" Text="You can't use the item restore function, and you can't recover items that are currently on sale.." />
+		<Msg ID="700" Text="Evento: EXP + EXP master + Drop x10 por 1 hora! Vale para todos os planos até 21:18." />
+		<Msg ID="701" Text="O evento EXP + EXP master + Drop x10 terminou." />
+		<Msg ID="702" Text="Evento: EXP + EXP master + Drop x1,1 por 1 hora! Vale para todos os planos até 21:19." />
+		<Msg ID="703" Text="O evento EXP + EXP master + Drop x1,1 terminou." />
+		<Msg ID="704" Text="Evento: EXP + EXP master + Drop x10 por 1 hora! Vale para todos os planos até 22:18." />
+		<Msg ID="705" Text="O evento EXP + EXP master + Drop x10 terminou." />
 	</Message>
 	<MapName>
 		<Msg ID="0" Text="Lorencia" />
@@ -572,5 +578,11 @@
 		<Msg ID="207" Text="Player %s defeated Medusa!" />
 		<Msg ID="210" Text="Invasion of invoking Demons started!" />
 		<Msg ID="211" Text="Invasion of eggs Event started!" />
+		<Msg ID="700" Text="Evento: EXP + EXP master + Drop x10 por 1 hora! Vale para todos os planos até 21:18." />
+		<Msg ID="701" Text="O evento EXP + EXP master + Drop x10 terminou." />
+		<Msg ID="702" Text="Evento: EXP + EXP master + Drop x1,1 por 1 hora! Vale para todos os planos até 21:19." />
+		<Msg ID="703" Text="O evento EXP + EXP master + Drop x1,1 terminou." />
+		<Msg ID="704" Text="Evento: EXP + EXP master + Drop x10 por 1 hora! Vale para todos os planos até 22:18." />
+		<Msg ID="705" Text="O evento EXP + EXP master + Drop x10 terminou." />
 	</InvacionMsg>
 </Language>
