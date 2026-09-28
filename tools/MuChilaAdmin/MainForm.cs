@@ -128,6 +128,15 @@ public sealed class MainForm : Form
     readonly ComboBox cmbLevel = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 90 };
     readonly NumericUpDown numDays = new() { Minimum = 1, Maximum = 3650, Value = 30, Width = 70 };
 
+    // Passe dos Mapas
+    readonly DataGridView gridPasses = Grid(), gridPassMaps = Grid(), gridPassHistory = Grid();
+    readonly ComboBox cmbPassAccount = new() { Width = 130, DropDownStyle = ComboBoxStyle.DropDown, AutoCompleteMode = AutoCompleteMode.SuggestAppend, AutoCompleteSource = AutoCompleteSource.ListItems };
+    readonly NumericUpDown numPassAmount = new() { Minimum = 1, Maximum = 9999, Value = 1, Width = 60 };
+    readonly ComboBox cmbPassUnit = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 85 };
+    readonly CheckBox chkPassEnforced = new() { Text = "Vigia cobra o passe", AutoSize = true, Padding = new Padding(12, 5, 0, 0) };
+    readonly TextBox txtPassLog = new() { Multiline = true, ReadOnly = true, ScrollBars = ScrollBars.Vertical, Dock = DockStyle.Fill, Font = new Font("Consolas", 8.5f) };
+    readonly Label lblPass = new() { AutoSize = true, Padding = new Padding(8, 6, 0, 0) };
+
     public MainForm()
     {
         Text = "Mu Chila Admin";
@@ -148,6 +157,7 @@ public sealed class MainForm : Form
         tabs.TabPages.Add(ItemsTab());
         tabs.TabPages.Add(NewItemsTab());
         tabs.TabPages.Add(AccountsTab());
+        tabs.TabPages.Add(PassTab());
         Controls.Add(tabs);
         Controls.Add(log);
 
@@ -1453,6 +1463,83 @@ public sealed class MainForm : Form
         var msg = action(account);
         if (msg != null) Log(msg);
         RefreshAccounts();
+    }
+
+    // ---------------- Passe dos Mapas ----------------
+    TabPage PassTab()
+    {
+        var page = new TabPage("Passe dos Mapas");
+        cmbPassUnit.Items.AddRange(PassMaps.Units);
+        cmbPassUnit.SelectedIndex = 2;
+        chkPassEnforced.CheckedChanged += (_, _) => Safe(() =>
+        {
+            if (chkPassEnforced.Checked == PassMaps.Enforced) return;
+            if (!chkPassEnforced.Checked && !Confirm("Desligar a cobrança? Enquanto estiver desligada, qualquer conta entra nos mapas acima do nível 400 sem passe."))
+            { chkPassEnforced.Checked = true; return; }
+            PassMaps.Enforced = chkPassEnforced.Checked;
+            Log(chkPassEnforced.Checked ? "Passe dos Mapas: cobrança LIGADA (o vigia tira quem está sem passe)." : "Passe dos Mapas: cobrança DESLIGADA.");
+            RefreshPass();
+        });
+        gridPasses.SelectionChanged += (_, _) => { if (gridPasses.CurrentRow?.Cells["Conta"].Value is string a) cmbPassAccount.Text = a.Trim(); };
+
+        var bar = Bar(
+            Btn("Atualizar", RefreshPass),
+            new Label { Text = "Conta:", AutoSize = true, Padding = new Padding(8, 6, 0, 0) }, cmbPassAccount,
+            numPassAmount, cmbPassUnit,
+            Btn("Dar passe", () => WithPassAccount(a => PassMaps.Give(a, (int)numPassAmount.Value, cmbPassUnit.SelectedIndex))),
+            Btn("Tirar passe", () => WithPassAccount(a => Confirm($"Tirar o passe de {a}? Se estiver num mapa do passe, vai para a seleção de personagem em alguns segundos.") ? PassMaps.Remove(a) : null)),
+            chkPassEnforced, lblPass);
+
+        var note = new Label
+        {
+            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
+            Text = "Mapas acima do nível 400 só com passe ativo na CONTA. Sem passe, o vigia manda o personagem para a seleção de personagem e depois o põe em Lorencia. " +
+                   "Os jogadores ganham o passe usando o Gold Channel Ticket da Cash Shop (1, 3, 7 ou 30 dias) ou comprando na Loja do site. " +
+                   "Para testar: dê alguns minutos a uma conta, entre num desses mapas e espere vencer. O passe vale na hora, sem sair do jogo.",
+        };
+
+        var direita = new SplitContainer { Dock = DockStyle.Fill, Orientation = Orientation.Horizontal };
+        direita.Panel1.Controls.Add(Titled("Mapas que exigem passe", gridPassMaps));
+        direita.Panel2.Controls.Add(Titled("O que o vigia fez (vigia.log)", txtPassLog));
+        direita.SizeChanged += (_, _) => { if (direita.Height > 100) direita.SplitterDistance = (int)(direita.Height * 0.45); };
+        var esquerda = new SplitContainer { Dock = DockStyle.Fill, Orientation = Orientation.Horizontal };
+        esquerda.Panel1.Controls.Add(Titled("Contas com passe", gridPasses));
+        esquerda.Panel2.Controls.Add(Titled("Histórico (loja de cash, site e painel)", gridPassHistory));
+        esquerda.SizeChanged += (_, _) => { if (esquerda.Height > 100) esquerda.SplitterDistance = (int)(esquerda.Height * 0.5); };
+
+        page.Controls.Add(Split(esquerda, direita, 0.6));
+        page.Controls.Add(bar);
+        page.Controls.Add(note);
+        Shown += (_, _) => Safe(RefreshPass);
+        return page;
+    }
+
+    void RefreshPass()
+    {
+        var sel = cmbPassAccount.Text;
+        cmbPassAccount.Items.Clear();
+        cmbPassAccount.Items.AddRange(PassMaps.AccountNames().Cast<object>().ToArray());
+        cmbPassAccount.Text = sel;
+        gridPasses.DataSource = PassMaps.Passes();
+        gridPassMaps.DataSource = PassMaps.Maps();
+        gridPassMaps.Columns["Mapa"]!.FillWeight = 30;
+        gridPassHistory.DataSource = PassMaps.History();
+        gridPassHistory.Columns["Origem"]!.FillWeight = 140;
+        txtPassLog.Lines = PassMaps.WatcherLog();
+        bool on = PassMaps.Enforced;
+        chkPassEnforced.Checked = on;
+        lblPass.Text = !on ? "   cobrança desligada: todos entram sem passe"
+                     : ResetWatcher.IsRunning() ? "   vigia rodando" : "   ATENÇÃO: vigia parado, ninguém está sendo cobrado";
+        lblPass.ForeColor = on && ResetWatcher.IsRunning() ? SystemColors.ControlText : Color.Firebrick;
+    }
+
+    void WithPassAccount(Func<string, string?> action)
+    {
+        var account = cmbPassAccount.Text.Trim();
+        if (account.Length == 0) { Log("Escolha ou digite a conta."); return; }
+        var msg = action(account);
+        if (msg != null) Log(msg);
+        RefreshPass();
     }
 
     // ---------------- utilidades ----------------

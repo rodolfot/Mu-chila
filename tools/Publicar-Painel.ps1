@@ -1,4 +1,4 @@
-# Publica o Mu Chila Admin (painel + vigia) em C:\MuServer\MuChilaAdmin, liga o vigia com o Windows e confere.
+﻿# Publica o Mu Chila Admin (painel + vigia) em C:\MuServer\MuChilaAdmin, liga o vigia com o Windows e confere.
 # Rodar com o PAINEL FECHADO (o vigia em execução, oficial ou de teste, é fechado pelo próprio script).
 # Chaves do vigia (arquivos .ligado na pasta do painel): reset → seleção (#7), comandos curtos (/f /a /v /e /c),
 # Passe dos Mapas e Magic Backpack. Para desligar uma: apague o arquivo (o vigia confere a cada volta).

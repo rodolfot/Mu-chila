@@ -1,4 +1,4 @@
-# Loja de cash: "Gold Channel Ticket" (item 13,124) vira o Passe dos Mapas Exclusivos (decisão do dono, 28/09/2026).
+﻿# Loja de cash: "Gold Channel Ticket" (item 13,124) vira o Passe dos Mapas Exclusivos (decisão do dono, 28/09/2026).
 #  - Usar o ticket guardado na loja soma a duração ao passe da conta (procedure WZ_SetAccountLevel ajustada em
 #    DB\1 - Querys\MuChila-PasseMapas.sql). As 4 durações já existiam no kit: 1 dia, 3 dias e o pacote "7 ou 30 dias".
 #  - Preços: bem caros, perto do VIP do site (VIP R$35-50; o pacote de 500 cash custa R$45 no site).
@@ -15,7 +15,7 @@ param(
     [string]$Cliente = (Join-Path $PSScriptRoot '..\2 - Cliente Season 14 Full\Data\InGameShopScript\512.2011.006')
 )
 $ErrorActionPreference = 'Stop'
-$enc = [Text.Encoding]::Latin1; $stamp = '.bak-' + (Get-Date -f 'yyyyMMdd-HHmmss')
+$enc = [Text.Encoding]::GetEncoding(28591); $stamp = '.bak-' + (Get-Date -f 'yyyyMMdd-HHmmss')
 $fPac = Join-Path $Servidor 'CashShopPackage.txt'; $fProd = Join-Path $Servidor 'CashShopProduct.txt'
 $cPac = Join-Path $Cliente 'IBSPackage.txt'; $cProd = Join-Path $Cliente 'IBSProduct.txt'
 $fOrig = Join-Path $Servidor 'muchila-cash-passe-original.txt'

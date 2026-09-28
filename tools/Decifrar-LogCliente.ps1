@@ -1,4 +1,4 @@
-# Decifra o Logs\Error.log do cliente (XOR com chave de 16 bytes) e mostra as ultimas linhas.
+﻿# Decifra o Logs\Error.log do cliente (XOR com chave de 16 bytes) e mostra as ultimas linhas.
 # Util para ver "[Connect to Server] ip address = ..." e "Failed to connect".
 param(
     [string]$Arquivo = (Join-Path $PSScriptRoot '..\2 - Cliente Season 14 Full\Logs\Error.log'),
@@ -16,6 +16,6 @@ try {
 finally { $fs.Close() }
 
 for ($i = 0; $i -lt $dados.Length; $i++) { $dados[$i] = $dados[$i] -bxor $chave[$i % 16] }
-[Text.Encoding]::Latin1.GetString($dados) -split "`r?`n" |
+[Text.Encoding]::GetEncoding(28591).GetString($dados) -split "`r?`n" |
     Where-Object { $_ -notmatch '^[-#\s]*$' } |
     Select-Object -Last $Linhas

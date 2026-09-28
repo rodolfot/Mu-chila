@@ -1,4 +1,4 @@
-# Loja de cash (decisão do dono, 28/09/2026):
+﻿# Loja de cash (decisão do dono, 28/09/2026):
 #  1) Cartões de classe à venda SÓ na loja de cash, 500 WCoin (C): cria os pacotes de Rage Fighter, Grow Lancer e Rune Mage
 #     clonando o do Summoner (13,126 / produto 31,53), no servidor e no cliente.
 #  2) Chaos Card sai dos pacotes combinados ("Level up" normal/Master em C e P e "Gamble package"), sem apagar nada:
@@ -11,7 +11,7 @@ param(
     [string]$Cliente = (Join-Path $PSScriptRoot '..\2 - Cliente Season 14 Full\Data\InGameShopScript\512.2011.006')
 )
 $ErrorActionPreference = 'Stop'
-$enc = [Text.Encoding]::Latin1; $stamp = '.bak-' + (Get-Date -f 'yyyyMMdd-HHmmss')
+$enc = [Text.Encoding]::GetEncoding(28591); $stamp = '.bak-' + (Get-Date -f 'yyyyMMdd-HHmmss')
 $fPac = Join-Path $Servidor 'CashShopPackage.txt'; $fProd = Join-Path $Servidor 'CashShopProduct.txt'
 $cPac = Join-Path $Cliente 'IBSPackage.txt'; $cProd = Join-Path $Cliente 'IBSProduct.txt'
 $fOrig = Join-Path $Servidor 'muchila-cash-chaoscard-original.txt'

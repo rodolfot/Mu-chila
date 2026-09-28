@@ -49,6 +49,10 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[5], "ERRO: " + ex.Message); return 1; }
         }
 
+        // "--testar-passe <saida>": dá, soma e tira passe de uma conta descartável (passeteste), criada e apagada pelo teste
+        if (args.Length == 2 && args[0] == "--testar-passe")
+            return TestPass(args[1]);
+
         // "--testar-lojas <arquivo>": lê todas as lojas, simula o encaixe 8×15 e regrava cada uma sem mudar nada, conferindo
         // que os itens voltam iguais. Só roda contra uma cópia (MUCHILA_ROOT), nunca contra C:\MuServer.
         if (args.Length == 2 && args[0] == "--testar-lojas")
@@ -361,6 +365,40 @@ static class Program
         return failures;
     }
 
+    static int TestPass(string output)
+    {
+        var sb = new StringBuilder();
+        int failures = 0;
+        void Check(string name, bool ok, string extra = "") { if (!ok) failures++; sb.AppendLine($"{(ok ? "OK   " : "FALHA")} {name} {extra}"); }
+        const string acc = "passeteste";
+        void Limpar() => Db.Execute("DELETE dbo.MuChila_PasseMapasLog WHERE Conta = @a; DELETE dbo.MuChila_PasseMapas WHERE Conta = @a; DELETE dbo.MEMB_INFO WHERE memb___id = @a", ("@a", acc));
+        try
+        {
+            Limpar();
+            Db.Execute("INSERT dbo.MEMB_INFO (memb___id, memb__pwd, memb_name, sno__numb, mail_addr, bloc_code, ctl1_code, appl_days) " +
+                       "VALUES (@a, 'teste1', 'teste', '1', 'teste@exemplo.com', '0', '0', GETDATE())", ("@a", acc));
+            var r1 = PassMaps.Give(acc, 5, 0);
+            var e1 = PassMaps.Expiry(acc);
+            Check("5 minutos a partir de agora", e1 != null && Math.Abs((e1.Value - DateTime.Now.AddMinutes(5)).TotalSeconds) < 5, r1);
+            var r2 = PassMaps.Give(acc, 1, 2);
+            var e2 = PassMaps.Expiry(acc);
+            Check("+1 dia soma ao vencimento", e1 != null && e2 != null && Math.Abs((e2.Value - e1.Value.AddDays(1)).TotalSeconds) < 2, r2);
+            Check("aparece como ativo na lista", PassMaps.Passes().Select($"Conta = '{acc}' AND Falta <> 'vencido'").Length == 1);
+            var r3 = PassMaps.Remove(acc);
+            Check("tirar vence agora", PassMaps.Expiry(acc) is { } e3 && e3 <= DateTime.Now.AddSeconds(1), r3);
+            Check("tirar de novo avisa que não tem passe", PassMaps.Remove(acc).Contains("não tem passe ativo"));
+            Check("histórico com as 3 ações", PassMaps.History(500).Select($"Conta = '{acc}'").Length == 3);
+            try { PassMaps.Give("naoexiste__", 1, 2); Check("conta inexistente é recusada", false); }
+            catch (InvalidOperationException ex) { Check("conta inexistente é recusada", true, ex.Message); }
+            Check("lista de mapas (12 acima do 400)", PassMaps.Maps().Rows.Count == 12, $"({PassMaps.Maps().Rows.Count})");
+        }
+        catch (Exception ex) { failures++; sb.AppendLine("FALHA inesperada: " + ex); }
+        finally { try { Limpar(); sb.AppendLine("limpeza: conta passeteste, passe e histórico apagados"); } catch (Exception ex) { sb.AppendLine("FALHA na limpeza: " + ex.Message); } }
+        sb.AppendLine($"resultado: {failures} falha(s)");
+        File.WriteAllText(output, sb.ToString());
+        return failures;
+    }
+
     static int SelfTest(string output)
     {
         var sb = new StringBuilder();
@@ -390,6 +428,7 @@ static class Program
         Check("Drops", () => $"{Drops.Load().Count} regras de item, {Drops.MonsterRates().Count} monstros com taxas");
         Check("Invasão no ar", () => ServerControl.InvasionEnd(DateTime.Now) is { } fim ? $"até {fim:HH:mm:ss}" : "nenhuma");
         Check("Vigia do /reset", () => ResetWatcher.IsRunning() ? "rodando" : "parado");
+        Check("Passe dos Mapas", () => $"{PassMaps.Maps().Rows.Count} mapas, {PassMaps.Passes().Select("Falta <> 'vencido'").Length} conta(s) com passe ativo, cobrança {(PassMaps.Enforced ? "ligada" : "desligada")}");
         Check("MuEditor", () => File.Exists(ServerControl.MuEditorPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.MuEditorPath));
         Check("Launcher", () => File.Exists(ServerControl.LauncherPath) ? "encontrado" : throw new FileNotFoundException(ServerControl.LauncherPath));
 
