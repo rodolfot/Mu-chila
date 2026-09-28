@@ -44,9 +44,9 @@ foreach($mcPacotes as $mcP) {
 ksort($mcPlanos);
 
 // Chaos Machine: -1 no arquivo = a chance depende do valor dos itens colocados
-$mcTaxa = function(string $mcChave) use ($mcChaos) {
-	if(!isset($mcChaos[$mcChave . '_AL0'])) return null;
-	$mcV = (int)$mcChaos[$mcChave . '_AL0'];
+$mcTaxa = function(string $mcChave, int $mcNivel = 0) use ($mcChaos) {
+	if(!isset($mcChaos[$mcChave . '_AL' . $mcNivel])) return null;
+	$mcV = (int)$mcChaos[$mcChave . '_AL' . $mcNivel];
 	return $mcV < 0 ? 'depende dos itens' : $mcV . '%';
 };
 $mcCombinacoes = [
@@ -84,7 +84,8 @@ echo '<div class="page-title"><span>'.lang('module_titles_txt_17').'</span></div
 
 <h2>Planos</h2>
 <table class="table table-condensed table-hover table-striped table-bordered">
-	<thead><tr><th>Plano</th><th class="text-center">Experiência</th><th class="text-center">Experiência master</th><th class="text-center">Drop</th><th class="text-center">Zen no baú</th><th class="text-center">Preço</th></tr></thead>
+	<thead><tr><th>Plano</th><th class="text-center">Experiência</th><th class="text-center">Experiência master</th><th class="text-center">Drop</th>
+		<th class="text-center">Baús</th><th class="text-center">Jewel of Soul / Life / Harmony</th><th class="text-center">Zen no baú</th><th class="text-center">Preço</th></tr></thead>
 	<tbody>
 	<?php foreach($mcPlanos as $mcNivel => $mcP) { ?>
 		<tr>
@@ -92,24 +93,39 @@ echo '<div class="page-title"><span>'.lang('module_titles_txt_17').'</span></div
 			<td class="text-center"><?php echo $mcH($mcCommon['AddExperienceRate_AL'.$mcNivel] ?? '?'); ?>x</td>
 			<td class="text-center"><?php echo $mcH($mcCommon['AddMasterExperienceRate_AL'.$mcNivel] ?? '?'); ?>x</td>
 			<td class="text-center"><?php echo $mcH($mcCommon['ItemDropRate_AL'.$mcNivel] ?? '?'); ?>%</td>
+			<td class="text-center"><?php echo $mcLigado('Ware') ? 1 + (int)($mcCommand['CommandWareNumber_AL'.$mcNivel] ?? 0) : 1; ?></td>
+			<td class="text-center"><?php echo implode(' / ', array_map(fn($mcJ) => $mcH($mcCommon[$mcJ.'SuccessRate_AL'.$mcNivel] ?? '?').'%', ['Soul', 'Life', 'Harmony'])); ?></td>
 			<td class="text-center"><?php echo $mcP['zen'] ? $mcNum($mcP['zen']) : '—'; ?></td>
 			<td class="text-center"><?php echo $mcP['valor'] === null ? 'grátis' : 'R$ '.number_format((float)$mcP['valor'], 2, ',', '.').' / '.$mcH($mcP['dias']).' dias'; ?></td>
 		</tr>
 	<?php } ?>
 	</tbody>
 </table>
+<?php
+// EXP dinâmica: Data\Util\ExperienceTable.txt (% da taxa do plano por faixa de nível; 100 = normal)
+$mcCurva = [];
+foreach(@file($muchilaRaiz . '/Data/Util/ExperienceTable.txt', FILE_IGNORE_NEW_LINES) ?: [] as $mcL)
+	if(preg_match('/^\s*(\d+)\s+(\d+)\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+(\d+)\s*$/', $mcL, $mcM) && (int)$mcM[2] < 400)
+		$mcCurva[] = $mcM[1] . '–' . $mcM[2] . ': ' . $mcM[3] . '%';
+if($mcCurva) { ?>
+<p><strong>EXP dinâmica:</strong> a experiência acima vale nos níveis baixos e vai afunilando conforme o personagem sobe
+	(porcentagem da taxa do plano, igual para todos os planos): <?php echo $mcH(implode(' · ', $mcCurva)); ?>.</p>
+<?php } ?>
 <p>O VIP vale a partir do próximo login. O Zen vai para o baú da conta. Compre na <a href="<?php echo __BASE_URL__; ?>usercp/loja">Loja</a> (área do jogador).</p>
 
 <h2>Chaos Machine</h2>
 <table class="table table-condensed table-hover table-striped table-bordered">
-	<thead><tr><th>Combinação</th><th class="text-center" style="width:35%;">Chance máxima</th></tr></thead>
+	<thead><tr><th>Combinação</th>
+	<?php if($mcVipIgual) { ?><th class="text-center" style="width:35%;">Chance máxima</th>
+	<?php } else foreach($mcPlanos as $mcP) { ?><th class="text-center"><?php echo $mcH($mcP['nome']); ?></th><?php } ?></tr></thead>
 	<tbody>
-	<?php foreach($mcCombinacoes as $mcNome => $mcChave) { $mcT = $mcTaxa($mcChave); if($mcT === null) continue; ?>
-		<tr><td><?php echo $mcH($mcNome); ?></td><td class="text-center"><?php echo $mcH($mcT); ?></td></tr>
+	<?php foreach($mcCombinacoes as $mcNome => $mcChave) { if($mcTaxa($mcChave) === null) continue; ?>
+		<tr><td><?php echo $mcH($mcNome); ?></td>
+		<?php foreach($mcVipIgual ? [0] : array_keys($mcPlanos) as $mcNivel) { ?><td class="text-center"><?php echo $mcH($mcTaxa($mcChave, $mcNivel)); ?></td><?php } ?></tr>
 	<?php } ?>
 	</tbody>
 </table>
-<p><?php echo $mcVipIgual ? 'As chances são as mesmas para todos os planos.' : 'Contas VIP podem ter chances diferentes.'; ?>
+<p><?php echo $mcVipIgual ? 'As chances são as mesmas para todos os planos.' : 'Chance máxima de cada plano.'; ?>
 	"Depende dos itens": a chance aumenta com o valor dos itens colocados na máquina.</p>
 
 <h2>Comandos</h2>

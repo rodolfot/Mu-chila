@@ -72,6 +72,9 @@ public sealed class MainForm : Form
     string? monFile;
     bool monDirty;
 
+    // Fotos dos itens (MuEditor)
+    readonly ItemPicture picShop = new(), picDrops = new(), picItems = new();
+
     // Drops (ItemDrop.txt + taxas do Monster.txt)
     readonly DataGridView gridDrops = new()
     {
@@ -361,6 +364,12 @@ public sealed class MainForm : Form
         var right = new Panel { Dock = DockStyle.Fill };
         right.Controls.Add(gridShop);
         right.Controls.Add(bar);
+        right.Controls.Add(picShop);
+        gridShop.CurrentCellChanged += (_, _) => Safe(() =>
+        {
+            if (gridShop.CurrentRow?.DataBoundItem is DataRowView r) picShop.Show((int)r["Seção"], (int)r["Tipo"], r["Item"] as string);
+            else picShop.Show(null, null);
+        }, quiet: true);
         page.Controls.Add(Split(Titled("NPC", lstShops), Titled("Itens à venda", right), 0.28));
         page.Controls.Add(help);
         // só depois de a janela existir (antes disso a grade não gera as colunas)
@@ -423,7 +432,9 @@ public sealed class MainForm : Form
     void AddShopItem()
     {
         if (shopShown < 0) return;
-        using var dlg = new Form { Text = "Adicionar item à loja", Width = 520, Height = 480, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        using var dlg = new Form { Text = "Adicionar item à loja", Width = 650, Height = 480, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        var foto = new ItemPicture { Dock = DockStyle.None, Left = 502, Top = 42, Width = 118, Height = 300 };
+        dlg.Controls.Add(foto);
         var search = new TextBox { Left = 12, Top = 12, Width = 480, PlaceholderText = "Digite parte do nome (ex.: Jewel, Healing, Dragon)..." };
         var list = new ListBox { Left = 12, Top = 42, Width = 480, Height = 300 };
         var all = Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList();
@@ -435,6 +446,7 @@ public sealed class MainForm : Form
             list.EndUpdate();
         }
         list.Format += (_, e) => { if (e.ListItem is ItemDef d) e.Value = $"{d.Name}   [{d.Section},{d.Type}]  {d.Width}×{d.Height}"; };
+        list.SelectedIndexChanged += (_, _) => { if (list.SelectedItem is ItemDef d) foto.Show(d.Section, d.Type, d.Name); };
         search.TextChanged += (_, _) => Filter();
         NumericUpDown N(int left, int max, int value) => new() { Left = left, Top = 355, Width = 55, Minimum = 0, Maximum = max, Value = value };
         Label L(int left, string text) => new() { Left = left, Top = 358, AutoSize = true, Text = text };
@@ -646,7 +658,13 @@ public sealed class MainForm : Form
                    "(1% = 1 em cada 100 monstros desses). Nível do item 0-15; Grade e Op0-Op6 como no cabeçalho do ItemDrop.txt (\"*\" = sorteado). " +
                    "\"Salvar e aplicar\" faz backup do arquivo e recarrega os itens nos servidores, sem reiniciar.",
         };
-        p1.Controls.Add(gridDrops); p1.Controls.Add(help1); p1.Controls.Add(bar1);
+        p1.Controls.Add(gridDrops); p1.Controls.Add(picDrops); p1.Controls.Add(help1); p1.Controls.Add(bar1);
+        gridDrops.CurrentCellChanged += (_, _) => Safe(() =>
+        {
+            if (gridDrops.CurrentRow?.DataBoundItem is DataRowView r && (r["Código"] as string ?? "").Split(',') is [var s, var t])
+                picDrops.Show(int.Parse(s), int.Parse(t), r["Item"] as string);
+            else picDrops.Show(null, null);
+        }, quiet: true);
 
         // 2) drop comum e zen por monstro (Monster.txt)
         var p2 = new TabPage("Drop comum e zen por monstro");
@@ -735,9 +753,19 @@ public sealed class MainForm : Form
         dropDirty = true; UpdateDropStatus();
     }
 
-    T? Pick<T>(string title, IReadOnlyList<T> all, Func<T, string> text) where T : class
+    T? Pick<T>(string title, IReadOnlyList<T> all, Func<T, string> text, Func<T, (int Section, int Type, string Name)>? item = null) where T : class
     {
-        using var dlg = new Form { Text = title, Width = 540, Height = 470, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        using var dlg = new Form { Text = title, Width = item == null ? 540 : 670, Height = 470, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        if (item != null)
+        {
+            var foto = new ItemPicture { Dock = DockStyle.None, Left = 522, Top = 42, Width = 118, Height = 340 };
+            dlg.Controls.Add(foto);
+            dlg.Shown += (_, _) =>
+            {
+                var lb = dlg.Controls.OfType<ListBox>().First();
+                lb.SelectedIndexChanged += (_, _) => { if (lb.SelectedItem is T x) { var (s, t, n) = item(x); foto.Show(s, t, n); } };
+            };
+        }
         var search = new TextBox { Left = 12, Top = 12, Width = 500, PlaceholderText = "Digite parte do nome..." };
         var list = new ListBox { Left = 12, Top = 42, Width = 500, Height = 340 };
         void Filter()
@@ -759,7 +787,8 @@ public sealed class MainForm : Form
 
     void AddDropRule()
     {
-        var item = Pick("Nova regra de drop: escolha o item", Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList(), d => $"{d.Name}   [{d.Section},{d.Type}]");
+        var item = Pick("Nova regra de drop: escolha o item", Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList(), d => $"{d.Name}   [{d.Section},{d.Type}]",
+                        d => (d.Section, d.Type, d.Name));
         if (item == null) return;
         var r = new DropRule { Item = item.Section * 512 + item.Type, Rate = 1000, Comment = item.Name + " - Mu Chila" };
         txtDropFind.Text = "";
@@ -1143,7 +1172,14 @@ public sealed class MainForm : Form
                    "C:\\MuServer\\DB\\backup-itens-*.csv. Presentes vão para a Gremory Case do jogador: ele recebe ao entrar e puxa para o inventário. " +
                    "Não use o MuEditor para salvar inventários do S14: ele é da Season 8 e pode apagar o inventário expandido e o baú estendido.",
         };
-        page.Controls.Add(Split(Titled("Itens", gridItems), Titled("Presentes pendentes na Gremory Case", gridGifts), 0.68));
+        var itensComFoto = new Panel { Dock = DockStyle.Fill };
+        itensComFoto.Controls.Add(gridItems); itensComFoto.Controls.Add(picItems);
+        gridItems.CurrentCellChanged += (_, _) => Safe(() =>
+        {
+            if (gridItems.CurrentRow is { } r && r.Index >= 0 && r.Index < itemsShown.Count) { var i = itemsShown[r.Index]; picItems.Show(i.Section, i.Type, i.Name); }
+            else picItems.Show(null, null);
+        }, quiet: true);
+        page.Controls.Add(Split(Titled("Itens", itensComFoto), Titled("Presentes pendentes na Gremory Case", gridGifts), 0.68));
         page.Controls.Add(bar);
         page.Controls.Add(help);
         return page;

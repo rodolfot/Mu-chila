@@ -152,9 +152,9 @@ CommandWareEnable_AL1 = 1
 CommandWareEnable_AL2 = 1
 CommandWareEnable_AL3 = 1
 CommandWareNumber_AL0 = 1
-CommandWareNumber_AL1 = 1
-CommandWareNumber_AL2 = 1
-CommandWareNumber_AL3 = 1
+CommandWareNumber_AL1 = 5
+CommandWareNumber_AL2 = 7
+CommandWareNumber_AL3 = 9
 
 ;==================================================
 ; Reset Command Settings

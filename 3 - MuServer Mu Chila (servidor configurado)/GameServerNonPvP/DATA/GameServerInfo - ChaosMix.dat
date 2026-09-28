@@ -21,77 +21,77 @@ ChaosItemMixRate_AL3 = -1
 ; Devil Square Mix Settings
 ;==================================================
 DevilSquareMixRate1_AL0 = 80
-DevilSquareMixRate1_AL1 = 80
-DevilSquareMixRate1_AL2 = 80
-DevilSquareMixRate1_AL3 = 80
+DevilSquareMixRate1_AL1 = 86
+DevilSquareMixRate1_AL2 = 88
+DevilSquareMixRate1_AL3 = 90
 DevilSquareMixRate2_AL0 = 80
-DevilSquareMixRate2_AL1 = 80
-DevilSquareMixRate2_AL2 = 80
-DevilSquareMixRate2_AL3 = 80
+DevilSquareMixRate2_AL1 = 86
+DevilSquareMixRate2_AL2 = 88
+DevilSquareMixRate2_AL3 = 90
 DevilSquareMixRate3_AL0 = 80
-DevilSquareMixRate3_AL1 = 80
-DevilSquareMixRate3_AL2 = 80
-DevilSquareMixRate3_AL3 = 80
+DevilSquareMixRate3_AL1 = 86
+DevilSquareMixRate3_AL2 = 88
+DevilSquareMixRate3_AL3 = 90
 DevilSquareMixRate4_AL0 = 80
-DevilSquareMixRate4_AL1 = 80
-DevilSquareMixRate4_AL2 = 80
-DevilSquareMixRate4_AL3 = 80
+DevilSquareMixRate4_AL1 = 86
+DevilSquareMixRate4_AL2 = 88
+DevilSquareMixRate4_AL3 = 90
 DevilSquareMixRate5_AL0 = 70
-DevilSquareMixRate5_AL1 = 70
-DevilSquareMixRate5_AL2 = 70
-DevilSquareMixRate5_AL3 = 70
+DevilSquareMixRate5_AL1 = 76
+DevilSquareMixRate5_AL2 = 78
+DevilSquareMixRate5_AL3 = 80
 DevilSquareMixRate6_AL0 = 70
-DevilSquareMixRate6_AL1 = 70
-DevilSquareMixRate6_AL2 = 70
-DevilSquareMixRate6_AL3 = 70
+DevilSquareMixRate6_AL1 = 76
+DevilSquareMixRate6_AL2 = 78
+DevilSquareMixRate6_AL3 = 80
 DevilSquareMixRate7_AL0 = 70
-DevilSquareMixRate7_AL1 = 70
-DevilSquareMixRate7_AL2 = 70
-DevilSquareMixRate7_AL3 = 70
+DevilSquareMixRate7_AL1 = 76
+DevilSquareMixRate7_AL2 = 78
+DevilSquareMixRate7_AL3 = 80
 
 ;==================================================
 ; Plus Item Mix Settings
 ;==================================================
 PlusItemLevelMixRate1_AL0 = 60
-PlusItemLevelMixRate1_AL1 = 60
-PlusItemLevelMixRate1_AL2 = 60
-PlusItemLevelMixRate1_AL3 = 60
+PlusItemLevelMixRate1_AL1 = 66
+PlusItemLevelMixRate1_AL2 = 68
+PlusItemLevelMixRate1_AL3 = 70
 PlusItemLevelMixRate2_AL0 = 60
-PlusItemLevelMixRate2_AL1 = 60
-PlusItemLevelMixRate2_AL2 = 60
-PlusItemLevelMixRate2_AL3 = 60
+PlusItemLevelMixRate2_AL1 = 66
+PlusItemLevelMixRate2_AL2 = 68
+PlusItemLevelMixRate2_AL3 = 70
 PlusItemLevelMixRate3_AL0 = 50
-PlusItemLevelMixRate3_AL1 = 50
-PlusItemLevelMixRate3_AL2 = 50
-PlusItemLevelMixRate3_AL3 = 50
+PlusItemLevelMixRate3_AL1 = 56
+PlusItemLevelMixRate3_AL2 = 58
+PlusItemLevelMixRate3_AL3 = 60
 PlusItemLevelMixRate4_AL0 = 50
-PlusItemLevelMixRate4_AL1 = 50
-PlusItemLevelMixRate4_AL2 = 50
-PlusItemLevelMixRate4_AL3 = 50
+PlusItemLevelMixRate4_AL1 = 56
+PlusItemLevelMixRate4_AL2 = 58
+PlusItemLevelMixRate4_AL3 = 60
 PlusItemLevelMixRate5_AL0 = 40
-PlusItemLevelMixRate5_AL1 = 40
-PlusItemLevelMixRate5_AL2 = 40
-PlusItemLevelMixRate5_AL3 = 40
+PlusItemLevelMixRate5_AL1 = 46
+PlusItemLevelMixRate5_AL2 = 48
+PlusItemLevelMixRate5_AL3 = 50
 PlusItemLevelMixRate6_AL0 = 40
-PlusItemLevelMixRate6_AL1 = 40
-PlusItemLevelMixRate6_AL2 = 40
-PlusItemLevelMixRate6_AL3 = 40
+PlusItemLevelMixRate6_AL1 = 46
+PlusItemLevelMixRate6_AL2 = 48
+PlusItemLevelMixRate6_AL3 = 50
 
 ;==================================================
 ; Dinorant Mix Settings
 ;==================================================
 DinorantMixRate_AL0 = 70
-DinorantMixRate_AL1 = 70
-DinorantMixRate_AL2 = 70
-DinorantMixRate_AL3 = 70
+DinorantMixRate_AL1 = 76
+DinorantMixRate_AL2 = 78
+DinorantMixRate_AL3 = 80
 
 ;==================================================
 ; Fruit Mix Settings
 ;==================================================
 FruitMixRate_AL0 = 90
-FruitMixRate_AL1 = 90
-FruitMixRate_AL2 = 90
-FruitMixRate_AL3 = 90
+FruitMixRate_AL1 = 96
+FruitMixRate_AL2 = 98
+FruitMixRate_AL3 = 100
 
 ;==================================================
 ; Wing2 Mix Settings
@@ -105,37 +105,37 @@ Wing2MixRate_AL3 = -1
 ; Blood Castle Mix Settings
 ;==================================================
 BloodCastleMixRate1_AL0 = 80
-BloodCastleMixRate1_AL1 = 80
-BloodCastleMixRate1_AL2 = 80
-BloodCastleMixRate1_AL3 = 80
+BloodCastleMixRate1_AL1 = 86
+BloodCastleMixRate1_AL2 = 88
+BloodCastleMixRate1_AL3 = 90
 BloodCastleMixRate2_AL0 = 80
-BloodCastleMixRate2_AL1 = 80
-BloodCastleMixRate2_AL2 = 80
-BloodCastleMixRate2_AL3 = 80
+BloodCastleMixRate2_AL1 = 86
+BloodCastleMixRate2_AL2 = 88
+BloodCastleMixRate2_AL3 = 90
 BloodCastleMixRate3_AL0 = 80
-BloodCastleMixRate3_AL1 = 80
-BloodCastleMixRate3_AL2 = 80
-BloodCastleMixRate3_AL3 = 80
+BloodCastleMixRate3_AL1 = 86
+BloodCastleMixRate3_AL2 = 88
+BloodCastleMixRate3_AL3 = 90
 BloodCastleMixRate4_AL0 = 80
-BloodCastleMixRate4_AL1 = 80
-BloodCastleMixRate4_AL2 = 80
-BloodCastleMixRate4_AL3 = 80
+BloodCastleMixRate4_AL1 = 86
+BloodCastleMixRate4_AL2 = 88
+BloodCastleMixRate4_AL3 = 90
 BloodCastleMixRate5_AL0 = 80
-BloodCastleMixRate5_AL1 = 80
-BloodCastleMixRate5_AL2 = 80
-BloodCastleMixRate5_AL3 = 80
+BloodCastleMixRate5_AL1 = 86
+BloodCastleMixRate5_AL2 = 88
+BloodCastleMixRate5_AL3 = 90
 BloodCastleMixRate6_AL0 = 80
-BloodCastleMixRate6_AL1 = 80
-BloodCastleMixRate6_AL2 = 80
-BloodCastleMixRate6_AL3 = 80
+BloodCastleMixRate6_AL1 = 86
+BloodCastleMixRate6_AL2 = 88
+BloodCastleMixRate6_AL3 = 90
 BloodCastleMixRate7_AL0 = 80
-BloodCastleMixRate7_AL1 = 80
-BloodCastleMixRate7_AL2 = 80
-BloodCastleMixRate7_AL3 = 80
+BloodCastleMixRate7_AL1 = 86
+BloodCastleMixRate7_AL2 = 88
+BloodCastleMixRate7_AL3 = 90
 BloodCastleMixRate8_AL0 = 80
-BloodCastleMixRate8_AL1 = 80
-BloodCastleMixRate8_AL2 = 80
-BloodCastleMixRate8_AL3 = 80
+BloodCastleMixRate8_AL1 = 86
+BloodCastleMixRate8_AL2 = 88
+BloodCastleMixRate8_AL3 = 90
 
 ;==================================================
 ; Wing1 Mix Settings
@@ -149,33 +149,33 @@ Wing1MixRate_AL3 = -1
 ; Pet Mix Settings
 ;==================================================
 PetMixRate_AL0 = 60
-PetMixRate_AL1 = 60
-PetMixRate_AL2 = 60
-PetMixRate_AL3 = 60
+PetMixRate_AL1 = 66
+PetMixRate_AL2 = 68
+PetMixRate_AL3 = 70
 
 ;==================================================
 ; Piece of Horn Mix Settings
 ;==================================================
 PieceOfHornMixRate_AL0 = 70
-PieceOfHornMixRate_AL1 = 70
-PieceOfHornMixRate_AL2 = 70
-PieceOfHornMixRate_AL3 = 70
+PieceOfHornMixRate_AL1 = 76
+PieceOfHornMixRate_AL2 = 78
+PieceOfHornMixRate_AL3 = 80
 
 ;==================================================
 ; Broken Horn Mix Settings
 ;==================================================
 BrokenHornMixRate_AL0 = 50
-BrokenHornMixRate_AL1 = 50
-BrokenHornMixRate_AL2 = 50
-BrokenHornMixRate_AL3 = 50
+BrokenHornMixRate_AL1 = 56
+BrokenHornMixRate_AL2 = 58
+BrokenHornMixRate_AL3 = 60
 
 ;==================================================
 ; Horn of Fenrir Mix Settings
 ;==================================================
 HornOfFenrirMixRate_AL0 = 30
-HornOfFenrirMixRate_AL1 = 30
-HornOfFenrirMixRate_AL2 = 30
-HornOfFenrirMixRate_AL3 = 30
+HornOfFenrirMixRate_AL1 = 36
+HornOfFenrirMixRate_AL2 = 38
+HornOfFenrirMixRate_AL3 = 40
 
 ;==================================================
 ; Horn of Fenrir Upgrade Mix Settings
@@ -189,17 +189,17 @@ HornOfFenrirUpgradeMixRate_AL3 = -1
 ; Shield Potion Mix Settings
 ;==================================================
 ShieldPotionMixRate1_AL0 = 50
-ShieldPotionMixRate1_AL1 = 50
-ShieldPotionMixRate1_AL2 = 50
-ShieldPotionMixRate1_AL3 = 50
+ShieldPotionMixRate1_AL1 = 56
+ShieldPotionMixRate1_AL2 = 58
+ShieldPotionMixRate1_AL3 = 60
 ShieldPotionMixRate2_AL0 = 30
-ShieldPotionMixRate2_AL1 = 30
-ShieldPotionMixRate2_AL2 = 30
-ShieldPotionMixRate2_AL3 = 30
+ShieldPotionMixRate2_AL1 = 36
+ShieldPotionMixRate2_AL2 = 38
+ShieldPotionMixRate2_AL3 = 40
 ShieldPotionMixRate3_AL0 = 30
-ShieldPotionMixRate3_AL1 = 30
-ShieldPotionMixRate3_AL2 = 30
-ShieldPotionMixRate3_AL3 = 30
+ShieldPotionMixRate3_AL1 = 36
+ShieldPotionMixRate3_AL2 = 38
+ShieldPotionMixRate3_AL3 = 40
 
 ;==================================================
 ; Jewel of Harmony Item Purity Mix Settings
@@ -213,9 +213,9 @@ JewelOfHarmonyItemPurityMixRate_AL3 = 100
 ; Jewel of Harmony Item Smelt Mix Settings
 ;==================================================
 JewelOfHarmonyItemSmeltMixRate1_AL0 = 50
-JewelOfHarmonyItemSmeltMixRate1_AL1 = 50
-JewelOfHarmonyItemSmeltMixRate1_AL2 = 50
-JewelOfHarmonyItemSmeltMixRate1_AL3 = 50
+JewelOfHarmonyItemSmeltMixRate1_AL1 = 56
+JewelOfHarmonyItemSmeltMixRate1_AL2 = 58
+JewelOfHarmonyItemSmeltMixRate1_AL3 = 60
 JewelOfHarmonyItemSmeltMixRate2_AL0 = 100
 JewelOfHarmonyItemSmeltMixRate2_AL1 = 100
 JewelOfHarmonyItemSmeltMixRate2_AL2 = 100
@@ -233,41 +233,41 @@ JewelOfHarmonyItemRestoreMixRate_AL3 = 100
 ; Item380 Mix Settings
 ;==================================================
 Item380MixRate1_AL0 = 50
-Item380MixRate1_AL1 = 50
-Item380MixRate1_AL2 = 50
-Item380MixRate1_AL3 = 50
+Item380MixRate1_AL1 = 56
+Item380MixRate1_AL2 = 58
+Item380MixRate1_AL3 = 60
 Item380MixRate2_AL0 = 70
-Item380MixRate2_AL1 = 70
-Item380MixRate2_AL2 = 70
-Item380MixRate2_AL3 = 70
+Item380MixRate2_AL1 = 76
+Item380MixRate2_AL2 = 78
+Item380MixRate2_AL3 = 80
 
 ;==================================================
 ; Illusion Temple Mix Settings
 ;==================================================
 IllusionTempleMixRate1_AL0 = 70
-IllusionTempleMixRate1_AL1 = 70
-IllusionTempleMixRate1_AL2 = 70
-IllusionTempleMixRate1_AL3 = 70
+IllusionTempleMixRate1_AL1 = 76
+IllusionTempleMixRate1_AL2 = 78
+IllusionTempleMixRate1_AL3 = 80
 IllusionTempleMixRate2_AL0 = 70
-IllusionTempleMixRate2_AL1 = 70
-IllusionTempleMixRate2_AL2 = 70
-IllusionTempleMixRate2_AL3 = 70
+IllusionTempleMixRate2_AL1 = 76
+IllusionTempleMixRate2_AL2 = 78
+IllusionTempleMixRate2_AL3 = 80
 IllusionTempleMixRate3_AL0 = 70
-IllusionTempleMixRate3_AL1 = 70
-IllusionTempleMixRate3_AL2 = 70
-IllusionTempleMixRate3_AL3 = 70
+IllusionTempleMixRate3_AL1 = 76
+IllusionTempleMixRate3_AL2 = 78
+IllusionTempleMixRate3_AL3 = 80
 IllusionTempleMixRate4_AL0 = 70
-IllusionTempleMixRate4_AL1 = 70
-IllusionTempleMixRate4_AL2 = 70
-IllusionTempleMixRate4_AL3 = 70
+IllusionTempleMixRate4_AL1 = 76
+IllusionTempleMixRate4_AL2 = 78
+IllusionTempleMixRate4_AL3 = 80
 IllusionTempleMixRate5_AL0 = 70
-IllusionTempleMixRate5_AL1 = 70
-IllusionTempleMixRate5_AL2 = 70
-IllusionTempleMixRate5_AL3 = 70
+IllusionTempleMixRate5_AL1 = 76
+IllusionTempleMixRate5_AL2 = 78
+IllusionTempleMixRate5_AL3 = 80
 IllusionTempleMixRate6_AL0 = 70
-IllusionTempleMixRate6_AL1 = 70
-IllusionTempleMixRate6_AL2 = 70
-IllusionTempleMixRate6_AL3 = 70
+IllusionTempleMixRate6_AL1 = 76
+IllusionTempleMixRate6_AL2 = 78
+IllusionTempleMixRate6_AL3 = 80
 
 ;==================================================
 ; Feather Of Condor Mix Settings
@@ -305,29 +305,29 @@ SocketItemCreateSeedSphereMixRate_AL3 = -1
 ; Summon Scroll Mix Settings
 ;==================================================
 SummonScrollMixRate1_AL0 = 50
-SummonScrollMixRate1_AL1 = 50
-SummonScrollMixRate1_AL2 = 50
-SummonScrollMixRate1_AL3 = 50
+SummonScrollMixRate1_AL1 = 56
+SummonScrollMixRate1_AL2 = 58
+SummonScrollMixRate1_AL3 = 60
 SummonScrollMixRate2_AL0 = 50
-SummonScrollMixRate2_AL1 = 50
-SummonScrollMixRate2_AL2 = 50
-SummonScrollMixRate2_AL3 = 50
+SummonScrollMixRate2_AL1 = 56
+SummonScrollMixRate2_AL2 = 58
+SummonScrollMixRate2_AL3 = 60
 SummonScrollMixRate3_AL0 = 40
-SummonScrollMixRate3_AL1 = 40
-SummonScrollMixRate3_AL2 = 40
-SummonScrollMixRate3_AL3 = 40
+SummonScrollMixRate3_AL1 = 46
+SummonScrollMixRate3_AL2 = 48
+SummonScrollMixRate3_AL3 = 50
 
 ;==================================================
 ; Lucky Item Refine Mix Settings
 ;==================================================
 LuckyItemRefineMixRate1_AL0 = 60
-LuckyItemRefineMixRate1_AL1 = 60
-LuckyItemRefineMixRate1_AL2 = 60
-LuckyItemRefineMixRate1_AL3 = 60
+LuckyItemRefineMixRate1_AL1 = 66
+LuckyItemRefineMixRate1_AL2 = 68
+LuckyItemRefineMixRate1_AL3 = 70
 LuckyItemRefineMixRate2_AL0 = 10
-LuckyItemRefineMixRate2_AL1 = 10
-LuckyItemRefineMixRate2_AL2 = 10
-LuckyItemRefineMixRate2_AL3 = 10
+LuckyItemRefineMixRate2_AL1 = 16
+LuckyItemRefineMixRate2_AL2 = 18
+LuckyItemRefineMixRate2_AL3 = 20
 
 ;==================================================
 ; Monster Wing Mix Settings
@@ -349,30 +349,30 @@ SocketWeaponMixRate_AL3 = -1
 ; Pentagram Mithril Mix Settings
 ;==================================================
 PentagramMithrilMixRate_AL0 = 80
-PentagramMithrilMixRate_AL1 = 80
-PentagramMithrilMixRate_AL2 = 80
-PentagramMithrilMixRate_AL3 = 80
+PentagramMithrilMixRate_AL1 = 86
+PentagramMithrilMixRate_AL2 = 88
+PentagramMithrilMixRate_AL3 = 90
 
 ;==================================================
 ; Pentagram Elixir Mix Settings
 ;==================================================
 PentagramElixirMixRate_AL0 = 60
-PentagramElixirMixRate_AL1 = 60
-PentagramElixirMixRate_AL2 = 60
-PentagramElixirMixRate_AL3 = 60
+PentagramElixirMixRate_AL1 = 66
+PentagramElixirMixRate_AL2 = 68
+PentagramElixirMixRate_AL3 = 70
 
 ;==================================================
 ; Pentagram Jewel Mix Settings
 ;==================================================
 PentagramJewelMixRate_AL0 = 50
-PentagramJewelMixRate_AL1 = 50
-PentagramJewelMixRate_AL2 = 50
-PentagramJewelMixRate_AL3 = 50
+PentagramJewelMixRate_AL1 = 56
+PentagramJewelMixRate_AL2 = 58
+PentagramJewelMixRate_AL3 = 60
 
 ;==================================================
 ; Pentagram Decomposite Mix Settings
 ;==================================================
 PentagramDecompositeMixRate_AL0 = 50
-PentagramDecompositeMixRate_AL1 = 50
-PentagramDecompositeMixRate_AL2 = 50
-PentagramDecompositeMixRate_AL3 = 50
+PentagramDecompositeMixRate_AL1 = 56
+PentagramDecompositeMixRate_AL2 = 58
+PentagramDecompositeMixRate_AL3 = 60

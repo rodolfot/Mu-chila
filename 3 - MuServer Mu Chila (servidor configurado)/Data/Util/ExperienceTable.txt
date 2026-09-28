@@ -10,4 +10,15 @@
 //
 //=====================================================
 //MinLevel   MaxLevel   MinMasterLevel   MaxMasterLevel   MinReset   MaxReset   MinMasterReset   MaxMasterReset   ExperienceRate
+// Mu Chila - EXP dinamica (inicio): % da taxa do plano por faixa de nivel (100 = neutro)
+1	50	0	600	0	10000	0	10000	100
+51	100	0	600	0	10000	0	10000	85
+101	150	0	600	0	10000	0	10000	70
+151	200	0	600	0	10000	0	10000	55
+201	250	0	600	0	10000	0	10000	40
+251	300	0	600	0	10000	0	10000	30
+301	350	0	600	0	10000	0	10000	20
+351	399	0	600	0	10000	0	10000	10
+400	400	0	600	0	10000	0	10000	100
+// Mu Chila - EXP dinamica (fim)
 end
