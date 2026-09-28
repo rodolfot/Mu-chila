@@ -25,7 +25,9 @@ public sealed class MainForm : Form
     readonly CheckBox chkDrop = new() { Text = "Drop", AutoSize = true, Padding = new Padding(0, 4, 0, 0) };
     readonly NumericUpDown numMult = new() { Minimum = 1.1m, Maximum = 10, Increment = 0.5m, DecimalPlaces = 1, Value = 2, Width = 60 };
     readonly NumericUpDown numBonusMinutes = new() { Minimum = 1, Maximum = 10080, Value = 60, Width = 70 };
-    readonly NumericUpDown numBonusStart = new() { Minimum = 1, Maximum = 10080, Value = 1, Width = 70 };
+    // desmarcado = começa agora; marcado = na data e hora escolhidas
+    readonly DateTimePicker dtBonusStart = new() { Format = DateTimePickerFormat.Custom, CustomFormat = "dd/MM/yyyy HH:mm", ShowCheckBox = true, Checked = false, Width = 150 };
+    readonly Label lblBonus = new() { AutoSize = true, Padding = new Padding(0, 6, 0, 0), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
     readonly DataGridView gridBonus = Grid();
 
     // Lojas
@@ -91,6 +93,19 @@ public sealed class MainForm : Form
     bool dropDirty, rateDirty, dropLoading;
     System.Windows.Forms.Timer? monsterReloadTimer;
 
+    // Avisos (Notice.txt)
+    readonly TextBox txtNoticeNow = new() { Width = 520, MaxLength = 90, PlaceholderText = "mensagem para todos os jogadores (até 90 caracteres)" };
+    readonly DataGridView gridNotices = new()
+    {
+        Dock = DockStyle.Fill, AllowUserToAddRows = false, AllowUserToDeleteRows = false, SelectionMode = DataGridViewSelectionMode.CellSelect,
+        RowHeadersVisible = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = SystemColors.Window,
+    };
+    readonly Label lblNotices = new() { AutoSize = true, Padding = new Padding(0, 6, 0, 0), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
+    DataTable noticeTable = new();
+    readonly Dictionary<DataRow, Notice> noticeRows = new();
+    List<Notice> noticeHidden = new();   // "enviar agora" pendentes: ficam fora da grade, mas continuam no arquivo
+    bool noticeDirty, noticeLoading;
+
     // Resets (valores do site)
     readonly NumericUpDown numMasterCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
     readonly NumericUpDown numSupremeCred = new() { Minimum = 0, Maximum = 1000000, Width = 100 };
@@ -125,6 +140,7 @@ public sealed class MainForm : Form
         tabs.TabPages.Add(ResetsTab());
         tabs.TabPages.Add(MonstersTab());
         tabs.TabPages.Add(DropsTab());
+        tabs.TabPages.Add(NoticesTab());
         tabs.TabPages.Add(CommandsTab());
         tabs.TabPages.Add(ItemsTab());
         tabs.TabPages.Add(AccountsTab());
@@ -257,30 +273,25 @@ public sealed class MainForm : Form
     {
         var page = new TabPage("Bônus");
         Label L(string s) => new() { Text = s, AutoSize = true, Padding = new Padding(0, 6, 0, 0) };
-        var bar = Bar(chkExp, chkMaster, chkDrop, L("  x"), numMult, L("  por"), numBonusMinutes, L("minuto(s),  começando daqui a"), numBonusStart, L("minuto(s)"),
+        var bar = Bar(chkExp, chkMaster, chkDrop, L("  x"), numMult, L("  por"), numBonusMinutes, L("minuto(s).  Início (desmarcado = agora):"), dtBonusStart,
             Btn("Agendar bônus", ScheduleBonus));
         var bar2 = Bar(
             Btn("Cancelar bônus selecionado", () =>
             {
-                if (gridBonus.CurrentRow?.Cells["Vaga"].Value is not int slot) { Log("Selecione um bônus na lista."); return; }
-                Log(BonusScheduler.Cancel(slot));
-                LogAll(ServerControl.Reload("Event"));
+                if (gridBonus.CurrentRow?.Cells["Id"].Value is not string id) { Log("Selecione um bônus na lista."); return; }
+                if (!Confirm("Cancelar esse bônus? Se estiver ativo, as taxas voltam ao normal em alguns segundos e os jogadores são avisados.")) return;
+                Log(TimedBonuses.Cancel(id));
+                LogAll(TimedBonuses.Tick(DateTime.Now));   // já aplica, sem esperar o vigia
                 RefreshBonus();
             }),
-            Btn("Limpar bônus terminados", () =>
-            {
-                int n = BonusScheduler.CleanupFinished();
-                if (n > 0) LogAll(ServerControl.Reload("Event"));
-                Log($"{n} bônus terminado(s) removido(s).");
-                RefreshBonus();
-            }),
-            Btn("Atualizar", RefreshBonus));
+            Btn("Limpar bônus terminados", () => { Log($"{TimedBonuses.CleanupFinished()} bônus terminado(s) removido(s) da lista."); RefreshBonus(); }),
+            Btn("Atualizar", RefreshBonus), lblBonus);
         var help = new Label
         {
             Dock = DockStyle.Top, Height = 70, Padding = new Padding(6),
             Text = "Exemplo: EXP e EXP master x2 por 60 minutos = experiência em dobro por uma hora para todos. O bônus multiplica a taxa de cada plano " +
-                   "(Free, Vipzinho, Vip e Vipzão continuam na mesma proporção), vale nos dois GameServers e no Castle Siege, e o jogo avisa todos " +
-                   "os jogadores no início e no fim. Até 7 bônus ao mesmo tempo; \"Limpar bônus terminados\" libera as vagas.",
+                   "(Free, Vipzinho, Vip e Vipzão continuam na mesma proporção) em todos os GameServers. Quem liga e desliga na hora certa é o vigia " +
+                   "(precisa estar rodando); ele avisa os jogadores no início, a cada 5 minutos enquanto durar e no fim. Dá para cancelar a qualquer momento.",
         };
         page.Controls.Add(Titled("Bônus agendados por este programa", gridBonus));
         page.Controls.Add(bar2);
@@ -296,23 +307,28 @@ public sealed class MainForm : Form
         if (chkMaster.Checked) types.Add(1);
         if (chkDrop.Checked) types.Add(2);
         // o servidor confere a agenda minuto a minuto: começa no minuto cheio, com pelo menos 30 s de folga para a recarga
-        var start = DateTime.Now.AddMinutes((double)numBonusStart.Value);
-        start = new DateTime(start.Year, start.Month, start.Day, start.Hour, start.Minute, 0);
-        if (start < DateTime.Now.AddSeconds(30)) start = start.AddMinutes(1);
-        Log(BonusScheduler.Schedule(types, numMult.Value, (int)numBonusMinutes.Value, start));
-        LogAll(ServerControl.Reload("Common (inclui mensagens)"));   // mensagens de início e fim
-        LogAll(ServerControl.Reload("Event"));                       // agenda do bônus
+        var start = dtBonusStart.Checked ? new DateTime(dtBonusStart.Value.Year, dtBonusStart.Value.Month, dtBonusStart.Value.Day, dtBonusStart.Value.Hour, dtBonusStart.Value.Minute, 0) : DateTime.Now;
+        var b = TimedBonuses.Schedule(types, numMult.Value, (int)numBonusMinutes.Value, start);
+        Log($"Bônus \"{b.Description}\" agendado: {b.Start:dd/MM HH:mm} até {b.End:dd/MM HH:mm}.");
+        if (!ResetWatcher.IsRunning()) Log("ATENÇÃO: o vigia está parado; sem ele o bônus não liga nem desliga. Ligando o vigia...");
+        Safe(StartResetWatcher);
+        LogAll(TimedBonuses.Tick(DateTime.Now));   // se for "agora", já liga sem esperar o vigia
         RefreshBonus();
     }
 
     void RefreshBonus()
     {
         var t = new DataTable();
-        t.Columns.Add("Vaga", typeof(int)); t.Columns.Add("Início"); t.Columns.Add("Fim"); t.Columns.Add("Bônus"); t.Columns.Add("Situação");
-        foreach (var b in BonusScheduler.List())
-            t.Rows.Add(b.Slot, b.Start.ToString("dd/MM HH:mm"), b.End.ToString("dd/MM HH:mm"), b.Description, b.State);
+        t.Columns.Add("Id"); t.Columns.Add("Início"); t.Columns.Add("Fim"); t.Columns.Add("Bônus"); t.Columns.Add("Situação");
+        var now = DateTime.Now;
+        foreach (var b in TimedBonuses.List())
+            t.Rows.Add(b.Id, b.Start.ToString("dd/MM HH:mm"), b.End.ToString("dd/MM HH:mm"), b.Description, b.StateAt(now));
         gridBonus.DataSource = t;
+        if (gridBonus.Columns["Id"] is { } id) id.Visible = false;
         if (gridBonus.Columns["Bônus"] is { } c) c.FillWeight = 300;
+        bool vigia = ResetWatcher.IsRunning();
+        lblBonus.ForeColor = vigia ? SystemColors.ControlText : Color.Firebrick;
+        lblBonus.Text = vigia ? "   vigia rodando" : "   VIGIA PARADO: os bônus não ligam nem desligam";
     }
 
     // ---------------- Lojas ----------------
@@ -855,6 +871,93 @@ public sealed class MainForm : Form
         monsterReloadTimer = new System.Windows.Forms.Timer { Interval = (int)Math.Clamp((fim.Value - DateTime.Now).TotalMilliseconds + 1000, 1000, int.MaxValue) };
         monsterReloadTimer.Tick += (_, _) => { monsterReloadTimer?.Dispose(); monsterReloadTimer = null; Safe(ReloadMonstersSafe); };
         monsterReloadTimer.Start();
+    }
+
+    // ---------------- Avisos para todos (Notice.txt) ----------------
+    TabPage NoticesTab()
+    {
+        var page = new TabPage("Avisos");
+        gridNotices.CellValueChanged += (_, e) => { if (!noticeLoading && e.RowIndex >= 0) { noticeDirty = true; UpdateNoticeStatus(); } };
+        gridNotices.DataError += (_, e) => { Log("Valor inválido: use só números no tempo."); e.Cancel = true; };
+        txtNoticeNow.KeyDown += (_, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; Safe(SendNoticeNow); } };
+        var agora = Bar(new Label { Text = "Enviar para todos agora:", AutoSize = true, Padding = new Padding(0, 6, 6, 0) }, txtNoticeNow, Btn("Enviar agora", SendNoticeNow));
+        var bar = Bar(
+            Btn("Adicionar aviso automático", () =>
+            {
+                noticeLoading = true;
+                var n = new Notice { Message = "Bem-vindo ao Mu Chila!", RepeatTime = 600 };
+                var row = noticeTable.NewRow(); row["Mensagem"] = n.Message; row["Repetir a cada (s)"] = n.RepeatTime;
+                noticeTable.Rows.Add(row); noticeRows[row] = n;
+                noticeLoading = false; noticeDirty = true; UpdateNoticeStatus();
+                gridNotices.CurrentCell = gridNotices.Rows[^1].Cells["Mensagem"];
+            }),
+            Btn("Remover", () =>
+            {
+                if (gridNotices.CurrentRow?.DataBoundItem is not DataRowView drv) return;
+                noticeRows.Remove(drv.Row); noticeTable.Rows.Remove(drv.Row); noticeDirty = true; UpdateNoticeStatus();
+            }),
+            Btn("Salvar e aplicar", SaveNotices),
+            Btn("Descartar", () => { if (!noticeDirty || Confirm("Descartar as alterações nos avisos?")) LoadNotices(); }),
+            lblNotices);
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
+            Text = "\"Enviar agora\" manda a mensagem uma vez para todos os jogadores de todos os servidores (aparece no topo da tela em alguns segundos). " +
+                   "Avisos automáticos: o servidor manda um de cada vez, em ordem; cada um espera o seu tempo depois do anterior (com um aviso só, é o intervalo). " +
+                   "\"Salvar e aplicar\" faz backup do Notice.txt e dá Reload Util (vale na hora).",
+        };
+        page.Controls.Add(gridNotices); page.Controls.Add(bar); page.Controls.Add(help); page.Controls.Add(agora);
+        Shown += (_, _) => Safe(LoadNotices);
+        return page;
+    }
+
+    void UpdateNoticeStatus() => lblNotices.Text = $"   {noticeTable.Rows.Count} aviso(s) automático(s)" + (noticeDirty ? "   (não salvo)" : "");
+
+    void LoadNotices()
+    {
+        var all = Notices.Load();
+        noticeHidden = all.Where(n => n.IsOneShot).ToList();
+        var t = new DataTable();
+        t.Columns.Add("Mensagem"); t.Columns.Add("Repetir a cada (s)", typeof(int));
+        noticeRows.Clear();
+        foreach (var n in all.Where(n => !n.IsOneShot))
+        {
+            var row = t.NewRow(); row["Mensagem"] = n.Message; row["Repetir a cada (s)"] = n.RepeatTime;
+            t.Rows.Add(row); noticeRows[row] = n;
+        }
+        noticeLoading = true;
+        gridNotices.DataSource = noticeTable = t;
+        gridNotices.Columns["Mensagem"]!.FillWeight = 400;
+        noticeLoading = false; noticeDirty = false;
+        UpdateNoticeStatus();
+    }
+
+    void SaveNotices()
+    {
+        gridNotices.EndEdit();
+        var list = new List<Notice>(noticeHidden);
+        foreach (DataRow row in noticeTable.Rows)
+        {
+            var n = noticeRows[row];
+            n.Message = Notices.Clean(row["Mensagem"] as string ?? "");
+            n.RepeatTime = row["Repetir a cada (s)"] is int s && s >= 1 ? s : throw new InvalidOperationException($"\"{n.Message}\": tempo inválido (mínimo 1 segundo).");
+            list.Add(n);
+        }
+        var backup = Notices.Save(list);
+        Log($"Avisos salvos (backup {Path.GetFileName(backup)}).");
+        LogAll(ServerControl.Reload("Util (GMs, avisos)"));
+        LoadNotices();
+    }
+
+    void SendNoticeNow()
+    {
+        var msg = Notices.Clean(txtNoticeNow.Text);
+        if (noticeDirty) throw new InvalidOperationException("Salve ou descarte as alterações dos avisos automáticos antes de enviar.");
+        Notices.AddOneShot(msg);
+        LogAll(ServerControl.Reload("Util (GMs, avisos)"));
+        Log($"Aviso enviado para todos: \"{msg}\". O vigia tira ele do Notice.txt em menos de 1 minuto.");
+        txtNoticeNow.Clear();
+        LoadNotices();
     }
 
     // ---------------- Comandos (consulta) ----------------

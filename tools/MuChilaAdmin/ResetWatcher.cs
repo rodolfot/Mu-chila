@@ -90,10 +90,32 @@ public static class ResetWatcher
         if (!first) return 2;
         Log("vigia iniciado");
         var targets = new Dictionary<int, Target>();
+        var nextHousekeeping = DateTime.MinValue;
+        var nextBonus = DateTime.MinValue;
         while (true)
         {
             try
             {
+                // a cada 5 s: bônus por tempo (liga e desliga as taxas na hora certa, avisa os jogadores)
+                if (DateTime.Now >= nextBonus)
+                {
+                    nextBonus = DateTime.Now.AddSeconds(5);
+                    try { foreach (var l in TimedBonuses.Tick(DateTime.Now)) Log("bônus: " + l); }
+                    catch (Exception ex) { Log("bônus: " + ex.Message); }
+                }
+
+                // a cada 30 s: tira do Notice.txt os avisos "enviar agora" já mandados (o painel pode ter sido fechado)
+                if (DateTime.Now >= nextHousekeeping)
+                {
+                    nextHousekeeping = DateTime.Now.AddSeconds(30);
+                    try
+                    {
+                        int n = Notices.RemoveOneShots(TimeSpan.FromSeconds(20));
+                        if (n > 0) { ServerControl.Reload("Util (GMs, avisos)"); Log($"{n} aviso(s) \"enviar agora\" tirado(s) do Notice.txt"); }
+                    }
+                    catch (Exception ex) { Log("avisos: " + ex.Message); }
+                }
+
                 foreach (var name in new[] { ServerControl.GameServerProcess, ServerControl.CastleSiegeProcess })
                     foreach (var p in Process.GetProcessesByName(name))
                         if (!targets.ContainsKey(p.Id)) targets[p.Id] = new Target { Process = p, ApplyAttackFix = true };

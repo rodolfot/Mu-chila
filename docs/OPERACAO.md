@@ -63,7 +63,8 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | | Botões: iniciar e parar tudo pelo launcher, desconectar todos os jogadores (os personagens são salvos), abrir o MuEditor e o launcher. |
 | | "Recarregar sem reiniciar": manda o Reload escolhido para os dois GameServers **e** o Castle Siege ao mesmo tempo. |
 | **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |
-| **Bônus** | Ex.: "EXP + EXP master x2 por 60 minutos". Multiplica a taxa de cada plano pelo tempo escolhido, nos dois GameServers e no Castle Siege, e avisa todos os jogadores no início e no fim. Até 7 bônus ao mesmo tempo. Ver [Bônus de EXP e drop](#bônus-de-exp-e-drop). |
+| **Bônus** | Ex.: "EXP + EXP master x2 por 60 minutos", começando agora ou numa data e hora. Multiplica a taxa de cada plano em todos os GameServers e avisa os jogadores no início, a cada 5 minutos e no fim. Cancela a qualquer momento. Quem liga e desliga é o vigia. Ver [Bônus de EXP e drop](#bônus-de-exp-e-drop). |
+| **Avisos** | "Enviar agora" manda uma mensagem para todos os jogadores. Também lista e edita os avisos automáticos (repetidos). Ver [Avisos para todos os jogadores](#avisos-para-todos-os-jogadores). |
 | **Lojas** | Escolha o NPC e edite o que ele vende: adicionar (busca pelo nome), remover, reordenar, nível, durabilidade e opções. Mostra quantos dos 120 espaços (8×15) da janela a loja ocupa e avisa o que não cabe. "Salvar e aplicar" faz backup e recarrega as lojas sem reiniciar. |
 | **Drops** | Duas partes. **Itens que os monstros dropam** (`Data\Item\ItemDrop.txt`): cada regra diz qual item cai de qual monstro, mapa ou faixa de nível e com que chance em % (1% = 1 em 100). Adicionar (busca pelo nome), escolher monstro ou mapa numa lista, remover, filtrar; "Salvar e aplicar" faz backup e dá Reload Item. **Drop comum e zen por monstro** (`Monster.txt`: ItemRate, MoneyRate, MaxItemLevel): "Salvar e aplicar" faz backup e recarrega os monstros só nos GameServers e só fora da invasão (se houver uma no ar, agenda para quando ela acabar; o painel precisa ficar aberto). Linhas não alteradas são regravadas iguais. |
 | **Itens e baú** | Mostra o inventário de qualquer personagem ou o baú da conta, com nome, nível e opções. Remove itens só com a conta fora do jogo e com backup em `C:\MuServer\DB\backup-itens-*.csv`. Presentes pela Gremory Case aparecem ao lado; criar presentes pelo painel fica desligado até a calibração (ver [Itens e baú](#itens-e-baú)). |
@@ -97,18 +98,20 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 
 ## Bônus de EXP e drop
 
-Aba **Bônus** do painel, usando o `Data\Event\BonusManager.dat` do servidor (formato validado no servidor de testes em 26/09/2026):
+Aba **Bônus** do painel. Desde 28/09/2026 quem liga e desliga é o **vigia** (`MuChilaAdmin --vigia-reset`), não mais o `BonusManager.dat` do kit.
+O BonusManager era caixa-preta: não mostrava se o bônus tinha começado, não deixava cancelar um ativo, e cada agendamento pedia Reload Event, que reinicia a contagem do Blood Castle.
 
-- **Blocos do arquivo:**
-  - bloco 0 = agenda (Index Ano Mês Dia DiaDaSemana Hora Minuto Segundo);
-  - bloco 1 = Index MensagemInício MensagemFim Duração (segundos);
-  - bloco 2 = Index Tipo Valor_AL0..AL3 e filtros (item, mapa, monstro).
-- **Tipos:** 0 = EXP, 1 = EXP master, 2 = drop. O valor **soma na taxa do plano**. Por isso o painel usa `taxa do plano × (multiplicador − 1)`: x2 soma +100 no Free, +300 no Vipzinho, +850 no Vip e +2000 no Vipzão.
-- **Vagas:** só os índices **3 a 9**. O kit usa 0–2 (drop de Box of Kundun em janeiro, outubro e dezembro), e o índice 90 **derrubou os dois GameServers** na recarga (26/09).
-- **Mensagens:** IDs 700–713 (duas por vaga), gravados no `Portuguese.xml` e no `English.xml`, nas seções `<Message>` e `<InvacionMsg>`.
-- **Recargas:** o painel recarrega Common (mensagens) e Event (agenda).
-- **Cancelar e limpar:** um bônus que ainda não começou pode ser cancelado. "Limpar bônus terminados" libera as vagas.
-- **Falta confirmar no jogo** que um bônus x2 dobra a EXP de uma conta VIP. Para uma conta Free, as duas leituras possíveis do formato dão o mesmo resultado.
+- **Como funciona:** os bônus ficam em `C:\MuServer\MuChilaAdmin\bonus.json`. A cada 5 s o vigia confere:
+  - começou → grava em cada `GameServer*\DATA\GameServerInfo - Common.dat` a taxa do plano × multiplicador (`AddExperienceRate_AL0..3`, `AddMasterExperienceRate_AL0..3`, `ItemDropRate_AL0..3`) e dá **Reload Common**;
+  - terminou ou foi cancelado → devolve a taxa original e dá Reload Common.
+- **Vários ao mesmo tempo** somam: x2 + x1,5 = x2,5.
+- **Taxa mudada à mão durante um bônus:** o valor novo vira a taxa normal e não é sobrescrito na volta.
+- **Avisos na tela** (pelo `Notice.txt`): "Começou: ... até HH:mm" no início, lembrete "Bônus ativo" a cada 5 minutos e "Terminou..." no fim (ou "foi encerrado", se cancelado).
+- **Início:** agora, ou numa data e hora escolhida. **Cancelar** vale a qualquer momento, inclusive com o bônus ativo.
+- **O vigia precisa estar rodando.** A aba avisa em vermelho quando ele está parado, e agendar um bônus liga o vigia.
+- Durante um bônus, a página Informações do site mostra as taxas com o bônus, porque lê o `Common.dat`.
+- As linhas antigas do painel no `BonusManager.dat` (vagas 3–9, `//MuChilaAdmin`) não são mais criadas e podem ser apagadas à mão.
+- Testes: `MuChilaAdmin.exe --testar-bonus <saída>` com `MUCHILA_ROOT` apontando para uma cópia (9 checagens).
 
 ## Itens e baú
 
@@ -180,6 +183,19 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
   - Na primeira alteração do dia, o painel salva uma cópia `.bak-AAAAMMDD` do arquivo.
   - À mão: adicione uma linha como `1  2026  9  23  *  21  5  0` antes do `end` do bloco de agenda e use Reload Event. O primeiro número é o índice da invasão e só existe no `InvasionManager.dat`.
 - **Conferir se nasceu:** o título da janela do GameServer mostra `MonsterCount`, que sobe quando a invasão aparece.
+- **Testado em 28/09/2026 no servidor de testes:** uma linha com data completa (`2 2026 9 28 * 0 9 30`) disparou a dourada na hora (+65 monstros). Ou seja, o agendamento do painel funciona.
+  - Cada invasão **sorteia o mapa** do seu grupo no bloco 2 (o Red Dragon cai em Lorencia, Devias ou Noria). Pode acontecer longe de quem está olhando.
+  - **Blood Castle, Devil Square, Chaos Castle e Illusion Temple** só acontecem se alguém entrar com o ingresso na abertura. Sem ninguém, o log mostra "Not enough users" e o evento fecha vazio.
+  - **Todo Reload Event reinicia a contagem** do Blood Castle e do Chaos Castle ("Sync Start Time" no log), e os jogadores recebem de novo o aviso de que o Blood Castle vai começar. Por isso esse aviso aparece a cada disparo feito pelo painel.
+
+## Avisos para todos os jogadores
+
+Aba **Avisos** do painel, usando o `Data\Util\Notice.txt` do kit. O GameServer não tem opção de aviso no menu.
+
+- **Enviar agora:** manda uma vez para todos, em todos os servidores. O aviso entra no topo do `Notice.txt` com 1 s e o painel dá Reload Util; o vigia tira a linha do arquivo em menos de 1 minuto.
+- **Avisos automáticos:** o servidor manda um de cada vez, em ordem. Cada um espera o seu tempo ("Repetir a cada", em segundos) depois do anterior; com um aviso só, esse tempo é o intervalo. O do kit é "Server Season 14 AM" a cada 60 s.
+- Até 90 caracteres, com acentos. Emoji e símbolos que o jogo não mostra são recusados.
+- Colunas: `"Mensagem" Type Count Opacity Delay Red Green Blue Speed RepeatTime`. O painel usa Type 0 (aviso no topo) e mantém as outras colunas do kit.
 
 ## Caixas
 

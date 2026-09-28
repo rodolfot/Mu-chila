@@ -144,6 +144,84 @@ static class Program
             return f;
         }
 
+        // "--testar-avisos <saida>": contra MUCHILA_ROOT (CÓPIA de Data\Util\Notice.txt): regravar sem mudar sai idêntico; o
+        // "enviar agora" entra no topo com RepeatTime 1; tirar os "enviar agora" devolve o arquivo original.
+        if (args.Length == 2 && args[0] == "--testar-avisos")
+        {
+            var sb = new StringBuilder(); int f = 0;
+            void C(string n, bool ok, string x = "") { if (!ok) f++; sb.AppendLine($"{(ok ? "OK   " : "FALHA")} {n} {x}"); }
+            try
+            {
+                if (!ServerControl.ServerRoot.Contains("Temp", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("MUCHILA_ROOT não é uma cópia de teste.");
+                var orig = File.ReadAllBytes(Notices.File_);
+                var l = Notices.Load(); Notices.Save(l);
+                C("regravar sem mudança sai idêntico", File.ReadAllBytes(Notices.File_).SequenceEqual(orig), $"({l.Count} aviso(s))");
+                Notices.AddOneShot("Teste: manutenção às 22h, não saia no meio de evento!");
+                var l2 = Notices.Load();
+                C("\"enviar agora\" é o primeiro aviso, com 1 s", l2.Count == l.Count + 1 && l2[0].IsOneShot && l2[0].RepeatTime == 1 && l2[0].Message.StartsWith("Teste: manutenção"));
+                C("avisos antigos continuam iguais", l2.Skip(1).Select(n => n.Raw).SequenceEqual(l.Select(n => n.Raw)));
+                C("tirar o \"enviar agora\" devolve o original", Notices.RemoveOneShots(TimeSpan.Zero) == 1 && File.ReadAllBytes(Notices.File_).SequenceEqual(orig));
+                bool recusou = false; try { Notices.Clean("oi 😀"); } catch (InvalidOperationException) { recusou = true; }
+                C("recusa emoji e aceita acento", recusou && Notices.Clean("  ação\r\ncoração  ") == "ação coração");
+            }
+            catch (Exception ex) { f++; sb.AppendLine("FALHA inesperada: " + ex.Message); }
+            sb.AppendLine($"{f} falha(s)"); File.WriteAllText(args[1], sb.ToString());
+            return f;
+        }
+
+        // "--testar-bonus <saida>": contra MUCHILA_ROOT (CÓPIA com GameServer*\DATA\GameServerInfo - Common.dat, Data\Util\Notice.txt
+        // e MuChilaAdmin\): liga, soma, cancela e termina bônus sem recarregar servidor, conferindo arquivos e avisos.
+        if (args.Length == 2 && args[0] == "--testar-bonus")
+        {
+            var sb = new StringBuilder(); int f = 0;
+            void C(string n, bool ok, string x = "") { if (!ok) f++; sb.AppendLine($"{(ok ? "OK   " : "FALHA")} {n} {x}"); }
+            try
+            {
+                if (!ServerControl.ServerRoot.Contains("Temp", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("MUCHILA_ROOT não é uma cópia de teste.");
+                var gs = Path.Combine(ServerControl.ServerRoot, @"GameServer\DATA\GameServerInfo - Common.dat");
+                var vip = Path.Combine(ServerControl.ServerRoot, @"GameServerVIP\DATA\GameServerInfo - Common.dat");
+                var notice = Path.Combine(ServerControl.ServerRoot, @"Data\Util\Notice.txt");
+                var o1 = File.ReadAllBytes(gs); var o2 = File.ReadAllBytes(vip); var on = File.ReadAllBytes(notice);
+                int V(string file, string key) => int.Parse(System.Text.RegularExpressions.Regex.Match(File.ReadAllText(file), $@"(?m)^\s*{key}\s*=\s*(\d+)").Groups[1].Value);
+                int exp0 = V(gs, "AddExperienceRate_AL0"), exp3 = V(gs, "AddExperienceRate_AL3"), m0 = V(gs, "AddMasterExperienceRate_AL0"), d0 = V(gs, "ItemDropRate_AL0");
+                var t0 = DateTime.Now;
+
+                var b1 = TimedBonuses.Schedule(new[] { 0, 2 }, 2m, 10, t0);
+                TimedBonuses.Tick(t0.AddSeconds(1), reload: false);
+                C("EXP e drop x2 nos dois GameServers, master igual", V(gs, "AddExperienceRate_AL0") == exp0 * 2 && V(gs, "AddExperienceRate_AL3") == exp3 * 2 && V(vip, "AddExperienceRate_AL0") == exp0 * 2
+                  && V(gs, "ItemDropRate_AL0") == d0 * 2 && V(gs, "AddMasterExperienceRate_AL0") == m0, $"EXP {exp0}->{V(gs, "AddExperienceRate_AL0")}");
+                var n1 = Notices.Load();
+                C("aviso \"começou\" no topo e lembrete a cada 5 min", n1[0].IsOneShot && n1[0].Message.StartsWith("Começou: EXP + Drop x2") && n1.Any(n => n.Comment == $"{TimedBonuses.NoticeTag} {b1.Id}" && n.RepeatTime == 300));
+                var antes = File.ReadAllBytes(gs); TimedBonuses.Tick(t0.AddSeconds(2), reload: false);
+                C("rodar de novo não muda nada", File.ReadAllBytes(gs).SequenceEqual(antes) && Notices.Load().Count == n1.Count);
+
+                var b2 = TimedBonuses.Schedule(new[] { 0 }, 1.5m, 10, t0);
+                TimedBonuses.Tick(t0.AddSeconds(3), reload: false);
+                C("dois bônus somam (x2 + x1,5 = x2,5)", V(gs, "AddExperienceRate_AL0") == (int)Math.Round(exp0 * 2.5m, MidpointRounding.AwayFromZero), $"{V(gs, "AddExperienceRate_AL0")}");
+
+                var txt = File.ReadAllText(gs, System.Text.Encoding.Latin1);
+                File.WriteAllText(gs, System.Text.RegularExpressions.Regex.Replace(txt, @"(?m)^(\s*AddExperienceRate_AL1\s*=\s*)\d+", "${1}999"), System.Text.Encoding.Latin1);
+                var log = TimedBonuses.Tick(t0.AddSeconds(4), reload: false);
+                C("taxa mudada à mão vira a base", log.Any(l => l.Contains("mudado à mão")) && V(gs, "AddExperienceRate_AL1") == (int)Math.Round(999 * 2.5m, MidpointRounding.AwayFromZero), $"{V(gs, "AddExperienceRate_AL1")}");
+
+                TimedBonuses.Cancel(b1.Id);
+                TimedBonuses.Tick(t0.AddSeconds(5), reload: false);
+                var n2 = Notices.Load();
+                C("cancelar o ativo: fica só o x1,5 e o lembrete dele", V(gs, "AddExperienceRate_AL0") == (int)Math.Round(exp0 * 1.5m, MidpointRounding.AwayFromZero) && V(gs, "ItemDropRate_AL0") == d0
+                  && !n2.Any(n => n.Comment == $"{TimedBonuses.NoticeTag} {b1.Id}") && n2.Any(n => n.Comment == $"{TimedBonuses.NoticeTag} {b2.Id}") && n2.Any(n => n.IsOneShot && n.Message.Contains("encerrado")));
+
+                TimedBonuses.Tick(t0.AddMinutes(11), reload: false);
+                Notices.RemoveOneShots(TimeSpan.FromDays(-1));   // o teste simula horários à frente do relógio
+                var esperado1 = System.Text.RegularExpressions.Regex.Replace(System.Text.Encoding.Latin1.GetString(o1), @"(?m)^(\s*AddExperienceRate_AL1\s*=\s*)\d+", "${1}999");
+                C("no fim tudo volta (menos a taxa mudada à mão)", File.ReadAllText(gs, System.Text.Encoding.Latin1) == esperado1 && File.ReadAllBytes(vip).SequenceEqual(o2));
+                C("avisos do bônus saem do Notice.txt", File.ReadAllBytes(notice).SequenceEqual(on));
+                C("bônus terminados saem da lista", TimedBonuses.CleanupFinished(t0.AddMinutes(12)) == 2 && TimedBonuses.List().Count == 0);
+            }
+            catch (Exception ex) { f++; sb.AppendLine("FALHA inesperada: " + ex); }
+            sb.AppendLine($"{f} falha(s)"); File.WriteAllText(args[1], sb.ToString());
+            return f;
+        }
+
         // "--vigia-reset": laço do vigia do /reset (sem janela; uma instância só)
         if (args.Length == 1 && args[0] == "--vigia-reset")
             return ResetWatcher.Run();
@@ -243,7 +321,8 @@ static class Program
         Check("Servidores", () => string.Join(", ", ServerControl.Servers.Select(s => $"{s.Display}={(ServerControl.Find(s.Process, s.Folder) != null ? "rodando" : "parado")}")));
         Check("GameServers", ServerControl.GameServerCounts);
         Check("Agendas de eventos", () => $"{EventScheduler.Pending().Count} disparo(s) registrados");
-        Check("Bônus", () => $"{BonusScheduler.List().Count} bônus deste programa no BonusManager.dat");
+        Check("Bônus", () => { var n = DateTime.Now; var l = TimedBonuses.List(); return $"{l.Count} bônus na lista, {l.Count(b => b.ActiveAt(n))} ativo(s)"; });
+        Check("Avisos", () => $"{Notices.Load().Count} aviso(s) no Notice.txt");
         Check("Loja de Cash", () => { var l = CashShop.List(); return $"{l.Count} pacotes ({l.Count(p => p.HasClient)} com tela no cliente){(CashShop.ClientAvailable ? "" : "; cliente não encontrado")}"; });
         Check("Monstros (respawn)", () => { var m = Monsters.Maps(); return $"{m.Count} mapas, {m.Sum(x => x.Total)} monstros no total"; });
         Check("Comandos", () => $"{Commands.All.Count} comandos catalogados");
