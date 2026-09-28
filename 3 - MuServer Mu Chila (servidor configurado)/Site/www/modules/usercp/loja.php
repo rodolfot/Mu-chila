@@ -1,6 +1,6 @@
 <?php
 /**
- * Mu Chila - Loja (área do jogador): comprar VIP e cash por PIX.
+ * Mu Chila - Loja (área do jogador): comprar VIP, cash e Passe dos Mapas por PIX.
  * Núcleo e regras: includes/muchila/MuChilaLoja.php. Pacotes: includes/config/muchila.pacotes.json.
  */
 
@@ -33,7 +33,7 @@ try {
 	$erro = $ex->getMessage();
 }
 
-echo '<div class="page-title"><span>Loja: VIP e Cash</span></div>';
+echo '<div class="page-title"><span>Loja: VIP, Cash e Passe</span></div>';
 if($erro) message('error', $h($erro));
 if(!isset($loja)) return;
 if(!$loja->ativa()) { message('warning', 'A loja está fechada no momento.'); return; }
@@ -78,6 +78,9 @@ if(isset($_GET['pedido'])) {
 				? ' '.number_format($zen, 0, ',', '.').' de Zen foram colocados no seu baú.'
 				: ' O bônus de '.number_format($zen, 0, ',', '.').' de Zen vai para o seu baú assim que você sair do jogo (até 1 minuto depois).');
 			message('success', 'Pagamento confirmado! VIP '.(int)$c['vip_nivel'].' ativo até <strong>'.MuChilaLoja::data($c['vip_expira']).'</strong>.'.$zenTexto.' Se você estiver jogando, saia e entre de novo para o VIP valer.');
+		} elseif($p['tipo'] === 'passe') {
+			$c = $loja->conta($conta);
+			message('success', 'Pagamento confirmado! Passe dos Mapas ativo até <strong>'.MuChilaLoja::data($c['passe_expira']).'</strong>. Já vale, não precisa sair do jogo.');
 		} else {
 			message('success', 'Pagamento confirmado! '.number_format((int)$p['cash'], 0, ',', '.').' de cash creditados. Abra a Cash Shop no jogo (se o saldo não aparecer, saia e entre de novo).');
 		}
@@ -94,14 +97,23 @@ $c = $loja->conta($conta);
 echo '<div class="panel panel-general"><div class="panel-body">';
 echo '<p><strong>Sua conta:</strong> '.$h($conta).' &nbsp; | &nbsp; <strong>VIP:</strong> '
 	.($c['vip_ativo'] ? 'VIP '.(int)$c['vip_nivel'].' até '.MuChilaLoja::data($c['vip_expira']) : 'nenhum')
-	.' &nbsp; | &nbsp; <strong>Cash:</strong> '.number_format((int)$c['cash'], 0, ',', '.').'</p>';
+	.' &nbsp; | &nbsp; <strong>Cash:</strong> '.number_format((int)$c['cash'], 0, ',', '.')
+	.' &nbsp; | &nbsp; <strong>Passe dos Mapas:</strong> '.($c['passe_ativo'] ? 'até '.MuChilaLoja::data($c['passe_expira']) : 'nenhum').'</p>';
 echo '</div></div>';
 
-$grupos = ['vip' => 'VIP', 'cash' => 'Cash'];
+$grupos = ['vip' => 'VIP', 'cash' => 'Cash', 'passe' => 'Passe dos Mapas (acima do nível 400)'];
 foreach($grupos as $tipo => $titulo) {
 	$lista = array_filter($loja->pacotes, function($p) use ($tipo) { return $p['tipo'] === $tipo; });
 	if(!$lista) continue;
-	echo '<h4>'.$titulo.'</h4><div class="row">';
+	echo '<h4>'.$titulo.'</h4>';
+	if($tipo === 'passe') {
+		$mapasPasse = [];
+		try { $mapasPasse = $loja->db->query("SELECT Nome FROM MuChila_PasseMapasLista ORDER BY Mapa")->fetchAll(PDO::FETCH_COLUMN); } catch(Exception $ex) {}
+		echo '<p>Sem o passe, quem entra nesses mapas volta para a seleção de personagem e depois aparece em Lorencia'
+			.($mapasPasse ? ': <strong>'.$h(implode(', ', $mapasPasse)).'</strong>' : '').'. Vale para a conta toda (todos os personagens e servidores). '
+			.'Comprar de novo soma os dias. No jogo, o mesmo passe sai pelo <em>Gold Channel Ticket</em> da Cash Shop (use o ticket guardado na loja).</p>';
+	}
+	echo '<div class="row">';
 	foreach($lista as $p) {
 		$bloqueado = $tipo === 'vip' && $c['vip_ativo'] && (int)$c['vip_nivel'] !== (int)$p['vip_nivel'];
 		echo '<div class="col-xs-12 col-sm-4"><div class="panel panel-general"><div class="panel-body text-center">';
@@ -111,7 +123,8 @@ foreach($grupos as $tipo => $titulo) {
 			echo '<p><small>Disponível quando o seu VIP '.(int)$c['vip_nivel'].' acabar.</small></p>';
 		} else {
 			echo '<form method="post"><input type="hidden" name="csrf" value="'.$h($csrf).'">';
-			echo '<button name="comprar" value="'.$h($p['id']).'" class="btn btn-primary">'.($tipo === 'vip' && $c['vip_ativo'] ? 'Renovar' : 'Comprar').'</button></form>';
+			$renovar = $tipo === 'vip' && $c['vip_ativo'] || $tipo === 'passe' && $c['passe_ativo'];
+			echo '<button name="comprar" value="'.$h($p['id']).'" class="btn btn-primary">'.($renovar ? 'Renovar' : 'Comprar').'</button></form>';
 		}
 		echo '</div></div></div>';
 	}

@@ -118,6 +118,9 @@ O BonusManager era caixa-preta: não mostrava se o bônus tinha começado, não 
 
 - **Formato:** cada item ocupa 16 bytes em `Character.Inventory` (237 posições; 0–11 equipado) e em `warehouse.Items` (240 posições: 0–119 baú, 120–239 baú estendido). O layout, conferido em inventários reais, está descrito no topo de `tools\MuChilaAdmin\Items.cs`.
 - **MuEditor:** é da Season 8 e **não deve salvar** inventários do S14, porque pode apagar o inventário expandido e o baú estendido. Use a aba **Itens e baú** para ver e remover.
+- **Mais de um baú:** `/ware <número>`, com o baú fechado, troca o baú da conta (`/ware 0` = o principal). O limite é `CommandWareNumber_AL0..3` (`Command.dat`: 1/5/7/9, ou seja 2, 6, 8 e 10 baús). Os extras ficam em `ExtWarehouse` (coluna `Number`). O baú é da **conta**: todos os personagens veem os mesmos.
+- **Baú estendido:** o Vault Expansion Certificate (14,163) libera a 2ª metade do baú (`AccountCharacter.ExtWarehouse`, máximo 1).
+- **Magic Backpack (14,162):** cada uso soma uma faixa ao inventário (`Character.ExtInventory`, **máximo 2**, limite do GameServer em 0x421FF9; com 2 o item é recusado). O servidor não avisa o cliente, então a faixa só aparece ao reentrar. Com `vigia-mochila.ligado`, o vigia manda o personagem para a seleção logo depois do uso.
 - **Presentes:** a **Gremory Case** (tabela `GremoryCase`, procedure `GremoryCaseAddItem`) guarda até 50 presentes por conta.
   - `StorageType 1` = para a conta; `2` = para um personagem.
   - O jogador recebe ao entrar no jogo.
@@ -264,6 +267,17 @@ Reset, Master Reset e Supreme Reset ficam em **Painel do jogador → Resets** (`
 - O vigia só age com **todos** os GameServers e o Castle Siege lidos, porque só assim tem certeza de que o personagem saiu do jogo.
 - Se o jogador entrar de novo antes do reset, o vigia espera ele sair outra vez. Pedido com mais de 3 minutos expira.
 - Sem o vigia, o site volta a pedir para sair do jogo.
+
+## Passe dos Mapas (acima do nível 400)
+
+Decisão do dono (28/09/2026): Nixies Lake, Deep Dungeon 1–5, Swamp of Darkness e Kubera Mine 1–5 (nível mínimo acima de 400) só com o passe. Ferea e Swamp of Calmness pedem exatamente 400 e ficam livres.
+
+- **Banco** (`DB\1 - Querys\MuChila-PasseMapas.sql`): o passe é por **conta** (`dbo.MuChila_PasseMapas.Expira`), com histórico em `MuChila_PasseMapasLog`. A lista de mapas fica em `MuChila_PasseMapasLista`; para incluir ou tirar um mapa, basta mudar essa tabela, e o vigia relê a cada minuto. `MuChila_PasseAdicionar @Conta, @Segundos, @Origem` soma ao passe ativo (ou começa agora).
+- **No jogo (WCoin):** Gold Channel Ticket da Cash Shop, de 1, 3, 7 ou 30 dias. Ao usar o ticket guardado na loja, o GameServer manda o JoinServer rodar `WZ_SetAccountLevel`, que foi ajustada para somar ao passe (nível 0 do produto) sem mexer no VIP. Preços e textos: `tools\Loja-PasseMapas.ps1` (`-Restaurar` volta ao kit).
+- **No site (PIX):** Loja → "Passe dos Mapas" (pacotes `passe-1/3/7/30` em `muchila.pacotes.json`, R$ 9/18/27/45). Vale na hora, sem sair do jogo.
+- **Quem cobra:** o vigia (`vigia-passe-mapas.ligado`) confere a cada 1 s. Quem estiver num mapa da lista sem passe vai para a seleção de personagem e, 2 s depois de sair do jogo, é posto em Lorencia (área do gate 17) no banco. Se reentrar antes, é mandado de novo. Se a consulta ao banco falhar, ninguém é tirado.
+- **Dar passe na mão:** `EXEC dbo.MuChila_PasseAdicionar 'conta', 86400 * <dias>, 'admin'`.
+- Não há mensagem na tela explicando a saída (o GameServer é fechado). A regra está na página Informações e na Loja do site.
 
 ## Evolução de classe (missões; `/change` desligado)
 

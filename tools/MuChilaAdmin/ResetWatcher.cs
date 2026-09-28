@@ -21,8 +21,11 @@ namespace MuChilaAdmin;
 /// o servidor desconta a contagem e, ao chegar em 1, salva o personagem e manda o cliente para a seleção. O vigia grava
 /// os mesmos campos pela memória. Antes de gravar, acha essa rotina no executável pelos bytes; se o GameServer for de
 /// outra versão (bytes não encontrados), não grava nada.
+///
+/// Também: resets pedidos pelo site com a conta online, bônus por tempo, avisos, Passe dos Mapas e Magic Backpack
+/// (os dois últimos em ResetWatcher.Passe.cs).
 /// </summary>
-public static class ResetWatcher
+public static partial class ResetWatcher
 {
     const string MutexName = @"Local\MuChilaVigiaReset";
     public static readonly string LogPath = Path.Combine(AppContext.BaseDirectory, "vigia.log");
@@ -61,7 +64,9 @@ public static class ResetWatcher
 
     const int FirstUser = 11000, UserSlots = 1000;
     const int OffIndex = 0x00, OffConnected = 0x04, OffCloseCount = 0x0A, OffCloseType = 0x0B, OffEnableDel = 0x0C;
-    const int OffName = 0x62, OffLevel = 0x8C, ObjHead = 0x90;
+    // +0x57 conta, +0x10D mapa, +0x648 faixas extras do inventário (Magic Backpack) e +0x64C baú extra: conferidos com o
+    // banco em 28/09/2026 (a rotina do Magic Backpack no GameServer, 0x421FF9, lê e soma +0x648 até 2)
+    const int OffName = 0x62, OffLevel = 0x8C, OffAccount = 0x57, OffMap = 0x10D, OffExtInventory = 0x648, ObjHead = 0x650;
     const int Playing = 3, CharacterSelect = 1;
 
     sealed class Target
@@ -73,7 +78,7 @@ public static class ResetWatcher
         public bool ApplyAttackFix;          // só o laço do vigia aplica; sondagem e botão do painel só leem
         public string AttackFixState = "checagem de ataques ainda não verificada";
         public string CommandFixState = "comandos curtos: não verificado";
-        public readonly Dictionary<int, (string Name, int Level)> Seen = new();
+        public readonly Dictionary<int, (string Name, int Level, int ExtInventory)> Seen = new();
     }
 
     public static bool IsRunning()
@@ -93,6 +98,7 @@ public static class ResetWatcher
         var nextHousekeeping = DateTime.MinValue;
         var nextBonus = DateTime.MinValue;
         var nextQueue = DateTime.MinValue; var nextQueueError = DateTime.MinValue;
+        var nextPass = DateTime.MinValue; var nextPassError = DateTime.MinValue;
         while (true)
         {
             try
@@ -103,6 +109,14 @@ public static class ResetWatcher
                     nextQueue = DateTime.Now.AddSeconds(1);
                     try { foreach (var l in ProcessResetRequests(targets.Values.ToList())) Log("reset pelo site: " + l); }
                     catch (Exception ex) { if (DateTime.Now >= nextQueueError) { nextQueueError = DateTime.Now.AddMinutes(5); Log("reset pelo site: " + ex.Message); } }
+                }
+
+                // a cada 1 s: Passe dos Mapas (quem está num mapa acima do 400 sem passe vai para a seleção e depois para Lorencia)
+                if (DateTime.Now >= nextPass)
+                {
+                    nextPass = DateTime.Now.AddSeconds(1);
+                    try { foreach (var l in ProcessMapPass(targets.Values.ToList())) Log("passe: " + l); }
+                    catch (Exception ex) { if (DateTime.Now >= nextPassError) { nextPassError = DateTime.Now.AddMinutes(5); Log("passe: " + ex.Message); } }
                 }
 
                 // a cada 5 s: bônus por tempo (liga e desliga as taxas na hora certa, avisa os jogadores)
@@ -176,9 +190,11 @@ public static class ResetWatcher
                     sb.AppendLine($"   {t.AttackFixState}");
                     sb.AppendLine($"   {t.CommandFixState}");
                     sb.AppendLine($"   /reset leva à seleção de personagem: {(ResetToSelectEnabled ? "ligado" : "desligado (falta testar a #7)")}");
+                    sb.AppendLine($"   Passe dos Mapas: {(PassEnabled ? "ligado" : "desligado")}; Magic Backpack leva à seleção: {(BackpackEnabled ? "ligado" : "desligado")}");
                     if (t.Table == 0) continue;
                     foreach (var (idx, obj) in Players(t))
-                        sb.AppendLine($"   {idx}: {ReadName(obj)} nível {BitConverter.ToInt16(obj, OffLevel)} " +
+                        sb.AppendLine($"   {idx}: {ReadName(obj)} (conta {ReadAccount(obj)}) nível {BitConverter.ToInt16(obj, OffLevel)} " +
+                                      $"mapa {obj[OffMap]} faixas extras {BitConverter.ToInt32(obj, OffExtInventory)} " +
                                       $"contagem {(sbyte)obj[OffCloseCount]} tipo {(sbyte)obj[OffCloseType]}");
                 }
                 finally { Close(t); }
@@ -332,9 +348,14 @@ public static class ResetWatcher
             if (name == null) continue;
             alive.Add(idx);
             int level = BitConverter.ToInt16(obj, OffLevel);
-            if (ResetToSelectEnabled && t.Seen.TryGetValue(idx, out var prev) && prev.Name == name && prev.Level >= 50 && level <= 10)
+            int ext = BitConverter.ToInt32(obj, OffExtInventory);
+            bool known = t.Seen.TryGetValue(idx, out var prev) && prev.Name == name;
+            if (ResetToSelectEnabled && known && prev.Level >= 50 && level <= 10)
                 Log(Trigger(t, idx, name, $"/reset detectado (nível {prev.Level} → {level})"));
-            t.Seen[idx] = (name, level);
+            // o GameServer soma a faixa mas não avisa o cliente: ela só aparece ao reentrar (dono, 28/09/2026)
+            else if (BackpackEnabled && known && ext > prev.ExtInventory && prev.ExtInventory >= 0 && ext <= 2)
+                Log(Trigger(t, idx, name, $"Magic Backpack usado (faixas extras {prev.ExtInventory} → {ext})"));
+            t.Seen[idx] = (name, level, ext);
         }
         foreach (var gone in t.Seen.Keys.Where(k => !alive.Contains(k)).ToList()) t.Seen.Remove(gone);
     }

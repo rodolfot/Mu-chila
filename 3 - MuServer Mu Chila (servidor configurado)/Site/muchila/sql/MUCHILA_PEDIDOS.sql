@@ -9,7 +9,7 @@ BEGIN
         id               INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_MUCHILA_PEDIDOS PRIMARY KEY,
         conta            VARCHAR(10)    NOT NULL,
         pacote           VARCHAR(30)    NOT NULL,
-        tipo             VARCHAR(10)    NOT NULL,              -- vip | cash
+        tipo             VARCHAR(10)    NOT NULL,              -- vip | cash | passe
         descricao        NVARCHAR(100)  NOT NULL,
         valor            DECIMAL(10,2)  NOT NULL,
         vip_nivel        INT            NULL,
@@ -27,7 +27,7 @@ BEGIN
         entregue_por     VARCHAR(40)    NULL,                  -- webhook, simulacao, admin:<conta>
         obs              NVARCHAR(1000) NULL,
         ip               VARCHAR(45)    NULL,
-        CONSTRAINT CK_MUCHILA_PEDIDOS_tipo CHECK (tipo IN ('vip', 'cash')),
+        CONSTRAINT CK_MUCHILA_PEDIDOS_tipo CHECK (tipo IN ('vip', 'cash', 'passe')),
         CONSTRAINT CK_MUCHILA_PEDIDOS_status CHECK (status IN ('pendente', 'entregue', 'cancelado', 'expirado', 'falhou'))
     );
 END
@@ -42,3 +42,13 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UX_MUCHILA_PEDIDOS_proved
 IF COL_LENGTH('dbo.MUCHILA_PEDIDOS', 'zen') IS NULL
     ALTER TABLE dbo.MUCHILA_PEDIDOS ADD zen BIGINT NULL, zen_entregue_em DATETIME NULL;
 -- (a tarefa "Mu Chila - Zen do VIP" do agendador do WebEngine é registrada pelo Instalar-Modulos.ps1, que calcula o MD5 do arquivo)
+
+-- 28/09/2026: Passe dos Mapas Exclusivos (mapas acima do nível 400), dias por pedido; entregue por dbo.MuChila_PasseAdicionar
+-- (DB\1 - Querys\MuChila-PasseMapas.sql, que precisa ter rodado antes)
+IF COL_LENGTH('dbo.MUCHILA_PEDIDOS', 'passe_dias') IS NULL
+    ALTER TABLE dbo.MUCHILA_PEDIDOS ADD passe_dias INT NULL;
+IF EXISTS (SELECT 1 FROM sys.check_constraints WHERE name = 'CK_MUCHILA_PEDIDOS_tipo' AND definition NOT LIKE '%passe%')
+BEGIN
+    ALTER TABLE dbo.MUCHILA_PEDIDOS DROP CONSTRAINT CK_MUCHILA_PEDIDOS_tipo;
+    ALTER TABLE dbo.MUCHILA_PEDIDOS ADD CONSTRAINT CK_MUCHILA_PEDIDOS_tipo CHECK (tipo IN ('vip', 'cash', 'passe'));
+END

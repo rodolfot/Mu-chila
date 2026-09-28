@@ -2163,7 +2163,7 @@ end
 428 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "3-Day Mastery Armor Box"			0 	 0 	 
 429 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "+11 3rd Wings Chest (Bound)"			0 	 0 	 
 430 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Elena's Letter"				0 	 0 	 
-431 	 * 	 0 	 1 	 1 		 1 		 1 		 1 		 "Key of Dimension"				0 	 0 	 
+431 	 * 	 0 	 1 	 1 		 1 		 1 		 0 		 "Key of Dimension"				0 	 0 	 
 432 	 * 	 0 	 1 	 2 		 1 		 1 		 1 		 "[Boost] Arcanum of Health"			0 	 0 	 
 433 	 * 	 0 	 1 	 2 		 1 		 1 		 1 		 "[Boost] Arcanum of Mana"			0 	 0 	 
 434 	 * 	 0 	 1 	 2 		 1 		 1 		 1 		 "[Boost] Arcanum of Speed"			0 	 0 	 

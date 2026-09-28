@@ -1,6 +1,7 @@
 <?php
 /**
- * Mu Chila - loja do site: VIP e cash pagos por PIX.
+ * Mu Chila - loja do site: VIP, cash e Passe dos Mapas Exclusivos pagos por PIX.
+ * O passe (mapas acima do nível 400) é por conta e somado por dbo.MuChila_PasseAdicionar (DB\1 - Querys\MuChila-PasseMapas.sql).
  *
  * Fluxo: o jogador escolhe um pacote -> criarPedido() grava o pedido e pede a cobrança ao provedor
  * -> o provedor avisa que houve pagamento (webhook do Mercado Pago ou, no modo de teste, o botão "Simular pagamento")
@@ -58,7 +59,8 @@ class MuChilaLoja
             if (empty($p['ativo']) || !isset($p['id'], $p['tipo'], $p['nome'], $p['valor'])) continue;
             $p['zen'] = min(self::ZEN_MAXIMO, max(0, (int)($p['zen'] ?? 0)));   // bônus opcional do VIP, no baú
             if ($p['tipo'] === 'vip' && (int)($p['vip_nivel'] ?? 0) >= 1 && (int)($p['vip_dias'] ?? 0) >= 1
-                || $p['tipo'] === 'cash' && (int)($p['cash'] ?? 0) >= 1) $lista[$p['id']] = $p;
+                || $p['tipo'] === 'cash' && (int)($p['cash'] ?? 0) >= 1
+                || $p['tipo'] === 'passe' && (int)($p['passe_dias'] ?? 0) >= 1) $lista[$p['id']] = $p;
         }
         return $lista;
     }
@@ -108,8 +110,9 @@ class MuChilaLoja
     {
         $st = $this->db->prepare("SELECT m.memb___id AS conta, m.mail_addr AS email, m.bloc_code, m.AccountLevel AS vip_nivel,
                 m.AccountExpireDate AS vip_expira, CASE WHEN m.AccountLevel > 0 AND m.AccountExpireDate > GETDATE() THEN 1 ELSE 0 END AS vip_ativo,
-                ISNULL(c.WCoinC, 0) AS cash
-            FROM MEMB_INFO m LEFT JOIN CashShopData c ON c.AccountID = m.memb___id WHERE m.memb___id = ?");
+                ISNULL(c.WCoinC, 0) AS cash, p.Expira AS passe_expira, CASE WHEN p.Expira > GETDATE() THEN 1 ELSE 0 END AS passe_ativo
+            FROM MEMB_INFO m LEFT JOIN CashShopData c ON c.AccountID = m.memb___id
+                LEFT JOIN MuChila_PasseMapas p ON p.Conta = m.memb___id WHERE m.memb___id = ?");
         $st->execute([$conta]);
         $r = $st->fetch();
         if (!$r) throw new Exception('Conta não encontrada.');
@@ -168,11 +171,12 @@ class MuChilaLoja
             throw new Exception('Você já tem pedidos aguardando pagamento. Pague ou espere eles expirarem antes de criar outro.');
 
         $prov = $this->provedor();
-        $st = $this->db->prepare("INSERT INTO MUCHILA_PEDIDOS (conta, pacote, tipo, descricao, valor, vip_nivel, vip_dias, cash, zen, provedor, expira, ip)
-            OUTPUT INSERTED.id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, DATEADD(minute, CAST(? AS int), GETDATE()), ?)");
+        $st = $this->db->prepare("INSERT INTO MUCHILA_PEDIDOS (conta, pacote, tipo, descricao, valor, vip_nivel, vip_dias, cash, zen, passe_dias, provedor, expira, ip)
+            OUTPUT INSERTED.id VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, DATEADD(minute, CAST(? AS int), GETDATE()), ?)");
         $st->execute([$conta, $p['id'], $p['tipo'], $p['nome'], number_format((float)$p['valor'], 2, '.', ''),
             $p['tipo'] === 'vip' ? (int)$p['vip_nivel'] : null, $p['tipo'] === 'vip' ? (int)$p['vip_dias'] : null,
             $p['tipo'] === 'cash' ? (int)$p['cash'] : null, $p['zen'] > 0 ? $p['zen'] : null,
+            $p['tipo'] === 'passe' ? (int)$p['passe_dias'] : null,
             $prov->nome(), max(5, (int)$this->cfg['expira_minutos']), substr($ip, 0, 45)]);
         $id = (int)$st->fetchColumn();
         $pedido = $this->pedido($id);
@@ -249,6 +253,14 @@ class MuChilaLoja
                         $obs .= '; Zen aguardando a conta sair do jogo';
                     }
                 }
+            } elseif ($p['tipo'] === 'passe') {
+                // soma ao passe ainda ativo; vale na hora, até com a conta no jogo (o vigia consulta o banco a cada 5 s)
+                $st = $this->db->prepare("DECLARE @r int; EXEC @r = dbo.MuChila_PasseAdicionar @Conta = ?, @Segundos = ?, @Origem = ?; SELECT @r AS r");
+                $st->execute([$p['conta'], (int)$p['passe_dias'] * 86400, 'site: pedido ' . $id]);
+                $r = null;
+                do { $row = $st->fetch(PDO::FETCH_ASSOC); if (is_array($row) && array_key_exists('r', $row)) { $r = (int)$row['r']; break; } } while ($st->nextRowset());
+                if ($r !== 0) throw new Exception('o passe não foi somado (retorno ' . var_export($r, true) . ')');
+                $obs = 'Passe dos Mapas até ' . self::data($this->conta($p['conta'])['passe_expira']);
             } else {
                 $up = $this->db->prepare("UPDATE CashShopData SET WCoinC = ISNULL(WCoinC, 0) + ? WHERE AccountID = ?");
                 $up->execute([$p['cash'], $p['conta']]);

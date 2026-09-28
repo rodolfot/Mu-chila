@@ -1,5 +1,5 @@
 {
-  "_comentario": "Pacotes da loja do site. valor em reais. VIP (tabela do dono, 25/09/2026): 1 Vipzinho 130% EXP/80% R$35, 2 Vip 150% EXP/110% R$40, 3 Vipzão 180% EXP/150% R$50; taxas nos _AL1/_AL2/_AL3 do GameServerInfo - Common.dat. zen = bônus de Zen no baú da conta (limite 2 bilhões), entregue com a conta fora do jogo. Cash vai para o WCoinC. Cash (tabela do dono, 26/09/2026): 200 por R$37, 500 por R$45, 1.000 por R$60.",
+  "_comentario": "Pacotes da loja do site. valor em reais. VIP (tabela do dono, 25/09/2026): 1 Vipzinho 130% EXP/80% R$35, 2 Vip 150% EXP/110% R$40, 3 Vipzão 180% EXP/150% R$50; taxas nos _AL1/_AL2/_AL3 do GameServerInfo - Common.dat. zen = bônus de Zen no baú da conta (limite 2 bilhões), entregue com a conta fora do jogo. Cash vai para o WCoinC. Cash (tabela do dono, 26/09/2026): 200 por R$37, 500 por R$45, 1.000 por R$60. Passe dos Mapas (dono, 28/09/2026): mapas acima do nível 400 só com passe; bem caro, perto do VIP; o mesmo passe sai no jogo pelo Gold Channel Ticket da Cash Shop (100/200/300/500 WCoin para 1/3/7/30 dias).",
   "pacotes": [
     {
       "id": "vip1-30",
@@ -53,6 +53,38 @@
       "nome": "1.000 Cash",
       "cash": 1000,
       "valor": 60.0,
+      "ativo": true
+    },
+    {
+      "id": "passe-1",
+      "tipo": "passe",
+      "nome": "Passe dos Mapas 400+ - 1 dia",
+      "passe_dias": 1,
+      "valor": 9.0,
+      "ativo": true
+    },
+    {
+      "id": "passe-3",
+      "tipo": "passe",
+      "nome": "Passe dos Mapas 400+ - 3 dias",
+      "passe_dias": 3,
+      "valor": 18.0,
+      "ativo": true
+    },
+    {
+      "id": "passe-7",
+      "tipo": "passe",
+      "nome": "Passe dos Mapas 400+ - 7 dias",
+      "passe_dias": 7,
+      "valor": 27.0,
+      "ativo": true
+    },
+    {
+      "id": "passe-30",
+      "tipo": "passe",
+      "nome": "Passe dos Mapas 400+ - 30 dias",
+      "passe_dias": 30,
+      "valor": 45.0,
       "ativo": true
     }
   ]

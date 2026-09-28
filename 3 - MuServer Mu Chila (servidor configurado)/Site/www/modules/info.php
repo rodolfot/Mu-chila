@@ -112,6 +112,21 @@ if($mcCurva) { ?>
 	(porcentagem da taxa do plano, igual para todos os planos): <?php echo $mcH(implode(' · ', $mcCurva)); ?>.</p>
 <?php } ?>
 <p>O VIP vale a partir do próximo login. O Zen vai para o baú da conta. Compre na <a href="<?php echo __BASE_URL__; ?>usercp/loja">Loja</a> (área do jogador).</p>
+<?php
+// Passe dos Mapas (28/09/2026): mapas da lista do banco (dbo.MuChila_PasseMapasLista) + pacotes "passe" da loja
+$mcPasse = array_values(array_filter($mcPacotes, fn($mcP) => ($mcP['tipo'] ?? '') === 'passe' && !empty($mcP['ativo'])));
+$mcMapasPasse = [];
+try {
+	require_once(__PATH_INCLUDES__ . 'muchila/MuChilaLoja.php');
+	$mcMapasPasse = MuChilaLoja::conectar()->query("SELECT Nome FROM MuChila_PasseMapasLista ORDER BY Mapa")->fetchAll(PDO::FETCH_COLUMN);
+} catch(Throwable $mcErro) {}
+if($mcMapasPasse) { ?>
+<h2>Passe dos Mapas</h2>
+<p>Os mapas acima do nível 400 só com o passe ativo na conta: <strong><?php echo $mcH(implode(', ', $mcMapasPasse)); ?></strong>.
+	Sem o passe, o personagem volta para a seleção de personagem e aparece em Lorencia. O passe vale para a conta toda e comprar de novo soma os dias.</p>
+<p><?php if($mcPasse) { ?>No site: <?php echo $mcH(implode(' · ', array_map(fn($mcP) => $mcP['passe_dias'].' dia'.($mcP['passe_dias'] == 1 ? '' : 's').' R$ '.number_format((float)$mcP['valor'], 2, ',', '.'), $mcPasse))); ?>
+	(<a href="<?php echo __BASE_URL__; ?>usercp/loja">Loja</a>). <?php } ?>No jogo: <em>Gold Channel Ticket</em> na Cash Shop (WCoin), de 1, 3, 7 ou 30 dias; use o ticket guardado na loja para ativar.</p>
+<?php } ?>
 
 <h2>Chaos Machine</h2>
 <table class="table table-condensed table-hover table-striped table-bordered">

@@ -21,7 +21,7 @@ public static class Commands
         new("/reset", "Jogador", "Reseta o personagem (nível 400 → 1) pelas regras do Command.dat."),
         new("/mreset", "Jogador", "Master Reset embutido do kit (grand-reset por contagem de resets; está desligado — o Master Reset oficial é pelo site)."),
         new("/change", "Jogador", "Evolui a classe, até a 4ª. Desligado desde 27/09 (evolução pelas missões)."),
-        new("/ware", "Jogador", "Abre o baú (warehouse) à distância."),
+        new("/ware", "Jogador", "/ware <número>: troca o baú da conta (0 = principal; extras até CommandWareNumber do plano). Com o baú fechado."),
         new("/money", "Jogador", "Mostra/gerencia o Zen conforme a config."),
         new("/pkclear", "Jogador", "Limpa o status de PK (assassino)."),
         new("/offattack", "Jogador", "Ataque automático offline. Só VIP; tempo e Zen por plano no Custom.dat."),

@@ -6,13 +6,17 @@ $ok = 0; $falhas = 0;
 function confere(string $desc, bool $cond, string $extra = '') { global $ok, $falhas; $cond ? $ok++ : $falhas++; echo ($cond ? 'OK    ' : 'FALHA ') . $desc . ($extra !== '' ? "  [$extra]" : '') . PHP_EOL; }
 
 $loja = new MuChilaLoja();
+// o bônus de Zen do VIP é configurável (hoje 0 no muchila.pacotes.json): o teste fixa 200 milhões só nesta execução
+$loja->pacotes['vip1-30']['zen'] = 200000000;
 $db = $loja->db;
 $conta = 'lojateste';
 $db->prepare("IF NOT EXISTS (SELECT 1 FROM MEMB_INFO WHERE memb___id = ?) INSERT INTO MEMB_INFO (memb___id, memb__pwd, memb_name, sno__numb, mail_addr, bloc_code, ctl1_code, appl_days) VALUES (?, 'teste1', 'teste', '1', 'teste@exemplo.com', '0', '0', GETDATE())")->execute([$conta, $conta]);
 
 try {
     confere('modo de teste (provedor simulado)', $loja->modoTeste());
-    confere('pacotes carregados', count($loja->pacotes) === 6, implode(',', array_keys($loja->pacotes)));
+    $porTipo = array_count_values(array_column($loja->pacotes, 'tipo'));
+    confere('pacotes carregados (3 VIP, cash e 4 de passe)', ($porTipo['vip'] ?? 0) === 3 && ($porTipo['cash'] ?? 0) >= 1 && ($porTipo['passe'] ?? 0) === 4,
+        implode(',', array_keys($loja->pacotes)));
 
     // 1) VIP 1: pedido, pagamento simulado, entrega
     $p = $loja->criarPedido($conta, 'vip1-30', '127.0.0.1');
@@ -90,7 +94,22 @@ try {
     $db->prepare("UPDATE MUCHILA_PEDIDOS SET simulado_status = 'aprovado' WHERE id = ?")->execute([$exp['id']]);
     $loja->processarAviso($exp['provedor_id'], 'atrasado');
     confere('pago depois de expirar é entregue', $loja->pedido((int)$exp['id'])['status'] === 'entregue' && (int)$loja->conta($conta)['cash'] === 1700);
+
+    // 11) Passe dos Mapas: começa agora; comprar de novo soma os dias; aviso repetido não soma de novo
+    $db->prepare("DELETE FROM MUCHILA_PEDIDOS WHERE conta = ? AND status = 'pendente'")->execute([$conta]);
+    $pp = $loja->criarPedido($conta, 'passe-7', '127.0.0.1');
+    $rp = $loja->simular((int)$pp['id'], $conta, true);
+    $c = $loja->conta($conta);
+    $dias = (strtotime($c['passe_expira']) - time()) / 86400;
+    confere('passe de 7 dias entregue', $loja->pedido((int)$pp['id'])['status'] === 'entregue' && $c['passe_ativo'] && $dias > 6.9 && $dias <= 7.01, $rp);
+    $loja->processarAviso($pp['provedor_id'], 'repetido');
+    $pp2 = $loja->criarPedido($conta, 'passe-1', '127.0.0.1');
+    $loja->simular((int)$pp2['id'], $conta, true);
+    $dias = (strtotime($loja->conta($conta)['passe_expira']) - time()) / 86400;
+    confere('passe soma (7 + 1 dia) e aviso repetido não soma de novo', $dias > 7.9 && $dias <= 8.01, sprintf('%.2f dias', $dias));
 } finally {
+    $db->prepare("DELETE FROM MuChila_PasseMapasLog WHERE Conta = ?")->execute([$conta]);
+    $db->prepare("DELETE FROM MuChila_PasseMapas WHERE Conta = ?")->execute([$conta]);
     $db->prepare("DELETE FROM MUCHILA_PEDIDOS WHERE conta = ?")->execute([$conta]);
     $db->prepare("DELETE FROM CashShopData WHERE AccountID = ?")->execute([$conta]);
     $db->prepare("DELETE FROM warehouse WHERE AccountID = ?")->execute([$conta]);
