@@ -15,7 +15,7 @@ $Cliente = (Resolve-Path $Cliente).Path
 $csc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
 $src = Join-Path $PSScriptRoot 'MuChilaLauncher\MuChilaLauncher.cs'
 $exe = Join-Path $PSScriptRoot 'MuChilaLauncher\MuChilaLauncher.exe'
-& $csc /nologo /target:winexe /optimize+ /out:$exe /r:System.Windows.Forms.dll /r:System.Drawing.dll $src
+& $csc /nologo /target:winexe /optimize+ /codepage:65001 /out:$exe /r:System.Windows.Forms.dll /r:System.Drawing.dll $src
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao compilar o launcher' }
 "compilado: $exe"
 

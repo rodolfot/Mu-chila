@@ -130,10 +130,10 @@ CommandMoneyEnable_AL3 = 1
 ; Change Command Settings
 ;==================================================
 CommandChangeSwitch = 1
-CommandChangeEnable_AL0 = 1
-CommandChangeEnable_AL1 = 1
-CommandChangeEnable_AL2 = 1
-CommandChangeEnable_AL3 = 1
+CommandChangeEnable_AL0 = 0
+CommandChangeEnable_AL1 = 0
+CommandChangeEnable_AL2 = 0
+CommandChangeEnable_AL3 = 0
 CommandChangeMoney_AL0 = 0
 CommandChangeMoney_AL1 = 0
 CommandChangeMoney_AL2 = 0

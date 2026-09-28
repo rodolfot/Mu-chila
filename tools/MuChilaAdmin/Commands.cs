@@ -20,11 +20,11 @@ public static class Commands
         // ---- jogador: geral ----
         new("/reset", "Jogador", "Reseta o personagem (nível 400 → 1) pelas regras do Command.dat."),
         new("/mreset", "Jogador", "Master Reset embutido do kit (grand-reset por contagem de resets; está desligado — o Master Reset oficial é pelo site)."),
-        new("/change", "Jogador", "Evolui a classe (1ª → 2ª → 3ª), grátis."),
+        new("/change", "Jogador", "Evolui a classe, até a 4ª. Desligado desde 27/09 (evolução pelas missões)."),
         new("/ware", "Jogador", "Abre o baú (warehouse) à distância."),
         new("/money", "Jogador", "Mostra/gerencia o Zen conforme a config."),
         new("/pkclear", "Jogador", "Limpa o status de PK (assassino)."),
-        new("/offattack", "Jogador", "Liga o ataque automático offline (limites por plano no Custom.dat)."),
+        new("/offattack", "Jogador", "Ataque automático offline. Só VIP; tempo e Zen por plano no Custom.dat."),
         new("/offstore", "Jogador", "Deixa a loja pessoal aberta com a conta offline."),
         new("/store", "Jogador", "Abre/gerencia a loja pessoal por comando."),
         new("/post", "Jogador", "Mensagem no chat do grupo/party."),

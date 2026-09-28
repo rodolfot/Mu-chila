@@ -175,12 +175,13 @@ $downloads = @(
        descricao = 'Para quem já tem o cliente: extraia na pasta do cliente, substituindo os arquivos.' },
     @{ arquivo = 'LEIA-ME - Como jogar.txt'; tipo = 3; titulo = 'LEIA-ME: como jogar'
        descricao = 'Radmin VPN, instalação, idioma português, resolução e comandos úteis.' },
-    @{ arquivo = 'MuChilaLauncher.exe'; tipo = 2; titulo = 'Launcher Mu Chila (atualiza sozinho)'
-       descricao = 'Coloque na pasta do cliente, ao lado do main.exe, e abra: atualiza os arquivos e inicia o jogo.' }
+    @{ arquivo = 'MuChilaLauncher.exe'; tipo = 2; titulo = 'Launcher Mu Chila (instala e atualiza o jogo)'
+       descricao = 'Instala e atualiza o jogo sozinho. Na 1ª vez, escolha a pasta (ou a do cliente que você já tem).' }
 )
 $sql = New-Object Text.StringBuilder
 [void]$sql.AppendLine('SET NOCOUNT ON;')
 foreach ($d in $downloads) {
+    if ($d.titulo.Length -gt 100 -or $d.descricao.Length -gt 100) { throw "Download '$($d.arquivo)': título e descrição têm no máximo 100 caracteres (colunas varchar(100))" }
     $caminho = Join-Path $pastaArquivos $d.arquivo
     if (-not (Test-Path $caminho)) { "aviso: $($d.arquivo) não existe; download não cadastrado"; continue }
     $mb = [math]::Max(0.01, [math]::Round((Get-Item $caminho).Length / 1MB, 2)).ToString([Globalization.CultureInfo]::InvariantCulture)   # a página mostra MB com 2 casas

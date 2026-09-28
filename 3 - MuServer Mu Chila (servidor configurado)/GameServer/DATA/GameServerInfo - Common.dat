@@ -330,11 +330,11 @@ HelperActiveLevel = 1
 HelperActiveMessageBox = 1
 HelperRunWithOpenInventory = 0
 HelperActiveDelay = 5
-HelperActiveMoney1 = 2500
-HelperActiveMoney2 = 2500
-HelperActiveMoney3 = 2500
-HelperActiveMoney4 = 2500
-HelperActiveMoney5 = 2500
+HelperActiveMoney1 = 25
+HelperActiveMoney2 = 25
+HelperActiveMoney3 = 25
+HelperActiveMoney4 = 25
+HelperActiveMoney5 = 25
 
 ;==================================================
 ; Cash Shop Settings

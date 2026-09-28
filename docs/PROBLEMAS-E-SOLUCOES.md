@@ -134,7 +134,7 @@ No fim, as pendências que ainda estão abertas.
 - **Solução:**
   - Gatilho `TR_MuChila_ClasseInicial` na tabela `Character`: DW, DK, Elfa e Summoner já nascem na 2ª classe, com +1, igual ao `/change`. O script é `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\ClasseInicial_2aClasse.sql`.
   - Os personagens que ainda estavam na básica (MalocoBR, Yololo, asas, Quest4) subiram +1.
-  - MG, DL e RF não precisam. Grow Lancer e Rune Wizard não foram alterados, por falta de confirmação; se aparecer o mesmo sintoma, basta usar `/change`.
+  - MG, DL e RF não precisam. Grow Lancer e Rune Wizard não foram alterados, por falta de confirmação. Desde 27/09/2026 o `/change` está desligado: a evolução é pelas missões (ver OPERACAO.md).
 
 ### Item comprado não pode ser usado / habilidades não funcionam em algumas contas (provável causa única)
 - **Caso da mamaeupo:**
@@ -142,7 +142,7 @@ No fim, as pendências que ainda estão abertas.
   - ela exige a **2ª classe de Dark Knight** (Blade Knight): o marcador `2` na coluna DK do `Item.txt`;
   - a mamaeupo continua **Dark Knight básico** (classe 16) no nível 249.
 - **Padrão geral:** todos os personagens novos estão na classe básica (dodo 16, Maloco 48, MalocoBR 0). Os das contas do kit, onde "funciona", já estão evoluídos.
-- **Solução:** digitar **`/change`** no chat para evoluir (grátis, até a 3ª classe). Veja OPERACAO.md.
+- **Solução (na época):** digitar **`/change`** no chat para evoluir. Desde 27/09/2026 o `/change` está desligado e a evolução é pelas missões; veja OPERACAO.md.
 - **Confirmar:** se as habilidades continuarem falhando depois da evolução, investigar de novo.
 - O cliente e o servidor usam nomes diferentes para alguns itens. Para achar o código de um nome do cliente, busque no `Data\Local\Eng\itemtooltip_eng.bmd`: registros de 124 bytes, XOR `FC CF AB` por registro, `WORD seção` + `WORD índice` + nome.
 

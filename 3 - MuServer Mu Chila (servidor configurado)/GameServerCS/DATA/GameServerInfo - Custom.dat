@@ -146,7 +146,7 @@ CustomAttackMaxUsingTime_AL3 = 60
 ;==================================================
 CustomAttackOfflineSwitch = 1
 CustomAttackOfflineGPGain = 0
-CustomAttackOfflineEnable_AL0 = 1
+CustomAttackOfflineEnable_AL0 = 0
 CustomAttackOfflineEnable_AL1 = 1
 CustomAttackOfflineEnable_AL2 = 1
 CustomAttackOfflineEnable_AL3 = 1
@@ -171,7 +171,7 @@ CustomAttackOfflinePotDelay_AL1 = 100
 CustomAttackOfflinePotDelay_AL2 = 100
 CustomAttackOfflinePotDelay_AL3 = 100
 CustomAttackOfflineCommandSyntax = /offattack
-CustomAttackOfflineText1 = You are not enabled to use /offattack
+CustomAttackOfflineText1 = Somente contas VIP podem usar o /offattack
 CustomAttackOfflineText2 = You need at least %d level to use the command
 CustomAttackOfflineText3 = You need at least %d reset to use the command
 CustomAttackOfflineText4 = You need at least %d money to use the command

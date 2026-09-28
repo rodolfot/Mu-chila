@@ -211,12 +211,18 @@ As caixas novas do S14 que abrem com o botão direito (Ruud Box, Earring Box, Gi
   - Os nomes e dicas de itens continuam em inglês, porque `item_por` e `itemtooltip_por` são cópias do inglês.
   - O texto da interface fica no `Data\Lang.mpr`, que é criptografado.
 
-## Evolução de classe (`/change`)
+## Evolução de classe (missões; `/change` desligado)
 
-**DW, DK, Elfa e Summoner já nascem na 2ª classe** (gatilho `TR_MuChila_ClasseInicial` no banco), porque o cliente S14 mostra a básica e a 2ª com o mesmo nome. As próximas evoluções continuam sendo manuais.
+**DW, DK, Elfa e Summoner já nascem na 2ª classe** (gatilho `TR_MuChila_ClasseInicial` no banco), porque o cliente S14 mostra a básica e a 2ª com o mesmo nome.
 Itens e skills marcados com `2` nas colunas de classe do `Item.txt` exigem a 2ª classe (ex.: a foice Brova/"Beuroba" exige Blade Knight).
-Para evoluir, digite **`/change`** no chat. É grátis e vai até a 3ª classe (`CommandChangeLimit = 3` em `GameServerInfo - Command.dat`).
-Cada uso sobe uma classe e responde "You successfully evolved".
+Desde 27/09/2026 o **`/change` está desligado** para todas as contas (`CommandChangeEnable_AL0..3 = 0` em `GameServerInfo - Command.dat`; quem tentar recebe a mensagem 81 "Você não tem permissão para usar /change").
+A 3ª e a 4ª classe saem pelas **missões** de `Data\Quest\Quest.txt` (nível mínimo 150): índices 0–2 levam à 2ª classe, 3 é a do combo (DK e GL), 4–6 à 3ª e 7–9 à 4ª. A recompensa que evolui é o tipo 4 (2ª), 16 (3ª) e 32 (4ª) em `QuestReward.txt`.
+Para religar: `CommandChangeEnable_AL0..3 = 1` e Reload Command (o limite é `CommandChangeLimit = 3`, ou seja, até a 4ª classe).
+
+**Código da classe no banco** (`Character.Class`): família × 16 + estágio (0 = 1ª classe, 1 = 2ª, 2 = 3ª, 3 = 4ª). Ex.: 16 Dark Knight, 17 Blade Knight, 18 Blade Master, 19 Dragon Knight.
+MG, DL, RF e GL não têm o estágio 1 (ex.: 48 Magic Gladiator → 50 Duel Master → 51 Magic Knight). O site usa essa numeração em `includes\config\xteam.tables.php`, corrigido em 27/09 porque o WebEngine chamava o 19 de Blade Master.
+
+**Subir de nível para testes, sem caçar:** um personagem GM (conta e personagem em `Data\Util\GameMaster.txt`, nível 32) usa `/setlvl <personagem> <nível>` e `/msetlvl <personagem> <master level>` no chat, com o alvo online (a ordem dos parâmetros ainda não foi confirmada no jogo). Os pontos que o personagem ganharia subindo talvez não venham junto; confira depois.
 
 ## Spawn de monstros (grupos espalhados + pontos de farm)
 

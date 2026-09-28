@@ -24,6 +24,15 @@ $mcLang = @file_get_contents($muchilaRaiz . '/Data/Lang/Portuguese.xml') ?: '';
 if(preg_match_all('#<Msg ID="(\d+)" Text="(/[a-z]+)" />#', $mcLang, $mcMm, PREG_SET_ORDER))
 	foreach($mcMm as $mcM) $mcNomesComando[$mcM[2]] = true;
 $mcTem = fn($mcNome) => isset($mcNomesComando[$mcNome]);
+// Comando ligado: chave geral ("Command<X>Switch") e, se o arquivo tiver, liberado para pelo menos um tipo de conta
+$mcLigado = function(string $mcSwitch) use ($mcCommand): bool {
+	if(($mcCommand['Command'.$mcSwitch.'Switch'] ?? '0') !== '1') return false;
+	if(!isset($mcCommand['Command'.$mcSwitch.'Enable_AL0'])) return true;
+	foreach([0, 1, 2, 3] as $mcN) if(($mcCommand['Command'.$mcSwitch.'Enable_AL'.$mcN] ?? '0') === '1') return true;
+	return false;
+};
+// O vigia do Mu Chila Admin renomeia /addstr /addagi /addvit /addene /addcmd para /f /a /v /e /c quando este arquivo existe
+$mcCurtos = is_file($muchilaRaiz . '/MuChilaAdmin/vigia-comandos-curtos.ligado');
 
 // Planos: taxas por tipo de conta (AL0..AL3) + preço e Zen dos pacotes VIP da loja
 $mcPlanos = [0 => ['nome' => 'Free', 'valor' => null, 'zen' => null]];
@@ -63,8 +72,12 @@ echo '<div class="page-title"><span>'.lang('module_titles_txt_17').'</span></div
 		<tr><td>Reset</td><td><code>/reset</code> no nível <?php echo $mcH($mcCommand['CommandResetLevel_AL0'] ?? '?'); ?>,
 			<?php echo (int)($mcCommand['CommandResetMoney_AL0'] ?? 0) > 0 ? $mcNum($mcCommand['CommandResetMoney_AL0']).' de Zen' : 'grátis'; ?>,
 			até <?php echo $mcNum($mcCommand['CommandResetLimit_AL0'] ?? 0); ?> resets</td></tr>
+		<?php if($mcLigado('Change')) { ?>
 		<tr><td>Evolução de classe</td><td><code>/change</code>, <?php echo (int)($mcCommand['CommandChangeMoney_AL0'] ?? 0) > 0 ? $mcNum($mcCommand['CommandChangeMoney_AL0']).' de Zen' : 'grátis'; ?>,
-			até a <?php echo $mcH($mcCommand['CommandChangeLimit_AL0'] ?? '?'); ?>ª classe</td></tr>
+			<?php echo $mcH($mcCommand['CommandChangeLimit_AL0'] ?? '?'); ?> evolução(ões)</td></tr>
+		<?php } else { ?>
+		<tr><td>Evolução de classe</td><td>Pelas quests do jogo (2ª, 3ª e 4ª classe). Dark Wizard, Dark Knight, Fairy Elf e Summoner já nascem na 2ª classe.</td></tr>
+		<?php } ?>
 		<tr><td>Jogadores ao mesmo tempo</td><td>até <?php echo $mcH($mcCommon['ServerMaxUserNumber'] ?? '?'); ?></td></tr>
 	</tbody>
 </table>
@@ -105,7 +118,7 @@ echo '<div class="page-title"><span>'.lang('module_titles_txt_17').'</span></div
 	<?php
 	$mcComandos = [
 		['/reset', 'Reset', 'Reseta o personagem (volta ao nível 1).'],
-		['/addstr /addagi /addvit /addene /addcmd [pontos]', 'AddPoint', 'Distribui pontos em força, agilidade, vitalidade, energia ou comando.'],
+		[$mcCurtos ? '/f /a /v /e /c [pontos]' : '/addstr /addagi /addvit /addene /addcmd [pontos]', 'AddPoint', 'Distribui pontos em força, agilidade, vitalidade, energia ou comando.', '/addstr'],
 		['/change', 'Change', 'Evolui a classe do personagem.'],
 		['/pkclear', 'PKClear', 'Limpa o status de assassino (PK).'],
 		['/post [mensagem]', 'Post', 'Mensagem para o servidor inteiro (a partir do nível '.(int)($mcCommand['CommandPostLevel_AL0'] ?? 0).').'],
@@ -114,10 +127,10 @@ echo '<div class="page-title"><span>'.lang('module_titles_txt_17').'</span></div
 		['/attack', null, 'Liga e desliga o ataque automático.'],
 		['/clearinv', 'ClearInvent', 'Apaga os itens do inventário. Cuidado: não tem volta.'],
 	];
-	foreach($mcComandos as [$mcTexto, $mcSwitch, $mcDescricao]) {
-		$mcPrimeiro = strtok($mcTexto, ' ');
-		if(!$mcTem($mcPrimeiro)) continue;
-		if($mcSwitch !== null && ($mcCommand['Command'.$mcSwitch.'Switch'] ?? '0') !== '1') continue;
+	foreach($mcComandos as $mcC) {
+		[$mcTexto, $mcSwitch, $mcDescricao] = $mcC;
+		if(!$mcTem($mcC[3] ?? strtok($mcTexto, ' '))) continue;   // [3]: nome no arquivo de idioma, quando o exibido é outro
+		if($mcSwitch !== null && !$mcLigado($mcSwitch)) continue;
 		echo '<tr><td style="width:40%;"><code>'.$mcH($mcTexto).'</code></td><td>'.$mcH($mcDescricao).'</td></tr>';
 	}
 	?>
