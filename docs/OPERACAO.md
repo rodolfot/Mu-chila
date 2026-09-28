@@ -67,6 +67,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | **Avisos** | "Enviar agora" manda uma mensagem para todos os jogadores. Também lista e edita os avisos automáticos (repetidos). Ver [Avisos para todos os jogadores](#avisos-para-todos-os-jogadores). |
 | **Lojas** | Escolha o NPC e edite o que ele vende: adicionar (busca pelo nome), remover, reordenar, nível, durabilidade e opções. Mostra quantos dos 120 espaços (8×15) da janela a loja ocupa e avisa o que não cabe. "Salvar e aplicar" faz backup e recarrega as lojas sem reiniciar. |
 | **Drops** | Duas partes. **Itens que os monstros dropam** (`Data\Item\ItemDrop.txt`): cada regra diz qual item cai de qual monstro, mapa ou faixa de nível e com que chance em % (1% = 1 em 100). Adicionar (busca pelo nome), escolher monstro ou mapa numa lista, remover, filtrar; "Salvar e aplicar" faz backup e dá Reload Item. **Drop comum e zen por monstro** (`Monster.txt`: ItemRate, MoneyRate, MaxItemLevel): "Salvar e aplicar" faz backup e recarrega os monstros só nos GameServers e só fora da invasão (se houver uma no ar, agenda para quando ela acabar; o painel precisa ficar aberto). Linhas não alteradas são regravadas iguais. |
+| **Itens novos** | Cria um item novo a partir de um que já existe: mesmo visual (modelo 3D), nome e atributos próprios (dano, defesa, velocidade, durabilidade, requisitos). Grava no `Item.txt` do servidor (Reload Item na hora) e nos arquivos do cliente da pasta do repositório. Os jogadores só recebem depois de "Publicar atualização do cliente". Teste antes abrindo o jogo pela pasta do repositório. Ver [Itens novos](#itens-novos). |
 | **Itens e baú** | Mostra o inventário de qualquer personagem ou o baú da conta, com nome, nível e opções. Remove itens só com a conta fora do jogo e com backup em `C:\MuServer\DB\backup-itens-*.csv`. Presentes pela Gremory Case aparecem ao lado; criar presentes pelo painel fica desligado até a calibração (ver [Itens e baú](#itens-e-baú)). |
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
 | | "Zerar habilidades master": escolhe um personagem da conta, apaga a árvore master, devolve os pontos (1 por Master Level) e tira os poderes master da lista de habilidades (`MagicList`). Os melhorados voltam à habilidade normal (ex.: 330 Twisting Slash Improved → 41 Twisting Slash), seguindo a coluna `ReplaceSkill` do `MasterSkillTree.txt`. Serve também para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
@@ -187,6 +188,27 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
   - Cada invasão **sorteia o mapa** do seu grupo no bloco 2 (o Red Dragon cai em Lorencia, Devias ou Noria). Pode acontecer longe de quem está olhando.
   - **Blood Castle, Devil Square, Chaos Castle e Illusion Temple** só acontecem se alguém entrar com o ingresso na abertura. Sem ninguém, o log mostra "Not enough users" e o evento fecha vazio.
   - **Todo Reload Event reinicia a contagem** do Blood Castle e do Chaos Castle ("Sync Start Time" no log), e os jogadores recebem de novo o aviso de que o Blood Castle vai começar. Por isso esse aviso aparece a cada disparo feito pelo painel.
+
+## Itens novos
+
+Aba **Itens novos** do painel (`tools\MuChilaAdmin\NewItems.cs`, desde 28/09/2026). O item novo copia o item base e troca:
+- o índice (o próximo livre na seção, acima de todos os usados no servidor e no cliente);
+- o nome;
+- os atributos escolhidos.
+
+Classes, tamanho, skill e opções continuam iguais aos do item base.
+
+- **Servidor:** uma linha nova no `Data\Item\Item.txt`, logo depois do último item da seção, com o espaçamento do item base.
+- **Cliente** (pasta do repositório, `2 - Cliente Season 14 Full`):
+  - `Data\Local\{Eng,Por}\item_{eng,por}.bmd`: contador (4 bytes) + registros de 672 bytes + checksum. Registro: código (int), seção, índice, pasta do modelo (260), arquivo do modelo (260), nome (64) e 80 bytes de atributos (nível +596, dano +604/+606, taxa de defesa +608, defesa +610, defesa mágica +612, velocidade +614, durabilidade +616, requisitos +624 a +634).
+  - `Data\Local\{Eng,Por}\itemtooltip_{eng,por}.bmd`: 10.240 registros de 124 bytes (seção, índice, nome...), com as vagas vazias no fim, e checksum. O item novo entra na primeira vaga vazia.
+  - `Data\Local\ItemTRSData.bmd`: contador + registros de 32 bytes (código + posição/rotação/escala no inventário) + checksum.
+  - Em todos, cada registro leva XOR `FC CF AB` a partir do começo dele. O checksum é o GenerateCheckSum2 da Webzen (chave `0xE2F1`) sobre os registros cifrados.
+  - As posições dos atributos foram conferidas contra os 2.508 itens do servidor (100% em dano, defesa, velocidade, requisitos, nível, skill e tamanho).
+- **Registro:** `C:\MuServer\MuChilaAdmin\itens-novos.json`. Só itens desta lista podem ser removidos pelo painel; remover devolve os arquivos ao que eram.
+- **Backups:** `.bak-*` ao lado de cada arquivo.
+- **Testes:** `--testar-itens-novos` (cria arma e elmo em cópias, confere tudo e ao remover os arquivos voltam idênticos) e `--criar-item`. Uma linha nova do `Item.txt` foi validada no servidor de testes (carrega e recarrega sem erro).
+- **Falta confirmar no jogo:** que o cliente mostra o item (nome, visual, tooltip) e que dá para equipar. Crie um item de teste, abra o jogo pela pasta do repositório, peça a um GM para criar com `/make` e confira. Só depois publique para os jogadores.
 
 ## Avisos para todos os jogadores
 

@@ -146,6 +146,7 @@ public sealed class MainForm : Form
         tabs.TabPages.Add(NoticesTab());
         tabs.TabPages.Add(CommandsTab());
         tabs.TabPages.Add(ItemsTab());
+        tabs.TabPages.Add(NewItemsTab());
         tabs.TabPages.Add(AccountsTab());
         Controls.Add(tabs);
         Controls.Add(log);
@@ -987,6 +988,93 @@ public sealed class MainForm : Form
         Log($"Aviso enviado para todos: \"{msg}\". O vigia tira ele do Notice.txt em menos de 1 minuto.");
         txtNoticeNow.Clear();
         LoadNotices();
+    }
+
+    // ---------------- Itens novos (a partir de um existente) ----------------
+    readonly DataGridView gridNewItems = Grid();
+    readonly ItemPicture picNewItem = new();
+
+    TabPage NewItemsTab()
+    {
+        var page = new TabPage("Itens novos");
+        var bar = Bar(
+            Btn("Criar item novo...", CreateNewItem),
+            Btn("Remover item selecionado", RemoveNewItem),
+            Btn("Publicar atualização do cliente", PublishClientUpdate),
+            Btn("Atualizar", RefreshNewItems));
+        var help = new Label
+        {
+            Dock = DockStyle.Top, Height = 72, Padding = new Padding(6),
+            Text = "O item novo usa o visual (modelo 3D) de um item que já existe e ganha nome e atributos próprios (dano, defesa, requisitos...). " +
+                   "Vale na hora no servidor, mas os jogadores só enxergam depois de \"Publicar atualização do cliente\" (o launcher baixa). " +
+                   "ANTES de publicar, teste abrindo o jogo pela pasta do cliente do repositório. Depois é só pôr o item numa loja (aba Lojas) ou num drop (aba Drops). " +
+                   "Remover um item que jogadores já têm faz ele sumir/virar item inválido.",
+        };
+        var corpo = new Panel { Dock = DockStyle.Fill };
+        corpo.Controls.Add(gridNewItems); corpo.Controls.Add(picNewItem);
+        gridNewItems.CurrentCellChanged += (_, _) => Safe(() =>
+        {
+            if (gridNewItems.CurrentRow?.DataBoundItem is DataRowView r) picNewItem.Show((int)r["Base seção"], (int)r["Base índice"], $"{r["Item"]} (visual do item base)");
+            else picNewItem.Show(null, null);
+        }, quiet: true);
+        page.Controls.Add(Titled("Itens criados por este painel", corpo)); page.Controls.Add(help); page.Controls.Add(bar);
+        Shown += (_, _) => Safe(RefreshNewItems);
+        return page;
+    }
+
+    void RefreshNewItems()
+    {
+        var t = new DataTable();
+        t.Columns.Add("Item"); t.Columns.Add("Código"); t.Columns.Add("Visual de"); t.Columns.Add("Criado em");
+        t.Columns.Add("Seção", typeof(int)); t.Columns.Add("Índice", typeof(int)); t.Columns.Add("Base seção", typeof(int)); t.Columns.Add("Base índice", typeof(int));
+        foreach (var i in NewItems.List())
+            t.Rows.Add(i.Name, $"{i.Section},{i.Index}", Shops.Name(i.BaseSection, i.BaseIndex), i.Created.ToString("dd/MM HH:mm"), i.Section, i.Index, i.BaseSection, i.BaseIndex);
+        gridNewItems.DataSource = t;
+        foreach (var c in new[] { "Seção", "Índice", "Base seção", "Base índice" }) if (gridNewItems.Columns[c] is { } col) col.Visible = false;
+    }
+
+    void CreateNewItem()
+    {
+        if (!NewItems.ClientAvailable) throw new InvalidOperationException($"Cliente não encontrado em {NewItems.ClientDir}; o item precisa existir no servidor e no cliente.");
+        var b = Pick("Item novo: escolha o item base (o novo terá o mesmo visual)", Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList(),
+                     d => $"{d.Name}   [{d.Section},{d.Type}]", d => (d.Section, d.Type, d.Name));
+        if (b == null) return;
+        var stats = NewItems.BaseStats(b.Section, b.Type);
+        using var dlg = new Form { Text = $"Item novo com o visual de {b.Name}", Width = 460, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        int y = 14;
+        dlg.Controls.Add(new Label { Text = "Nome:", Left = 14, Top = y + 3, AutoSize = true });
+        var nome = new TextBox { Left = 170, Top = y, Width = 260, MaxLength = 40, Text = b.Name + " Mu Chila" };
+        dlg.Controls.Add(nome); y += 32;
+        var campos = new Dictionary<string, NumericUpDown>();
+        foreach (var f in NewItems.Fields.Where(f => stats.ContainsKey(f.Column)))
+        {
+            dlg.Controls.Add(new Label { Text = f.Label + ":", Left = 14, Top = y + 3, AutoSize = true });
+            var n = new NumericUpDown { Left = 170, Top = y, Width = 100, Minimum = 0, Maximum = 65535, Value = stats[f.Column] };
+            dlg.Controls.Add(n); campos[f.Column] = n; y += 28;
+        }
+        dlg.Controls.Add(new Label { Text = "Classes, tamanho, skill e opções ficam iguais ao item base.", Left = 14, Top = y + 4, AutoSize = true, ForeColor = Color.DimGray });
+        y += 30;
+        var ok = new Button { Text = "Criar", DialogResult = DialogResult.OK, Left = 274, Top = y, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 355, Top = y, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel; dlg.ClientSize = new Size(446, y + 42);
+        if (dlg.ShowDialog(this) != DialogResult.OK) return;
+        var mudados = campos.Where(c => (int)c.Value.Value != stats[c.Key]).ToDictionary(c => c.Key, c => (int)c.Value.Value);
+        var info = NewItems.Create(b.Section, b.Type, nome.Text, mudados);
+        Log($"Item \"{info.Name}\" criado com o código {info.Section},{info.Index} (visual de {b.Name}). Backups .bak-* ao lado de cada arquivo.");
+        LogAll(ServerControl.Reload("Item"));
+        Log("Falta: testar abrindo o jogo pela pasta do cliente do repositório e depois \"Publicar atualização do cliente\" para os jogadores receberem.");
+        RefreshNewItems();
+    }
+
+    void RemoveNewItem()
+    {
+        if (gridNewItems.CurrentRow?.DataBoundItem is not DataRowView r) { Log("Selecione um item na lista."); return; }
+        if (!Confirm($"Remover \"{r["Item"]}\" do servidor e do cliente? Quem tiver esse item fica com um item inválido. Depois publique a atualização do cliente.")) return;
+        NewItems.Remove((int)r["Seção"], (int)r["Índice"]);
+        Log($"Item \"{r["Item"]}\" removido.");
+        LogAll(ServerControl.Reload("Item"));
+        RefreshNewItems();
     }
 
     // ---------------- Comandos (consulta) ----------------

@@ -222,6 +222,50 @@ static class Program
             return f;
         }
 
+        // "--criar-item <seção> <índice base> <nome> <saida>": cria um item novo a partir do base (use MUCHILA_ROOT/MUCHILA_CLIENTE
+        // de CÓPIAS para testar; sem eles, mexe no servidor e no cliente de verdade, como o botão do painel).
+        if (args.Length == 5 && args[0] == "--criar-item")
+        {
+            try { var i = NewItems.Create(int.Parse(args[1]), int.Parse(args[2]), args[3], new Dictionary<string, int>()); File.WriteAllText(args[4], $"OK: {i.Name} = {i.Section},{i.Index}"); return 0; }
+            catch (Exception ex) { File.WriteAllText(args[4], "FALHA: " + ex.Message); return 1; }
+        }
+
+        // "--testar-itens-novos <saida>": contra MUCHILA_ROOT (cópia com Data\Item\Item.txt e MuChilaAdmin\) e MUCHILA_CLIENTE
+        // (cópia com Data\Local\{Eng,Por}\item_*.bmd, itemtooltip_*.bmd e Data\Local\ItemTRSData.bmd): cria e remove itens.
+        if (args.Length == 2 && args[0] == "--testar-itens-novos")
+        {
+            var sb = new StringBuilder(); int f = 0;
+            void C(string n, bool ok, string x = "") { if (!ok) f++; sb.AppendLine($"{(ok ? "OK   " : "FALHA")} {n} {x}"); }
+            try
+            {
+                if (!ServerControl.ServerRoot.Contains("Temp", StringComparison.OrdinalIgnoreCase) || !NewItems.ClientDir.Contains("Temp", StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException("MUCHILA_ROOT e MUCHILA_CLIENTE precisam ser cópias de teste.");
+                var arquivos = Directory.GetFiles(NewItems.ClientDir, "*.bmd", SearchOption.AllDirectories).Append(Path.Combine(ServerControl.ServerRoot, @"Data\Item\Item.txt")).ToList();
+                var orig = arquivos.ToDictionary(a => a, File.ReadAllBytes);
+                C("cliente: regravar sem mudança sai idêntico (itens, tooltips, TRS)", NewItems.RoundTripIdentical());
+
+                var i1 = NewItems.Create(0, 0, "Espada do Teste", new Dictionary<string, int> { ["DamageMin"] = 77, ["DamageMax"] = 99, ["ReqStrength"] = 123 });
+                var s1 = NewItems.ServerItems().FirstOrDefault(i => i.Section == 0 && i.Index == i1.Index);
+                C("servidor: linha nova com nome e atributos", s1 != null && s1.Name == "Espada do Teste" && s1.Values["DamageMin"] == "77" && s1.Values["DamageMax"] == "99" && s1.Values["ReqStrength"] == "123" && s1.Values["ReqDexterity"] == "40", $"(índice {i1.Index})");
+                C("servidor: o resto igual ao item base", s1 != null && s1.Values["Width"] == "1" && s1.Values["Height"] == "2" && s1.Values["AttackSpeed"] == "50");
+                C("cliente: arquivos novos abrem com checksum certo e o item está lá", NewItems.RoundTripIdentical() && NewItems.NextFreeIndex(0) == i1.Index + 1);
+                C("catálogo do painel (lojas/drops) enxerga o item novo", Shops.Name(0, i1.Index) == "Espada do Teste");
+
+                var i2 = NewItems.Create(7, 0, "Elmo do Teste", new Dictionary<string, int> { ["Defense"] = 55 });
+                C("segunda seção (elmo)", NewItems.ServerItems().Any(i => i.Section == 7 && i.Index == i2.Index && i.Values["Defense"] == "55") && NewItems.List().Count == 2);
+
+                NewItems.Remove(7, i2.Index); NewItems.Remove(0, i1.Index);
+                var dif = arquivos.Where(a => !File.ReadAllBytes(a).SequenceEqual(orig[a])).Select(Path.GetFileName).ToList();
+                C("remover os dois devolve todos os arquivos iguais aos originais", dif.Count == 0, string.Join(", ", dif));
+                C("lista de itens novos vazia", NewItems.List().Count == 0);
+                bool recusou = false; try { NewItems.Remove(0, 0); } catch (InvalidOperationException) { recusou = true; }
+                C("não deixa remover item do kit", recusou);
+            }
+            catch (Exception ex) { f++; sb.AppendLine("FALHA inesperada: " + ex); }
+            sb.AppendLine($"{f} falha(s)"); File.WriteAllText(args[1], sb.ToString());
+            return f;
+        }
+
         // "--vigia-reset": laço do vigia do /reset (sem janela; uma instância só)
         if (args.Length == 1 && args[0] == "--vigia-reset")
             return ResetWatcher.Run();

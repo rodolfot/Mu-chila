@@ -116,6 +116,8 @@ public static class Shops
     public static IReadOnlyCollection<ItemDef> Catalog() => LoadCatalog().Values;
     public static ItemDef? Find(int section, int type) => LoadCatalog().TryGetValue((section, type), out var d) ? d : null;
     public static string Name(int section, int type) => Find(section, type)?.Name ?? $"(item {section},{type} não existe)";
+    /// <summary>Relê o Item.txt na próxima consulta (depois de criar ou remover item).</summary>
+    public static void ResetCatalog() => catalog = null;
 
     static Dictionary<(int, int), ItemDef> LoadCatalog()
     {
