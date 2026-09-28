@@ -192,6 +192,7 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
 ## Itens novos
 
 Aba **Itens novos** do painel (`tools\MuChilaAdmin\NewItems.cs`, desde 28/09/2026). O item novo copia o item base e troca:
+
 - o índice (o próximo livre na seção, acima de todos os usados no servidor e no cliente);
 - o nome;
 - os atributos escolhidos.
