@@ -30,29 +30,17 @@ IF NOT EXISTS (SELECT 1 FROM dbo.WEBENGINE_CREDITS_CONFIG WHERE config_title = '
     VALUES ('Creditos Mu Chila', 'MuOnlineS14', 'MuChila_Creditos', 'Creditos', 'AccountID', 'AccountID', 0, 1);
 GO
 
-/* 3) Base de atributos por classe (para o Supreme devolver os stats ao valor inicial).
-   IMPORTANTE: confira estes valores criando UM personagem novo de cada classe e comparando
-   (SELECT Class,Strength,Dexterity,Vitality,Energy,Leadership FROM Character WHERE Name='novo').
+/* 3) Base de atributos por classe (Reset e Supreme devolvem os stats ao valor inicial).
+   E a mesma do personagem novo: o WZ_CreateCharacter do kit copia os atributos de dbo.DefaultClassType.
    A chave e a FAMILIA da classe = (Class/16)*16. Os personagens tem codigos com a evolucao
-   somada (16=Dark Knight, 17=Blade Knight, 18=Blade Master...), mas a base e a mesma da familia. */
+   somada (16=Dark Knight, 17=Blade Knight, 18=Blade Master...), mas a base e a mesma da familia.
+   28/09/2026: a primeira versao tinha valores fixos errados em MG (energia 20, e 26), Rage Fighter (forca e vitalidade
+   trocadas), Grow Lancer e Rune Wizard; agora a tabela e copiada da DefaultClassType. */
 IF OBJECT_ID('dbo.MuChila_BaseStats') IS NOT NULL DROP TABLE dbo.MuChila_BaseStats;  -- recria com a chave por familia
 CREATE TABLE dbo.MuChila_BaseStats (Familia tinyint NOT NULL PRIMARY KEY, Strength int, Dexterity int, Vitality int, Energy int, Leadership int);
 GO
-MERGE dbo.MuChila_BaseStats AS d
-USING (VALUES
-    (0,  18,18,15,30,0),    -- Dark Wizard  (1=Soul Master, 2=Grand Master)
-    (16, 28,20,25,10,0),    -- Dark Knight  (17=Blade Knight, 18=Blade Master)
-    (32, 22,25,20,15,0),    -- Fairy Elf    (33, 34)
-    (48, 26,26,26,20,0),    -- Magic Gladiator (49, 50)
-    (64, 26,20,20,15,25),   -- Dark Lord    (65, 66)
-    (80, 21,21,18,23,0),    -- Summoner     (81, 82)
-    (96, 32,27,25,20,0),    -- Rage Fighter (97, 98, 99)
-    (112,29,27,25,20,0),    -- Grow Lancer  (CONFIRA)
-    (128,26,26,26,20,0)     -- classe 128 (CONFIRA a familia e a base criando um char novo)
-) AS s(Familia,Strength,Dexterity,Vitality,Energy,Leadership)
-ON d.Familia = s.Familia
-WHEN NOT MATCHED THEN INSERT (Familia,Strength,Dexterity,Vitality,Energy,Leadership)
-    VALUES (s.Familia,s.Strength,s.Dexterity,s.Vitality,s.Energy,s.Leadership);
+INSERT dbo.MuChila_BaseStats (Familia, Strength, Dexterity, Vitality, Energy, Leadership)
+SELECT Class, Strength, Dexterity, Vitality, Energy, Leadership FROM dbo.DefaultClassType WHERE Class % 16 = 0;
 GO
 
 /* 4) SUPREME RESET (feito pelo site, com o personagem/conta OFFLINE).
@@ -678,5 +666,5 @@ END
 ELSE PRINT 'AVISO: usuario muchila_site nao existe neste banco; ajuste o GRANT.';
 GO
 
-PRINT 'MuChila-Resets.sql aplicado. Confira dbo.MuChila_BaseStats antes de usar o Supreme em personagem real.';
+PRINT 'MuChila-Resets.sql aplicado.';
 GO
