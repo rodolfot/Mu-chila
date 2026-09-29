@@ -80,7 +80,7 @@ BEGIN
 
     BEGIN TRAN;
       -- atributos de volta ao inicial da FAMILIA da classe + zera pontos e resets normais
-      UPDATE c SET c.cLevel=1, c.LevelUpPoint=0, c.ResetCount=0,
+      UPDATE c SET c.cLevel=1, c.Experience=0, c.LevelUpPoint=0, c.ResetCount=0,   -- EXP zerada (28/09: ficava a do nivel 400)
                    c.Strength=b.Strength, c.Dexterity=b.Dexterity,
                    c.Vitality=b.Vitality, c.Energy=b.Energy, c.Leadership=b.Leadership,
                    c.SupremeResetCount=c.SupremeResetCount+1
@@ -123,7 +123,7 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM dbo.MuChila_BaseStats WHERE Familia=(@Class/16)*16) RETURN 6;
 
     BEGIN TRAN;
-      UPDATE c SET c.cLevel=1,
+      UPDATE c SET c.cLevel=1, c.Experience=0,   -- EXP zerada (28/09: ficava a do nivel 400 e o personagem subia 1 nivel por abate)
                    c.ResetCount=c.ResetCount+1,
                    c.LevelUpPoint=(c.ResetCount+1)*@PontosPorReset,   -- pontos escalaveis: N*300
                    c.Strength=b.Strength, c.Dexterity=b.Dexterity,
@@ -647,6 +647,83 @@ IF OBJECT_ID('dbo.MuChila_ResetPedido') IS NULL
         Resultado int NULL, Mensagem varchar(200) NULL, Atualizado datetime NULL);
 IF OBJECT_ID('dbo.MuChila_VigiaStatus') IS NULL
     CREATE TABLE dbo.MuChila_VigiaStatus (Id int NOT NULL PRIMARY KEY, Batida datetime NOT NULL);
+GO
+
+/* 5c) Ajustes de personagem pelo painel (28/09/2026, testes): definir nivel, dar EXP e definir master level, pela
+   mesma fila (Tipo 'nivel' | 'exp' | 'mlevel', valor em Valor): com o personagem no jogo o vigia manda para a
+   selecao e aplica; fora do jogo aplica na hora. Os resets do painel usam os Tipos do site (reset/master/supreme). */
+IF COL_LENGTH('dbo.MuChila_ResetPedido', 'Valor') IS NULL
+    ALTER TABLE dbo.MuChila_ResetPedido ADD Valor bigint NULL;
+GO
+/* EXP total para chegar ao nivel n+1 (tabela do GameServer; conferida no banco: nivel 40 = 730080, nivel 400 = 3822148080).
+   Master level M: (MuChila_ExpTotal(400+M) - 3892250000) / 2 (conferida com master 145). */
+CREATE OR ALTER FUNCTION dbo.MuChila_ExpTotal(@n int) RETURNS bigint
+AS
+BEGIN
+    DECLARE @e bigint = CAST(@n + 9 AS bigint) * @n * @n * 10;
+    IF @n > 255 SET @e += CAST(@n - 255 + 9 AS bigint) * (@n - 255) * (@n - 255) * 1000;
+    RETURN @e;
+END
+GO
+/* Character.Experience e int, mas o GameServer grava o valor sem sinal: acima de 2.147.483.647 fica negativo
+   (o nivel 400 aparece como -472819216). Estas duas convertem nos dois sentidos. */
+CREATE OR ALTER FUNCTION dbo.MuChila_ExpGravar(@e bigint) RETURNS int
+AS BEGIN RETURN CAST(CASE WHEN @e > 2147483647 THEN @e - 4294967296 ELSE @e END AS int); END
+GO
+CREATE OR ALTER FUNCTION dbo.MuChila_ExpLer(@e int) RETURNS bigint
+AS BEGIN RETURN CASE WHEN @e < 0 THEN CAST(@e AS bigint) + 4294967296 ELSE @e END; END
+GO
+/* @Tipo: 'nivel' (@Valor 1..400: nivel e EXP exatos), 'exp' (soma @Valor de EXP e sobe os niveis que der, ate 400)
+   ou 'mlevel' (@Valor 0..600: master level e EXP master). Subindo, soma os pontos da regra do jogo: nivel =
+   5 ou 7 por nivel conforme a classe (Common.dat *LevelUpPoint) + 1 da 3a classe (PlusStatPoint); master = 1 por nivel.
+   Retorno: 0 ok, 1 personagem nao existe, 2 conta online, 7 valor invalido, 8 sem arvore master (nunca chegou ao 400). */
+CREATE OR ALTER PROCEDURE dbo.MuChila_AjustarPersonagem
+    @Name varchar(10), @Tipo varchar(10), @Valor bigint, @IgnorarOnline bit = 0
+AS
+BEGIN
+    SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @Acc varchar(10), @Nivel int, @Exp bigint, @Class int, @Pontos int, @Novo int, @NovaExp bigint, @ML int;
+    SELECT @Acc = AccountID, @Nivel = cLevel, @Exp = dbo.MuChila_ExpLer(Experience), @Class = Class FROM dbo.[Character] WHERE Name = @Name;
+    IF @Acc IS NULL RETURN 1;
+    IF @IgnorarOnline = 0 AND EXISTS (SELECT 1 FROM dbo.MEMB_STAT WHERE memb___id = @Acc AND ConnectStat = 1) RETURN 2;
+    SET @Pontos = CASE (@Class / 16) * 16 WHEN 48 THEN 7 WHEN 64 THEN 7 WHEN 96 THEN 7 WHEN 112 THEN 7 ELSE 5 END
+                + CASE WHEN @Class % 16 >= 2 THEN 1 ELSE 0 END;
+
+    IF @Tipo IN ('nivel', 'exp')
+    BEGIN
+        IF @Tipo = 'nivel'
+        BEGIN
+            IF @Valor < 1 OR @Valor > 400 RETURN 7;
+            SET @Novo = @Valor; SET @NovaExp = dbo.MuChila_ExpTotal(@Novo - 1);
+        END
+        ELSE
+        BEGIN
+            IF @Valor < 1 RETURN 7;
+            SET @NovaExp = @Exp + @Valor; SET @Novo = @Nivel;
+            WHILE @Novo < 400 AND @NovaExp >= dbo.MuChila_ExpTotal(@Novo) SET @Novo += 1;
+            IF @NovaExp > dbo.MuChila_ExpTotal(399) SET @NovaExp = dbo.MuChila_ExpTotal(399);
+        END
+        UPDATE dbo.[Character]
+           SET cLevel = @Novo, Experience = dbo.MuChila_ExpGravar(@NovaExp),
+               LevelUpPoint = LevelUpPoint + CASE WHEN @Novo > @Nivel THEN (@Novo - @Nivel) * @Pontos ELSE 0 END
+         WHERE Name = @Name;
+        RETURN 0;
+    END
+
+    IF @Tipo = 'mlevel'
+    BEGIN
+        IF @Valor < 0 OR @Valor > 600 RETURN 7;   -- MasterSkillTreeMaxLevel
+        SELECT @ML = MasterLevel FROM dbo.MasterSkillTree WHERE Name = @Name;
+        IF @ML IS NULL RETURN 8;
+        UPDATE dbo.MasterSkillTree
+           SET MasterLevel = @Valor, MasterExperience = (dbo.MuChila_ExpTotal(400 + @Valor) - 3892250000) / 2,
+               MasterPoint = CASE WHEN @Valor >= @ML THEN MasterPoint + (@Valor - @ML)
+                                  WHEN MasterPoint > @ML - @Valor THEN MasterPoint - (@ML - @Valor) ELSE 0 END
+         WHERE Name = @Name;
+        RETURN 0;
+    END
+    RETURN 7;
+END
 GO
 
 /* 6) Permissoes: o usuario do site precisa poder EXECUTAR as procedures (o acesso as tabelas

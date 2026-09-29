@@ -380,7 +380,7 @@ public static partial class ResetWatcher
             Db.Execute("MERGE dbo.MuChila_VigiaStatus AS d USING (SELECT 1 AS Id) AS s ON d.Id = s.Id " +
                        "WHEN MATCHED THEN UPDATE SET Batida = GETDATE() WHEN NOT MATCHED THEN INSERT (Id, Batida) VALUES (1, GETDATE());");
         }
-        var pend = Db.Query("SELECT Id, Personagem, Tipo, Coins, MaxStat, Criado FROM dbo.MuChila_ResetPedido WHERE Status = 'pendente' ORDER BY Id");
+        var pend = Db.Query("SELECT Id, Personagem, Tipo, Coins, MaxStat, ISNULL(Valor, 0) AS Valor, Criado FROM dbo.MuChila_ResetPedido WHERE Status = 'pendente' ORDER BY Id");
         if (pend.Rows.Count == 0) { requests.Clear(); return log; }
 
         int running = new[] { ServerControl.GameServerProcess, ServerControl.CastleSiegeProcess }.Sum(n => Process.GetProcessesByName(n).Length);
@@ -412,7 +412,7 @@ public static partial class ResetWatcher
                 if (a.Left == null) { requests[id] = (a.Sent, DateTime.Now); continue; }
                 if (DateTime.Now - a.Left.Value < TimeSpan.FromSeconds(2)) continue;   // tempo para o servidor gravar o personagem
             }
-            int res = RunReset(name, kind, (int)r["Coins"], (int)r["MaxStat"]);
+            int res = RunReset(name, kind, (int)r["Coins"], (int)r["MaxStat"], Convert.ToInt64(r["Valor"]));
             FinishRequest(id, res == 0 ? "feito" : "erro", res, null);
             requests.Remove(id);
             log.Add($"{name}: {kind} aplicado (retorno {res})");
@@ -420,16 +420,21 @@ public static partial class ResetWatcher
         return log;
     }
 
-    static int RunReset(string name, string kind, int coins, int maxStat)
+    /// <summary>
+    /// Resets do site e do painel (reset, master, supreme) e ajustes do painel (nivel, exp, mlevel: dbo.MuChila_AjustarPersonagem
+    /// com o valor do pedido). Público: o painel usa o mesmo caminho quando o personagem está fora do jogo e o vigia parado.
+    /// </summary>
+    public static int RunReset(string name, string kind, int coins, int maxStat, long value = 0, bool ignoreOnline = true)
     {
         string sql = kind switch
         {
-            "reset" => "DECLARE @r int; EXEC @r = dbo.MuChila_Reset @Name = @n, @IgnorarOnline = 1; SELECT @r AS r",
-            "master" => "DECLARE @r int; EXEC @r = dbo.MuChila_MasterReset @Name = @n, @Coins = @c, @IgnorarOnline = 1; SELECT @r AS r",
-            "supreme" => "DECLARE @r int; EXEC @r = dbo.MuChila_SupremeReset @Name = @n, @Coins = @c, @MaxStat = @m, @IgnorarOnline = 1; SELECT @r AS r",
-            _ => throw new InvalidOperationException($"tipo de reset desconhecido: {kind}"),
+            "reset" => "DECLARE @r int; EXEC @r = dbo.MuChila_Reset @Name = @n, @IgnorarOnline = @i; SELECT @r AS r",
+            "master" => "DECLARE @r int; EXEC @r = dbo.MuChila_MasterReset @Name = @n, @Coins = @c, @IgnorarOnline = @i; SELECT @r AS r",
+            "supreme" => "DECLARE @r int; EXEC @r = dbo.MuChila_SupremeReset @Name = @n, @Coins = @c, @MaxStat = @m, @IgnorarOnline = @i; SELECT @r AS r",
+            "nivel" or "exp" or "mlevel" => "DECLARE @r int; EXEC @r = dbo.MuChila_AjustarPersonagem @Name = @n, @Tipo = @t, @Valor = @v, @IgnorarOnline = @i; SELECT @r AS r",
+            _ => throw new InvalidOperationException($"tipo de pedido desconhecido: {kind}"),
         };
-        var t = Db.Query(sql, ("@n", name), ("@c", coins), ("@m", maxStat));
+        var t = Db.Query(sql, ("@n", name), ("@c", coins), ("@m", maxStat), ("@t", kind), ("@v", value), ("@i", ignoreOnline));
         return t.Rows.Count > 0 ? Convert.ToInt32(t.Rows[^1]["r"]) : -1;
     }
 

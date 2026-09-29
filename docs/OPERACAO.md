@@ -264,6 +264,10 @@ Reset, Master Reset e Supreme Reset ficam em **Painel do jogador → Resets** (`
 - O vigia só age com **todos** os GameServers e o Castle Siege lidos, porque só assim tem certeza de que o personagem saiu do jogo.
 - Se o jogador entrar de novo antes do reset, o vigia espera ele sair outra vez. Pedido com mais de 3 minutos expira.
 - Sem o vigia, o site volta a pedir para sair do jogo.
+- O reset zera a EXP (desde 28/09/2026 à noite). Antes ela ficava a do nível 400, e o personagem subia 1 nível por abate depois do reset. Os 4 personagens nessa situação foram corrigidos.
+- O master level **não** muda no Reset normal, só no Master Reset (no 600) e no Supreme. Como a tela soma nível + master, um nível 400 com master 140 aparece como 540 e, depois do reset, como ~141.
+
+**Pelo painel (testes):** aba **VIP e contas → "Nível e reset..."**. Define nível (1–400) ou master level (0–600), dá EXP (sobe os níveis que ela der), ou faz Reset, Master Reset e Supreme Reset num personagem. Usa a mesma fila (`Tipo` `nivel`, `exp`, `mlevel`, ou os do site, com o valor em `Valor`) e a procedure `MuChila_AjustarPersonagem`. Com o jogo aberto, o personagem vai para a seleção e a mudança vale ao entrar de novo. Subindo de nível, soma os pontos da regra do jogo (5 ou 7 por nível, +1 da 3ª classe; 1 ponto master por master level). Os resets seguem os mesmos requisitos do site.
 
 ## Passe dos Mapas (acima do nível 400)
 

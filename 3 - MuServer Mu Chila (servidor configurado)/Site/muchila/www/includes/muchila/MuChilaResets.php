@@ -142,7 +142,7 @@ class MuChilaResets
     public function pedidos(string $conta): array
     {
         $st = $this->db->prepare("SELECT TOP 5 Id, Personagem, Tipo, Criado, Status, Resultado, Mensagem FROM MuChila_ResetPedido
-                                   WHERE Conta = ? AND Criado >= DATEADD(minute, -30, GETDATE()) ORDER BY Id DESC");
+                                   WHERE Conta = ? AND Tipo IN ('reset', 'master', 'supreme') AND Criado >= DATEADD(minute, -30, GETDATE()) ORDER BY Id DESC");
         $st->execute([$conta]);
         $out = [];
         foreach ($st->fetchAll(PDO::FETCH_ASSOC) as $p) {

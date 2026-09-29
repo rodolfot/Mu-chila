@@ -1375,20 +1375,86 @@ public sealed class MainForm : Form
             })),
             Btn("Desbanir", () => ForSelectedAccount(a => { Accounts.SetBanned(a, false); return $"{a}: desbanida"; })),
             Btn("Dar pontos", () => ForSelectedAccount(GivePoints)),
+            Btn("Nível e reset...", () => { if (gridAccounts.CurrentRow?.Cells["Conta"].Value is string a) AdjustCharacter(a); else Log("Selecione uma conta na lista."); }),
             Btn("Zerar habilidades master", () => ForSelectedAccount(ClearMasterSkills)));
 
         var note = new Label
         {
-            Dock = DockStyle.Top, Height = 74, Padding = new Padding(6),
+            Dock = DockStyle.Top, Height = 90, Padding = new Padding(6),
             Text = "VIP e ban valem no próximo login da conta. Benefícios de cada nível (experiência, drop, pontos...) ficam nas linhas *_AL1/_AL2/_AL3 " +
                    "do GameServerInfo - Common.dat. Personagens, inventário e baú: use o MuEditor (aba Servidor). " +
                    "\"Dar pontos\": soma (ou tira, com número negativo) pontos de atributo ou master a um personagem. " +
-                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo. Com a conta online, esses dois oferecem forçar o logout.",
+                   "\"Nível e reset\": define nível ou master level, dá EXP ou faz Reset/Master/Supreme num personagem (testes); com o jogo aberto, " +
+                   "o personagem vai para a seleção de personagem e a mudança vale ao entrar de novo. " +
+                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo. Com a conta online, \"Dar pontos\" e \"Zerar\" oferecem forçar o logout.",
         };
         page.Controls.Add(Titled("Contas", gridAccounts));
         page.Controls.Add(bar);
         page.Controls.Add(note);
         return page;
+    }
+
+    /// <summary>"Nível e reset...": escolhe personagem, ação e valor; aplica pela fila do vigia (ver CharacterAdjust).</summary>
+    async void AdjustCharacter(string account)
+    {
+        try
+        {
+            var names = Accounts.Characters(account);
+            if (names.Length == 0) { MessageBox.Show($"A conta {account} não tem personagens.", "Mu Chila Admin"); return; }
+            using var dlg = new Form
+            {
+                Text = $"Nível e reset - conta {account}", FormBorderStyle = FormBorderStyle.FixedDialog, StartPosition = FormStartPosition.CenterParent,
+                MinimizeBox = false, MaximizeBox = false, ClientSize = new Size(470, 250), Font = new Font("Segoe UI", 9),
+            };
+            Label L(string text, int top) => new() { Text = text, Left = 12, Top = top + 3, AutoSize = true };
+            var chars = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Left = 110, Top = 12, Width = 348 };
+            chars.Items.AddRange(names.Cast<object>().ToArray()); chars.SelectedIndex = 0;
+            var now = new Label { Left = 110, Top = 40, Width = 348, Height = 34, ForeColor = SystemColors.GrayText };
+            var action = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Left = 110, Top = 78, Width = 348 };
+            action.Items.AddRange(CharacterAdjust.Actions.Select(a => (object)a.Text).ToArray()); action.SelectedIndex = 0;
+            var value = new NumericUpDown { Left = 110, Top = 110, Width = 150, ThousandsSeparator = true };
+            var hint = new Label { Left = 12, Top = 142, Width = 446, Height = 60 };
+            var ok = new Button { Text = "Aplicar", DialogResult = DialogResult.OK, Left = 302, Top = 212, Width = 75 };
+            var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 383, Top = 212, Width = 75 };
+            void ShowChar() => now.Text = CharacterAdjust.Status((string)chars.SelectedItem!);
+            void ShowAction()
+            {
+                var a = CharacterAdjust.Actions[action.SelectedIndex];
+                value.Enabled = a.NeedsValue;
+                if (a.NeedsValue) { value.Minimum = a.Min; value.Maximum = a.Max; value.Value = a.Default; }
+                hint.Text = a.Hint;
+            }
+            chars.SelectedIndexChanged += (_, _) => Safe(ShowChar);
+            action.SelectedIndexChanged += (_, _) => ShowAction();
+            dlg.Controls.AddRange(new Control[] { L("Personagem:", 12), chars, now, L("Ação:", 78), action, L("Valor:", 110), value, hint, ok, cancel });
+            dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+            ShowChar(); ShowAction();
+            if (dlg.ShowDialog() != DialogResult.OK) return;
+
+            var character = (string)chars.SelectedItem!;
+            var act = CharacterAdjust.Actions[action.SelectedIndex];
+            long v = act.NeedsValue ? (long)value.Value : 0;
+            var what = act.NeedsValue ? $"{act.Text.ToLowerInvariant()} = {v:N0}" : act.Text;
+            if (!Confirm($"{character}: {what}?\n\nAgora: {CharacterAdjust.Status(character)}" +
+                         (Db.IsOnline(account) ? "\n\nA conta está online: se o personagem estiver jogando, ele vai para a seleção de personagem." : "")))
+                return;
+
+            string result;
+            if (ResetWatcher.IsRunning())
+            {
+                int id = CharacterAdjust.Queue(account, character, act.Kind, v);
+                Log($"{character}: {what} pedido ao vigia (pedido {id})...");
+                string? r = null;
+                for (int i = 0; i < 60 && (r = CharacterAdjust.Result(id)) == null; i++) await Task.Delay(500);
+                result = r ?? "ainda aguardando: o vigia aplica assim que o personagem sair do jogo (o pedido expira em 3 minutos)";
+            }
+            else if (EnsureOffline(account, act.Text.ToLowerInvariant()))
+                result = CharacterAdjust.Direct(character, act.Kind, v);
+            else return;
+            Log($"{character}: {what}: {result}. Agora: {CharacterAdjust.Status(character)}");
+            RefreshAccounts();
+        }
+        catch (Exception ex) { Log("ERRO: " + ex.Message); }
     }
 
     /// <summary>Se a conta estiver online, pergunta se deve forcar o logout (para a alteracao valer ja) e faz, se confirmado.</summary>
