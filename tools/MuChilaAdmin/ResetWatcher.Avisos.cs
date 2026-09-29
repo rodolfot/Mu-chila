@@ -54,7 +54,14 @@ public static partial class ResetWatcher
     /// manda o aviso da 1ª linha já (o "enviar agora" fica no topo). firstMessage: espera até 5 s o servidor ter lido o arquivo
     /// novo (a 1ª linha na memória igual a ela) antes de mandar, para não repetir o aviso antigo.
     /// </summary>
-    public static List<string> NoticeRestart(bool sendFirstNow, string? firstMessage = null)
+    public static List<string> NoticeRestart(bool sendFirstNow, string? firstMessage = null) => NoticeRestart(0, sendFirstNow, firstMessage);
+
+    /// <summary>
+    /// Igual, mas o rodízio recomeça na linha <paramref name="index"/> (0 = 1ª linha de aviso do Notice.txt). sendNow = ela sai
+    /// no segundo seguinte (ex.: o aviso que acabou de ser editado); message = texto esperado nessa linha (espera o servidor
+    /// reler o arquivo antes de mandar, para não sair o texto antigo).
+    /// </summary>
+    public static List<string> NoticeRestart(int index, bool sendFirstNow, string? firstMessage)
     {
         var log = new List<string>();
         byte[]? want = firstMessage == null ? null : Encoding.Latin1.GetBytes(firstMessage);
@@ -73,16 +80,17 @@ public static partial class ResetWatcher
                     if (want != null)
                         for (int i = 0; i < 25; i++)
                         {
-                            var cur = Read(t, a.Array, NoticeMessage);
+                            var cur = Read(t, a.Array + (uint)(index * NoticeEntry), NoticeMessage);
                             int n = Math.Min(want.Length, NoticeMessage - 1);
                             if (cur != null && cur.AsSpan(0, n).SequenceEqual(want.AsSpan(0, n)) && cur[n] == 0) break;
                             Thread.Sleep(200);
                         }
+                    int total = BitConverter.ToInt32(Read(t, a.Count, 4) ?? new byte[4]);
+                    int pos = index >= 0 && index < total ? index : 0;   // nunca aponta para entrada velha além da lista
                     uint agora = (uint)Environment.TickCount;
                     uint tempo = sendFirstNow ? unchecked(agora - 3_600_000u) : agora;
-                    bool ok = Write(t, a.Index, BitConverter.GetBytes(0)) && Write(t, a.Time, BitConverter.GetBytes(tempo));
-                    int total = BitConverter.ToInt32(Read(t, a.Count, 4) ?? new byte[4]);
-                    log.Add(ok ? $"{label}: rodízio de avisos reiniciado ({total} aviso(s){(sendFirstNow ? ", o 1º sai agora" : "")})"
+                    bool ok = Write(t, a.Index, BitConverter.GetBytes(pos)) && Write(t, a.Time, BitConverter.GetBytes(tempo));
+                    log.Add(ok ? $"{label}: rodízio de avisos reiniciado na linha {pos + 1} de {total}{(sendFirstNow ? ", que sai agora" : "")}"
                                : $"{label}: falha ao gravar na memória");
                 }
                 finally { Close(t); }

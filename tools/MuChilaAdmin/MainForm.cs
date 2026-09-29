@@ -922,7 +922,7 @@ public sealed partial class MainForm : Form
             {
                 noticeLoading = true;
                 var n = new Notice { Message = "Bem-vindo ao Mu Chila!", RepeatTime = 600 };
-                var row = noticeTable.NewRow(); row["Mensagem"] = n.Message; row["Repetir a cada (s)"] = n.RepeatTime;
+                var row = noticeTable.NewRow(); row["Mensagem"] = n.Message; row[NoticeWaitCol] = n.RepeatTime;
                 noticeTable.Rows.Add(row); noticeRows[row] = n;
                 noticeLoading = false; noticeDirty = true; UpdateNoticeStatus();
                 gridNotices.CurrentCell = gridNotices.Rows[^1].Cells["Mensagem"];
@@ -938,27 +938,36 @@ public sealed partial class MainForm : Form
         var help = new Label
         {
             Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
-            Text = "\"Enviar agora\" manda a mensagem uma vez para todos os jogadores de todos os servidores (aparece no topo da tela em alguns segundos). " +
-                   "Avisos automáticos: o servidor manda um de cada vez, em ordem; cada um espera o seu tempo depois do anterior (com um aviso só, é o intervalo). " +
-                   "\"Salvar e aplicar\" faz backup do Notice.txt e dá Reload Util (vale na hora).",
+            Text = "\"Enviar agora\" manda a mensagem uma vez para todos os jogadores de todos os servidores (aparece no topo da tela em 1–2 s). " +
+                   "Avisos automáticos: o servidor manda um de cada vez, em ordem; \"Espera antes dele\" conta a partir do aviso anterior, então cada um volta " +
+                   "a cada SOMA das esperas (com um aviso só, é o intervalo). \"Salvar e aplicar\" faz backup, dá Reload Util e mostra na hora o aviso novo ou alterado.",
         };
         page.Controls.Add(gridNotices); page.Controls.Add(bar); page.Controls.Add(help); page.Controls.Add(agora);
         Shown += (_, _) => Safe(LoadNotices);
         return page;
     }
 
-    void UpdateNoticeStatus() => lblNotices.Text = $"   {noticeTable.Rows.Count} aviso(s) automático(s)" + (noticeDirty ? "   (não salvo)" : "");
+    /// <summary>Coluna do tempo: é a espera ANTES daquele aviso (contada do anterior); cada aviso volta a cada "soma de todos".</summary>
+    const string NoticeWaitCol = "Espera antes dele (s)";
+
+    void UpdateNoticeStatus()
+    {
+        int ciclo = noticeTable.Rows.Cast<DataRow>().Sum(r => r[NoticeWaitCol] is int s ? s : 0);
+        lblNotices.Text = $"   {noticeTable.Rows.Count} aviso(s) automático(s)" +
+                          (ciclo > 0 ? $"; cada um aparece a cada {(ciclo >= 120 ? $"{ciclo / 60} min {ciclo % 60} s" : $"{ciclo} s")} (soma das esperas)" : "") +
+                          (noticeDirty ? "   (não salvo)" : "");
+    }
 
     void LoadNotices()
     {
         var all = Notices.Load();
         noticeHidden = all.Where(n => n.IsOneShot).ToList();
         var t = new DataTable();
-        t.Columns.Add("Mensagem"); t.Columns.Add("Repetir a cada (s)", typeof(int));
+        t.Columns.Add("Mensagem"); t.Columns.Add(NoticeWaitCol, typeof(int));
         noticeRows.Clear();
         foreach (var n in all.Where(n => !n.IsOneShot))
         {
-            var row = t.NewRow(); row["Mensagem"] = n.Message; row["Repetir a cada (s)"] = n.RepeatTime;
+            var row = t.NewRow(); row["Mensagem"] = n.Message; row[NoticeWaitCol] = n.RepeatTime;
             t.Rows.Add(row); noticeRows[row] = n;
         }
         noticeLoading = true;
@@ -972,17 +981,23 @@ public sealed partial class MainForm : Form
     {
         gridNotices.EndEdit();
         var list = new List<Notice>(noticeHidden);
+        var mudados = new List<string>();   // avisos novos ou com texto/tempo trocado: o 1º deles sai na hora
         foreach (DataRow row in noticeTable.Rows)
         {
             var n = noticeRows[row];
             n.Message = Notices.Clean(row["Mensagem"] as string ?? "");
-            n.RepeatTime = row["Repetir a cada (s)"] is int s && s >= 1 ? s : throw new InvalidOperationException($"\"{n.Message}\": tempo inválido (mínimo 1 segundo).");
+            n.RepeatTime = row[NoticeWaitCol] is int s && s >= 1 ? s : throw new InvalidOperationException($"\"{n.Message}\": tempo inválido (mínimo 1 segundo).");
+            if (n.Raw == null || n.Key() != n.RawKey) mudados.Add(n.Message);
             list.Add(n);
         }
         var backup = Notices.Save(list);
         Log($"Avisos salvos (backup {Path.GetFileName(backup)}).");
         LogAll(ServerControl.Reload("Util (GMs, avisos)"));
-        LogAll(ResetWatcher.NoticeRestart(sendFirstNow: false));   // rodízio volta ao 1º aviso (não fica numa entrada velha)
+        // o Reload não reinicia o rodízio (#31): recomeça no 1º aviso mudado e manda ele já; sem mudança de texto, volta ao 1º
+        var salvos = Notices.Load();
+        int i = salvos.FindIndex(n => !n.IsOneShot && mudados.Contains(n.Message));
+        LogAll(i >= 0 ? ResetWatcher.NoticeRestart(i, true, salvos[i].Message) : ResetWatcher.NoticeRestart(0, false, null));
+        if (i >= 0) Log($"\"{salvos[i].Message}\" aparece na tela agora; depois o rodízio segue na ordem da lista.");
         LoadNotices();
     }
 

@@ -77,9 +77,10 @@ static class Program
 
         // "--avisos-reiniciar <saida>": reinicia o rodízio de avisos (Notice.txt) em todos os GameServers e no Castle Siege,
         // sem mandar nada na hora (o 1º aviso sai depois do intervalo dele). Serve para conferir a rotina achada (#31).
-        if (args.Length == 2 && args[0] == "--avisos-reiniciar")
+        if ((args.Length == 2 || args.Length == 3) && args[0] == "--avisos-reiniciar")
         {
-            try { File.WriteAllText(args[1], string.Join(Environment.NewLine, ResetWatcher.NoticeRestart(sendFirstNow: false))); return 0; }
+            int linha = args.Length == 3 ? int.Parse(args[2]) - 1 : 0;   // [linha] = 1ª, 2ª... (padrão 1ª)
+            try { File.WriteAllText(args[1], string.Join(Environment.NewLine, ResetWatcher.NoticeRestart(linha, false, null))); return 0; }
             catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
         }
 
