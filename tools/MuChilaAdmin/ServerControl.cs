@@ -182,14 +182,29 @@ public static class ServerControl
                    WHERE s1.memb___id = @a AND s1.ConnectStat = 1 AND s2.ConnectStat = 1", ("@a", account))
           .Rows.Cast<System.Data.DataRow>().Select(r => (string)r[0]).ToArray();
 
-    /// <summary>Forca o logout da conta derrubando as conexoes dela com o servidor em que esta. Espera o servidor registrar a saida.</summary>
+    /// <summary>
+    /// Desloga a conta e espera o servidor registrar a saída. 1º: pelo GameServer, como "Trocar servidor" no menu do jogo
+    /// (ResetWatcher.LogoutAccount: sem administrador, só esta conta). 2º, se não der: derruba as conexões dela com o servidor
+    /// em que está (pede administrador e derruba também as outras contas do mesmo IP).
+    /// </summary>
     public static string ForceLogout(string account)
     {
         var t = Db.Query("SELECT IP, ServerName FROM MEMB_STAT WHERE memb___id = @a AND ConnectStat = 1", ("@a", account));
         if (t.Rows.Count == 0) return $"{account} já está offline.";
+
+        var sent = ResetWatcher.LogoutAccount(account, "logout pelo painel");
+        if (sent != null)
+        {
+            for (int i = 0; i < 20 && Db.IsOnline(account); i++) Thread.Sleep(500);
+            if (!Db.IsOnline(account)) return $"{account}: deslogado (o jogo voltou à seleção de servidor; o servidor salvou o personagem).";
+        }
+
         var ip = (string)t.Rows[0]["IP"];
         var server = t.Rows[0]["ServerName"] as string ?? "";
-        var proc = Find(server.Contains("CastleSiege", StringComparison.OrdinalIgnoreCase) ? CastleSiegeProcess : GameServerProcess)
+        var folder = server.Contains("CastleSiege", StringComparison.OrdinalIgnoreCase) ? null
+                   : server.Contains("Non-PvP", StringComparison.OrdinalIgnoreCase) ? "GameServerNonPvP"
+                   : server.Contains("VIP", StringComparison.OrdinalIgnoreCase) ? "GameServerVIP" : "GameServer";
+        var proc = (folder == null ? Find(CastleSiegeProcess) : Find(GameServerProcess, folder))
                    ?? throw new InvalidOperationException($"O servidor em que {account} está ({server}) não está rodando.");
 
         int closed; uint error;

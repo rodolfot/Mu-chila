@@ -60,6 +60,21 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[5], "ERRO: " + ex.Message); return 1; }
         }
 
+        // "--testar-drops-visao <saida> <foto.png>": visão "Por monstro / por item" da aba Drops, com os dados reais; só simula
+        // na memória (não salva nada) e grava uma foto da aba
+        if (args.Length == 3 && args[0] == "--testar-drops-visao")
+        {
+            try
+            {
+                Application.EnableVisualStyles();
+                using var f = new MainForm();
+                var r = f.TestDropsView(args[2]);
+                File.WriteAllText(args[1], r);
+                return r.Contains("FALHA") ? 1 : 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
+        }
+
         // "--testar-passe <saida>": dá, soma e tira passe de uma conta descartável (passeteste), criada e apagada pelo teste
         if (args.Length == 2 && args[0] == "--testar-passe")
             return TestPass(args[1]);

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace MuChilaAdmin;
 
-public sealed class MainForm : Form
+public sealed partial class MainForm : Form
 {
     readonly TextBox log = new() { Multiline = true, ReadOnly = true, ScrollBars = ScrollBars.Vertical, Dock = DockStyle.Bottom, Height = 110 };
     readonly System.Windows.Forms.Timer refresh = new() { Interval = 5000 };
@@ -184,7 +184,7 @@ public sealed class MainForm : Form
             Btn("Desconectar jogador selecionado", () =>
             {
                 if (gridOnline.CurrentRow?.Cells["Conta"].Value is not string a) { Log("Selecione um jogador na lista \"Jogadores online\"."); return; }
-                if (Confirm($"Forçar o logout de {a}? O jogador é desconectado e o personagem é salvo.{SameIpWarning(a)}")) RunForceLogout(a);
+                if (Confirm($"Deslogar {a}? O jogo dele volta à seleção de servidor e o personagem é salvo.")) RunForceLogout(a);
             }),
             Btn("Levar à seleção de personagem", () =>
             {
@@ -649,8 +649,11 @@ public sealed class MainForm : Form
         var page = new TabPage("Drops");
         var inner = new TabControl { Dock = DockStyle.Fill };
 
+        // 0) visão simples: por monstro / por item (MainForm.Drops.cs), editando as mesmas linhas das abas avançadas
+        var p0 = DropsSimplePage();
+
         // 1) regras de item (ItemDrop.txt)
-        var p1 = new TabPage("Itens que os monstros dropam");
+        var p1 = new TabPage("Avançado: regras do arquivo");
         gridDrops.CellValueChanged += (_, e) => Safe(() => DropCellChanged(e));
         gridDrops.DataError += (_, e) => { Log("Valor inválido."); e.Cancel = true; };
         txtDropFind.TextChanged += (_, _) => Safe(FilterDrops);
@@ -678,7 +681,7 @@ public sealed class MainForm : Form
         }, quiet: true);
 
         // 2) drop comum e zen por monstro (Monster.txt)
-        var p2 = new TabPage("Drop comum e zen por monstro");
+        var p2 = new TabPage("Avançado: drop comum e zen");
         gridRates.CellValueChanged += (_, e) => { if (!dropLoading && e.RowIndex >= 0) { rateDirty = true; UpdateRateStatus(); } };
         gridRates.DataError += (_, e) => { Log("Valor inválido: use só números."); e.Cancel = true; };
         txtRateFind.TextChanged += (_, _) => Safe(() => rateTable.DefaultView.RowFilter = txtRateFind.Text.Length == 0 ? "" : $"Monstro LIKE '%{LikeEsc(txtRateFind.Text)}%'");
@@ -695,9 +698,11 @@ public sealed class MainForm : Form
         };
         p2.Controls.Add(gridRates); p2.Controls.Add(help2); p2.Controls.Add(bar2);
 
-        inner.TabPages.Add(p1); inner.TabPages.Add(p2);
+        inner.TabPages.Add(p0); inner.TabPages.Add(p1); inner.TabPages.Add(p2);
+        // voltando à visão simples, ela mostra o que foi mudado nas abas avançadas
+        inner.SelectedIndexChanged += (_, _) => { if (inner.SelectedTab == p0) Safe(DvShowList); };
         page.Controls.Add(inner);
-        Shown += (_, _) => { Safe(LoadDrops); Safe(LoadRates); };
+        Shown += (_, _) => { Safe(LoadDrops); Safe(LoadRates); Safe(DvLoad); };
         FormClosing += (_, e) =>
         {
             if (monsterReloadTimer != null && !Confirm("Há uma recarga de monstros esperando a invasão acabar. Se fechar agora, ela não acontece. Fechar mesmo assim?")) e.Cancel = true;
@@ -801,17 +806,8 @@ public sealed class MainForm : Form
         var item = Pick("Nova regra de drop: escolha o item", Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList(), d => $"{d.Name}   [{d.Section},{d.Type}]",
                         d => (d.Section, d.Type, d.Name));
         if (item == null) return;
-        var r = new DropRule { Item = item.Section * 512 + item.Type, Rate = 1000, Comment = item.Name + " - Mu Chila" };
         txtDropFind.Text = "";
-        var row = dropTable.NewRow();
-        dropLoading = true;
-        row["Item"] = item.Name; row["Código"] = $"{item.Section},{item.Type}"; row["Nível"] = r.Level; row["Grade"] = r.Grade;
-        for (int i = 0; i < DropOptCols.Length; i++) row[DropOptCols[i]] = r.Options[i];
-        row["Duração"] = r.Duration; row["Mapa"] = r.Map; row["Nome do mapa"] = MapName(r.Map); row["Monstro"] = r.Monster; row["Nome do monstro"] = MonName(r.Monster);
-        row["Nível mín"] = r.LevelMin; row["Nível máx"] = r.LevelMax; row["Chance %"] = Drops.Percent(r.Rate).Replace('.', ','); row["Comentário"] = r.Comment;
-        dropTable.Rows.Add(row); dropRows[row] = r;
-        dropLoading = false;
-        dropDirty = true; UpdateDropStatus();
+        AddRuleRow(new DropRule { Item = item.Section * 512 + item.Type, Rate = 1000, Comment = item.Name + " - Mu Chila" }, item.Name);
         gridDrops.CurrentCell = gridDrops.Rows[^1].Cells["Monstro"];
         Log($"Regra nova para {item.Name} (0,1%, qualquer monstro). Escolha o monstro ou o mapa e a chance, e salve.");
     }
@@ -1303,6 +1299,7 @@ public sealed class MainForm : Form
         if (gridItems.CurrentRow == null) { Log("Selecione um item."); return; }
         var item = itemsShown[gridItems.CurrentRow.Index];
         if (!Confirm($"Remover {item.Name} +{item.Level} ({item.Place}, posição {item.Slot}) de {(place == VaultOption ? "baú de " + account : place)}?\n\nO inventário/baú inteiro é salvo antes num arquivo de backup.")) return;
+        if (!EnsureOffline(account, "remover o item")) return;
         Log(Items.Remove(account, place == VaultOption ? null : place, item));
         ShowItems();
     }
@@ -1386,7 +1383,8 @@ public sealed class MainForm : Form
                    "\"Dar pontos\": soma (ou tira, com número negativo) pontos de atributo ou master a um personagem. " +
                    "\"Nível e reset\": define nível ou master level, dá EXP ou faz Reset/Master/Supreme num personagem (testes); com o jogo aberto, " +
                    "o personagem vai para a seleção de personagem e a mudança vale ao entrar de novo. " +
-                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo. Com a conta online, \"Dar pontos\" e \"Zerar\" oferecem forçar o logout.",
+                   "\"Zerar habilidades master\": para quem mostra \"Suces de Atq\" negativo. Conta online: VIP, ban, pontos, zerar e remover item deslogam a conta " +
+                   "sozinhos (o jogo volta à seleção de servidor; o personagem é salvo).",
         };
         page.Controls.Add(Titled("Contas", gridAccounts));
         page.Controls.Add(bar);
@@ -1457,18 +1455,12 @@ public sealed class MainForm : Form
         catch (Exception ex) { Log("ERRO: " + ex.Message); }
     }
 
-    /// <summary>Se a conta estiver online, pergunta se deve forcar o logout (para a alteracao valer ja) e faz, se confirmado.</summary>
+    /// <summary>Mexeu na conta (VIP, ban): se ela estiver online, desloga na hora, sem perguntar (decisão do dono, 28/09/2026).</summary>
     void OfferLogout(string account, string why)
     {
         if (!Db.IsOnline(account)) return;
-        if (Confirm($"A conta {account} está online. {why}\n\nForçar o logout agora? O jogador é desconectado e o personagem é salvo.{SameIpWarning(account)}"))
-            RunForceLogout(account);
-    }
-
-    static string SameIpWarning(string account)
-    {
-        var others = ServerControl.OnlineSameIp(account);
-        return others.Length == 0 ? "" : $"\n\nAtenção: {string.Join(", ", others)} usa(m) o mesmo IP e também será(ão) desconectada(s).";
+        Log($"{account} está online: deslogando ({why})");
+        RunForceLogout(account);
     }
 
     void RunForceLogout(string account)
@@ -1481,14 +1473,12 @@ public sealed class MainForm : Form
 
     /// <summary>
     /// O servidor grava o personagem ao sair: a conta precisa sair ANTES de mexer, senao a alteracao e desfeita.
-    /// Online → oferece forcar o logout. Devolve false se a conta continuar online.
+    /// Online → desloga na hora, sem perguntar (decisão do dono, 28/09/2026). Devolve false se a conta continuar online.
     /// </summary>
     bool EnsureOffline(string account, string what)
     {
         if (!Db.IsOnline(account)) return true;
-        if (!Confirm($"A conta {account} está online. Para {what}, o jogador precisa sair do jogo antes.\n\n" +
-                     $"Forçar o logout e continuar?{SameIpWarning(account)}"))
-            return false;
+        Log($"{account} está online: deslogando para {what}...");
         RunForceLogout(account);
         Thread.Sleep(3000);   // margem para o DataServer terminar de gravar o personagem
         if (Db.IsOnline(account)) { Log($"{account} ainda aparece online; nada foi alterado. Tente de novo em alguns segundos."); return false; }

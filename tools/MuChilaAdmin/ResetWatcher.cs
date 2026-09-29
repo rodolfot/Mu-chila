@@ -67,7 +67,7 @@ public static partial class ResetWatcher
     // +0x57 conta, +0x10D mapa, +0x648 faixas extras do inventário (Magic Backpack) e +0x64C baú extra: conferidos com o
     // banco em 28/09/2026 (a rotina do Magic Backpack no GameServer, 0x421FF9, lê e soma +0x648 até 2)
     const int OffName = 0x62, OffLevel = 0x8C, OffAccount = 0x57, OffMap = 0x10D, OffExtInventory = 0x648, ObjHead = 0x650;
-    const int Playing = 3, CharacterSelect = 1;
+    const int Playing = 3, LoggedIn = 2, CharacterSelect = 1, ServerSelect = 2;   // +0x04 estado; +0x0B tipo de saída
 
     sealed class Target
     {
@@ -321,7 +321,10 @@ public static partial class ResetWatcher
     static void LogOnce(Target t, string msg) { if (logged.Add($"{t.Process.Id}:{msg}")) Log(msg); }
 
     /// <summary>Objetos de jogador conectados e jogando: (índice, primeiros bytes do objeto).</summary>
-    static IEnumerable<(int Index, byte[] Obj)> Players(Target t)
+    static IEnumerable<(int Index, byte[] Obj)> Players(Target t) => Objects(t, Playing, Playing);
+
+    /// <summary>Objetos de jogador com o estado (+0x04) entre min e max: 2 = conta logada (seleção de personagem), 3 = jogando.</summary>
+    static IEnumerable<(int Index, byte[] Obj)> Objects(Target t, int min, int max)
     {
         var table = Read(t, t.Table + (uint)FirstUser * 4, UserSlots * 4);
         if (table == null) yield break;
@@ -334,7 +337,8 @@ public static partial class ResetWatcher
             if (ptrs[i] == 0 || repeated.Contains(ptrs[i])) continue;
             var obj = Read(t, ptrs[i], ObjHead);
             if (obj == null || BitConverter.ToInt32(obj, OffIndex) != FirstUser + i) continue;
-            if (BitConverter.ToInt32(obj, OffConnected) != Playing) continue;
+            int state = BitConverter.ToInt32(obj, OffConnected);
+            if (state < min || state > max) continue;
             yield return (FirstUser + i, obj);
         }
     }
@@ -442,19 +446,50 @@ public static partial class ResetWatcher
         Db.Execute("UPDATE dbo.MuChila_ResetPedido SET Status = @s, Resultado = @r, Mensagem = @m, Atualizado = GETDATE() WHERE Id = @id",
             ("@s", status), ("@r", (object?)result ?? DBNull.Value), ("@m", (object?)message ?? DBNull.Value), ("@id", id));
 
-    static string Trigger(Target t, int idx, string name, string why)
+    /// <summary>
+    /// Marca a saída do jogador, como as opções do menu do jogo: closeType 1 = seleção de personagem (continua logado),
+    /// 2 = seleção de servidor (a conta sai: o servidor salva o personagem e fecha a conta). Confere que o objeto ainda é o
+    /// mesmo pelo nome ou, com account, pela conta (na seleção de personagem o nome pode não estar preenchido).
+    /// </summary>
+    static string Trigger(Target t, int idx, string name, string why, int closeType = CharacterSelect, string? account = null)
     {
         uint ptr = BitConverter.ToUInt32(Read(t, t.Table + (uint)idx * 4, 4) ?? new byte[4]);
         var head = ptr == 0 ? null : Read(t, ptr, ObjHead);
-        if (head == null || BitConverter.ToInt32(head, OffIndex) != idx || ReadName(head) != name)
-            return $"{name}: {why}, mas o personagem saiu antes; nada feito";
-        if ((sbyte)head[OffCloseCount] > 0) return $"{name}: {why}; já estava saindo";
+        bool same = head != null && BitConverter.ToInt32(head, OffIndex) == idx &&
+                    (account != null ? string.Equals(ReadAccount(head), account, StringComparison.OrdinalIgnoreCase) : ReadName(head) == name);
+        if (!same) return $"{name}: {why}, mas o personagem saiu antes; nada feito";
+        if ((sbyte)head![OffCloseCount] > 0) return $"{name}: {why}; já estava saindo";
         // o tipo primeiro e a contagem por último: o servidor só olha o tipo quando a contagem é maior que zero
-        bool ok = Write(t, ptr + OffCloseType, new byte[] { CharacterSelect })
+        bool ok = Write(t, ptr + OffCloseType, new byte[] { (byte)closeType })
                && Write(t, ptr + OffEnableDel, BitConverter.GetBytes(1))
                && Write(t, ptr + OffCloseCount, new byte[] { 1 });   // 1 = troca no próximo segundo do servidor, sem contagem na tela (o menu do jogo usa 6 = 5 s)
-        return ok ? $"{name} ({t.Process.ProcessName}): {why}; indo para a seleção de personagem agora"
+        var where = closeType == ServerSelect ? "seleção de servidor (conta deslogada)" : "seleção de personagem";
+        return ok ? $"{name} ({t.Process.ProcessName}): {why}; indo para a {where} agora"
                   : $"{name}: {why}; falha ao gravar na memória do {t.Process.ProcessName} (erro {Marshal.GetLastWin32Error()})";
+    }
+
+    /// <summary>
+    /// Desloga a conta pelo GameServer (como "Trocar servidor" no menu do jogo): o servidor salva o personagem e fecha a conta,
+    /// sem derrubar a conexão e sem pedir administrador; só esta conta sai. Procura em todos os GameServers e no Castle Siege,
+    /// jogando ou na seleção de personagem. Null = a conta não foi achada (versão desconhecida do GameServer, ou já saiu).
+    /// </summary>
+    public static string? LogoutAccount(string account, string why)
+    {
+        foreach (var name in new[] { ServerControl.GameServerProcess, ServerControl.CastleSiegeProcess })
+            foreach (var p in Process.GetProcessesByName(name))
+            {
+                var t = new Target { Process = p };
+                try
+                {
+                    Attach(t);
+                    if (t.Table == 0) continue;
+                    foreach (var (idx, obj) in Objects(t, LoggedIn, Playing))
+                        if (string.Equals(ReadAccount(obj), account, StringComparison.OrdinalIgnoreCase))
+                            return Trigger(t, idx, ReadName(obj) ?? account, why, ServerSelect, account);
+                }
+                finally { Close(t); }
+            }
+        return null;
     }
 
     static string? ReadName(byte[] obj)

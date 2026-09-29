@@ -226,7 +226,7 @@ TradeItemBlockSell = 0
 ;==================================================
 ; Level Up Settings
 ;==================================================
-MaxLevelUp = 1
+MaxLevelUp = 400
 MaxLevelUpEvent = 1
 MaxLevelUpQuest = 1
 MaxStatPoint_AL0 = 65000
