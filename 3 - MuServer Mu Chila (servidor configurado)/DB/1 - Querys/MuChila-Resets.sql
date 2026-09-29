@@ -649,6 +649,16 @@ IF OBJECT_ID('dbo.MuChila_VigiaStatus') IS NULL
     CREATE TABLE dbo.MuChila_VigiaStatus (Id int NOT NULL PRIMARY KEY, Batida datetime NOT NULL);
 GO
 
+/* 5b2) Nivel e master AO VIVO de quem esta jogando (28/09/2026): o banco so recebe o nivel quando o servidor salva o
+   personagem (ao sair). O vigia grava aqui, a cada ~5 s, o que le da memoria do GameServer, e o site usa para habilitar os
+   botoes de reset na hora em que o jogador chega ao 400/600 (as procedures conferem de novo depois do servidor salvar). */
+IF OBJECT_ID('dbo.MuChila_PersonagemAoVivo') IS NULL
+    CREATE TABLE dbo.MuChila_PersonagemAoVivo (Name varchar(10) NOT NULL PRIMARY KEY, cLevel int NOT NULL, MasterLevel int NOT NULL,
+        Atualizado datetime NOT NULL DEFAULT (GETDATE()));
+GO
+IF USER_ID('muchila_site') IS NOT NULL GRANT SELECT ON dbo.MuChila_PersonagemAoVivo TO [muchila_site];
+GO
+
 /* 5c) Ajustes de personagem pelo painel (28/09/2026, testes): definir nivel, dar EXP e definir master level, pela
    mesma fila (Tipo 'nivel' | 'exp' | 'mlevel', valor em Valor): com o personagem no jogo o vigia manda para a
    selecao e aplica; fora do jogo aplica na hora. Os resets do painel usam os Tipos do site (reset/master/supreme). */

@@ -66,7 +66,7 @@ public static partial class ResetWatcher
     const int OffIndex = 0x00, OffConnected = 0x04, OffCloseCount = 0x0A, OffCloseType = 0x0B, OffEnableDel = 0x0C;
     // +0x57 conta, +0x10D mapa, +0x648 faixas extras do inventário (Magic Backpack) e +0x64C baú extra: conferidos com o
     // banco em 28/09/2026 (a rotina do Magic Backpack no GameServer, 0x421FF9, lê e soma +0x648 até 2)
-    const int OffName = 0x62, OffLevel = 0x8C, OffAccount = 0x57, OffMap = 0x10D, OffExtInventory = 0x648, ObjHead = 0x650;
+    const int OffName = 0x62, OffLevel = 0x8C, OffAccount = 0x57, OffMap = 0x10D, OffMasterLevel = 0x61C, OffExtInventory = 0x648, ObjHead = 0x650;
     const int Playing = 3, LoggedIn = 2, CharacterSelect = 1, ServerSelect = 2;   // +0x04 estado; +0x0B tipo de saída
 
     sealed class Target
@@ -383,6 +383,7 @@ public static partial class ResetWatcher
             nextBeat = DateTime.Now.AddSeconds(5);
             Db.Execute("MERGE dbo.MuChila_VigiaStatus AS d USING (SELECT 1 AS Id) AS s ON d.Id = s.Id " +
                        "WHEN MATCHED THEN UPDATE SET Batida = GETDATE() WHEN NOT MATCHED THEN INSERT (Id, Batida) VALUES (1, GETDATE());");
+            WriteLiveStatus(targets);
         }
         var pend = Db.Query("SELECT Id, Personagem, Tipo, Coins, MaxStat, ISNULL(Valor, 0) AS Valor, Criado FROM dbo.MuChila_ResetPedido WHERE Status = 'pendente' ORDER BY Id");
         if (pend.Rows.Count == 0) { requests.Clear(); return log; }
@@ -422,6 +423,29 @@ public static partial class ResetWatcher
             log.Add($"{name}: {kind} aplicado (retorno {res})");
         }
         return log;
+    }
+
+    /// <summary>
+    /// Nível e master level AO VIVO de quem está jogando (dbo.MuChila_PersonagemAoVivo): o banco só recebe o nível quando o
+    /// servidor salva o personagem, então o site usa esta tabela para habilitar os resets na hora. Master level em +0x61C.
+    /// </summary>
+    static void WriteLiveStatus(List<Target> targets)
+    {
+        var rows = new List<(string Name, int Level, int Master)>();
+        foreach (var t in targets.Where(t => t.Table != 0 && !t.Process.HasExited))
+            foreach (var (_, obj) in Players(t))
+            {
+                int level = BitConverter.ToInt16(obj, OffLevel), master = BitConverter.ToInt16(obj, OffMasterLevel);
+                if (ReadName(obj) is { } n && level is >= 1 and <= 400 && master is >= 0 and <= 600) rows.Add((n, level, master));
+            }
+        var sql = new StringBuilder("DELETE dbo.MuChila_PersonagemAoVivo;");
+        var pars = new List<(string, object)>();
+        for (int i = 0; i < rows.Count; i++)
+        {
+            sql.Append($" INSERT dbo.MuChila_PersonagemAoVivo (Name, cLevel, MasterLevel) VALUES (@n{i}, @l{i}, @m{i});");
+            pars.Add(($"@n{i}", rows[i].Name)); pars.Add(($"@l{i}", rows[i].Level)); pars.Add(($"@m{i}", rows[i].Master));
+        }
+        Db.Execute(sql.ToString(), pars.ToArray());
     }
 
     /// <summary>

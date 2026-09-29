@@ -35,13 +35,16 @@ class MuChilaResets
     /** Personagens da conta com o estado de reset (nivel, master, atributos, contadores, online). */
     public function personagens(string $conta): array
     {
-        $sql = "SELECT c.Name, c.Class, c.cLevel, c.Strength, c.Dexterity, c.Vitality, c.Energy,
+        // jogando: nível e master AO VIVO gravados pelo vigia (o banco só recebe quando o servidor salva, ao sair do jogo);
+        // o reset confere de novo depois do servidor salvar, então habilitar pelo valor ao vivo é seguro
+        $sql = "SELECT c.Name, c.Class, ISNULL(v.cLevel, c.cLevel) AS cLevel, c.Strength, c.Dexterity, c.Vitality, c.Energy,
                        c.ResetCount, c.MasterResetCount, c.SupremeResetCount,
-                       ISNULL(m.MasterLevel,0) AS MasterLevel,
+                       ISNULL(v.MasterLevel, ISNULL(m.MasterLevel,0)) AS MasterLevel,
                        ISNULL(s.ConnectStat,0) AS Online
                   FROM Character c
                   LEFT JOIN MasterSkillTree m ON m.Name = c.Name
                   LEFT JOIN MEMB_STAT s ON s.memb___id = c.AccountID
+                  LEFT JOIN MuChila_PersonagemAoVivo v ON v.Name = c.Name AND v.Atualizado > DATEADD(second, -20, GETDATE())
                  WHERE c.AccountID = ?
                  ORDER BY c.Name";
         $st = $this->db->prepare($sql);
