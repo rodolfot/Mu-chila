@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace MuChilaAdmin;
 
 /// <summary>
@@ -82,7 +84,7 @@ public sealed partial class MainForm
                 var obs = lockReason ?? string.Join(" ", new[] { r.Help, r.Label != r.BaseKey && r.File != ServerSettings.ItemDropFile ? $"[{r.BaseKey}]" : "" }.Where(s => s.Length > 0));
                 var vals = Enumerable.Range(0, 4).Select(i => setEdits.TryGetValue((r.Id, i), out var ed) ? ed : r.PerPlan || i == 0 ? r.Values[i] : "").ToArray();
                 int n = gridSet.Rows.Add(ServerSettings.SectionLabel(r.Section), r.Label, vals[0], vals[1], vals[2], vals[3], obs);
-                var gr = gridSet.Rows[n]; gr.Tag = r;
+                var gr = gridSet.Rows[n]; gr.Tag = r; gr.Cells[6].ToolTipText = obs; gr.Cells[1].ToolTipText = $"{r.File}: {r.BaseKey}{(r.PerPlan ? "_AL0..3" : "")}";
                 if (lockReason != null) { gr.ReadOnly = true; gr.DefaultCellStyle.ForeColor = SystemColors.GrayText; }
                 else if (!r.PerPlan) for (int c = 3; c <= 5; c++) { gr.Cells[c].ReadOnly = true; gr.Cells[c].Style.BackColor = SystemColors.Control; }
                 for (int i = 0; i < 4; i++) if (setEdits.ContainsKey((r.Id, i))) gr.Cells[2 + i].Style.BackColor = Color.LightYellow;
@@ -105,6 +107,31 @@ public sealed partial class MainForm
 
     void UpdateSetStatus() =>
         lblSet.Text = $"   {setRows.Count} opções" + (setEdits.Count > 0 ? $"   ({setEdits.Count} mudança(s) não salva(s))" : "") + (setBusy ? "   — aplicando..." : "");
+
+    /// <summary>Teste (--testar-opcoes-visao): abre a aba com os dados reais, simula uma edição SÓ NA TELA (nada é salvo) e tira fotos.</summary>
+    internal string TestSettingsView(string png)
+    {
+        var sb = new System.Text.StringBuilder(); int fails = 0;
+        void Check(string name, bool ok, string extra = "") { if (!ok) fails++; sb.AppendLine($"{(ok ? "OK   " : "FALHA")} {name} {extra}"); }
+        Width = 1500; Height = 950; StartPosition = FormStartPosition.Manual; Left = -3000; Top = 0; ShowInTaskbar = false;
+        Show(); Application.DoEvents();
+        var tabs = Controls.OfType<TabControl>().First();
+        tabs.SelectedTab = tabs.TabPages.Cast<TabPage>().First(p => p.Text == "Taxas e opções");
+        cmbSetView.SelectedIndex = 0; LoadSettings(); Application.DoEvents();
+        Check("Principais carregou", gridSet.Rows.Count > 30, $"({gridSet.Rows.Count} linhas)");
+        var drop = gridSet.Rows.Cast<DataGridViewRow>().First(r => r.Tag is ServerSettings.Row x && x.BaseKey == "ItemDropRate");
+        drop.Cells[3].Value = "11";   // Vip1: simulação na tela
+        Check("editar marca a célula", setEdits.Count == 1 && drop.Cells[3].Style.BackColor == Color.LightYellow);
+        void Foto(string f) { using var bmp = new Bitmap(Width, Height); DrawToBitmap(bmp, new Rectangle(0, 0, Width, Height)); bmp.Save(f); sb.AppendLine($"foto: {f}"); }
+        Foto(png);
+        setEdits.Clear();
+        cmbSetView.SelectedIndex = 1; Application.DoEvents();
+        Check("visão Common", gridSet.Rows.Count > 100 && gridSet.Rows.Cast<DataGridViewRow>().Any(r => r.ReadOnly), $"({gridSet.Rows.Count} linhas, {gridSet.Rows.Cast<DataGridViewRow>().Count(r => r.ReadOnly)} travadas)");
+        Foto(Path.ChangeExtension(png, null) + "-common.png");
+        Hide();
+        sb.AppendLine($"resultado: {fails} falha(s)");
+        return sb.ToString();
+    }
 
     void SaveSettings()
     {

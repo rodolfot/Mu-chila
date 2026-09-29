@@ -75,6 +75,20 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
         }
 
+        // "--testar-opcoes-visao <saida> <foto.png>": aba "Taxas e opções" com os dados reais; só simula na tela e tira fotos
+        if (args.Length == 3 && args[0] == "--testar-opcoes-visao")
+        {
+            try
+            {
+                Application.EnableVisualStyles();
+                using var f = new MainForm();
+                var r = f.TestSettingsView(args[2]);
+                File.WriteAllText(args[1], r);
+                return r.Contains("FALHA") ? 1 : 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
+        }
+
         // "--avisos-reiniciar <saida>": reinicia o rodízio de avisos (Notice.txt) em todos os GameServers e no Castle Siege,
         // sem mandar nada na hora (o 1º aviso sai depois do intervalo dele). Serve para conferir a rotina achada (#31).
         if ((args.Length == 2 || args.Length == 3) && args[0] == "--avisos-reiniciar")
