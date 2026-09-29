@@ -218,6 +218,10 @@ Aba **Avisos** do painel, usando o `Data\Util\Notice.txt` do kit. O GameServer n
 - **Avisos automáticos:** o servidor manda um de cada vez, em ordem. Cada um espera o seu tempo ("Repetir a cada", em segundos) depois do anterior; com um aviso só, esse tempo é o intervalo. O do kit é "Server Season 14 AM" a cada 60 s.
 - Até 90 caracteres, com acentos. Emoji e símbolos que o jogo não mostra são recusados.
 - Colunas: `"Mensagem" Type Count Opacity Delay Red Green Blue Speed RepeatTime`. O painel usa Type 0 (aviso no topo) e mantém as outras colunas do kit.
+- **O Reload Util não reinicia o rodízio** (issue #31, comprovado na memória, 29/09/2026). A rotina do GameServer (0x4C1ED0) guarda "próximo aviso" e "último envio" e só troca de aviso quando passa o tempo do próximo. Antes, o "enviar agora" ficava esperando o tempo de outro aviso (ex.: 600 s) e o vigia o apagava antes da vez dele; com a lista menor, o servidor ainda podia mandar uma mensagem velha, como um "Bônus ativo" já encerrado.
+  - **Como ficou:** depois de todo Reload de avisos (enviar agora, salvar a lista, bônus começando ou terminando, limpeza do vigia), o painel/vigia grava na memória de cada GameServer e do Castle Siege "próximo = 0". No "enviar agora", grava também o último envio no passado, e o aviso sai no segundo seguinte.
+  - Os endereços são achados pelos bytes da rotina (`ResetWatcher.Avisos.cs`), então servem para as duas versões do programa.
+  - Conferir sem mandar nada: `MuChilaAdmin.exe --avisos-reiniciar <saida>`.
 
 ## Caixas
 

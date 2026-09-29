@@ -982,6 +982,7 @@ public sealed partial class MainForm : Form
         var backup = Notices.Save(list);
         Log($"Avisos salvos (backup {Path.GetFileName(backup)}).");
         LogAll(ServerControl.Reload("Util (GMs, avisos)"));
+        LogAll(ResetWatcher.NoticeRestart(sendFirstNow: false));   // rodízio volta ao 1º aviso (não fica numa entrada velha)
         LoadNotices();
     }
 
@@ -991,6 +992,8 @@ public sealed partial class MainForm : Form
         if (noticeDirty) throw new InvalidOperationException("Salve ou descarte as alterações dos avisos automáticos antes de enviar.");
         Notices.AddOneShot(msg);
         LogAll(ServerControl.Reload("Util (GMs, avisos)"));
+        // o Reload não reinicia o rodízio de avisos do GameServer (#31): põe o aviso novo (1ª linha) para sair já
+        LogAll(ResetWatcher.NoticeRestart(sendFirstNow: true, firstMessage: msg));
         Log($"Aviso enviado para todos: \"{msg}\". O vigia tira ele do Notice.txt em menos de 1 minuto.");
         txtNoticeNow.Clear();
         LoadNotices();

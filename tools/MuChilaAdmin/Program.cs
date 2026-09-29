@@ -75,6 +75,14 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
         }
 
+        // "--avisos-reiniciar <saida>": reinicia o rodízio de avisos (Notice.txt) em todos os GameServers e no Castle Siege,
+        // sem mandar nada na hora (o 1º aviso sai depois do intervalo dele). Serve para conferir a rotina achada (#31).
+        if (args.Length == 2 && args[0] == "--avisos-reiniciar")
+        {
+            try { File.WriteAllText(args[1], string.Join(Environment.NewLine, ResetWatcher.NoticeRestart(sendFirstNow: false))); return 0; }
+            catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
+        }
+
         // "--testar-passe <saida>": dá, soma e tira passe de uma conta descartável (passeteste), criada e apagada pelo teste
         if (args.Length == 2 && args[0] == "--testar-passe")
             return TestPass(args[1]);

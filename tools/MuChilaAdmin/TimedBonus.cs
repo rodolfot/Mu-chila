@@ -185,7 +185,14 @@ public static class TimedBonuses
         if (mudouAviso)
         {
             Notices.Save(notices);
-            if (reload) log.AddRange(ServerControl.Reload("Util (GMs, avisos)"));
+            if (reload)
+            {
+                log.AddRange(ServerControl.Reload("Util (GMs, avisos)"));
+                // começou/terminou vai para a 1ª linha: sai já (o Reload sozinho não reinicia o rodízio, #31)
+                var primeiro = Notices.Load().FirstOrDefault();
+                bool agora = primeiro != null && primeiro.IsOneShot;
+                log.AddRange(ResetWatcher.NoticeRestart(sendFirstNow: agora, firstMessage: agora ? primeiro!.Message : null));
+            }
         }
         Write(s);
         return log;

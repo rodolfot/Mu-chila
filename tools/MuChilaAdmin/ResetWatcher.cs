@@ -134,7 +134,13 @@ public static partial class ResetWatcher
                     try
                     {
                         int n = Notices.RemoveOneShots(TimeSpan.FromSeconds(20));
-                        if (n > 0) { ServerControl.Reload("Util (GMs, avisos)"); Log($"{n} aviso(s) \"enviar agora\" tirado(s) do Notice.txt"); }
+                        if (n > 0)
+                        {
+                            ServerControl.Reload("Util (GMs, avisos)");
+                            Thread.Sleep(1500);   // o GameServer relê o arquivo; depois o rodízio volta ao 1º aviso (não manda entrada velha, #31)
+                            NoticeRestart(sendFirstNow: false);
+                            Log($"{n} aviso(s) \"enviar agora\" tirado(s) do Notice.txt");
+                        }
                     }
                     catch (Exception ex) { Log("avisos: " + ex.Message); }
                 }
