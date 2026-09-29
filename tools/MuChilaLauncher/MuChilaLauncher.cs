@@ -5,7 +5,9 @@
 // em %APPDATA%\MuChila\launcher.ini; senão (primeira vez) pergunta onde instalar, baixa tudo para lá, se copia para a
 // pasta e cria o atalho "Mu Chila" na área de trabalho. O botão "Pasta do jogo..." troca a pasta depois.
 // Escrito em C# 5 para compilar com o csc do .NET Framework 4.x (já vem no Windows 10/11; o jogador não instala nada).
-// Compilar: tools\Publicar-Launcher.ps1 (ou csc /target:winexe /r:System.Windows.Forms.dll /r:System.Drawing.dll).
+// Compilar: tools\Publicar-Launcher.ps1 (os dois .cs + as artes arte1.jpg/arte2.jpg como recursos).
+// Este arquivo: pasta do jogo, verificação/atualização e abrir o jogo. A janela (visual, configurações do jogo, verificar
+// integridade, status do servidor) fica em LauncherUi.cs.
 //
 // Servidor (padrão): http://26.139.39.123/arquivos/launcher/  — pode trocar com launcher.ini (ao lado do launcher ou
 // na pasta do jogo) contendo ServerUrl=...
@@ -25,7 +27,7 @@ using System.Windows.Forms;
 
 [assembly: System.Reflection.AssemblyTitle("Mu Chila Launcher")]
 [assembly: System.Reflection.AssemblyProduct("Mu Chila")]
-[assembly: System.Reflection.AssemblyVersion("1.1.0.0")]
+[assembly: System.Reflection.AssemblyVersion("2.0.0.0")]
 
 namespace MuChilaLauncher
 {
@@ -43,10 +45,19 @@ namespace MuChilaLauncher
         {
             // modo silencioso para teste/diagnóstico: MuChilaLauncher.exe --verificar <arquivo-de-saida> [pasta-do-jogo]
             // (sem pasta: a do launcher). Instala/atualiza sem perguntar nada e sem mexer na pasta salva.
-            if ((args.Length == 2 || args.Length == 3) && args[0] == "--verificar")
+            // "--integridade" faz o mesmo recalculando o SHA-1 de todos os arquivos (ignora o cache de tamanho+data).
+            // foto da janela (teste visual, sem rede): MuChilaLauncher.exe --foto <saida.png> [pasta-do-jogo]
+            if ((args.Length == 2 || args.Length == 3) && args[0] == "--foto")
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                LauncherForm.Foto(args[1], args.Length == 3 ? Path.GetFullPath(args[2]) : null);
+                return 0;
+            }
+            if ((args.Length == 2 || args.Length == 3) && (args[0] == "--verificar" || args[0] == "--integridade"))
             {
                 string pasta = args.Length == 3 ? Path.GetFullPath(args[2]) : AppDomain.CurrentDomain.BaseDirectory;
-                try { File.WriteAllText(args[1], "OK: " + new LauncherForm(pasta).Core(null, false)); return 0; }
+                try { File.WriteAllText(args[1], "OK: " + new LauncherForm(pasta).Core(null, false, args[0] == "--integridade")); return 0; }
                 catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex.Message); return 1; }
             }
             // teste do atalho: MuChilaLauncher.exe --testar-atalho <alvo.exe> <atalho.lnk>
@@ -62,7 +73,7 @@ namespace MuChilaLauncher
         }
     }
 
-    class LauncherForm : Form
+    partial class LauncherForm : Form
     {
         const string DefaultUrl = "http://26.139.39.123/arquivos/launcher/";
         const string SelfName = "MuChilaLauncher.exe";
@@ -71,13 +82,6 @@ namespace MuChilaLauncher
         readonly string exeDir;   // onde o launcher está rodando
         string root;              // pasta do jogo (a do main.exe); null = ainda não escolhida
         string baseUrl;
-        readonly Label lblTitle = new Label();
-        readonly Label lblStatus = new Label();
-        readonly Label lblPasta = new Label();
-        readonly ProgressBar bar = new ProgressBar();
-        readonly Button btnPlay = new Button();
-        readonly Button btnCheck = new Button();
-        readonly Button btnPasta = new Button();
         BackgroundWorker worker;
         bool selfUpdating;
         bool posEscolha;          // a pasta acabou de ser escolhida: ao terminar, o launcher se copia para ela (e cria o atalho)
@@ -89,49 +93,7 @@ namespace MuChilaLauncher
         {
             exeDir = AppDomain.CurrentDomain.BaseDirectory;
             DefinirPasta(pastaDoJogo);
-
-            Text = "Mu Chila - Launcher";
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            StartPosition = FormStartPosition.CenterScreen;
-            ClientSize = new Size(460, 192);
-            Font = new Font("Segoe UI", 9f);
-
-            lblTitle.Text = "Mu Chila";
-            lblTitle.Font = new Font("Segoe UI", 16f, FontStyle.Bold);
-            lblTitle.SetBounds(16, 10, 420, 34);
-
-            lblStatus.Text = "Preparando...";
-            lblStatus.SetBounds(16, 50, 428, 36);
-
-            bar.SetBounds(16, 90, 428, 20);
-
-            btnCheck.Text = "Verificar de novo";
-            btnCheck.SetBounds(16, 124, 140, 30);
-            btnCheck.Enabled = false;
-            btnCheck.Click += delegate { StartCheck(); };
-
-            btnPasta.Text = "Pasta do jogo...";
-            btnPasta.SetBounds(164, 124, 140, 30);
-            btnPasta.Enabled = false;
-            btnPasta.Click += delegate { if (EscolherPasta(false)) StartCheck(); };
-
-            btnPlay.Text = "Jogar";
-            btnPlay.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
-            btnPlay.SetBounds(324, 124, 120, 30);
-            btnPlay.Enabled = false;
-            btnPlay.Click += delegate { Play(); };
-
-            lblPasta.ForeColor = Color.DimGray;
-            lblPasta.AutoEllipsis = true;
-            lblPasta.SetBounds(16, 164, 428, 20);
-
-            Controls.AddRange(new Control[] { lblTitle, lblStatus, bar, btnCheck, btnPasta, btnPlay, lblPasta });
-            Shown += delegate
-            {
-                if (root == null && !EscolherPasta(true)) { Close(); return; }
-                StartCheck();
-            };
+            MontarJanela();   // LauncherUi.cs
         }
 
         void DefinirPasta(string pasta)
@@ -176,10 +138,18 @@ namespace MuChilaLauncher
             return null;
         }
 
-        static void SalvarPasta(string pasta)
+        static void SalvarPasta(string pasta) { SalvarIni("Pasta", pasta); }
+
+        /// <summary>Grava uma chave no %APPDATA%\MuChila\launcher.ini, mantendo as outras.</summary>
+        static void SalvarIni(string chave, string valor)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath));
-            File.WriteAllText(ConfigPath, "Pasta=" + pasta + "\r\n", new UTF8Encoding(false));
+            List<string> linhas = new List<string>();
+            try { if (File.Exists(ConfigPath)) linhas.AddRange(File.ReadAllLines(ConfigPath, Encoding.UTF8)); }
+            catch { }
+            linhas.RemoveAll(delegate(string l) { return l.Trim().StartsWith(chave + "=", StringComparison.OrdinalIgnoreCase); });
+            linhas.Add(chave + "=" + valor);
+            File.WriteAllLines(ConfigPath, linhas.ToArray(), new UTF8Encoding(false));
         }
 
         /// <summary>Pasta escolhida no "Procurar": ela mesma se já tem o jogo ou está vazia; senão uma subpasta "Mu Chila".</summary>
@@ -311,7 +281,7 @@ namespace MuChilaLauncher
                 if (criarAtalho)
                     CriarAtalho(destino, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Mu Chila.lnk"));
             }
-            catch (Exception ex) { lblStatus.Text += "\r\n(Não consegui copiar o launcher / criar o atalho: " + ex.Message + ")"; }
+            catch (Exception ex) { status += "  (Não consegui copiar o launcher / criar o atalho: " + ex.Message + ")"; }
         }
 
         /// <summary>Atalho .lnk pelo WScript.Shell (por reflexão: o csc do Framework compila sem referência COM).</summary>
@@ -333,48 +303,13 @@ namespace MuChilaLauncher
         }
 
         // ---------------- verificação ----------------
-        void StartCheck()
-        {
-            btnPlay.Enabled = false;
-            btnCheck.Enabled = false;
-            btnPasta.Enabled = false;
-            lblPasta.Text = "Pasta do jogo: " + root;
-            bar.Value = 0;
-            worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += DoWork;
-            worker.ProgressChanged += delegate(object s, ProgressChangedEventArgs e)
-            {
-                bar.Value = Math.Max(0, Math.Min(100, e.ProgressPercentage));
-                if (e.UserState != null) lblStatus.Text = (string)e.UserState;
-            };
-            worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs e)
-            {
-                if (selfUpdating) { Close(); return; }
-                bool temJogo = File.Exists(Path.Combine(root, "main.exe"));
-                if (e.Error != null)
-                    lblStatus.Text = "Não foi possível atualizar: " + e.Error.Message
-                                   + (temJogo ? "\r\nVocê ainda pode jogar com os arquivos atuais." : "\r\nClique em \"Verificar de novo\" para continuar.");
-                else if (e.Result != null)
-                    lblStatus.Text = (string)e.Result;
-                if (e.Error == null && posEscolha) DepoisDeEscolher();
-                btnPlay.Enabled = temJogo;
-                btnCheck.Enabled = true;
-                btnPasta.Enabled = true;
-                bar.Value = e.Error == null ? 100 : 0;
-            };
-            worker.RunWorkerAsync();
-        }
-
-        void DoWork(object sender, DoWorkEventArgs e)
-        {
-            e.Result = Core((BackgroundWorker)sender, true);
-        }
-
         static void Report(BackgroundWorker w, int pct, string msg) { if (w != null) w.ReportProgress(pct, msg); }
 
-        /// <summary>Verifica e atualiza. w = null no modo silencioso. Devolve a mensagem final.</summary>
-        public string Core(BackgroundWorker w, bool autoAtualizar)
+        /// <summary>
+        /// Verifica e atualiza. w = null no modo silencioso. integridade = recalcula o SHA-1 de TODOS os arquivos (o normal
+        /// confia no cache de tamanho+data e só recalcula o que mudou). Devolve a mensagem final.
+        /// </summary>
+        public string Core(BackgroundWorker w, bool autoAtualizar, bool integridade)
         {
             ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; // TLS 1.2, para quando o site tiver HTTPS
 
@@ -405,7 +340,7 @@ namespace MuChilaLauncher
             }
 
             // 2) confere os arquivos (usa o cache de tamanho+data para não recalcular o hash de tudo toda vez)
-            Dictionary<string, string[]> cache = ReadCache();
+            Dictionary<string, string[]> cache = integridade ? new Dictionary<string, string[]>() : ReadCache();
             Dictionary<string, string[]> novoCache = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
             List<Entry> baixar = new List<Entry>();
             int arquivosDoJogo = 0;
@@ -415,7 +350,8 @@ namespace MuChilaLauncher
                 Entry en = entries[i];
                 if (string.Equals(en.Path, SelfName, StringComparison.OrdinalIgnoreCase)) continue;
                 arquivosDoJogo++;
-                if (i % 200 == 0) Report(w, i * 100 / Math.Max(1, entries.Count), "Verificando arquivos (" + i + " de " + entries.Count + ")...");
+                if (i % (integridade ? 50 : 200) == 0)
+                    Report(w, i * 100 / Math.Max(1, entries.Count), (integridade ? "Conferindo a integridade (" : "Verificando arquivos (") + i + " de " + entries.Count + ")...");
                 string local = LocalPath(en.Path);
                 FileInfo fi = new FileInfo(local);
                 string hash = null;
@@ -435,7 +371,10 @@ namespace MuChilaLauncher
             }
             WriteCache(novoCache);
 
-            if (baixar.Count == 0) return "Tudo atualizado (" + versao + "). Bom jogo!";
+            versaoCliente = versao;
+            if (baixar.Count == 0)
+                return integridade ? "Integridade conferida: os " + arquivosDoJogo + " arquivos estão perfeitos. Bom jogo!"
+                                   : "Tudo atualizado. Bom jogo!";
 
             // instalação nova baixa vários GB: confere o espaço antes (com 200 MB de folga)
             DriveInfo disco = null;
@@ -472,8 +411,8 @@ namespace MuChilaLauncher
                 novoCache[en.Path] = new string[] { fi.Length.ToString(), fi.LastWriteTimeUtc.Ticks.ToString(), en.Hash };
             }
             WriteCache(novoCache);
-            return (baixar.Count == arquivosDoJogo ? "Jogo instalado! " : "Atualizado! ")
-                 + baixar.Count + " arquivo(s) baixado(s) (" + versao + "). Bom jogo!";
+            return (baixar.Count == arquivosDoJogo ? "Jogo instalado! " : integridade ? "Integridade conferida: " : "Atualizado! ")
+                 + baixar.Count + " arquivo(s) " + (integridade && baixar.Count != arquivosDoJogo ? "corrigido(s)" : "baixado(s)") + ". Bom jogo!";
         }
 
         List<Entry> ReadManifest(out string versao)
@@ -591,10 +530,12 @@ namespace MuChilaLauncher
         {
             try
             {
+                config.Gravar();   // resolução, tela cheia, idioma e volume no registro do jogo (LauncherUi.cs)
                 ProcessStartInfo psi = new ProcessStartInfo(Path.Combine(root, "main.exe"));
                 psi.WorkingDirectory = root;
                 Process.Start(psi);
-                Close();
+                if (config.FecharAoJogar) Close();
+                else { status = "Jogo aberto. Bom jogo!"; Invalidate(); }
             }
             catch (Exception ex)
             {

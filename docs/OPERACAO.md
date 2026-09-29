@@ -383,6 +383,19 @@ No registro, em `HKEY_CURRENT_USER\Software\Webzen\Mu\Config` (com o jogo fechad
    - fazer o login em até 30 segundos depois de escolher o servidor.
 4. Se mudar o IP ou o nome, mande só os arquivos alterados: `Config - Dev.ini` e `Data\Local\**\serverlist*.bmd`.
 
+**Launcher (`MuChilaLauncher.exe`, versão 2, 28/09/2026):** é o jeito normal de instalar e atualizar. Publicar: `tools\Publicar-Launcher.ps1`.
+
+- **Janela:** a arte oficial do MU (duas telas de carregamento do próprio cliente, `tools\MuChilaLauncher\arte1.jpg` e `arte2.jpg`, embutidas no `.exe`) alternando a cada 9 s, com bolinhas para trocar.
+- **Status do servidor ao vivo:** a cada 20 s testa a porta 44405 do endereço do launcher.
+- **Botões:** JOGAR, **Verificar integridade** e Configurações. A verificação normal confia no tamanho e na data de cada arquivo e é rápida. A de integridade recalcula o SHA-1 de todos e baixa de novo o que estiver corrompido.
+- **Configurações (painel da direita):**
+  - resolução (a tabela de 11 do cliente; avisa as maiores que a tela), tela cheia, idioma (Português/English) e volume (0–10). Ficam no registro que o `main.exe` lê, `HKCU\Software\Webzen\Mu\Config` (`DisplayDeviceModeIndex`, `FullScreenMode`, `LangSelection`, `VolumeLevel`), e são gravadas de novo ao clicar em JOGAR;
+  - pasta do jogo (Alterar...) e "fechar o launcher ao abrir o jogo" (`%APPDATA%\MuChila\launcher.ini`).
+- Espanhol não é oferecido: os itens novos do Mu Chila só existem em `Eng` e `Por`.
+- **Código e testes:** `MuChilaLauncher.cs` tem a lógica (pasta, verificar, baixar, abrir o jogo); `LauncherUi.cs`, a janela (C# 5, desenhada em GDI+).
+  - `--verificar <saida> <pasta>` e `--integridade <saida> <pasta>`: silenciosos.
+  - `--foto <saida.png> <pasta>`: fotos das telas, sem rede.
+
 ## Versionar alterações
 
 ```powershell

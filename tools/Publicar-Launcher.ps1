@@ -13,9 +13,12 @@ $Cliente = (Resolve-Path $Cliente).Path
 
 # 1) compila
 $csc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
-$src = Join-Path $PSScriptRoot 'MuChilaLauncher\MuChilaLauncher.cs'
-$exe = Join-Path $PSScriptRoot 'MuChilaLauncher\MuChilaLauncher.exe'
-& $csc /nologo /target:winexe /optimize+ /codepage:65001 /out:$exe /r:System.Windows.Forms.dll /r:System.Drawing.dll $src
+$dir = Join-Path $PSScriptRoot 'MuChilaLauncher'
+$exe = Join-Path $dir 'MuChilaLauncher.exe'
+# lógica (MuChilaLauncher.cs) + janela (LauncherUi.cs); artes do MU embutidas como recurso e ícone do Dark Knight
+& $csc /nologo /target:winexe /optimize+ /codepage:65001 "/out:$exe" "/win32icon:$dir\icone.ico" `
+    "/resource:$dir\arte1.jpg,arte1.jpg" "/resource:$dir\arte2.jpg,arte2.jpg" `
+    /r:System.Windows.Forms.dll /r:System.Drawing.dll "$dir\MuChilaLauncher.cs" "$dir\LauncherUi.cs"
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao compilar o launcher' }
 "compilado: $exe"
 
