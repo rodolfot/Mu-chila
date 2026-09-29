@@ -183,10 +183,10 @@ AddQuestExperienceRate_AL3 = 100
 ; Item Drop Settings
 ;==================================================
 ItemDropTime = 30
-ItemDropRate_AL0 = 50
-ItemDropRate_AL1 = 80
-ItemDropRate_AL2 = 110
-ItemDropRate_AL3 = 150
+ItemDropRate_AL0 = 5
+ItemDropRate_AL1 = 10
+ItemDropRate_AL2 = 12
+ItemDropRate_AL3 = 14
 
 ;==================================================
 ; Money Drop Settings
