@@ -364,6 +364,29 @@ São duas travas, e as duas precisam permitir:
   Sem a soma certa, o cliente para com "Item_Por.bmd - File corrupted". O algoritmo foi lido do `main.exe` e está descrito no cabeçalho do script.
   Depois, os jogadores precisam receber os três arquivos novos (pacote de patch).
 
+## Loja de cash: moedas e itens que saíram das lojas
+
+**As três moedas** (issue #33, 29/09/2026). Cada aba da loja cobra numa moeda, guardada em `CashShopData` por conta:
+
+| Aba | Moeda (`CoinIndex`) | Coluna | Como o jogador ganha |
+|---|---|---|---|
+| W Coin (C) | 508 | `WCoinC` | Comprando no site (pacotes de cash por PIX) e 1 por vitória no Blood Castle |
+| W Coin (P) | 509 | `WCoinP` | **Só** vencendo o Blood Castle: 2 por vitória (`Data\Custom\CustomRewardCashShopPoint.txt`) |
+| Goblin Point | 0 | `GoblinPoint` | 1 a cada 10 minutos online (`CashShopGoblinPointDelay` no `Common.dat`) e 3 por Blood Castle |
+
+- A aba **W Coin (P)** tem 68 pacotes, quase a mesma loja da aba (C) e com os mesmos preços (100 a 1.400). Como o (P) só vem do Blood Castle, em 29/09 todas as contas estavam com 0 e ninguém conseguia comprar nada nela. **Não é defeito:** a compra funciona com saldo. Por decisão do dono, a aba ficou como está.
+- Se um dia quiser mudar, há dois caminhos. (a) Esconder a aba inteira pelo painel (aba Loja de Cash → esconder; os pacotes ficam guardados em `Data\CashShop\muchila-cash-oculto.txt`). (b) Dar (P) em mais eventos, na mesma tabela `CustomRewardCashShopPoint.txt` (Devil Square, Chaos Castle, Illusion Temple...), e deixar na aba (P) só consumíveis.
+- Os pacotes do passe e dos cartões em (P) já estão escondidos: passe e cartões só por W Coin (C).
+
+**Itens que saíram das lojas** (issue #32, 29/09/2026). O pedido era tirar do market e dos NPCs o que não se vende nem se equipa. Os 281 itens à venda foram cruzados com o `Item.txt` (quem equipa), o `ItemMove.txt` (`AllowSell`) e as 7 permissões do cliente (`item_*.bmd`, ver [Itens que não podem ser largados](#itens-que-não-podem-ser-largados); a 5ª é vender ao NPC).
+
+- **Ficaram** os consumíveis que não vendem mas têm uso: selos, pergaminhos, poções elite, frutas de reset, tickets, talismãs e cartões de classe.
+- **Saíram** os que o cliente não conhece (modelo e nome "Empty": item invisível, que não equipa, não vende e não usa):
+  - Hanzo: 13,166 (não existe nem no servidor) e 14,125 Package Box;
+  - Liaman: 13,95 Gladiator's Honor;
+  - Loja de cash: 13,20 Wizard Ring (pacotes 24:34 e 31:35 escondidos).
+- Nenhum deles cai de monstro nem sai de caixa. Antes de pôr um item novo à venda, confira se ele tem modelo no cliente.
+
 ## Resolução do cliente
 
 O cliente S14 não tem opção de resolução dentro do jogo (issue #4). Com o jogo fechado, dois cliques em `2 - Cliente Season 14 Full\Resolucao - Configurar.bat`: ele mostra um menu e grava as duas chaves abaixo (não precisa de administrador). O arquivo vai nos dois pacotes dos amigos.
