@@ -66,6 +66,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | **Bônus** | Ex.: "EXP + EXP master x2 por 60 minutos", começando agora ou numa data e hora. Multiplica a taxa de cada plano em todos os GameServers e avisa os jogadores no início, a cada 5 minutos e no fim. Cancela a qualquer momento. Quem liga e desliga é o vigia. Ver [Bônus de EXP e drop](#bônus-de-exp-e-drop). |
 | **Avisos** | "Enviar agora" manda uma mensagem para todos os jogadores. Também lista e edita os avisos automáticos (repetidos). Ver [Avisos para todos os jogadores](#avisos-para-todos-os-jogadores). |
 | **Lojas** | Escolha o NPC e edite o que ele vende: adicionar (busca pelo nome), remover, reordenar, nível, durabilidade e opções. Mostra quantos dos 120 espaços (8×15) da janela a loja ocupa e avisa o que não cabe. "Salvar e aplicar" faz backup e recarrega as lojas sem reiniciar. |
+| **Loja de Cash** | A loja da tecla X. Muda o preço, esconde e mostra pacotes, **adiciona item** (pacote novo: item, aba/moeda, preço, nível e opções, quantidade ou prazo) e **remove da loja**: apaga de vez o que o painel criou, e os pacotes do kit ficam só escondidos. Grava servidor + cliente e recarrega a loja. Os jogadores só veem depois de "Publicar p/ launcher". Ver [Adicionar e remover itens da loja de cash](#adicionar-e-remover-itens-da-loja-de-cash). |
 | **Drops** | **Por monstro / por item** (a primeira sub-aba): escolha um monstro e veja tudo o que ele dropa (inclusive as regras que valem para vários monstros), com a chance em % e em "1 em N", para quem a regra vale e quantos monstros ela alcança, mais o drop comum e o zen dele; ou escolha um item e veja de onde ele cai. Adiciona item a um monstro, faz um item cair de um monstro, mapa, faixa de nível ou qualquer monstro, muda a chance (duplo clique) e remove; regras que valem para vários monstros avisam antes. Edita as mesmas linhas das abas avançadas. As duas abas **Avançado** são o arquivo completo: **Itens que os monstros dropam** (`Data\Item\ItemDrop.txt`): cada regra diz qual item cai de qual monstro, mapa ou faixa de nível e com que chance em % (1% = 1 em 100). Adicionar (busca pelo nome), escolher monstro ou mapa numa lista, remover, filtrar; "Salvar e aplicar" faz backup e dá Reload Item. **Drop comum e zen por monstro** (`Monster.txt`: ItemRate, MoneyRate, MaxItemLevel): "Salvar e aplicar" faz backup e recarrega os monstros só nos GameServers e só fora da invasão (se houver uma no ar, agenda para quando ela acabar; o painel precisa ficar aberto). Linhas não alteradas são regravadas iguais. |
 | **Itens novos** | Cria um item novo a partir de um que já existe: mesmo visual (modelo 3D), nome e atributos próprios (dano, defesa, velocidade, durabilidade, requisitos). Grava no `Item.txt` do servidor (Reload Item na hora) e nos arquivos do cliente da pasta do repositório. Os jogadores só recebem depois de "Publicar atualização do cliente". Teste antes abrindo o jogo pela pasta do repositório. Ver [Itens novos](#itens-novos). |
 | **Itens e baú** | Mostra o inventário de qualquer personagem ou o baú da conta, com nome, nível e opções. Remove itens só com a conta fora do jogo e com backup em `C:\MuServer\DB\backup-itens-*.csv`. Presentes pela Gremory Case aparecem ao lado; criar presentes pelo painel fica desligado até a calibração (ver [Itens e baú](#itens-e-baú)). |
@@ -390,6 +391,52 @@ São duas travas, e as duas precisam permitir:
   - Liaman: 13,95 Gladiator's Honor;
   - Loja de cash: 13,20 Wizard Ring (pacotes 24:34 e 31:35 escondidos).
 - Nenhum deles cai de monstro nem sai de caixa. Antes de pôr um item novo à venda, confira se ele tem modelo no cliente.
+
+### Adicionar e remover itens da loja de cash
+
+Painel, aba **Loja de Cash** (29/09/2026).
+
+**Adicionar item...**
+
+- Você escolhe:
+  - o item (busca pelo nome);
+  - a aba (a aba define a moeda: W Coin (C), W Coin (P) ou Goblin Point);
+  - o preço, o nível, a opção, o excelente, skill e sorte;
+  - quantidade **ou** prazo em dias (0 = para sempre);
+  - nome e descrição.
+- O painel cria um pacote novo com um item e um preço.
+- **Regras:**
+  - Quantidade maior que 1 só para item que empilha (`Data\Item\ItemStack.txt`; a janela mostra o limite).
+  - Item com prazo vai 1 por pacote. O prazo funciona nos itens de tempo (selos, pergaminhos, anéis, pets); para os outros, deixe 0.
+  - A fonte da loja não tem acento, então o painel tira os acentos. Na aba W Coin (P), o nome ganha `[ ]`, como no kit.
+
+**Remover da loja**
+
+- Pacote criado pelo painel: **apaga de vez** as linhas dele.
+- Pacote do kit: fica só **escondido** (volta marcando "Na loja" e salvando).
+
+**Como funciona**
+
+- Um pacote são 4 peças que precisam casar:
+  - **servidor:** `Data\CashShop\CashShopPackage.txt` (o pacote: aba, moeda, preço, qual produto) e `CashShopProduct.txt` (o produto: item, nível, opções, quantidade, prazo);
+  - **cliente:** `Data\InGameShopScript\512.2011.006\IBSPackage.txt` e `IBSProduct.txt` (o que aparece na tela).
+- Cada peça nova é copiada de uma linha do kit do mesmo tipo (mesma moeda; produto por quantidade ou por prazo), trocando só os campos conhecidos. Os números são novos (maior existente + 1).
+- A lista do que o painel criou fica em `Data\CashShop\muchila-cash-adicionados.txt`, e todo arquivo mexido ganha um backup `.bak-*` antes.
+- No pacote criado pelo painel, mudar o preço na grade muda também o preço do produto.
+- Salvar recarrega a loja nos GameServers na hora (Reload CashShop). **O jogador só vê o item novo depois de atualizar o cliente**: use "Publicar p/ launcher".
+
+**Testes**
+
+- `MuChilaAdmin.exe --testar-cashshop-adicionar <arquivo>` passou em tudo (só com `MUCHILA_ROOT` e `MUCHILA_CLIENTE` apontando para cópias). Ele:
+  - cria pacotes por quantidade, por prazo e em Goblin;
+  - confere as 4 peças e os erros esperados;
+  - muda o preço, esconde e apaga;
+  - confere que os 6 arquivos voltam byte a byte.
+- No GameServer de testes (`C:\MuServerTeste`), pacotes com os números novos (pacote 269–271, produto 363–365):
+  - carregaram na partida e no Reload, com "CashShop loaded successfully";
+  - o servidor continuou de pé;
+  - depois de apagados, os arquivos ficaram idênticos aos reais.
+- **Falta o teste no jogo:** comprar um item adicionado e conferir que ele chega certo (quantidade, prazo, opções) e que a moeda descontada é a do preço.
 
 ## Resolução do cliente
 

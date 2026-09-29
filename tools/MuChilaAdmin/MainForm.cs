@@ -499,16 +499,20 @@ public sealed partial class MainForm : Form
 
         var bar = Bar(
             new Label { Text = "Loja de Cash (tecla X no jogo):", AutoSize = true, Padding = new Padding(0, 6, 6, 0) }, txtCashFind,
+            Btn("Adicionar item...", AddCashItem),
+            Btn("Remover da loja", RemoveCashItem),
             Btn("Salvar e aplicar", SaveCash),
             Btn("Recarregar da pasta", () => { cashDirty = false; LoadCash(); }),
             Btn("Publicar p/ launcher", GenerateCashPatch),
             lblCash);
         var help = new Label
         {
-            Dock = DockStyle.Top, Height = 58, Padding = new Padding(6),
+            Dock = DockStyle.Top, Height = 74, Padding = new Padding(6),
             Text = "O preço é em W Coin/Goblin (a moeda de cada pacote). Quem cobra é o servidor; o cliente só mostra. " +
-                   "\"Na loja\" desmarcado esconde o pacote (dá para voltar depois). \"Salvar e aplicar\" faz backup, grava servidor + cliente e " +
-                   "recarrega a loja nos GameServers. Depois use \"Publicar p/ launcher\" para os amigos receberem os nomes/preços novos.",
+                   "\"Adicionar item...\" cria um pacote novo (um item, um preço) na aba escolhida. \"Remover da loja\" apaga de vez o que foi " +
+                   "adicionado pelo painel; os pacotes do kit ficam só escondidos (\"Na loja\" desmarcado, dá para voltar). \"Salvar e aplicar\" faz " +
+                   "backup, grava servidor + cliente e recarrega a loja nos GameServers. Depois use \"Publicar p/ launcher\": o jogador só VÊ " +
+                   "o item novo (e os nomes/preços novos) depois de atualizar o cliente.",
         };
         page.Controls.Add(gridCash);
         page.Controls.Add(help);
@@ -528,18 +532,18 @@ public sealed partial class MainForm : Form
     void FillCash(string filter)
     {
         var t = new DataTable();
-        t.Columns.Add("Pacote"); t.Columns.Add("Moeda"); t.Columns.Add("Preço", typeof(int)); t.Columns.Add("Na loja", typeof(bool));
+        t.Columns.Add("Pacote"); t.Columns.Add("Moeda"); t.Columns.Add("Preço", typeof(int)); t.Columns.Add("Na loja", typeof(bool)); t.Columns.Add("Origem");
         t.Columns.Add("cat", typeof(int)); t.Columns.Add("main", typeof(int));
         foreach (var p in cashAll)
         {
             if (filter.Length > 0 && !(p.Name.Contains(filter, StringComparison.OrdinalIgnoreCase))) continue;
-            t.Rows.Add(p.HasClient ? p.Name : $"(pacote {p.Category},{p.Main} — sem tela no cliente)", p.CoinLabel, p.Price, !p.Hidden, p.Category, p.Main);
+            t.Rows.Add(p.HasClient ? p.Name : $"(pacote {p.Category},{p.Main} — sem tela no cliente)", p.CoinLabel, p.Price, !p.Hidden, p.Added ? "painel" : "kit", p.Category, p.Main);
         }
         gridCash.DataSource = t;
-        foreach (var c in new[] { "Pacote", "Moeda", "cat", "main" }) gridCash.Columns[c]!.ReadOnly = true;
+        foreach (var c in new[] { "Pacote", "Moeda", "Origem", "cat", "main" }) gridCash.Columns[c]!.ReadOnly = true;
         gridCash.Columns["cat"]!.Visible = gridCash.Columns["main"]!.Visible = false;
         gridCash.Columns["Pacote"]!.FillWeight = 260; gridCash.Columns["Moeda"]!.FillWeight = 90;
-        gridCash.Columns["Preço"]!.FillWeight = 70; gridCash.Columns["Na loja"]!.FillWeight = 60;
+        gridCash.Columns["Preço"]!.FillWeight = 70; gridCash.Columns["Na loja"]!.FillWeight = 60; gridCash.Columns["Origem"]!.FillWeight = 50;
     }
 
     void UpdateCashStatus()
@@ -574,6 +578,96 @@ public sealed partial class MainForm : Form
         LogAll(ServerControl.Reload("CashShop"));
         if (!somenteServidor) Log("Cliente atualizado. Use \"Publicar p/ launcher\" para enviar os arquivos novos aos amigos.");
         cashDirty = false; UpdateCashStatus();
+    }
+
+    CashShop.Package? SelectedCash()
+    {
+        if (gridCash.CurrentRow?.DataBoundItem is not DataRowView v || v.Row["cat"] is not int cat || v.Row["main"] is not int main) return null;
+        return cashAll.FirstOrDefault(p => p.Category == cat && p.Main == main);
+    }
+
+    /// <summary>Janela para criar um pacote novo na Loja de Cash: item, aba (moeda), preço, nível/opções, quantidade ou prazo.</summary>
+    void AddCashItem()
+    {
+        if (cashDirty) { Log("Há mudanças não salvas na grade: use \"Salvar e aplicar\" ou \"Recarregar da pasta\" antes de adicionar."); return; }
+        if (!CashShop.ClientAvailable) { Log($"O cliente não foi encontrado em {CashShop.ClientDir}: sem ele o item novo não aparece na loja."); return; }
+        var cats = CashShop.Categories();
+        using var dlg = new Form { Text = "Adicionar item à Loja de Cash", Width = 560, Height = 640, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        var search = new TextBox { Left = 12, Top = 12, Width = 520, PlaceholderText = "Digite parte do nome do item..." };
+        var list = new ListBox { Left = 12, Top = 42, Width = 520, Height = 230 };
+        var all = Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList();
+        void Filter()
+        {
+            list.BeginUpdate(); list.Items.Clear();
+            foreach (var d in all.Where(d => search.Text.Length == 0 || d.Name.Contains(search.Text, StringComparison.OrdinalIgnoreCase)).Take(400)) list.Items.Add(d);
+            list.EndUpdate();
+        }
+        list.Format += (_, e) => { if (e.ListItem is ItemDef d) e.Value = $"{d.Name}   [{d.Section},{d.Type}]"; };
+        search.TextChanged += (_, _) => Filter();
+        NumericUpDown N(int left, int top, int min, int max, int value, int width = 55) => new() { Left = left, Top = top, Width = width, Minimum = min, Maximum = max, Value = value };
+        Label L(int left, int top, string text) => new() { Left = left, Top = top + 3, AutoSize = true, Text = text };
+        var cat = new ComboBox { Left = 60, Top = 285, Width = 230, DropDownStyle = ComboBoxStyle.DropDownList };
+        cat.Items.AddRange(cats.ToArray<object>()); if (cat.Items.Count > 0) cat.SelectedIndex = 0;
+        var price = N(345, 285, 1, 9_000_000, 100, 90);
+        var level = N(60, 320, 0, 15, 0); var opt = N(165, 320, 0, 7, 0); var exc = N(280, 320, 0, 63, 0);
+        var skill = new CheckBox { Left = 350, Top = 322, Text = "Skill", AutoSize = true };
+        var luck = new CheckBox { Left = 415, Top = 322, Text = "Sorte", AutoSize = true };
+        var qty = N(90, 355, 1, 255, 1); var days = N(270, 355, 0, 3650, 0);
+        var stackInfo = new Label { Left = 340, Top = 358, AutoSize = true, ForeColor = SystemColors.GrayText };
+        var name = new TextBox { Left = 60, Top = 390, Width = 472 };
+        var desc = new TextBox { Left = 12, Top = 440, Width = 520, Height = 90, Multiline = true, ScrollBars = ScrollBars.Vertical, PlaceholderText = "Descrição que aparece na loja (até 4 linhas)" };
+        var ok = new Button { Text = "Adicionar", DialogResult = DialogResult.OK, Left = 376, Top = 560, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 457, Top = 560, Width = 75 };
+        list.SelectedIndexChanged += (_, _) =>
+        {
+            if (list.SelectedItem is not ItemDef d) return;
+            name.Text = d.Name;
+            int max = CashShop.MaxStack(d.Section, d.Type);
+            qty.Maximum = max; qty.Value = Math.Min(qty.Value, max);
+            stackInfo.Text = max > 1 ? $"empilha até {max}" : "não empilha (1 por pacote)";
+        };
+        dlg.Controls.AddRange(new Control[] { search, list, L(12, 285, "Aba"), cat, L(300, 285, "Preço"), price,
+            L(12, 320, "Nível"), level, L(120, 320, "Opção"), opt, L(225, 320, "Exc (0-63)"), exc, skill, luck,
+            L(12, 355, "Quantidade"), qty, L(150, 355, "Prazo (dias, 0 = sempre)"), days, stackInfo,
+            L(12, 390, "Nome"), name, L(12, 420, "Descrição (sem acento: a fonte da loja não tem; o painel tira)"), desc, ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        Filter();
+        if (dlg.ShowDialog(this) != DialogResult.OK) return;
+        if (list.SelectedItem is not ItemDef item) { Log("Escolha o item na lista."); return; }
+        if (cat.SelectedItem is not CashShop.Category c) { Log("Escolha a aba da loja."); return; }
+        Safe(() =>
+        {
+            Log(CashShop.Add(new CashShop.NewPackage(c.Id, item.Section, item.Type, (int)level.Value, skill.Checked, luck.Checked, (int)opt.Value, (int)exc.Value,
+                                                     (int)qty.Value, (int)days.Value, (int)price.Value, name.Text, desc.Text)));
+            LogAll(ServerControl.Reload("CashShop"));
+            Log("Para os jogadores VEREM o item novo: \"Publicar p/ launcher\" (atualiza o cliente).");
+            LoadCash();
+        });
+    }
+
+    /// <summary>Apaga de vez um pacote criado pelo painel; pacote do kit fica só escondido (volta marcando "Na loja").</summary>
+    void RemoveCashItem()
+    {
+        var p = SelectedCash();
+        if (p == null) { Log("Selecione um pacote na lista."); return; }
+        var nome = p.Name.Length > 0 ? p.Name : $"pacote {p.Category},{p.Main}";
+        if (p.Added)
+        {
+            if (cashDirty) { Log("Há mudanças não salvas na grade: use \"Salvar e aplicar\" ou \"Recarregar da pasta\" antes de apagar."); return; }
+            if (!Confirm($"Apagar de vez \"{nome}\" da Loja de Cash?\n\nFoi criado pelo painel: as linhas dele saem do servidor e do cliente (com backup).")) return;
+            Safe(() =>
+            {
+                Log(CashShop.RemoveAdded(p.Category, p.Main));
+                LogAll(ServerControl.Reload("CashShop"));
+                Log("Depois use \"Publicar p/ launcher\" para sumir também da tela dos jogadores.");
+                LoadCash();
+            });
+            return;
+        }
+        if (p.Hidden) { Log($"\"{nome}\" já está fora da loja."); return; }
+        if (!Confirm($"Tirar \"{nome}\" da Loja de Cash?\n\nÉ um pacote do kit: fica guardado e dá para voltar marcando \"Na loja\" e salvando.")) return;
+        if (gridCash.CurrentRow?.DataBoundItem is DataRowView v) v.Row["Na loja"] = false;
+        SaveCash();
     }
 
     void GenerateCashPatch() => PublishClientUpdate();

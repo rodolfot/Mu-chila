@@ -153,6 +153,94 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[2], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "--cash-adicionar <aba> <seção> <índice> <qtd> <dias> <preço> <nome> <arquivo>" e "--cash-apagar <aba> <main> <arquivo>":
+        // o mesmo que os botões da aba Loja de Cash, para validar no servidor de testes. Só com MUCHILA_ROOT (cópia).
+        if ((args.Length == 9 && args[0] == "--cash-adicionar") || (args.Length == 4 && args[0] == "--cash-apagar"))
+        {
+            var saida = args[^1];
+            try
+            {
+                if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null) { File.WriteAllText(saida, "ERRO: use MUCHILA_ROOT apontando para uma cópia de testes"); return 1; }
+                File.WriteAllText(saida, args[0] == "--cash-apagar"
+                    ? CashShop.RemoveAdded(int.Parse(args[1]), int.Parse(args[2]))
+                    : CashShop.Add(new(int.Parse(args[1]), int.Parse(args[2]), int.Parse(args[3]), 0, false, false, 0, 0, int.Parse(args[4]), int.Parse(args[5]), int.Parse(args[6]), args[7], "")));
+                return 0;
+            }
+            catch (Exception ex) { File.WriteAllText(saida, "FALHA: " + ex.Message); return 1; }
+        }
+
+        // "--testar-cashshop-adicionar <arquivo>": cria pacotes (por quantidade, por prazo, Goblin), confere as 4 peças de
+        // cada um, os erros esperados, muda o preço, esconde, apaga e confere que os arquivos voltaram byte a byte.
+        // Só em cópias: MUCHILA_ROOT (servidor) e MUCHILA_CLIENTE (cliente).
+        if (args.Length == 2 && args[0] == "--testar-cashshop-adicionar")
+        {
+            var log = new List<string>(); int falhas = 0;
+            void Check(bool ok, string what) { log.Add((ok ? "ok     " : "FALHA  ") + what); if (!ok) falhas++; }
+            try
+            {
+                if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null || Environment.GetEnvironmentVariable("MUCHILA_CLIENTE") == null)
+                { File.WriteAllText(args[1], "ERRO: use MUCHILA_ROOT e MUCHILA_CLIENTE apontando para cópias de testes"); return 1; }
+                CashShop.Save(CashShop.List());   // normaliza (o painel já regravou os arquivos reais assim)
+                var files = CashShop.TestFiles;
+                var before = files.ToDictionary(f => f, f => File.Exists(f) ? File.ReadAllText(f, System.Text.Encoding.Latin1) : "");
+                var cats = CashShop.Categories();
+                Check(cats.Count > 0, $"abas: {string.Join(" | ", cats)}");
+                var cC = cats.First(c => c.CoinIndex == 508); var cP = cats.First(c => c.CoinIndex == 509); var cG = cats.First(c => c.CoinIndex == 0);
+                int n0 = CashShop.List().Count;
+
+                log.Add(CashShop.Add(new(cC.Id, 14, 13, 0, false, false, 0, 0, 10, 0, 123, "Teste Joia x10", "linha 1\nlinha 2 com acentuação @|#")));
+                log.Add(CashShop.Add(new(cP.Id, 13, 44, 0, false, false, 0, 0, 1, 7, 77, "Teste Selo 7 dias", "")));
+                log.Add(CashShop.Add(new(cG.Id, 0, 0, 9, true, true, 4, 5, 1, 0, 5, "Teste Kris", "espada")));
+                string Erro(Action a) { try { a(); return ""; } catch (InvalidOperationException ex) { return ex.Message; } }
+                Check(Erro(() => CashShop.Add(new(cC.Id, 0, 0, 0, false, false, 0, 0, 5, 0, 10, "x", ""))).Contains("não empilha"), "recusa quantidade em item que não empilha");
+                Check(Erro(() => CashShop.Add(new(cC.Id, 14, 13, 0, false, false, 0, 0, 5, 3, 10, "x", ""))).Contains("prazo"), "recusa prazo com quantidade > 1");
+                Check(Erro(() => CashShop.Add(new(cC.Id, 14, 13, 0, false, false, 0, 0, 999, 0, 10, "x", ""))).Contains("empilha até"), "recusa acima do empilhamento");
+
+                var added = CashShop.AddedList();
+                var list = CashShop.List();
+                Check(added.Count == 3 && list.Count == n0 + 3, $"3 pacotes novos (lista {n0} -> {list.Count})");
+                Check(added.Select(a => a.Main).Distinct().Count() == 3 && added.Select(a => a.ProductMain).Distinct().Count() == 3, "números novos distintos");
+                var t = CashShop.TestLines();
+                foreach (var (a, i) in added.Select((a, i) => (a, i)))
+                {
+                    var p = list.First(x => x.Category == a.Category && x.Main == a.Main);
+                    Check(p.Added && p.HasClient && p.Price == new[] { 123, 77, 5 }[i], $"{a.Name}: na lista com tela e preço {p.Price}");
+                    Check(t.SrvPkg.Count(c => c[0] == $"{a.Category}" && c[2] == $"{a.Main}") == 1, $"{a.Name}: 1 linha de pacote no servidor");
+                    var sp = t.SrvProd.Single(c => c[0] == $"{a.ProductBase}" && c[1] == $"{a.ProductMain}");
+                    var cp = t.CliPkg.Single(c => c[0] == $"{a.Category}" && c[2] == $"{a.Main}");
+                    var cr = t.CliProd.Where(c => c[0] == $"{a.ProductBase}" && c[6] == $"{a.ProductMain}").ToList();
+                    var sk = t.SrvPkg.Single(c => c[0] == $"{a.Category}" && c[2] == $"{a.Main}");
+                    Check(sk[7] == $"{a.ProductBase}" && sk[17] == $"{a.ProductMain}" && sk[5] == sp[2], $"{a.Name}: pacote do servidor aponta para o produto (preço {sk[5]}/{sp[2]}, moeda {sk[4]})");
+                    Check(cp[19] == $"{a.ProductBase}|" && cp[23] == $"{a.ProductMain}|" && cp[5] == sk[5] && cp[25] == sk[4], $"{a.Name}: pacote do cliente casa ({cp[3]} | {cp[6]})");
+                    Check(cr.Count >= 1 && cr.All(r => r[5] == sp[2] && r[13] == sp[3]), $"{a.Name}: {cr.Count} linha(s) de produto no cliente, 1ª = {cr.FirstOrDefault()?[2]} {cr.FirstOrDefault()?[3]}");
+                    log.Add($"         servidor produto: item {sp[3]} nível {sp[4]} skill {sp[5]} sorte {sp[6]} opção {sp[7]} exc {sp[8]} qtd {sp[17]} prazo {sp[18]}");
+                }
+                Check(!t.CliPkg.Any(c => c[3].Contains('ç') || c[6].Contains('@')), "sem acento/separador nos textos do cliente");
+                Check(t.CliPkg.First(c => c[2] == $"{added[1].Main}")[3].StartsWith('['), "W Coin (P) ganha o [ ] do kit");
+
+                // preço: muda o 1º no painel -> produto acompanha
+                var l2 = CashShop.List(); l2.First(p => p.Main == added[0].Main).Price = 150; CashShop.Save(l2);
+                t = CashShop.TestLines();
+                Check(t.SrvProd.Single(c => c[1] == $"{added[0].ProductMain}")[2] == "150" && t.CliProd.Where(c => c[6] == $"{added[0].ProductMain}").All(c => c[5] == "150")
+                      && t.SrvPkg.Single(c => c[2] == $"{added[0].Main}")[5] == "150", "mudar o preço muda pacote e produto (servidor e cliente)");
+                // esconder o 2º e apagar escondido
+                var l3 = CashShop.List(); l3.First(p => p.Main == added[1].Main).Hidden = true; CashShop.Save(l3);
+                Check(!CashShop.TestLines().SrvPkg.Any(c => c[2] == $"{added[1].Main}") && CashShop.List().First(p => p.Main == added[1].Main).Hidden, "esconder um adicionado");
+                Check(Erro(() => CashShop.RemoveAdded(list.First(p => !p.Added).Category, list.First(p => !p.Added).Main)).Contains("kit"), "recusa apagar pacote do kit");
+                foreach (var a in added) log.Add(CashShop.RemoveAdded(a.Category, a.Main));
+                Check(CashShop.List().Count == n0 && CashShop.AddedList().Count == 0, "apagados (lista voltou ao tamanho original)");
+                foreach (var f in files)
+                {
+                    var now = File.Exists(f) ? File.ReadAllText(f, System.Text.Encoding.Latin1) : "";
+                    Check(now == before[f], $"{Path.GetFileName(f)} voltou igual");
+                }
+            }
+            catch (Exception ex) { log.Add("FALHA  exceção: " + ex); falhas++; }
+            log.Add(falhas == 0 ? "RESULTADO: OK" : $"RESULTADO: {falhas} falha(s)");
+            File.WriteAllLines(args[1], log);
+            return falhas == 0 ? 0 : 1;
+        }
+
         // "--testar-monstros <arquivo>": carrega, regrava e recarrega da cópia dada, conferindo que os spawns voltam
         // iguais e que NPC/SPOT/EVENT continuam lá. Passe uma CÓPIA de um mapa, nunca o arquivo real.
         if (args.Length == 2 && args[0] == "--testar-monstros")
