@@ -59,7 +59,7 @@ WriteTradeLog = 0
 WriteConnectLog = 1
 WriteHackLog = 1
 WriteCashShopLog = 0
-WriteChaosMixLog = 0
+WriteChaosMixLog = 1
 
 ;==================================================
 ; Hack Settings
