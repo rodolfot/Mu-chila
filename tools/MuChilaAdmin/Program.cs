@@ -153,6 +153,109 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[2], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "--testar-opcoes <arquivo>": aba "Taxas e opções" numa CÓPIA (MUCHILA_ROOT): lê os 7 arquivos, grava uma opção por
+        // plano e uma única em todas as pastas, confere que só aquelas linhas mudaram, recusa as travadas e desfaz (byte a byte).
+        if (args.Length == 2 && args[0] == "--testar-opcoes")
+        {
+            var log = new List<string>(); int falhas = 0;
+            void Check(bool ok, string what) { log.Add((ok ? "ok     " : "FALHA  ") + what); if (!ok) falhas++; }
+            try
+            {
+                if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null) { File.WriteAllText(args[1], "ERRO: use MUCHILA_ROOT apontando para uma cópia de testes"); return 1; }
+                var folders = ServerSettings.ServerFolders();
+                Check(folders.Count >= 3, $"{folders.Count} pastas GameServer*");
+                foreach (var f in ServerSettings.Files)
+                {
+                    var rows = ServerSettings.Load(f.Name);
+                    Check(rows.Count > 0, $"{f.Name}: {rows.Count} linhas ({rows.Count(r => r.PerPlan)} por plano, {rows.Count(r => r.LockReason != null)} travadas)");
+                }
+                var main = ServerSettings.Main();
+                Check(main.Count > 30 && main.Any(r => r.File == ServerSettings.ItemDropFile), $"Principais: {main.Count} linhas, {main.Count(r => r.File == ServerSettings.ItemDropFile)} de drop de joias");
+                string Snap(string file) => string.Join("\n---\n", folders.Select(d => File.ReadAllText(Path.Combine(d, "DATA", $"GameServerInfo - {file}.dat"), System.Text.Encoding.Latin1)));
+                var common = ServerSettings.Load("Common");
+                var antes = Snap("Common");
+                var drop = common.First(r => r.BaseKey == "ItemDropRate"); var tempo = common.First(r => r.BaseKey == "ItemDropTime");
+                var ch = new List<ServerSettings.Change> { new("Common", "ItemDropRate_AL2", "77", drop), new("Common", "ItemDropTime", "31", tempo) };
+                log.Add(ServerSettings.Save("Common", ch));
+                var depois = ServerSettings.Load("Common");
+                Check(depois.First(r => r.BaseKey == "ItemDropRate").Values[2] == "77" && depois.First(r => r.BaseKey == "ItemDropTime").Values[0] == "31", "valores novos lidos de volta");
+                int linhas = 0;
+                foreach (var d in folders)
+                {
+                    var p = Path.Combine(d, "DATA", "GameServerInfo - Common.dat");
+                    var a = File.ReadAllLines(Directory.GetFiles(Path.GetDirectoryName(p)!, "GameServerInfo - Common.dat.bak-*").OrderBy(x => x).Last(), System.Text.Encoding.Latin1);
+                    var b = File.ReadAllLines(p, System.Text.Encoding.Latin1);
+                    linhas += a.Zip(b).Count(x => x.First != x.Second);
+                    Check(a.Length == b.Length, $"{Path.GetFileName(d)}: mesmo número de linhas");
+                }
+                Check(linhas == 2 * folders.Count, $"só 2 linhas mudaram em cada pasta ({linhas} no total)");
+                string Erro(Action a) { try { a(); return ""; } catch (InvalidOperationException ex) { return ex.Message; } }
+                var nome = common.First(r => r.BaseKey == "ServerName");
+                Check(Erro(() => ServerSettings.Save("Common", new[] { new ServerSettings.Change("Common", "ServerName", "x", nome) })).Contains("não pode"), "recusa opção travada (ServerName)");
+                Check(Erro(() => ServerSettings.Save("Common", new[] { new ServerSettings.Change("Common", "ItemDropTime", "abc", tempo) })).Contains("números"), "recusa texto em opção numérica");
+                ServerSettings.Save("Common", new[] { new ServerSettings.Change("Common", "ItemDropRate_AL2", drop.Values[2], depois.First(r => r.BaseKey == "ItemDropRate")),
+                                                     new ServerSettings.Change("Common", "ItemDropTime", tempo.Values[0], depois.First(r => r.BaseKey == "ItemDropTime")) });
+                Check(Snap("Common") == antes, "desfeito: arquivos iguais aos de antes, byte a byte");
+            }
+            catch (Exception ex) { log.Add("FALHA  exceção: " + ex); falhas++; }
+            log.Add(falhas == 0 ? "RESULTADO: OK" : $"RESULTADO: {falhas} falha(s)");
+            File.WriteAllLines(args[1], log);
+            return falhas == 0 ? 0 : 1;
+        }
+
+        // "--testar-opcoes-aplicar <arquivo>": o ciclo inteiro do botão (grava, Reload, confere na memória) no GameServer de
+        // testes (MUCHILA_ROOT=C:\MuServerTeste, ligado): ItemDropRate_AL1 deve valer na hora e WriteChatLog só ao reiniciar.
+        // Desfaz no fim.
+        if (args.Length == 2 && args[0] == "--testar-opcoes-aplicar")
+        {
+            var log = new List<string>();
+            try
+            {
+                if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null) { File.WriteAllText(args[1], "ERRO: use MUCHILA_ROOT apontando para o servidor de testes"); return 1; }
+                var common = ServerSettings.Load("Common");
+                var drop = common.First(r => r.BaseKey == "ItemDropRate"); var chat = common.First(r => r.BaseKey == "WriteChatLog");
+                int d1 = int.Parse(drop.Values[1]); int c0 = int.Parse(chat.Values[0]);
+                log.Add("== aplicando");
+                ServerSettings.SaveAndApply(new[] { new ServerSettings.Change("Common", "ItemDropRate_AL1", (d1 + 1).ToString(), drop), new ServerSettings.Change("Common", "WriteChatLog", (1 - c0).ToString(), chat) },
+                                            Array.Empty<(ServerSettings.Row, string)>(), log.Add);
+                common = ServerSettings.Load("Common");
+                log.Add("== desfazendo");
+                ServerSettings.SaveAndApply(new[] { new ServerSettings.Change("Common", "ItemDropRate_AL1", d1.ToString(), common.First(r => r.BaseKey == "ItemDropRate")),
+                                                    new ServerSettings.Change("Common", "WriteChatLog", c0.ToString(), common.First(r => r.BaseKey == "WriteChatLog")) },
+                                            Array.Empty<(ServerSettings.Row, string)>(), log.Add);
+            }
+            catch (Exception ex) { log.Add("FALHA: " + ex); }
+            File.WriteAllLines(args[1], log);
+            return 0;
+        }
+
+        // "--conferir-memoria <arquivo>": só LÊ a memória dos GameServers reais e compara cada opção numérica dos 7 arquivos com
+        // o valor do arquivo (mostra quantas o painel consegue conferir e quais diferem: ou só valem ao reiniciar, ou o
+        // servidor converte o valor).
+        if (args.Length == 2 && args[0] == "--conferir-memoria")
+        {
+            var log = new List<string>();
+            try
+            {
+                foreach (var f in ServerSettings.Files)
+                {
+                    var rows = ServerSettings.Load(f.Name).Where(r => r.IsNumeric && r.LockReason == null).ToList();
+                    var keys = rows.SelectMany(r => Enumerable.Range(0, r.PerPlan ? 4 : 1).Select(i => (Key: r.KeyOf(i), Value: int.Parse(r.Values[i])))).ToList();
+                    var mem = ResetWatcher.ConfigRead(keys.Select(k => k.Key).ToList());
+                    foreach (var (server, v) in mem)
+                    {
+                        var achadas = keys.Where(k => v.GetValueOrDefault(k.Key) != null).ToList();
+                        var diferentes = achadas.Where(k => v[k.Key] != k.Value).ToList();
+                        log.Add($"{f.Name} @ {server}: {keys.Count} opções, {achadas.Count} achadas na memória, {achadas.Count - diferentes.Count} iguais ao arquivo, {diferentes.Count} diferentes");
+                        foreach (var d in diferentes.Take(15)) log.Add($"      {d.Key}: arquivo {d.Value}, memória {v[d.Key]}");
+                    }
+                }
+            }
+            catch (Exception ex) { log.Add("FALHA: " + ex); }
+            File.WriteAllLines(args[1], log);
+            return 0;
+        }
+
         // "--cash-adicionar <aba> <seção> <índice> <qtd> <dias> <preço> <nome> <arquivo>" e "--cash-apagar <aba> <main> <arquivo>":
         // o mesmo que os botões da aba Loja de Cash, para validar no servidor de testes. Só com MUCHILA_ROOT (cópia).
         if ((args.Length == 9 && args[0] == "--cash-adicionar") || (args.Length == 4 && args[0] == "--cash-apagar"))

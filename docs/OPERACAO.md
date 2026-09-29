@@ -68,6 +68,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | **Lojas** | Escolha o NPC e edite o que ele vende: adicionar (busca pelo nome), remover, reordenar, nível, durabilidade e opções. Mostra quantos dos 120 espaços (8×15) da janela a loja ocupa e avisa o que não cabe. "Salvar e aplicar" faz backup e recarrega as lojas sem reiniciar. |
 | **Loja de Cash** | A loja da tecla X. Muda o preço, esconde e mostra pacotes, **adiciona item** (pacote novo: item, aba/moeda, preço, nível e opções, quantidade ou prazo) e **remove da loja**: apaga de vez o que o painel criou, e os pacotes do kit ficam só escondidos. Grava servidor + cliente e recarrega a loja. Os jogadores só veem depois de "Publicar p/ launcher". Ver [Adicionar e remover itens da loja de cash](#adicionar-e-remover-itens-da-loja-de-cash). |
 | **Drops** | **Por monstro / por item** (a primeira sub-aba): escolha um monstro e veja tudo o que ele dropa (inclusive as regras que valem para vários monstros), com a chance em % e em "1 em N", para quem a regra vale e quantos monstros ela alcança, mais o drop comum e o zen dele; ou escolha um item e veja de onde ele cai. Adiciona item a um monstro, faz um item cair de um monstro, mapa, faixa de nível ou qualquer monstro, muda a chance (duplo clique) e remove; regras que valem para vários monstros avisam antes. Edita as mesmas linhas das abas avançadas. As duas abas **Avançado** são o arquivo completo: **Itens que os monstros dropam** (`Data\Item\ItemDrop.txt`): cada regra diz qual item cai de qual monstro, mapa ou faixa de nível e com que chance em % (1% = 1 em 100). Adicionar (busca pelo nome), escolher monstro ou mapa numa lista, remover, filtrar; "Salvar e aplicar" faz backup e dá Reload Item. **Drop comum e zen por monstro** (`Monster.txt`: ItemRate, MoneyRate, MaxItemLevel): "Salvar e aplicar" faz backup e recarrega os monstros só nos GameServers e só fora da invasão (se houver uma no ar, agenda para quando ela acabar; o painel precisa ficar aberto). Linhas não alteradas são regravadas iguais. |
+| **Taxas e opções** | Muda as opções dos GameServers sem abrir arquivo. **Principais** junta a economia num lugar só: EXP, EXP master, drop de itens, zen, **drop de joias** (`ItemDrop.txt`), chance das joias (Soul/Life/Harmony), Chaos Machine +10 a +15, pontos por nível e máximo por atributo, baús (/ware), MU Helper, /offattack, Goblin Point e EXP em party. As outras visões mostram **todas** as opções de cada um dos 7 arquivos `GameServerInfo - X.dat`. Colunas Free/Vip1/Vip2/Vipzão nas opções por plano. Ver [Taxas e opções](#taxas-e-opções-painel). |
 | **Itens novos** | Cria um item novo a partir de um que já existe: mesmo visual (modelo 3D), nome e atributos próprios (dano, defesa, velocidade, durabilidade, requisitos). Grava no `Item.txt` do servidor (Reload Item na hora) e nos arquivos do cliente da pasta do repositório. Os jogadores só recebem depois de "Publicar atualização do cliente". Teste antes abrindo o jogo pela pasta do repositório. Ver [Itens novos](#itens-novos). |
 | **Itens e baú** | Mostra o inventário de qualquer personagem ou o baú da conta, com nome, nível e opções. Remove itens só com a conta fora do jogo e com backup em `C:\MuServer\DB\backup-itens-*.csv`. Presentes pela Gremory Case aparecem ao lado; criar presentes pelo painel fica desligado até a calibração (ver [Itens e baú](#itens-e-baú)). |
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
@@ -391,6 +392,41 @@ São duas travas, e as duas precisam permitir:
   - Liaman: 13,95 Gladiator's Honor;
   - Loja de cash: 13,20 Wizard Ring (pacotes 24:34 e 31:35 escondidos).
 - Nenhum deles cai de monstro nem sai de caixa. Antes de pôr um item novo à venda, confira se ele tem modelo no cliente.
+
+### Taxas e opções (painel)
+
+Aba **Taxas e opções** (29/09/2026). Clique na célula e digite o valor novo (ela fica amarela). Depois clique em **Salvar e aplicar**, e o painel:
+
+1. grava a mesma mudança nas 5 pastas `GameServer*\DATA` (Mu Chila, Non-PvP, VIP, Castle Siege e BattleCore), com backup `.bak-*`. Troca só o valor, e o resto do arquivo fica igual;
+2. dá o Reload do arquivo (Common, ChaosMix, Custom, Command, Character, Skill ou Event; drop de joias → Reload Item);
+3. **confere na memória** dos GameServers se a opção valeu:
+   - "✓ valendo na hora";
+   - "✗ continua X na memória: só vale depois de REINICIAR o GameServer";
+   - "(não deu para conferir)".
+
+**O que fica travado (linhas cinza):**
+
+- as opções que já são diferentes em cada servidor (nome, código, porta, PvP, `ServerLock`, eventos ligados em cada um);
+- as de identidade e conexão;
+- as chaves que aparecem 2 vezes no mesmo arquivo;
+- durante um **bônus por tempo**, EXP, EXP master e drop, porque o arquivo está com o valor do bônus.
+
+**Como a conferência funciona:**
+
+- O GameServer lê cada opção com `GetPrivateProfileInt` e guarda o valor num objeto de configuração (`gServerInfo`, 0xB91B30). O painel acha onde cada opção fica pelos bytes do próprio GameServer (`ResetWatcher.Config.cs`).
+- Antes de confiar, compara várias opções da memória com o arquivo.
+- Em 29/09, com `--conferir-memoria` (só leitura, nos 3 GameServers), o painel achou quase todas as opções: Common 284 de 286, ChaosMix 244 de 244, Command 336 de 340, Character 549 de 549, Skill 150 de 150, Event 24 de 29. **Todas** eram iguais ao arquivo.
+- O Custom (/offattack, loja offline) fica em outro lugar da memória: o painel acha só 1 de 81, e para essas opções mostra "não deu para conferir".
+
+**O que já se sabe:**
+
+- EXP, drop e zen valem na hora.
+- Os registros (`Write*Log`) só valem ao reiniciar: o GameServer abre os arquivos de log quando liga. Isso foi conferido com `WriteChaosMixLog` e `WriteChatLog`.
+
+**Testes:**
+
+- `--testar-opcoes` (cópia): grava uma opção por plano e uma única nas 5 pastas, confere que só essas linhas mudaram, recusa opção travada e texto em opção numérica, e desfaz byte a byte.
+- `--testar-opcoes-aplicar` (GameServer de testes ligado): o ciclo inteiro deu `ItemDropRate_AL1` ✓ na hora e `WriteChatLog` ✗ só ao reiniciar.
 
 ### Adicionar e remover itens da loja de cash
 
