@@ -497,6 +497,7 @@ No registro, em `HKEY_CURRENT_USER\Software\Webzen\Mu\Config` (com o jogo fechad
 
 - **Janela:** a arte oficial do MU (duas telas de carregamento do próprio cliente, `tools\MuChilaLauncher\arte1.jpg` e `arte2.jpg`, embutidas no `.exe`) alternando a cada 9 s, com bolinhas para trocar.
 - **Status do servidor ao vivo:** a cada 20 s testa a porta 44405 do endereço do launcher.
+- **Atalho "Mu Chila" na área de trabalho** (versão 2.1, 29/09/2026): criado logo ao escolher a pasta na 1ª instalação, antes do download (se o download cair, o atalho já está lá). Quem já tinha o jogo, ou abre o launcher de dentro da pasta do jogo, ganha o atalho **uma vez** na próxima verificação sem erro. `Atalho=1` ou `Atalho=0` no `%APPDATA%\MuChila\launcher.ini` registra que já foi criado ou que o jogador desmarcou; se ele apagar o atalho, não volta. Teste: `MuChilaLauncher.exe --testar-garantir-atalho <pasta-do-jogo> <launcher.ini> <atalho.lnk>` (os 5 casos passaram).
 - **Botões:** JOGAR, **Verificar integridade** e Configurações. A verificação normal confia no tamanho e na data de cada arquivo e é rápida. A de integridade recalcula o SHA-1 de todos e baixa de novo o que estiver corrompido.
 - **Configurações (painel da direita):**
   - resolução (a tabela de 11 do cliente; avisa as maiores que a tela), tela cheia, idioma (Português/English) e volume (0–10). Ficam no registro que o `main.exe` lê, `HKCU\Software\Webzen\Mu\Config` (`DisplayDeviceModeIndex`, `FullScreenMode`, `LangSelection`, `VolumeLevel`), e são gravadas de novo ao clicar em JOGAR;

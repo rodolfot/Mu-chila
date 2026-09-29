@@ -436,7 +436,13 @@ namespace MuChilaLauncher
                            + (temJogo ? " Você ainda pode jogar com os arquivos atuais." : " Clique em \"Verificar integridade\" para tentar de novo.");
                 else if (e.Result != null)
                     status = (string)e.Result;
-                if (e.Error == null && posEscolha) DepoisDeEscolher();
+                if (e.Error == null)
+                    try
+                    {
+                        if (GarantirAtalho(root, Path.GetFullPath(Application.ExecutablePath), ConfigPath, AtalhoPadrao))
+                            status += "  Atalho \"Mu Chila\" criado na área de trabalho.";
+                    }
+                    catch (Exception ex) { status += "  (Não consegui criar o atalho: " + ex.Message + ")"; }
                 progresso = e.Error == null ? 100 : 0;
                 AtualizarPainel();
                 Invalidate();

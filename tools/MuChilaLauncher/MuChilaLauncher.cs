@@ -3,7 +3,9 @@
 // SHA-1 de cada arquivo, baixa só o que mudou ou está faltando, se atualiza sozinho e abre o jogo.
 // Pasta do jogo: a do próprio launcher se tiver main.exe ao lado (quem já usava assim continua igual); senão a salva
 // em %APPDATA%\MuChila\launcher.ini; senão (primeira vez) pergunta onde instalar, baixa tudo para lá, se copia para a
-// pasta e cria o atalho "Mu Chila" na área de trabalho. O botão "Pasta do jogo..." troca a pasta depois.
+// pasta e cria o atalho "Mu Chila" na área de trabalho (logo ao escolher a pasta, antes do download). Quem abre o launcher
+// de outro jeito (dentro da pasta do jogo, jogo já instalado) ganha o atalho uma vez (GarantirAtalho, 29/09/2026).
+// O botão "Pasta do jogo..." troca a pasta depois.
 // Escrito em C# 5 para compilar com o csc do .NET Framework 4.x (já vem no Windows 10/11; o jogador não instala nada).
 // Compilar: tools\Publicar-Launcher.ps1 (os dois .cs + as artes arte1.jpg/arte2.jpg como recursos).
 // Este arquivo: pasta do jogo, verificação/atualização e abrir o jogo. A janela (visual, configurações do jogo, verificar
@@ -27,7 +29,7 @@ using System.Windows.Forms;
 
 [assembly: System.Reflection.AssemblyTitle("Mu Chila Launcher")]
 [assembly: System.Reflection.AssemblyProduct("Mu Chila")]
-[assembly: System.Reflection.AssemblyVersion("2.0.0.0")]
+[assembly: System.Reflection.AssemblyVersion("2.1.0.0")]
 
 namespace MuChilaLauncher
 {
@@ -66,6 +68,13 @@ namespace MuChilaLauncher
                 try { LauncherForm.CriarAtalho(args[1], args[2]); return 0; }
                 catch { return 1; }
             }
+            // teste do "atalho uma vez": MuChilaLauncher.exe --testar-garantir-atalho <pasta-do-jogo> <launcher.ini> <atalho.lnk>
+            // (código de saída: 0 = criou agora, 2 = não precisava, 1 = erro)
+            if (args.Length == 4 && args[0] == "--testar-garantir-atalho")
+            {
+                try { return LauncherForm.GarantirAtalho(args[1], Application.ExecutablePath, args[2], args[3]) ? 0 : 2; }
+                catch { return 1; }
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new LauncherForm());
@@ -84,7 +93,6 @@ namespace MuChilaLauncher
         string baseUrl;
         BackgroundWorker worker;
         bool selfUpdating;
-        bool posEscolha;          // a pasta acabou de ser escolhida: ao terminar, o launcher se copia para ela (e cria o atalho)
         bool criarAtalho;
 
         public LauncherForm() : this(DescobrirPasta(AppDomain.CurrentDomain.BaseDirectory)) { }
@@ -141,15 +149,17 @@ namespace MuChilaLauncher
         static void SalvarPasta(string pasta) { SalvarIni("Pasta", pasta); }
 
         /// <summary>Grava uma chave no %APPDATA%\MuChila\launcher.ini, mantendo as outras.</summary>
-        static void SalvarIni(string chave, string valor)
+        static void SalvarIni(string chave, string valor) { SalvarIni(ConfigPath, chave, valor); }
+
+        static void SalvarIni(string arquivo, string chave, string valor)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(arquivo));
             List<string> linhas = new List<string>();
-            try { if (File.Exists(ConfigPath)) linhas.AddRange(File.ReadAllLines(ConfigPath, Encoding.UTF8)); }
+            try { if (File.Exists(arquivo)) linhas.AddRange(File.ReadAllLines(arquivo, Encoding.UTF8)); }
             catch { }
             linhas.RemoveAll(delegate(string l) { return l.Trim().StartsWith(chave + "=", StringComparison.OrdinalIgnoreCase); });
             linhas.Add(chave + "=" + valor);
-            File.WriteAllLines(ConfigPath, linhas.ToArray(), new UTF8Encoding(false));
+            File.WriteAllLines(arquivo, linhas.ToArray(), new UTF8Encoding(false));
         }
 
         /// <summary>Pasta escolhida no "Procurar": ela mesma se já tem o jogo ou está vazia; senão uma subpasta "Mu Chila".</summary>
@@ -258,16 +268,38 @@ namespace MuChilaLauncher
                 string pasta = Path.GetFullPath(txt.Text.Trim());
                 DefinirPasta(pasta);
                 SalvarPasta(pasta);
-                posEscolha = true;
+                SalvarIni("Atalho", chk.Checked ? "1" : "0");
                 criarAtalho = chk.Checked;
+                // já agora, antes de baixar os GB do jogo: se o download for interrompido, o atalho e o launcher já estão lá
+                DepoisDeEscolher();
                 return true;
             }
+        }
+
+        static string AtalhoPadrao
+        {
+            get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Mu Chila.lnk"); }
+        }
+
+        /// <summary>
+        /// Atalho "Mu Chila" na área de trabalho, uma vez por computador (pedido do dono, 29/09/2026): vale também para quem
+        /// abre o launcher de dentro da pasta do jogo (pacote antigo), já tinha o jogo ou teve a 1ª instalação interrompida.
+        /// No launcher.ini: "Atalho=0" = o jogador desmarcou na instalação; "Atalho=1" = já criado (se ele apagar, não volta).
+        /// true = criou agora.
+        /// </summary>
+        public static bool GarantirAtalho(string pastaDoJogo, string exeAtual, string ini, string lnk)
+        {
+            if (pastaDoJogo == null || !File.Exists(Path.Combine(pastaDoJogo, "main.exe")) || LerIni(ini, "Atalho") != null) return false;
+            string alvo = Path.Combine(pastaDoJogo, SelfName);
+            if (!File.Exists(alvo)) alvo = exeAtual;
+            CriarAtalho(alvo, lnk);
+            SalvarIni(ini, "Atalho", "1");
+            return true;
         }
 
         /// <summary>Depois de instalar/escolher a pasta: o launcher passa a morar nela, e o atalho aponta para lá.</summary>
         void DepoisDeEscolher()
         {
-            posEscolha = false;
             string destino = Path.Combine(root, SelfName);
             try
             {
@@ -278,8 +310,7 @@ namespace MuChilaLauncher
                     string ini = Path.Combine(exeDir, "launcher.ini");
                     if (File.Exists(ini) && !File.Exists(Path.Combine(root, "launcher.ini"))) File.Copy(ini, Path.Combine(root, "launcher.ini"));
                 }
-                if (criarAtalho)
-                    CriarAtalho(destino, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Mu Chila.lnk"));
+                if (criarAtalho) CriarAtalho(destino, AtalhoPadrao);
             }
             catch (Exception ex) { status += "  (Não consegui copiar o launcher / criar o atalho: " + ex.Message + ")"; }
         }
