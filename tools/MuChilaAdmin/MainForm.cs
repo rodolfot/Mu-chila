@@ -203,8 +203,18 @@ public sealed partial class MainForm : Form
         var reloadBar = Bar(new Label { Text = "Recarregar sem reiniciar:", AutoSize = true, Padding = new Padding(0, 6, 0, 0) }, cmbReload,
             Btn("Recarregar (GameServers + Castle Siege)", () =>
             {
-                if ((string)cmbReload.SelectedItem! == "Monster") ReloadMonstersSafe();   // só GameServers e fora da invasão
-                else LogAll(ServerControl.Reload((string)cmbReload.SelectedItem!));
+                var item = (string)cmbReload.SelectedItem!;
+                if (item == "Monster") ReloadMonstersSafe();   // só GameServers e fora da invasão
+                else if (item == "Event")
+                {
+                    var r = MessageBox.Show("Recarregar os eventos também no Castle Siege?\n\nNo Castle Siege o Reload Event reinicia o ciclo do cerco: " +
+                        "os jogadores veem \"começou o período de preparação do Castle Siege\" e o cerco é adiado ~15 minutos. Só é preciso " +
+                        "depois de mexer no Castle Siege, Crywolf ou Castle Deep.\n\nSim = GameServers + Castle Siege\nNão = só os GameServers",
+                        "Mu Chila Admin", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (r == DialogResult.Yes) LogAll(ServerControl.Reload(item));
+                    else if (r == DialogResult.No) LogAll(ServerControl.ReloadGameServersOnly(item));
+                }
+                else LogAll(ServerControl.Reload(item));
             }), lblCounts);
 
         page.Controls.Add(Split(Titled("Processos", gridServers), Titled("Jogadores online", gridOnline), 0.5));
@@ -244,7 +254,7 @@ public sealed partial class MainForm : Form
             Btn("Limpar disparos já executados", () =>
             {
                 int n = EventScheduler.CleanupPast(TimeSpan.FromMinutes(30));
-                if (n > 0) LogAll(ServerControl.Reload("Event"));
+                if (n > 0) LogAll(ServerControl.ReloadGameServersOnly("Event"));   // no Castle Siege reiniciaria o cerco
                 Log($"{n} disparo(s) antigo(s) removido(s).");
                 RefreshEvents();
             }));
@@ -266,11 +276,14 @@ public sealed partial class MainForm : Form
     {
         if (lstEvents.SelectedIndex < 0) return;
         var ev = EventScheduler.Events[lstEvents.SelectedIndex];
+        if (ev.OnCastleSiege && !Confirm($"{ev.Name} roda no servidor do Castle Siege. Para ele pegar o disparo, o Castle Siege recarrega os eventos, " +
+                "e isso reinicia o ciclo do cerco: os jogadores veem \"começou o período de preparação do Castle Siege\" e o cerco é adiado ~15 minutos.\n\nDisparar mesmo assim?")) return;
         // Segundo 0 do minuto alvo: o agendador do servidor compara minuto a minuto
         var when = DateTime.Now.AddMinutes((double)numMinutes.Value);
         when = new DateTime(when.Year, when.Month, when.Day, when.Hour, when.Minute, 0);
         Log(EventScheduler.Schedule(ev, when));
-        LogAll(ServerControl.Reload("Event"));
+        // só onde o evento roda: Reload Event no Castle Siege reinicia o ciclo do cerco (ServerControl.ReloadGameServersOnly)
+        LogAll(ev.OnCastleSiege ? ServerControl.ReloadCastleSiegeOnly("Event") : ServerControl.ReloadGameServersOnly("Event"));
         RefreshEvents();
     }
 

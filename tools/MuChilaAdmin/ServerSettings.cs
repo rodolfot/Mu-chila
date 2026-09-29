@@ -281,7 +281,8 @@ public static class ServerSettings
         {
             log(Save(g.Key, g.ToList()));
             var def = Files.First(f => f.Name == g.Key);
-            foreach (var l in ServerControl.Reload(def.ReloadItem)) log(l);
+            // Event: só nos GameServers (no Castle Siege o Reload Event reinicia o ciclo do cerco e anuncia a preparação)
+            foreach (var l in def.Name == "Event" ? ServerControl.ReloadGameServersOnly(def.ReloadItem) : ServerControl.Reload(def.ReloadItem)) log(l);
         }
         if (jewels.Count > 0)
         {

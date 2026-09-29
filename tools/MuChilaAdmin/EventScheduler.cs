@@ -8,7 +8,11 @@ namespace MuChilaAdmin;
 /// <param name="Block">Bloco do .dat que tem a agenda (Year Month Day DoW Hour Minute Second).</param>
 /// <param name="Index">Indice do evento quando a agenda tem a coluna Index (InvasionManager); null quando nao tem.</param>
 /// <param name="LeadMinutes">Antecedencia padrao: eventos com sala de espera precisam de tempo para os jogadores entrarem.</param>
-public record EventDef(string Name, string File, int Block, int? Index, int LeadMinutes);
+public record EventDef(string Name, string File, int Block, int? Index, int LeadMinutes)
+{
+    /// <summary>Roda no servidor do Castle Siege (CastleDeepEvent = 1 só lá; nos GameServers, 0).</summary>
+    public bool OnCastleSiege => File == "CastleDeepEvent.dat";
+}
 
 /// <summary>
 /// Dispara eventos agendando uma linha unica (data e hora exatas) no .dat do evento e recarregando os GameServers.

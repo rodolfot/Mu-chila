@@ -109,11 +109,23 @@ public static class ServerControl
         return end;
     }
 
+    /// <summary>
+    /// Reload Event SÓ nos GameServers. No Castle Siege o Reload Event reinicia o ciclo do cerco (CCastleSiege::Init →
+    /// SetState_READYSIEGE): os jogadores veem "começou o período de preparação do Castle Siege" e o cerco é adiado ~15 min
+    /// (visto no log do CS em 29/09/2026, a cada evento disparado pelo painel). Os eventos da aba Eventos rodam nos
+    /// GameServers (#13); só o Castle Deep roda no Castle Siege (ReloadCastleSiegeOnly, com aviso).
+    /// </summary>
+    public static List<string> ReloadGameServersOnly(string item) => SendToGameServers(ReloadIds[item], withCastleSiege: false);
+
+    public static List<string> ReloadCastleSiegeOnly(string item) => SendTo(ReloadIds[item], gameServers: false, castleSiege: true);
+
     /// <summary>Envia um comando de menu para todos os GameServers e (por padrão) o Castle Siege.</summary>
-    public static List<string> SendToGameServers(int menuId, bool withCastleSiege = true)
+    public static List<string> SendToGameServers(int menuId, bool withCastleSiege = true) => SendTo(menuId, gameServers: true, castleSiege: withCastleSiege);
+
+    static List<string> SendTo(int menuId, bool gameServers, bool castleSiege)
     {
         var result = new List<string>();
-        foreach (var (label, p) in GameServerProcesses(withCastleSiege))
+        foreach (var (label, p) in GameServerProcesses(castleSiege).Where(x => gameServers || x.Process.ProcessName == CastleSiegeProcess))
         {
             var hwnd = FindMenuWindow(p.Id);
             if (hwnd == IntPtr.Zero) { result.Add($"{label}: janela não encontrada"); continue; }
