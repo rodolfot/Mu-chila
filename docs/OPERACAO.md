@@ -69,6 +69,7 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
 | **Loja de Cash** | A loja da tecla X. Muda o preço, esconde e mostra pacotes, **adiciona item** (pacote novo: item, aba/moeda, preço, nível e opções, quantidade ou prazo) e **remove da loja**: apaga de vez o que o painel criou, e os pacotes do kit ficam só escondidos. Grava servidor + cliente e recarrega a loja. Os jogadores só veem depois de "Publicar p/ launcher". Ver [Adicionar e remover itens da loja de cash](#adicionar-e-remover-itens-da-loja-de-cash). |
 | **Drops** | **Por monstro / por item** (a primeira sub-aba): escolha um monstro e veja tudo o que ele dropa (inclusive as regras que valem para vários monstros), com a chance em % e em "1 em N", para quem a regra vale e quantos monstros ela alcança, mais o drop comum e o zen dele; ou escolha um item e veja de onde ele cai. Adiciona item a um monstro, faz um item cair de um monstro, mapa, faixa de nível ou qualquer monstro, muda a chance (duplo clique) e remove; regras que valem para vários monstros avisam antes. Edita as mesmas linhas das abas avançadas. As duas abas **Avançado** são o arquivo completo: **Itens que os monstros dropam** (`Data\Item\ItemDrop.txt`): cada regra diz qual item cai de qual monstro, mapa ou faixa de nível e com que chance em % (1% = 1 em 100). Adicionar (busca pelo nome), escolher monstro ou mapa numa lista, remover, filtrar; "Salvar e aplicar" faz backup e dá Reload Item. **Drop comum e zen por monstro** (`Monster.txt`: ItemRate, MoneyRate, MaxItemLevel): "Salvar e aplicar" faz backup e recarrega os monstros só nos GameServers e só fora da invasão (se houver uma no ar, agenda para quando ela acabar; o painel precisa ficar aberto). Linhas não alteradas são regravadas iguais. |
 | **Taxas e opções** | Muda as opções dos GameServers sem abrir arquivo. **Principais** junta a economia num lugar só: EXP, EXP master, drop de itens, zen, **drop de joias** (`ItemDrop.txt`), chance das joias (Soul/Life/Harmony), Chaos Machine +10 a +15, pontos por nível e máximo por atributo, baús (/ware), MU Helper, /offattack, Goblin Point e EXP em party. As outras visões mostram **todas** as opções de cada um dos 7 arquivos `GameServerInfo - X.dat`. Colunas Free/Vip1/Vip2/Vipzão nas opções por plano. Ver [Taxas e opções](#taxas-e-opções-painel). |
+| **EXP dinâmica** | As faixas de nível do `Data\Util\ExperienceTable.txt` (issue #37): para cada faixa, a EXP é um % da taxa do plano. Mostra ao lado a EXP efetiva de Free/Vip1/Vip2/Vipzão. Adicionar, remover e mudar faixas; recusa faixas sobrepostas; "Salvar e aplicar" faz backup e dá Reload Util. Ver [EXP dinâmica (painel)](#exp-dinâmica-painel). |
 | **Itens novos** | Cria um item novo a partir de um que já existe: mesmo visual (modelo 3D), nome e atributos próprios (dano, defesa, velocidade, durabilidade, requisitos). Grava no `Item.txt` do servidor (Reload Item na hora) e nos arquivos do cliente da pasta do repositório. Os jogadores só recebem depois de "Publicar atualização do cliente". Teste antes abrindo o jogo pela pasta do repositório. Ver [Itens novos](#itens-novos). |
 | **Itens e baú** | Mostra o inventário de qualquer personagem ou o baú da conta, com nome, nível e opções. **Colocar item...** (29/09/2026) põe um item novo (nível, opção, excelente, skill, sorte, quantidade para os que empilham) no inventário do personagem escolhido ou no baú da conta, no 1º espaço livre em que ele cabe. Remover e colocar deslogam a conta se ela estiver no jogo e salvam antes o inventário/baú em `C:\MuServer\DB\backup-itens-*.csv`. Ver [Colocar item no inventário ou no baú](#colocar-item-no-inventário-ou-no-baú). |
 | **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
@@ -417,6 +418,20 @@ São duas travas, e as duas precisam permitir:
   - Liaman: 13,95 Gladiator's Honor;
   - Loja de cash: 13,20 Wizard Ring (pacotes 24:34 e 31:35 escondidos).
 - Nenhum deles cai de monstro nem sai de caixa. Antes de pôr um item novo à venda, confira se ele tem modelo no cliente.
+
+### EXP dinâmica (painel)
+
+Aba **EXP dinâmica** (issue #37, 29/09/2026). Cada linha é uma faixa do `Data\Util\ExperienceTable.txt`: "para quem está entre estes níveis, a EXP é X% da taxa do plano".
+
+- **A conta:** EXP final = "EXP (x)" do plano (aba Taxas e opções) × "EXP %" da faixa ÷ 100. Isso foi comprovado no teste do #24. Níveis sem faixa ficam em 100%. As colunas Free/Vip1/Vip2/Vipzão mostram a EXP efetiva de cada faixa com as taxas atuais.
+- **Colunas avançadas** (master de/até, resets de/até, master resets de/até): a faixa só vale para quem está dentro delas. O padrão 0–600 e 0–10000 vale para todos.
+- **Salvar e aplicar:**
+  - recusa faixas que se sobrepõem (o servidor usaria só uma) e "de" maior que "até";
+  - mostra os níveis sem faixa;
+  - grava só o bloco "Mu Chila - EXP dinamica" do arquivo, com backup `.bak-*`;
+  - dá Reload Util.
+- **Voltar à curva padrão:** carrega na tela a curva de 28/09 (100% até o nível 50, caindo até 10% nos 351–399, 100% no 400). Só grava ao salvar.
+- **Testes:** `--testar-exp-dinamica` (cópia: regravar igual não muda nada, editar e trocar faixa, formato TAB/CRLF/end, sobreposição e "de > até" recusados, níveis sem faixa, desfazer) e `--testar-exp-visao` (foto da aba).
 
 ### Taxas e opções (painel)
 

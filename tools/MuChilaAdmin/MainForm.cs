@@ -153,6 +153,7 @@ public sealed partial class MainForm : Form
         tabs.TabPages.Add(MonstersTab());
         tabs.TabPages.Add(DropsTab());
         tabs.TabPages.Add(SettingsTab());
+        tabs.TabPages.Add(DynamicExpTab());
         tabs.TabPages.Add(NoticesTab());
         tabs.TabPages.Add(CommandsTab());
         tabs.TabPages.Add(ItemsTab());

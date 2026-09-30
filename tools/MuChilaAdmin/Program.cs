@@ -288,6 +288,56 @@ static class Program
             return 0;
         }
 
+        // "--testar-exp-dinamica <arquivo>": EXP dinâmica (#37) numa CÓPIA (MUCHILA_ROOT com Data\Util\ExperienceTable.txt):
+        // regravar igual não muda nada, editar/adicionar faixa grava e relê, sobreposição é recusada, e desfaz no fim.
+        if (args.Length == 2 && args[0] == "--testar-exp-dinamica")
+        {
+            var log = new List<string>(); int falhas = 0;
+            void Check(bool ok, string what) { log.Add((ok ? "ok     " : "FALHA  ") + what); if (!ok) falhas++; }
+            try
+            {
+                if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null) { File.WriteAllText(args[1], "ERRO: use MUCHILA_ROOT apontando para uma cópia de testes"); return 1; }
+                var orig = File.ReadAllBytes(DynamicExp.FilePath);
+                var (b0, fora) = DynamicExp.Load();
+                Check(b0.Count > 0, $"leu {b0.Count} faixas ({string.Join("; ", b0)}), {fora} fora do bloco");
+                Check(DynamicExp.Save(b0).Contains("nada mudou") && File.ReadAllBytes(DynamicExp.FilePath).SequenceEqual(orig), "regravar sem mudança não mexe no arquivo");
+                var b1 = DynamicExp.Load().Bands; b1[1].Rate = 90; b1.RemoveAt(b1.Count - 1);
+                b1.Add(new DynamicExp.Band { LevelMin = 400, LevelMax = 400, Rate = 50 });
+                log.Add(DynamicExp.Save(b1));
+                var b2 = DynamicExp.Load().Bands;
+                Check(b2.Count == b0.Count && b2[1].Rate == 90 && b2[^1].Rate == 50 && b2.Select(b => b.LevelMin).SequenceEqual(b2.Select(b => b.LevelMin).OrderBy(x => x)), "editar e trocar faixa: grava, relê e fica em ordem de nível");
+                var txt = File.ReadAllText(DynamicExp.FilePath, System.Text.Encoding.Latin1);
+                Check(txt.EndsWith("\r\nend") && txt.Contains("51\t100\t0\t600\t0\t10000\t0\t10000\t90\r\n"), "formato: TAB entre colunas, CRLF, termina em end");
+                string Erro(Action a) { try { a(); return ""; } catch (InvalidOperationException ex) { return ex.Message; } }
+                var b3 = DynamicExp.Load().Bands; b3.Add(new DynamicExp.Band { LevelMin = 40, LevelMax = 60, Rate = 5 });
+                Check(Erro(() => DynamicExp.Save(b3)).Contains("sobrepõem"), "recusa faixa sobreposta (40–60 com 1–50 e 51–100)");
+                var b4 = DynamicExp.Load().Bands; b4[0].LevelMin = 60;
+                Check(Erro(() => DynamicExp.Save(b4)).Contains("menor ou igual"), "recusa \"de\" maior que \"até\"");
+                Check(DynamicExp.Gaps(new[] { new DynamicExp.Band { LevelMin = 1, LevelMax = 100 }, new DynamicExp.Band { LevelMin = 201, LevelMax = 399 } }) == "101–200, 400", "mostra os níveis sem faixa");
+                DynamicExp.Save(b0);
+                Check(DynamicExp.Load().Bands.Select(b => b.ToString()).SequenceEqual(b0.Select(b => b.ToString())), "voltar às faixas originais");
+                File.WriteAllBytes(DynamicExp.FilePath, orig);
+            }
+            catch (Exception ex) { log.Add("FALHA  exceção: " + ex); falhas++; }
+            log.Add(falhas == 0 ? "RESULTADO: OK" : $"RESULTADO: {falhas} falha(s)");
+            File.WriteAllLines(args[1], log);
+            return falhas == 0 ? 0 : 1;
+        }
+
+        // "--testar-exp-visao <saida> <foto.png>": aba "EXP dinâmica" com os dados reais; só simula na tela e tira foto
+        if (args.Length == 3 && args[0] == "--testar-exp-visao")
+        {
+            try
+            {
+                Application.EnableVisualStyles();
+                using var f = new MainForm();
+                var r = f.TestDynamicExpView(args[2]);
+                File.WriteAllText(args[1], r);
+                return r.Contains("FALHA") ? 1 : 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
+        }
+
         // "--colocar-item <conta> <personagem | bau> <seção> <índice> <nível> <quantidade> <arquivo>": o mesmo que o botão
         // "Colocar item..." da aba Itens e baú (conta fora do jogo, backup antes).
         if (args.Length == 8 && args[0] == "--colocar-item")
