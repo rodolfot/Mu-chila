@@ -564,7 +564,29 @@ No registro, em `HKEY_CURRENT_USER\Software\Webzen\Mu\Config` (com o jogo fechad
   - resolução (a tabela de 11 do cliente; avisa as maiores que a tela), tela cheia, idioma (Português/English) e volume (0–10). Ficam no registro que o `main.exe` lê, `HKCU\Software\Webzen\Mu\Config` (`DisplayDeviceModeIndex`, `FullScreenMode`, `LangSelection`, `VolumeLevel`), e são gravadas de novo ao clicar em JOGAR;
   - pasta do jogo (Alterar...) e "fechar o launcher ao abrir o jogo" (`%APPDATA%\MuChila\launcher.ini`).
 - Espanhol não é oferecido: os itens novos do Mu Chila só existem em `Eng` e `Por`.
-- **Código e testes:** `MuChilaLauncher.cs` tem a lógica (pasta, verificar, baixar, abrir o jogo); `LauncherUi.cs`, a janela (C# 5, desenhada em GDI+).
+- **Programas obrigatórios e diagnóstico** (versão 2.2, 30/09/2026, `Diagnostico.cs`). Motivo: no PC de um amigo o mouse virava "carregando" e o jogo não abria.
+  - **Programas obrigatórios do Windows:** **Visual C++ 2013 x86** (`msvcr120.dll`/`msvcp120.dll`) e **DirectX End-User Runtime de junho/2010** (`d3dx9_43.dll`/`d3dcompiler_43.dll`), conferidos em `SysWOW64`.
+    - A lista vem das importações das DLLs do cliente. O `main.exe` carrega o `Main.dll`, que precisa do VC++ 2013. Sem ele, o jogo fecha sem mostrar nada.
+    - O DirectX é pedido pelo `awesomium.dll` só quando usado (navegador do jogo).
+  - **Quando confere:** depois de cada verificação e ao clicar em JOGAR. Se faltar algo, abre uma janela com **Instalar automaticamente** (e **Jogar mesmo assim** no JOGAR).
+  - **Instalação automática:** baixa primeiro de `<ServerUrl>/requisitos/` e, se falhar, da Microsoft. Instala em silêncio e o Windows pede permissão de administrador. Se não der certo (download falhou ou o jogador negou a permissão), a janela mostra o motivo, o link do instalador e o link da página oficial.
+  - `Publicar-Launcher.ps1` baixa os dois instaladores uma vez para `launcher\requisitos\`.
+  - **Acompanhamento do jogo:** depois do JOGAR, o launcher acompanha o jogo por 30 s. Se o jogo fechar sozinho, o launcher volta, explica o código de saída (ex.: `0xC0000135` = DLL não encontrada) e grava um diagnóstico.
+  - **Botão DIAGNÓSTICO:** gera o relatório e abre no Bloco de Notas.
+  - **Logs** (pasta do jogo `\Logs\launcher\`, ou `%APPDATA%\MuChila\logs`):
+    - `launcher.log`: uma linha por evento (abriu, atualizou, requisitos, instalou, JOGAR, como o jogo terminou).
+    - `diagnostico-<data>.txt` (guarda os 20 mais novos), com estas seções:
+      1. computador: Windows, RAM, placa de vídeo e driver, antivírus;
+      2. programas obrigatórios;
+      3. DLLs que o jogo carrega ao abrir (`main.exe` + `Main.dll` e as DLLs da pasta que eles pedem; GameGuard e outras DLLs que não são carregadas ficam de fora);
+      4. SHA-1 dos arquivos da pasta principal comparado com o manifesto do servidor;
+      5. pasta do jogo;
+      6. código de saída do jogo;
+      7. erros do `main.exe` no Log de Eventos do Windows;
+      8. **conclusão**: diz se o problema é do computador ou de arquivos do jogo.
+    - Erro inesperado do próprio launcher vai para `%APPDATA%\MuChila\launcher-erros.log`.
+  - **Teste:** `--diagnostico <saida.txt> [pasta]` (código 0 = nada faltando, 2 = falta programa obrigatório).
+- **Código e testes:** `MuChilaLauncher.cs` tem a lógica (pasta, verificar, baixar, abrir o jogo); `LauncherUi.cs`, a janela (C# 5, desenhada em GDI+); `Diagnostico.cs`, programas obrigatórios, logs e diagnóstico.
   - `--verificar <saida> <pasta>` e `--integridade <saida> <pasta>`: silenciosos.
   - `--foto <saida.png> <pasta>`: fotos das telas, sem rede.
 

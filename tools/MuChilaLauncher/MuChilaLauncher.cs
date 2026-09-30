@@ -9,7 +9,7 @@
 // Escrito em C# 5 para compilar com o csc do .NET Framework 4.x (já vem no Windows 10/11; o jogador não instala nada).
 // Compilar: tools\Publicar-Launcher.ps1 (os dois .cs + as artes arte1.jpg/arte2.jpg como recursos).
 // Este arquivo: pasta do jogo, verificação/atualização e abrir o jogo. A janela (visual, configurações do jogo, verificar
-// integridade, status do servidor) fica em LauncherUi.cs.
+// integridade, status do servidor) fica em LauncherUi.cs; programas obrigatórios, logs e diagnóstico em Diagnostico.cs.
 //
 // Servidor (padrão): http://26.139.39.123/arquivos/launcher/  — pode trocar com launcher.ini (ao lado do launcher ou
 // na pasta do jogo) contendo ServerUrl=...
@@ -29,7 +29,7 @@ using System.Windows.Forms;
 
 [assembly: System.Reflection.AssemblyTitle("Mu Chila Launcher")]
 [assembly: System.Reflection.AssemblyProduct("Mu Chila")]
-[assembly: System.Reflection.AssemblyVersion("2.1.0.0")]
+[assembly: System.Reflection.AssemblyVersion("2.2.0.0")]
 
 namespace MuChilaLauncher
 {
@@ -56,6 +56,10 @@ namespace MuChilaLauncher
                 LauncherForm.Foto(args[1], args.Length == 3 ? Path.GetFullPath(args[2]) : null);
                 return 0;
             }
+            // diagnóstico sem janela (Diagnostico.cs): MuChilaLauncher.exe --diagnostico <saida.txt> [pasta-do-jogo]
+            // (código de saída: 0 = nenhum programa obrigatório faltando, 2 = falta algum)
+            if ((args.Length == 2 || args.Length == 3) && args[0] == "--diagnostico")
+                return LauncherForm.DiagnosticoSemJanela(args[1], args.Length == 3 ? Path.GetFullPath(args[2]) : null);
             if ((args.Length == 2 || args.Length == 3) && (args[0] == "--verificar" || args[0] == "--integridade"))
             {
                 string pasta = args.Length == 3 ? Path.GetFullPath(args[2]) : AppDomain.CurrentDomain.BaseDirectory;
@@ -75,6 +79,10 @@ namespace MuChilaLauncher
                 try { return LauncherForm.GarantirAtalho(args[1], Application.ExecutablePath, args[2], args[3]) ? 0 : 2; }
                 catch { return 1; }
             }
+            // erro inesperado vira um arquivo (%APPDATA%\MuChila\launcher-erros.log) em vez de o launcher sumir sem explicação
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += delegate(object s, System.Threading.ThreadExceptionEventArgs e) { Diagnostico.ErroFatal(e.Exception); };
+            AppDomain.CurrentDomain.UnhandledException += delegate(object s, UnhandledExceptionEventArgs e) { Diagnostico.ErroFatal(e.ExceptionObject as Exception); };
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new LauncherForm());
@@ -107,9 +115,23 @@ namespace MuChilaLauncher
         void DefinirPasta(string pasta)
         {
             root = pasta;
+            baseUrl = UrlDoServidor(exeDir, pasta);
+        }
+
+        static string UrlDoServidor(string exeDir, string pasta)
+        {
             string u = LerIni(Path.Combine(exeDir, "launcher.ini"), "ServerUrl");
             if (u == null && pasta != null) u = LerIni(Path.Combine(pasta, "launcher.ini"), "ServerUrl");
-            baseUrl = u == null ? DefaultUrl : (u.EndsWith("/") ? u : u + "/");
+            return u == null ? DefaultUrl : (u.EndsWith("/") ? u : u + "/");
+        }
+
+        /// <summary>--diagnostico: relatório sem abrir a janela. pasta null = a que o launcher usaria. 0 = nada faltando, 2 = falta requisito.</summary>
+        public static int DiagnosticoSemJanela(string saida, string pasta)
+        {
+            string exeDir = AppDomain.CurrentDomain.BaseDirectory;
+            if (pasta == null) pasta = DescobrirPasta(exeDir);
+            File.WriteAllText(saida, Diagnostico.Relatorio(pasta, UrlDoServidor(exeDir, pasta), "linha de comando (--diagnostico)", null), new UTF8Encoding(true));
+            return Requisitos.Faltando().Count == 0 ? 0 : 2;
         }
 
         // ---------------- pasta do jogo ----------------
@@ -559,17 +581,26 @@ namespace MuChilaLauncher
 
         void Play()
         {
+            // programas obrigatórios do Windows (Visual C++ 2013, DirectX) antes de abrir: sem eles o jogo fecha sozinho (Diagnostico.cs)
+            if (!ConferirRequisitos(true, null)) return;
             try
             {
                 config.Gravar();   // resolução, tela cheia, idioma e volume no registro do jogo (LauncherUi.cs)
                 ProcessStartInfo psi = new ProcessStartInfo(Path.Combine(root, "main.exe"));
                 psi.WorkingDirectory = root;
-                Process.Start(psi);
-                if (config.FecharAoJogar) Close();
-                else { status = "Jogo aberto. Bom jogo!"; Invalidate(); }
+                DateTime inicio = DateTime.Now;
+                Process p = Process.Start(psi);
+                Diagnostico.Log(root, "JOGAR: main.exe aberto" + (p != null ? " (PID " + p.Id + ")" : "") + ".");
+                // o launcher some (ou fica, conforme a configuração) e acompanha o jogo por 30 s: se ele fechar sozinho, volta com o diagnóstico
+                status = "Jogo aberto, conferindo se ele abriu direito...";
+                Invalidate();
+                if (config.FecharAoJogar) Hide();
+                if (p != null) AcompanharJogo(p, inicio);
+                else if (config.FecharAoJogar) Close();
             }
             catch (Exception ex)
             {
+                Diagnostico.Log(root, "JOGAR: não consegui abrir o main.exe: " + ex.Message);
                 MessageBox.Show("Não consegui abrir o jogo: " + ex.Message, "Mu Chila", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

@@ -18,9 +18,24 @@ $exe = Join-Path $dir 'MuChilaLauncher.exe'
 # lógica (MuChilaLauncher.cs) + janela (LauncherUi.cs); artes do MU embutidas como recurso e ícone do Dark Knight
 & $csc /nologo /target:winexe /optimize+ /codepage:65001 "/out:$exe" "/win32icon:$dir\icone.ico" `
     "/resource:$dir\arte1.jpg,arte1.jpg" "/resource:$dir\arte2.jpg,arte2.jpg" `
-    /r:System.Windows.Forms.dll /r:System.Drawing.dll "$dir\MuChilaLauncher.cs" "$dir\LauncherUi.cs"
+    /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.Management.dll `
+    "$dir\MuChilaLauncher.cs" "$dir\LauncherUi.cs" "$dir\Diagnostico.cs"
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao compilar o launcher' }
 "compilado: $exe"
+
+# 1b) programas obrigatórios do Windows (Diagnostico.cs): o launcher baixa primeiro daqui (<ServerUrl>/requisitos/) e só
+#     depois da Microsoft. Baixa uma vez; se a Microsoft falhar, o launcher do jogador tenta direto nela e mostra os links.
+$req = Join-Path $Destino 'requisitos'
+New-Item -ItemType Directory -Force $req | Out-Null
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+foreach ($r in @(
+    @{ Nome = 'vcredist_x86_2013.exe';      Url = 'https://download.visualstudio.microsoft.com/download/pr/10912113/5da66ddebb0ad32ebd4b922fd82e8e25/vcredist_x86.exe' },
+    @{ Nome = 'directx_Jun2010_redist.exe'; Url = 'https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe' })) {
+    $f = Join-Path $req $r.Nome
+    if (Test-Path $f) { continue }
+    try { (New-Object Net.WebClient).DownloadFile($r.Url, "$f.download"); Move-Item "$f.download" $f -Force; "requisito baixado: $($r.Nome)" }
+    catch { Remove-Item "$f.download" -ErrorAction SilentlyContinue; Write-Warning "não consegui baixar $($r.Nome): $($_.Exception.Message)" }
+}
 
 # 2) espelha os arquivos do cliente (arquivos do jogador ficam de fora e nunca são sobrescritos)
 $files = Join-Path $Destino 'files'

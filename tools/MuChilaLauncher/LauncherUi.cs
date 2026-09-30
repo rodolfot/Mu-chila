@@ -330,6 +330,7 @@ namespace MuChilaLauncher
             Shown += delegate
             {
                 if (modoFoto) return;
+                Diagnostico.Log(root, "Launcher " + Diagnostico.Versao + " aberto (" + Environment.OSVersion + ", " + (Environment.Is64BitOperatingSystem ? "64" : "32") + " bits).");
                 if (root == null && !EscolherPasta(true)) { Close(); return; }
                 StartCheck(false);
                 Thread t = new Thread(VigiarServidor);
@@ -444,8 +445,11 @@ namespace MuChilaLauncher
                     }
                     catch (Exception ex) { status += "  (Não consegui criar o atalho: " + ex.Message + ")"; }
                 progresso = e.Error == null ? 100 : 0;
+                Diagnostico.Log(root, (integridade ? "Integridade: " : "Atualização: ") + (e.Error != null ? "ERRO " + e.Error.Message : status));
                 AtualizarPainel();
                 Invalidate();
+                // jogo pronto: já avisa (e oferece instalar) se faltar Visual C++ 2013 ou DirectX neste computador
+                if (temJogo) ConferirRequisitos(false, null);
             };
             worker.RunWorkerAsync();
         }
@@ -635,6 +639,7 @@ namespace MuChilaLauncher
             // botões secundários
             BotaoFantasma(g, "integridade", "VERIFICAR INTEGRIDADE", new Rectangle(x, H - 50, 214, 32), !verificando && root != null);
             BotaoFantasma(g, "config2", "CONFIGURAÇÕES", new Rectangle(x + 226, H - 50, 170, 32), true);
+            BotaoFantasma(g, "diagnostico", "DIAGNÓSTICO", new Rectangle(x + 408, H - 50, 152, 32), !verificando);
 
             // JOGAR
             bool pode = !verificando && TemJogo();
@@ -728,6 +733,7 @@ namespace MuChilaLauncher
             else if (a == "jogar") { if (!verificando && TemJogo()) Play(); }
             else if (a == "instalar") StartCheck(false);
             else if (a == "integridade") StartCheck(true);
+            else if (a == "diagnostico") RodarDiagnostico();
             else if (a == "config" || a == "config2") AbrirConfig(!painel.Visible || painelDestino >= W);
             else if (a == "inicio") AbrirConfig(false);
             else if (a == "site") AbrirSite();
