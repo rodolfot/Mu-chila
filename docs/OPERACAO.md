@@ -177,18 +177,22 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
 - **Invasões** (`InvasionManager.dat`): 0 Underworld, 1 Red Dragon, 2 Golden, 3 White Wizard, 4 Ano Novo, 5 Páscoa, 6 Verão, 7 Christmas, 8 Medusa, 9 Demônios invocados, 10 Ovos.
   - **Golden:** a cada **10 minutos** (00, 10, 20, 30, 40 e 50), com duração de **540 s**, para não sobrepor.
   - **Red Dragon:** 0:15, 4:15, 8:15, 12:15, 16:15 e 18:32.
-- **Disparar uma vez:** use a aba **Eventos** do painel Mu Chila Admin. Ela grava uma linha com data exata no `.dat` do evento, marcada com `//MuChilaAdmin`, e manda Reload Event para o GameServer e o Castle Siege.
-  - Invasões começam no minuto seguinte (padrão de 1 minuto).
-  - Blood Castle, Devil Square, Chaos Castle e Illusion Temple têm sala de espera e avisam 5 minutos antes. Por isso o padrão é 6 minutos.
-  - Castle Deep e Moss Merchant também podem ser disparados.
-  - As linhas antigas continuam no arquivo e não voltam a disparar, porque têm ano, mês e dia fixos. "Limpar disparos já executados" remove as que passaram há mais de 30 minutos.
-  - Na primeira alteração do dia, o painel salva uma cópia `.bak-AAAAMMDD` do arquivo.
-  - À mão: adicione uma linha como `1  2026  9  23  *  21  5  0` antes do `end` do bloco de agenda e use Reload Event. O primeiro número é o índice da invasão e só existe no `InvasionManager.dat`.
-- **Conferir se nasceu:** o título da janela do GameServer mostra `MonsterCount`, que sobe quando a invasão aparece.
-- **Testado em 28/09/2026 no servidor de testes:** uma linha com data completa (`2 2026 9 28 * 0 9 30`) disparou a dourada na hora (+65 monstros). Ou seja, o agendamento do painel funciona.
-  - Cada invasão **sorteia o mapa** do seu grupo no bloco 2 (o Red Dragon cai em Lorencia, Devias ou Noria). Pode acontecer longe de quem está olhando.
-  - **Blood Castle, Devil Square, Chaos Castle e Illusion Temple** só acontecem se alguém entrar com o ingresso na abertura. Sem ninguém, o log mostra "Not enough users" e o evento fecha vazio.
-  - **Todo Reload Event reinicia a contagem** do Blood Castle e do Chaos Castle ("Sync Start Time" no log), e os jogadores recebem de novo o aviso de que o Blood Castle vai começar. Por isso esse aviso aparece a cada disparo feito pelo painel.
+- **Disparar uma vez:** aba **Eventos** do painel. Ela grava uma linha com data exata no `.dat` do evento, marcada com `//MuChilaAdmin` (vale se o GameServer reiniciar antes da hora), e então:
+  - **Invasões** (29/09/2026): marca o horário direto na **memória** dos GameServers (`ResetWatcher.Invasoes.cs`). O **Reload Event NÃO recalcula** o horário das invasões: o GameServer só calcula o próximo horário quando liga e quando a rodada anterior termina. Por isso, até 29/09, disparar invasão pelo painel nunca funcionava (a Páscoa das 20:41 continuava marcada para as 02:15).
+  - Estado de cada invasão na memória: 1 = esperando (com o horário-alvo), 2 = acontecendo (com o horário do fim). Se já estiver acontecendo, o painel avisa e não mexe.
+  - **Os outros eventos** (Blood Castle, Devil Square, Chaos Castle, Illusion Temple, Moss Merchant, Castle Deep) ainda vão pelo arquivo + Reload Event, só nos GameServers (o Castle Deep, só no Castle Siege). **Ainda não é garantido** que comecem na hora: pelos logs de 29/09, o Reload Event também não refaz o horário deles ("Sync Start Time" só aparece no fim de cada rodada).
+  - Blood Castle, Devil Square, Chaos Castle e Illusion Temple têm sala de espera e avisam 5 minutos antes (padrão de 6 minutos). Sem ninguém com ingresso, o evento fecha vazio ("Not enough users").
+  - Reload Event no **Castle Siege** reinicia o ciclo do cerco (anuncia "começou o período de preparação" e adia o cerco ~15 min). O painel não manda mais para lá, a não ser no Castle Deep (com aviso) ou se você confirmar no botão manual.
+  - "Limpar disparos já executados" tira as linhas que passaram há mais de 30 minutos.
+  - Linha de comando: `MuChilaAdmin.exe --invasao <índice> <segundos> <saída>` (dispara) e `--invasao-ler <índice> <saída>` (só lê o estado).
+- **Invasões sem monstro (defeito do kit, corrigido em 29/09/2026):** cada invasão sorteia um mapa do bloco 2 e só põe os monstros do bloco 3 que têm o **mesmo mapa e o mesmo Value**. No kit, o bloco 2 estava com Value 0 em todos os mapas, e o bloco 3 numerava os mapas (0, 1, 2...). Na maioria dos sorteios, a invasão "acontecia" **sem nenhum monstro**:
+  - Páscoa, Ano Novo, Verão e Demônios: só 1 em 6 sorteios tinha monstros;
+  - Red Dragon, White Wizard e Natal: 1 em 3;
+  - Underworld: 1 em 2;
+  - Golden: 4 mapas vazios em 23;
+  - só a Medusa estava certa.
+- **A correção:** `tools\Corrigir-Invasoes.py` acertou 40 linhas do bloco 2 (o Value de cada mapa = o do bloco 3). No servidor de testes, 3 disparos seguidos da Páscoa deram 10 coelhos cada. Com isso, as invasões da agenda passam a ter monstros de verdade, **inclusive as 11 que o kit marcou todo dia às 18:32**.
+- **Conferir se nasceu:** o título da janela do GameServer mostra `MonsterCount`, que sobe quando a invasão aparece (Golden: +66). Cada invasão sorteia o mapa, então pode acontecer longe de quem está olhando.
 
 ## Itens novos
 

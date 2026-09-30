@@ -12,6 +12,8 @@ public record EventDef(string Name, string File, int Block, int? Index, int Lead
 {
     /// <summary>Roda no servidor do Castle Siege (CastleDeepEvent = 1 só lá; nos GameServers, 0).</summary>
     public bool OnCastleSiege => File == "CastleDeepEvent.dat";
+    /// <summary>Invasão do InvasionManager.dat (Index = número da invasão): o disparo vai direto na memória do GameServer.</summary>
+    public bool IsInvasion => File == "InvasionManager.dat" && Index != null;
 }
 
 /// <summary>

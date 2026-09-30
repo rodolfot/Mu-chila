@@ -281,9 +281,13 @@ public sealed partial class MainForm : Form
         // Segundo 0 do minuto alvo: o agendador do servidor compara minuto a minuto
         var when = DateTime.Now.AddMinutes((double)numMinutes.Value);
         when = new DateTime(when.Year, when.Month, when.Day, when.Hour, when.Minute, 0);
-        Log(EventScheduler.Schedule(ev, when));
-        // só onde o evento roda: Reload Event no Castle Siege reinicia o ciclo do cerco (ServerControl.ReloadGameServersOnly)
-        LogAll(ev.OnCastleSiege ? ServerControl.ReloadCastleSiegeOnly("Event") : ServerControl.ReloadGameServersOnly("Event"));
+        Log(EventScheduler.Schedule(ev, when));   // a linha no arquivo vale se o GameServer reiniciar antes da hora
+        if (ev.IsInvasion)
+            // o Reload não recalcula o horário das invasões: marca direto na memória de cada GameServer (ResetWatcher.Invasoes.cs)
+            LogAll(ResetWatcher.InvasionStartAt(ev.Index!.Value, when));
+        else
+            // só onde o evento roda: Reload Event no Castle Siege reinicia o ciclo do cerco (ServerControl.ReloadGameServersOnly)
+            LogAll(ev.OnCastleSiege ? ServerControl.ReloadCastleSiegeOnly("Event") : ServerControl.ReloadGameServersOnly("Event"));
         RefreshEvents();
     }
 
@@ -1069,11 +1073,11 @@ public sealed partial class MainForm : Form
     void LoadNotices()
     {
         var all = Notices.Load();
-        noticeHidden = all.Where(n => n.IsOneShot).ToList();
+        noticeHidden = all.Where(n => n.IsManaged).ToList();   // "enviar agora" e lembretes de bônus: o vigia cuida
         var t = new DataTable();
         t.Columns.Add("Mensagem"); t.Columns.Add(NoticeWaitCol, typeof(int));
         noticeRows.Clear();
-        foreach (var n in all.Where(n => !n.IsOneShot))
+        foreach (var n in all.Where(n => !n.IsManaged))
         {
             var row = t.NewRow(); row["Mensagem"] = n.Message; row[NoticeWaitCol] = n.RepeatTime;
             t.Rows.Add(row); noticeRows[row] = n;
@@ -1098,12 +1102,12 @@ public sealed partial class MainForm : Form
             if (n.Raw == null || n.Key() != n.RawKey) mudados.Add(n.Message);
             list.Add(n);
         }
-        var backup = Notices.Save(list);
+        var backup = Notices.Save(list, userList: true);   // só a lista editável; o que o vigia pôs no arquivo fica
         Log($"Avisos salvos (backup {Path.GetFileName(backup)}).");
         LogAll(ServerControl.Reload("Util (GMs, avisos)"));
         // o Reload não reinicia o rodízio (#31): recomeça no 1º aviso mudado e manda ele já; sem mudança de texto, volta ao 1º
         var salvos = Notices.Load();
-        int i = salvos.FindIndex(n => !n.IsOneShot && mudados.Contains(n.Message));
+        int i = salvos.FindIndex(n => !n.IsManaged && mudados.Contains(n.Message));
         LogAll(i >= 0 ? ResetWatcher.NoticeRestart(i, true, salvos[i].Message) : ResetWatcher.NoticeRestart(0, false, null));
         if (i >= 0) Log($"\"{salvos[i].Message}\" aparece na tela agora; depois o rodízio segue na ordem da lista.");
         LoadNotices();
@@ -1112,14 +1116,13 @@ public sealed partial class MainForm : Form
     void SendNoticeNow()
     {
         var msg = Notices.Clean(txtNoticeNow.Text);
-        if (noticeDirty) throw new InvalidOperationException("Salve ou descarte as alterações dos avisos automáticos antes de enviar.");
-        Notices.AddOneShot(msg);
+        Notices.AddOneShot(msg);   // não mexe na lista editável (nem nas mudanças ainda não salvas dela)
         LogAll(ServerControl.Reload("Util (GMs, avisos)"));
         // o Reload não reinicia o rodízio de avisos do GameServer (#31): põe o aviso novo (1ª linha) para sair já
         LogAll(ResetWatcher.NoticeRestart(sendFirstNow: true, firstMessage: msg));
         Log($"Aviso enviado para todos: \"{msg}\". O vigia tira ele do Notice.txt em menos de 1 minuto.");
         txtNoticeNow.Clear();
-        LoadNotices();
+        if (!noticeDirty) LoadNotices();
     }
 
     // ---------------- Itens novos (a partir de um existente) ----------------

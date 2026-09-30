@@ -75,6 +75,22 @@ static class Program
             catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
         }
 
+        // "--invasao <índice> <segundos> <saida>": faz a invasão começar daqui a N segundos em todos os GameServers de
+        // MUCHILA_ROOT (o mesmo que o "Disparar evento", só a parte da memória). "--invasao-ler <índice> <saida>": só lê o estado.
+        if ((args.Length == 4 && args[0] == "--invasao") || (args.Length == 3 && args[0] == "--invasao-ler"))
+        {
+            try
+            {
+                int idx = int.Parse(args[1]);
+                var linhas = args[0] == "--invasao"
+                    ? ResetWatcher.InvasionStartAt(idx, DateTime.Now.AddSeconds(int.Parse(args[2])))
+                    : ResetWatcher.InvasionRead(idx).Select(s => s == null ? "(não achado)" : $"{s.Server}: estado {s.State}, alvo {s.Target:dd/MM HH:mm:ss}").ToList();
+                File.WriteAllLines(args[^1], linhas);
+                return 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[^1], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "--testar-opcoes-visao <saida> <foto.png>": aba "Taxas e opções" com os dados reais; só simula na tela e tira fotos
         if (args.Length == 3 && args[0] == "--testar-opcoes-visao")
         {
@@ -407,6 +423,30 @@ static class Program
                 C("tirar o \"enviar agora\" devolve o original", Notices.RemoveOneShots(TimeSpan.Zero) == 1 && File.ReadAllBytes(Notices.File_).SequenceEqual(orig));
                 bool recusou = false; try { Notices.Clean("oi 😀"); } catch (InvalidOperationException) { recusou = true; }
                 C("recusa emoji e aceita acento", recusou && Notices.Clean("  ação\r\ncoração  ") == "ação coração");
+
+                // painel e vigia no mesmo arquivo (29/09/2026): cada um só manda na sua parte
+                var painel = Notices.Load().Where(n => !n.IsManaged).ToList();       // o painel abre a aba Avisos
+                Notices.AddOneShot("Aviso do vigia no meio da edição");               // o vigia mexe no arquivo
+                var v = Notices.Load(); v.Add(new Notice { Message = "Bônus ativo: teste", RepeatTime = 300, Comment = $"{TimedBonuses.NoticeTag} teste" }); Notices.Save(v);
+                var editar = painel[0]; var textoAntigo = editar.Message; int antigos = painel.Count(n => n.Message == textoAntigo);
+                editar.Message = "Mensagem editada no painel";
+                painel.Add(new Notice { Message = "Aviso novo do painel", RepeatTime = 120 });
+                Notices.Save(painel, userList: true);
+                var l3 = Notices.Load(); var lista3 = l3.Where(n => !n.IsManaged).Select(n => n.Message).ToList();
+                C("salvar a lista depois que o vigia mexeu: grava a edição e o aviso novo", lista3.Contains("Mensagem editada no painel") && lista3.Contains("Aviso novo do painel") && lista3.Count(m => m == textoAntigo) == antigos - 1);
+                C("o que o vigia pôs continua lá", l3.Any(n => n.IsOneShot && n.Message.StartsWith("Aviso do vigia")) && l3.Any(n => n.Comment == $"{TimedBonuses.NoticeTag} teste"));
+                C("aviso editado fica no mesmo lugar da lista", lista3.IndexOf("Mensagem editada no painel") == 0 && lista3[^1] == "Aviso novo do painel");
+                var longa = "Com VIP você ganha até 80% mais drop e exp. Venha fazer parte da Familia Mu Chila, teste!";
+                var p4 = Notices.Load().Where(n => !n.IsManaged).ToList(); p4.Add(new Notice { Message = longa, RepeatTime = 455 }); Notices.Save(p4, userList: true);
+                var linhaLonga = File.ReadAllLines(Notices.File_, System.Text.Encoding.Latin1).FirstOrDefault(x => x.Contains("teste!\"")) ?? "";
+                C("mensagem longa (89 caracteres): gravada com espaço e lida de volta", Notices.Load().Any(n => n.Message == longa && n.RepeatTime == 455) && linhaLonga.Contains("teste!\" "), $"({longa.Length} caracteres)");
+                File.WriteAllText(Notices.File_, File.ReadAllText(Notices.File_, System.Text.Encoding.Latin1).Replace("\"Mensagem editada no painel\"", "\"Mensagem editada no painel\"").Replace("Chila, teste!\" ", "Chila, teste!\""), System.Text.Encoding.Latin1);
+                C("linha antiga grudada (\"...\"0) também é lida", Notices.Load().Any(n => n.Message == longa));
+                l3 = Notices.Load();
+                var semVigia = l3.Where(n => !n.IsManaged).ToList();
+                Notices.Save(Notices.Load().Where(n => !n.IsManaged).ToList());   // o vigia grava a parte dele (sem mudança) com a lista do painel velha
+                C("gravar a parte do vigia não desfaz a lista do painel", Notices.Load().Where(n => !n.IsManaged).Select(n => n.Message).SequenceEqual(semVigia.Select(n => n.Message)));
+                File.WriteAllBytes(Notices.File_, orig);
             }
             catch (Exception ex) { f++; sb.AppendLine("FALHA inesperada: " + ex.Message); }
             sb.AppendLine($"{f} falha(s)"); File.WriteAllText(args[1], sb.ToString());

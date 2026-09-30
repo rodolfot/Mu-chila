@@ -14,6 +14,8 @@ public class Notice
     internal string Key() => string.Join("|", Message, Type, Count, Opacity, Delay, Red, Green, Blue, Speed, RepeatTime, Comment);
     /// <summary>Aviso "enviar agora" do painel (sai do arquivo sozinho depois de mandado).</summary>
     public bool IsOneShot => Comment.StartsWith(Notices.OneShotMarker, StringComparison.Ordinal);
+    /// <summary>Linha cuidada pelo vigia/painel sozinhos ("enviar agora" e lembrete de bônus por tempo): não aparece na lista editável.</summary>
+    public bool IsManaged => IsOneShot || Comment.StartsWith(TimedBonuses.NoticeTag, StringComparison.Ordinal);
 }
 
 /// <summary>
@@ -29,9 +31,10 @@ public static class Notices
     public const string OneShotMarker = "MuChilaAdmin-agora";
     public static string File_ => Path.Combine(ServerControl.ServerRoot, @"Data\Util\Notice.txt");
     static readonly Encoding Enc = Encoding.Latin1;   // o cliente lê Windows-1252 (acentos ok)
-    static readonly Regex Line = new(@"^\s*""([^""]*)""\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s*(?://(.*))?$");
+    // depois das aspas o espaço é opcional: mensagens longas (70+ caracteres) eram gravadas grudadas no número ("..."0) e o
+    // painel deixava de enxergá-las (o GameServer lê normal), então pareciam não salvas e o dono gravava de novo (29/09/2026)
+    static readonly Regex Line = new(@"^\s*""([^""]*)""\s*(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s*(?://(.*))?$");
     static List<object>? layout;
-    static string? loadedText;
 
     public static List<Notice> Load()
     {
@@ -50,14 +53,14 @@ public static class Notices
             n.RawKey = n.Key();
             lay.Add(n); list.Add(n);
         }
-        layout = lay; loadedText = text;
+        layout = lay;
         return list;
     }
 
     static string Format(Notice n)
     {
         var msg = "\"" + n.Message + "\"";
-        var sb = new StringBuilder(msg.PadRight(71));
+        var sb = new StringBuilder((msg + " ").PadRight(71));   // sempre pelo menos um espaço antes do 1º número
         foreach (var (v, w) in new[] { (n.Type, 7), (n.Count, 8), (n.Opacity, 10), (n.Delay, 8), (n.Red, 6), (n.Green, 8), (n.Blue, 7), (n.Speed, 8), (n.RepeatTime, 0) })
             sb.Append(w == 0 ? v.ToString() : v.ToString().PadRight(w));
         if (n.Comment.Length > 0) sb.Append("   //").Append(n.Comment);
@@ -74,33 +77,58 @@ public static class Notices
         return s;
     }
 
-    public static string Save(IReadOnlyList<Notice> notices)
+    /// <summary>
+    /// Grava os avisos. O painel e o vigia gravam o mesmo arquivo (lista editada, "enviar agora", lembretes de bônus), então
+    /// cada um só manda na sua parte e a outra fica como está no disco AGORA (29/09/2026: antes, o "Salvar" do painel era
+    /// recusado se o vigia tinha mexido no arquivo, e os lembretes de bônus apareciam na lista e eram apagados junto).
+    /// userList = true: a lista editável do painel (avisos automáticos); false: as linhas cuidadas (IsManaged).
+    /// Cada aviso fica no lugar da sua linha original; novos vão antes do "end" ("enviar agora" vai para o topo).
+    /// </summary>
+    public static string Save(IReadOnlyList<Notice> notices, bool userList = false) => Locked(() =>
     {
-        if (layout == null || loadedText == null) throw new InvalidOperationException("Leia os avisos antes de gravar.");
-        if (File.ReadAllText(File_, Enc) != loadedText) throw new InvalidOperationException("O Notice.txt mudou no disco desde que foi aberto. Clique em \"Descartar\" para ler de novo.");
-        foreach (var n in notices) n.Message = Clean(n.Message);
-        var keep = new HashSet<Notice>(notices, ReferenceEqualityComparer.Instance);
-        var placed = new HashSet<Notice>(ReferenceEqualityComparer.Instance);
+        var disk = Load();   // sempre relê
+        bool Mine(Notice n) => userList ? !n.IsManaged : n.IsManaged;
+        var mine = notices.Where(Mine).ToList();
+        foreach (var n in mine) n.Message = Clean(n.Message);
+        var repl = new Dictionary<Notice, Notice>(ReferenceEqualityComparer.Instance);
+        var used = new HashSet<Notice>(ReferenceEqualityComparer.Instance);
+        var novas = new List<Notice>();
+        foreach (var n in mine)
+        {
+            var d = disk.FirstOrDefault(x => Mine(x) && !used.Contains(x) && (ReferenceEquals(x, n) || (n.Raw != null && x.Raw == n.Raw)));
+            if (d != null) { used.Add(d); repl[d] = n; } else novas.Add(n);
+        }
         var outLines = new List<string>(); int endAt = -1;
-        foreach (var o in layout)
+        foreach (var o in layout!)
         {
             if (o is string s) { if (endAt < 0 && s.Trim().Equals("end", StringComparison.OrdinalIgnoreCase)) endAt = outLines.Count; outLines.Add(s); continue; }
-            var n = (Notice)o;
-            if (!keep.Contains(n)) continue;
-            outLines.Add(n.Raw != null && n.Key() == n.RawKey ? n.Raw : Format(n));
-            placed.Add(n);
+            var d = (Notice)o;
+            if (repl.TryGetValue(d, out var n)) outLines.Add(Text(n));
+            else if (!Mine(d)) outLines.Add(d.Raw!);   // a parte do outro, como está no disco
+            // senão: tirado
         }
         if (endAt < 0) throw new InvalidOperationException("O Notice.txt não tem a linha \"end\".");
-        var novas = notices.Where(n => !placed.Contains(n)).ToList();
-        outLines.InsertRange(endAt, novas.Where(n => !n.IsOneShot).Select(Format));
+        outLines.InsertRange(endAt, novas.Where(n => !n.IsOneShot).Select(Text));
         // "enviar agora" vai para antes do primeiro aviso: é o primeiro que o servidor manda depois do Reload
         int first = outLines.FindIndex(l => Line.IsMatch(l));
-        outLines.InsertRange(first >= 0 ? first : endAt, novas.Where(n => n.IsOneShot).Select(Format));
+        outLines.InsertRange(first >= 0 ? first : endAt, novas.Where(n => n.IsOneShot).Select(Text));
         var backup = File_ + ".bak-" + DateTime.Now.ToString("yyyyMMdd-HHmmss");
         File.Copy(File_, backup, overwrite: true);
         File.WriteAllText(File_, string.Join("\r\n", outLines), Enc);
         Load();
         return backup;
+    });
+
+    static string Text(Notice n) => n.Raw != null && n.Key() == n.RawKey ? n.Raw : Format(n);
+
+    /// <summary>Uma gravação por vez (painel e vigia são processos diferentes).</summary>
+    static T Locked<T>(Func<T> f)
+    {
+        using var m = new Mutex(false, @"Local\MuChilaNotice");
+        bool got;
+        try { got = m.WaitOne(TimeSpan.FromSeconds(20)); } catch (AbandonedMutexException) { got = true; }
+        if (!got) throw new TimeoutException("Outro processo está gravando os avisos; tente de novo.");
+        try { return f(); } finally { m.ReleaseMutex(); }
     }
 
     /// <summary>Acrescenta um aviso "enviar agora" no topo (RepeatTime 1); depois é preciso dar Reload Util. O vigia tira do arquivo.</summary>
