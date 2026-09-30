@@ -288,6 +288,19 @@ static class Program
             return 0;
         }
 
+        // "--colocar-item <conta> <personagem | bau> <seção> <índice> <nível> <quantidade> <arquivo>": o mesmo que o botão
+        // "Colocar item..." da aba Itens e baú (conta fora do jogo, backup antes).
+        if (args.Length == 8 && args[0] == "--colocar-item")
+        {
+            try
+            {
+                File.WriteAllText(args[7], Items.Place(args[1], args[2] == "bau" ? null : args[2], int.Parse(args[3]), int.Parse(args[4]), int.Parse(args[5]),
+                                                        false, false, 0, 0, int.Parse(args[6])));
+                return 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[7], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "--testar-cashshop-precos <arquivo>": preço por OPÇÃO (o que o jogo mostra e cobra), em cópias (MUCHILA_ROOT e
         // MUCHILA_CLIENTE): Panda Ring (C) 150/700 sem mexer no (P), vitrine e descrição juntas, produto próprio quando era
         // compartilhado, pacote de opção única pela coluna Preço, e 2ª edição no mesmo produto (sem nova cópia).

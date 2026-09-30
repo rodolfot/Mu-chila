@@ -1430,7 +1430,7 @@ public sealed partial class MainForm : Form
         var bar = Bar(L("Conta:"), cmbItemAccount, L("Personagem:"), cmbItemPlace,
             Btn("Atualizar", ShowItems),
             Btn("Remover item selecionado", RemoveItem),
-            Btn("Dar item (Gremory Case)...", GiveItem),
+            Btn("Colocar item...", PlaceItem),
             Btn("Cancelar presente selecionado", () =>
             {
                 if (cmbItemAccount.SelectedItem is not string a || gridGifts.CurrentRow?.Cells["Codigo"].Value is not int code) { Log("Selecione um presente."); return; }
@@ -1440,8 +1440,9 @@ public sealed partial class MainForm : Form
         var help = new Label
         {
             Dock = DockStyle.Top, Height = 54, Padding = new Padding(6),
-            Text = "Remover só funciona com a conta fora do jogo (o servidor regravaria o item ao sair) e salva antes o inventário/baú inteiro em " +
-                   "C:\\MuServer\\DB\\backup-itens-*.csv. Presentes vão para a Gremory Case do jogador: ele recebe ao entrar e puxa para o inventário. " +
+            Text = "\"Colocar item...\" põe um item novo no inventário do personagem escolhido (ou no baú da conta) no 1º espaço livre em que ele cabe. " +
+                   "Colocar e remover deslogam a conta se ela estiver no jogo (o servidor regravaria o inventário ao sair) e salvam antes o inventário/baú inteiro em " +
+                   "C:\\MuServer\\DB\\backup-itens-*.csv. " +
                    "Não use o MuEditor para salvar inventários do S14: ele é da Season 8 e pode apagar o inventário expandido e o baú estendido.",
         };
         var itensComFoto = new Panel { Dock = DockStyle.Fill };
@@ -1479,6 +1480,49 @@ public sealed partial class MainForm : Form
         if (!Confirm($"Remover {item.Name} +{item.Level} ({item.Place}, posição {item.Slot}) de {(place == VaultOption ? "baú de " + account : place)}?\n\nO inventário/baú inteiro é salvo antes num arquivo de backup.")) return;
         if (!EnsureOffline(account, "remover o item")) return;
         Log(Items.Remove(account, place == VaultOption ? null : place, item));
+        ShowItems();
+    }
+
+    /// <summary>Coloca um item novo no inventário do personagem escolhido ou no baú da conta (Items.Place), com a conta fora do jogo.</summary>
+    void PlaceItem()
+    {
+        if (cmbItemAccount.SelectedItem is not string account || cmbItemPlace.SelectedItem is not string place) { Log("Escolha a conta e o personagem (ou o baú)."); return; }
+        bool vault = place == VaultOption;
+        using var dlg = new Form { Text = $"Colocar item: {(vault ? "baú da conta " + account : "inventário de " + place)}", Width = 520, Height = 470, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        var search = new TextBox { Left = 12, Top = 12, Width = 480, PlaceholderText = "Digite parte do nome do item..." };
+        var list = new ListBox { Left = 12, Top = 42, Width = 480, Height = 290 };
+        var all = Shops.Catalog().OrderBy(d => d.Section).ThenBy(d => d.Type).ToList();
+        void Filter()
+        {
+            list.BeginUpdate(); list.Items.Clear();
+            foreach (var d in all.Where(d => search.Text.Length == 0 || d.Name.Contains(search.Text, StringComparison.OrdinalIgnoreCase)).Take(400)) list.Items.Add(d);
+            list.EndUpdate();
+        }
+        list.Format += (_, e) => { if (e.ListItem is ItemDef d) e.Value = $"{d.Name}   [{d.Section},{d.Type}]"; };
+        search.TextChanged += (_, _) => Filter();
+        NumericUpDown N(int left, int top, int min, int max, int value) => new() { Left = left, Top = top, Width = 55, Minimum = min, Maximum = max, Value = value };
+        Label L(int left, int top, string text) => new() { Left = left, Top = top + 3, AutoSize = true, Text = text };
+        var level = N(55, 345, 0, 15, 0); var opt = N(150, 345, 0, 7, 0); var exc = N(255, 345, 0, 63, 0); var qty = N(395, 345, 1, 1, 1);
+        var skill = new CheckBox { Left = 12, Top = 378, Text = "Skill", AutoSize = true };
+        var luck = new CheckBox { Left = 75, Top = 378, Text = "Sorte", AutoSize = true };
+        var info = new Label { Left = 150, Top = 380, AutoSize = true, ForeColor = SystemColors.GrayText };
+        list.SelectedIndexChanged += (_, _) =>
+        {
+            if (list.SelectedItem is not ItemDef d) return;
+            int max = CashShop.MaxStack(d.Section, d.Type);
+            qty.Maximum = Math.Max(1, max); qty.Value = Math.Min(qty.Value, qty.Maximum);
+            info.Text = $"{d.Width}x{d.Height}" + (max > 1 ? $", empilha até {max}" : $", durabilidade {Items.BaseDurability(d.Section, d.Type)}");
+        };
+        var ok = new Button { Text = "Colocar", DialogResult = DialogResult.OK, Left = 336, Top = 395, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 417, Top = 395, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { search, list, L(12, 345, "Nível"), level, L(110, 345, "Opção"), opt, L(210, 345, "Exc (0-63)"), exc,
+                                              L(320, 345, "Quantidade"), qty, skill, luck, info, ok, cancel });
+        dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        Filter();
+        if (dlg.ShowDialog(this) != DialogResult.OK) return;
+        if (list.SelectedItem is not ItemDef item) { Log("Escolha o item na lista."); return; }
+        if (!EnsureOffline(account, "colocar o item")) return;
+        Log(Items.Place(account, vault ? null : place, item.Section, item.Type, (int)level.Value, skill.Checked, luck.Checked, (int)opt.Value, (int)exc.Value, (int)qty.Value));
         ShowItems();
     }
 
