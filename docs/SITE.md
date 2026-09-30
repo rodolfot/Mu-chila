@@ -78,12 +78,14 @@ O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatu
 
 ### Planos (definidos pelo dono em 25/09/2026)
 
+Valores de 29/09/2026 à noite, mudados pelo dono na aba "Taxas e opções" do painel. Zen por plano: 1/3/3/4 (`MoneyAmountDropRate`). Máximo por atributo: 65.000. Joias: 0,01% por monstro. Histórico em ALTERACOES.md.
+
 | Plano | Tipo de conta | Experiência | Experiência master | Drop | Zen no baú | Preço (30 dias) |
 |---|---|---|---|---|---|---|
-| Free | `_AL0` | 100x | 7x | 5% (era 50%) | — | — |
-| Vipzinho | `_AL1` | 130x | 20x | 10% (era 80%) | — (era 200.000.000) | R$ 35 |
-| Vip | `_AL2` | 150x | 57x | 12% (era 110%) | — (era 500.000.000) | R$ 40 |
-| Vipzão | `_AL3` | 180x | 133x | 14% (era 150%) | — (era 2.000.000.000) | R$ 50 |
+| Free | `_AL0` | 200x | 30x | 1% | — | — |
+| Vipzinho | `_AL1` | 260x | 50x | 1% | — (era 200.000.000) | R$ 35 |
+| Vip | `_AL2` | 300x | 80x | 2% | — (era 500.000.000) | R$ 40 |
+| Vipzão | `_AL3` | 360x | 100x | 3% | — (era 2.000.000.000) | R$ 50 |
 
 **27/09/2026:** o VIP **não dá mais Zen** (pedido do Mario, aprovado pelo dono): `zen = 0` nos pacotes. O mecanismo abaixo continua no código, caso volte.
 
@@ -146,7 +148,7 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\modules\info.php` | Página Informações com os valores reais do servidor |
 
 Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "Loja" no menu do topo e item "Loja: VIP e Cash" no menu do jogador; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin; módulos sem suporte desligados e link de senha do login; downloads da pasta "Cliente para amigos" e cache da página.
-Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas ("100x dinâmico (VIP até +80%)", antes "100x (VIP até 2000x)", drop "5% (VIP até 14%)", antes "50% (VIP até 150%)"), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
+Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas ("100x dinâmico (VIP até +80%)", antes "100x (VIP até 2000x)", drop "1% (VIP até 3%)", antes "5% (VIP até 14%)" e "50% (VIP até 150%)"; EXP "200x dinâmico (VIP até +80%)"), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
 
 **Atualizar o WebEngine**: baixar a versão nova, conferir, copiar por cima de `www` (sem `install`), rodar `Instalar-Modulos.ps1` e os dois testes.
 

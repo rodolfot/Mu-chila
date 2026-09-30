@@ -10,5 +10,8 @@
 //
 //=====================================================
 //Message                                                            Type   Count   Opacity   Delay   Red   Green   Blue   Speed   RepeatTime
-"Server Season 14 AM"                                                  0      0       0         0       0     0       0      0       60
+"Mu Chila - A diversão acontece aqui!"                                 0      0       0         0       0     0       0      0       60
+"Bem-vindo ao Mu Chila!"                                               0      0       0         0       0     0       0      0       600
+"Com VIP você ganha até 80% mais drop e exp. Venha fazer parte da Familia Mu Chila!"0      0       0         0       0     0       0      0       455
+"Atenção: Nenhum GM pedirá senha ou qualquer informação confidencial. Fique atento."0      0       0         0       0     0       0      0       851
 end

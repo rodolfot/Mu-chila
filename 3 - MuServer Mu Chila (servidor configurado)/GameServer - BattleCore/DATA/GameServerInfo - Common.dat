@@ -158,18 +158,18 @@ ElfBufferDefenseConstB = 3
 ;==================================================
 ; Experience Settings
 ;==================================================
-AddExperienceRate_AL0 = 100
-AddExperienceRate_AL1 = 130
-AddExperienceRate_AL2 = 150
-AddExperienceRate_AL3 = 180
-AddMasterExperienceRate_AL0 = 7
-AddMasterExperienceRate_AL1 = 20
-AddMasterExperienceRate_AL2 = 57
-AddMasterExperienceRate_AL3 = 133
-MinMasterExperienceMonsterLevel_AL0 = 95
-MinMasterExperienceMonsterLevel_AL1 = 95
-MinMasterExperienceMonsterLevel_AL2 = 95
-MinMasterExperienceMonsterLevel_AL3 = 95
+AddExperienceRate_AL0 = 200
+AddExperienceRate_AL1 = 260
+AddExperienceRate_AL2 = 300
+AddExperienceRate_AL3 = 360
+AddMasterExperienceRate_AL0 = 30
+AddMasterExperienceRate_AL1 = 50
+AddMasterExperienceRate_AL2 = 80
+AddMasterExperienceRate_AL3 = 100
+MinMasterExperienceMonsterLevel_AL0 = 90
+MinMasterExperienceMonsterLevel_AL1 = 90
+MinMasterExperienceMonsterLevel_AL2 = 90
+MinMasterExperienceMonsterLevel_AL3 = 90
 AddEventExperienceRate_AL0 = 100
 AddEventExperienceRate_AL1 = 100
 AddEventExperienceRate_AL2 = 100
@@ -183,19 +183,19 @@ AddQuestExperienceRate_AL3 = 100
 ; Item Drop Settings
 ;==================================================
 ItemDropTime = 30
-ItemDropRate_AL0 = 5
-ItemDropRate_AL1 = 10
-ItemDropRate_AL2 = 12
-ItemDropRate_AL3 = 14
+ItemDropRate_AL0 = 1
+ItemDropRate_AL1 = 1
+ItemDropRate_AL2 = 2
+ItemDropRate_AL3 = 3
 
 ;==================================================
 ; Money Drop Settings
 ;==================================================
 MoneyDropTime = 30
-MoneyAmountDropRate_AL0 = 50
-MoneyAmountDropRate_AL1 = 50
-MoneyAmountDropRate_AL2 = 50
-MoneyAmountDropRate_AL3 = 50
+MoneyAmountDropRate_AL0 = 1
+MoneyAmountDropRate_AL1 = 3
+MoneyAmountDropRate_AL2 = 3
+MoneyAmountDropRate_AL3 = 4
 
 ;==================================================
 ; Item Durability Settings
@@ -229,10 +229,10 @@ TradeItemBlockSell = 0
 MaxLevelUp = 400
 MaxLevelUpEvent = 1
 MaxLevelUpQuest = 1
-MaxStatPoint_AL0 = 25000
-MaxStatPoint_AL1 = 25000
-MaxStatPoint_AL2 = 25000
-MaxStatPoint_AL3 = 25000
+MaxStatPoint_AL0 = 65000
+MaxStatPoint_AL1 = 65000
+MaxStatPoint_AL2 = 65000
+MaxStatPoint_AL3 = 65000
 DWLevelUpPoint = 5
 DKLevelUpPoint = 5
 FELevelUpPoint = 5
@@ -348,9 +348,9 @@ CashShopBannerVersion2 = 2010
 CashShopBannerVersion3 = 5
 CashShopGoblinPointDelay = 10
 CashShopGoblinPointValue_AL0 = 1
-CashShopGoblinPointValue_AL1 = 1
-CashShopGoblinPointValue_AL2 = 1
-CashShopGoblinPointValue_AL3 = 1
+CashShopGoblinPointValue_AL1 = 2
+CashShopGoblinPointValue_AL2 = 3
+CashShopGoblinPointValue_AL3 = 4
 
 ;==================================================
 ; Event Inventory Settings

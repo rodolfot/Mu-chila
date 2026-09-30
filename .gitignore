@@ -36,3 +36,6 @@ Thumbs.db
 
 # Despejos de memoria de queda dos servidores (podem ter dados de contas)
 *.dmp
+
+# registro de pontos dados pelo painel (nomes de contas; fica só no servidor)
+**/DB/muchila-pontos-dados.csv
