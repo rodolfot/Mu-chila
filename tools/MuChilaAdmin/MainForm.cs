@@ -513,12 +513,14 @@ public sealed partial class MainForm : Form
         gridCash.CellValueChanged += (_, e) => { if (e.RowIndex >= 0 && cashAll.Count > 0) { cashDirty = true; UpdateCashStatus(); } };
         gridCash.CurrentCellDirtyStateChanged += (_, _) => { if (gridCash.IsCurrentCellDirty && gridCash.CurrentCell is DataGridViewCheckBoxCell) gridCash.CommitEdit(DataGridViewDataErrorContexts.Commit); };
         gridCash.DataError += (_, e) => { Log("Preço inválido: use só números."); e.Cancel = true; };
+        gridCash.CellDoubleClick += (_, e) => { if (e.RowIndex >= 0 && SelectedCashOf(gridCash.Rows[e.RowIndex]) is { Options.Count: > 1 }) Safe(EditCashOptions); };
         txtCashFind.TextChanged += (_, _) => Safe(() => FillCash(txtCashFind.Text));
 
         var bar = Bar(
             new Label { Text = "Loja de Cash (tecla X no jogo):", AutoSize = true, Padding = new Padding(0, 6, 6, 0) }, txtCashFind,
             Btn("Adicionar item...", AddCashItem),
             Btn("Remover da loja", RemoveCashItem),
+            Btn("Preços das opções...", EditCashOptions),
             Btn("Salvar e aplicar", SaveCash),
             Btn("Recarregar da pasta", () => { cashDirty = false; LoadCash(); }),
             Btn("Publicar p/ launcher", GenerateCashPatch),
@@ -550,18 +552,65 @@ public sealed partial class MainForm : Form
     void FillCash(string filter)
     {
         var t = new DataTable();
-        t.Columns.Add("Pacote"); t.Columns.Add("Moeda"); t.Columns.Add("Preço", typeof(int)); t.Columns.Add("Na loja", typeof(bool)); t.Columns.Add("Origem");
+        t.Columns.Add("Pacote"); t.Columns.Add("Opções"); t.Columns.Add("Moeda"); t.Columns.Add("Preço", typeof(int)); t.Columns.Add("Na loja", typeof(bool)); t.Columns.Add("Origem");
         t.Columns.Add("cat", typeof(int)); t.Columns.Add("main", typeof(int));
         foreach (var p in cashAll)
         {
             if (filter.Length > 0 && !(p.Name.Contains(filter, StringComparison.OrdinalIgnoreCase))) continue;
-            t.Rows.Add(p.HasClient ? p.Name : $"(pacote {p.Category},{p.Main} — sem tela no cliente)", p.CoinLabel, p.Price, !p.Hidden, p.Added ? "painel" : "kit", p.Category, p.Main);
+            t.Rows.Add(p.HasClient ? p.Name : $"(pacote {p.Category},{p.Main} — sem tela no cliente)", CashOptionsText(p), p.CoinLabel,
+                       p.Options.Count > 0 ? p.Options[0].Price : p.Price, !p.Hidden, p.Added ? "painel" : "kit", p.Category, p.Main);
         }
         gridCash.DataSource = t;
-        foreach (var c in new[] { "Pacote", "Moeda", "Origem", "cat", "main" }) gridCash.Columns[c]!.ReadOnly = true;
+        foreach (var c in new[] { "Pacote", "Opções", "Moeda", "Origem", "cat", "main" }) gridCash.Columns[c]!.ReadOnly = true;
         gridCash.Columns["cat"]!.Visible = gridCash.Columns["main"]!.Visible = false;
-        gridCash.Columns["Pacote"]!.FillWeight = 260; gridCash.Columns["Moeda"]!.FillWeight = 90;
-        gridCash.Columns["Preço"]!.FillWeight = 70; gridCash.Columns["Na loja"]!.FillWeight = 60; gridCash.Columns["Origem"]!.FillWeight = 50;
+        gridCash.Columns["Pacote"]!.FillWeight = 220; gridCash.Columns["Opções"]!.FillWeight = 200; gridCash.Columns["Moeda"]!.FillWeight = 80;
+        gridCash.Columns["Preço"]!.FillWeight = 60; gridCash.Columns["Na loja"]!.FillWeight = 50; gridCash.Columns["Origem"]!.FillWeight = 45;
+        // pacote com várias opções: cada uma tem o seu preço (duplo clique / "Preços das opções..."); a coluna só mostra a 1ª
+        foreach (DataGridViewRow r in gridCash.Rows)
+            if (SelectedCashOf(r) is { Options.Count: > 1 } p)
+            {
+                r.Cells["Preço"].ReadOnly = true; r.Cells["Preço"].Style.BackColor = SystemColors.Control;
+                r.Cells["Preço"].ToolTipText = "Várias opções: duplo clique para mudar o preço de cada uma";
+            }
+    }
+
+    static string CashOptionsText(CashShop.Package p) => p.Options.Count switch
+    {
+        0 => "vários itens, um preço",
+        1 => p.Options[0].Label,
+        _ => string.Join(" · ", p.Options.Select(o => $"{o.Label}: {o.Price:N0}")),
+    };
+
+    CashShop.Package? SelectedCashOf(DataGridViewRow? r) =>
+        r?.DataBoundItem is DataRowView v && v.Row["cat"] is int cat && v.Row["main"] is int main ? cashAll.FirstOrDefault(p => p.Category == cat && p.Main == main) : null;
+
+    /// <summary>Janela com o preço de cada opção (1 dia, 7 dias...). É o preço que o jogo mostra e cobra.</summary>
+    void EditCashOptions()
+    {
+        var p = SelectedCashOf(gridCash.CurrentRow);
+        if (p == null) { Log("Selecione um pacote na lista."); return; }
+        if (p.Options.Count == 0) { Log($"\"{p.Name}\" é um pacote de vários itens com um preço só: mude na coluna Preço."); return; }
+        if (p.Hidden) { Log($"\"{p.Name}\" está fora da loja: marque \"Na loja\" antes de mudar os preços."); return; }
+        using var dlg = new Form { Text = $"Preços das opções: {p.Name} ({p.CoinLabel})", Width = 460, Height = 150 + 34 * p.Options.Count, StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false };
+        dlg.Controls.Add(new Label { Left = 12, Top = 10, Width = 420, Height = 36, Text = "É o preço que o jogo mostra e cobra em cada opção. A vitrine da loja mostra o da 1ª opção; a descrição do pacote é atualizada junto." });
+        var nums = new List<NumericUpDown>();
+        for (int i = 0; i < p.Options.Count; i++)
+        {
+            var o = p.Options[i];
+            dlg.Controls.Add(new Label { Left = 12, Top = 56 + 34 * i, Width = 250, Text = o.Label + (o.Shared ? "  (vira produto próprio deste pacote)" : "") });
+            var n = new NumericUpDown { Left = 270, Top = 52 + 34 * i, Width = 150, Minimum = 0, Maximum = 9_000_000, Value = o.Price, ThousandsSeparator = true };
+            nums.Add(n); dlg.Controls.Add(n);
+        }
+        var ok = new Button { Text = "OK", DialogResult = DialogResult.OK, Left = 264, Top = 62 + 34 * p.Options.Count, Width = 75 };
+        var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 345, Top = 62 + 34 * p.Options.Count, Width = 75 };
+        dlg.Controls.AddRange(new Control[] { ok, cancel }); dlg.AcceptButton = ok; dlg.CancelButton = cancel;
+        if (dlg.ShowDialog(this) != DialogResult.OK) return;
+        bool mudou = false;
+        for (int i = 0; i < p.Options.Count; i++) if (p.Options[i].Price != (int)nums[i].Value) { p.Options[i].Price = (int)nums[i].Value; mudou = true; }
+        if (!mudou) return;
+        if (gridCash.CurrentRow?.DataBoundItem is DataRowView v) { v.Row["Opções"] = CashOptionsText(p); v.Row["Preço"] = p.Options[0].Price; }
+        cashDirty = true; UpdateCashStatus();
+        Log($"{p.Name}: {CashOptionsText(p)} (use \"Salvar e aplicar\").");
     }
 
     void UpdateCashStatus()
@@ -581,7 +630,7 @@ public sealed partial class MainForm : Form
         {
             if (r["cat"] is not int cat || r["main"] is not int main) continue;
             if (!byKey.TryGetValue((cat, main), out var p)) continue;
-            p.Price = r["Preço"] is int pr ? pr : p.Price;
+            if (p.Options.Count <= 1) p.Price = r["Preço"] is int pr ? pr : p.Price;   // com várias opções, o preço vem da janela de opções
             p.Hidden = r["Na loja"] is bool b && !b;
         }
     }

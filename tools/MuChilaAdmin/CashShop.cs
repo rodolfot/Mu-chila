@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace MuChilaAdmin;
 
@@ -49,6 +50,13 @@ public static class CashShop
         public bool HasClient;      // false = pacote só do servidor (não dá para editar)
         public bool Hidden;
         public bool Added;          // criado pelo painel (dá para apagar de vez)
+        /// <summary>
+        /// Opções de compra (1 dia, 7 dias, 10 un....). O jogo MOSTRA e COBRA o preço de cada opção, que fica no PRODUTO
+        /// (CashShopProduct no servidor, IBSProduct no cliente); o preço do pacote é só o da vitrine (= 1ª opção no kit).
+        /// Vazio = pacote com vários itens e um preço só (ex.: "Level up Package"): aí vale o preço do pacote.
+        /// </summary>
+        public List<Option> Options = new();
+        internal int OrigPrice;     // preço do pacote quando foi lido (para saber se a grade mudou)
         public string CoinLabel => CoinIndex switch { 508 => "W Coin (C)", 509 => "W Coin (P)", 0 => "Goblin Point", _ => $"moeda {CoinIndex}" };
         // linhas cruas para regravar sem perder nada (o texto original preserva o alinhamento do kit)
         internal string[]? ServerRow;
@@ -57,8 +65,47 @@ public static class CashShop
         internal string? ClientRaw;
     }
 
+    /// <summary>Uma opção de compra = um produto (ProductBaseIndex, ProductMainIndex) com preço, prazo e quantidade.</summary>
+    public sealed class Option
+    {
+        public int Base, Main, Price, Seconds, Quantity;
+        internal int OrigPrice;
+        /// <summary>O mesmo produto é usado por outro pacote (quase sempre o mesmo item na aba W Coin (P)).</summary>
+        public bool Shared;
+        public string Label => Seconds > 0
+            ? Seconds % 86400 == 0 ? $"{Seconds / 86400} dia{(Seconds / 86400 > 1 ? "s" : "")}" : Seconds % 3600 == 0 ? $"{Seconds / 3600} h" : $"{Seconds / 60} min"
+            : $"{Math.Max(1, ShownQuantity ?? Quantity)} un";
+        internal int? ShownQuantity;   // quantidade que o cliente mostra ("Quantity 1 EA"); a do servidor às vezes é a durabilidade (frutas: 20)
+    }
+
     // ---------- leitura ----------
     static List<string> ReadLines(string file) => File.ReadAllLines(file, Cp1252).ToList();
+
+    /// <summary>Preenche as opções de cada pacote a partir do CashShopProduct (e marca as compartilhadas entre pacotes).</summary>
+    static void LoadOptions(IEnumerable<Package> packages)
+    {
+        var prod = new Dictionary<int, string[]>();   // ProductMainIndex -> campos do produto
+        foreach (var l in ReadLines(ProductFile)) if (ServerProductKey(l) is { } k) prod[k.Item2] = Cols(l);
+        var shown = new Dictionary<int, int>();   // ProductMainIndex -> quantidade que o cliente mostra
+        if (ClientAvailable && File.Exists(ClientProductFile))
+            foreach (var l in File.ReadLines(ClientProductFile, Cp1252))
+                if (ClientProductKey(l) is { } ck && l.Split('@') is var f && f[2] == "Quantity" && int.TryParse(f[3], out var q)) shown.TryAdd(ck.Item2, q);
+        var all = packages.ToList();
+        var uses = all.SelectMany(p => MainsOf(p.ServerRow)).GroupBy(m => m).ToDictionary(g => g.Key, g => g.Count());
+        foreach (var p in all)
+        {
+            p.Options = new(); p.OrigPrice = p.Price;
+            foreach (var m in MainsOf(p.ServerRow))
+                if (prod.TryGetValue(m, out var c))
+                    p.Options.Add(new Option { Base = int.Parse(c[0]), Main = m, Price = int.Parse(c[2]), OrigPrice = int.Parse(c[2]),
+                                               Quantity = int.Parse(c[17]), Seconds = int.Parse(c[18]), Shared = uses[m] > 1,
+                                               ShownQuantity = shown.TryGetValue(m, out var sq) ? sq : null });
+        }
+    }
+
+    // ProductMainIndex1..10 do pacote do servidor (campos 17..26), sem os zeros
+    static IEnumerable<int> MainsOf(string[]? serverRow) =>
+        serverRow == null ? Enumerable.Empty<int>() : serverRow.Skip(17).Take(10).Where(IsNum).Select(int.Parse).Where(m => m != 0);
 
     // devolve, em ordem, os pares (linha crua, campos) de cada pacote e as linhas de cabeçalho/rodapé preservadas
     static (List<string> head, List<(string Raw, string[] Cols)> rows, string tail) ParseServer(IEnumerable<string> lines)
@@ -105,6 +152,7 @@ public static class CashShop
             }
         foreach (var h in ReadHidden()) byKey[h.Key] = h.Value;   // esconde-os por cima
         foreach (var a in AddedList()) if (byKey.TryGetValue((a.Category, a.Main), out var p)) p.Added = true;
+        LoadOptions(byKey.Values);
         return byKey.Values.OrderByDescending(p => p.HasClient).ThenBy(p => p.Category).ThenBy(p => p.Main).ToList();
     }
 
@@ -131,11 +179,49 @@ public static class CashShop
     /// <summary>Aplica preços e o estado mostrar/esconder. Faz backup dos dois arquivos antes. Não recarrega (quem chama recarrega).</summary>
     public static string Save(IReadOnlyList<Package> packages)
     {
+        // pacote de uma opção: o preço da grade É o da opção; com opções, a vitrine (preço do pacote) = 1ª opção (padrão do kit)
         foreach (var p in packages)
-            if (p.Price is < 0 or > 9_000_000) throw new InvalidOperationException($"Preço fora do intervalo (0 a 9.000.000) em {(p.Name.Length > 0 ? p.Name : $"pacote {p.Category},{p.Main}")}.");
+        {
+            if (p.Options.Count == 1 && p.Options[0].Price == p.Options[0].OrigPrice && p.Price != p.OrigPrice) p.Options[0].Price = p.Price;
+            if (p.Options.Count > 0) p.Price = p.Options[0].Price;
+        }
+        foreach (var p in packages)
+            foreach (var v in p.Options.Select(o => o.Price).Append(p.Price))
+                if (v is < 0 or > 9_000_000) throw new InvalidOperationException($"Preço fora do intervalo (0 a 9.000.000) em {(p.Name.Length > 0 ? p.Name : $"pacote {p.Category},{p.Main}")}.");
 
         var wanted = packages.ToDictionary(p => (p.Category, p.Main));
         var hidden = packages.Where(p => p.Hidden).ToList();
+
+        // ----- opções com preço novo: é o PRODUTO que o jogo mostra e cobra. Produto usado também por outro pacote (a aba
+        // W Coin (P) usa os mesmos da (C)) ganha uma cópia só deste pacote, para o preço não mudar no outro. -----
+        var changed = packages.Where(p => !p.Hidden).SelectMany(p => p.Options.Where(o => o.Price != o.OrigPrice).Select(o => (P: p, O: o, Old: o.OrigPrice))).ToList();
+        var remap = new Dictionary<(int, int), Dictionary<int, int>>();   // pacote -> main antigo -> main novo
+        var inPlace = new Dictionary<int, int>();                         // main -> preço novo
+        var newSrvProd = new List<string>(); var newCliProd = new List<string>();
+        if (changed.Count > 0)
+        {
+            var srvProd = ReadLines(ProductFile);
+            var cliProd = ClientAvailable ? File.ReadAllLines(ClientProductFile, Cp1252).ToList() : new List<string>();
+            int nextMain = srvProd.Select(ServerProductKey).Where(k => k != null).Select(k => k!.Value.Item2)
+                .Concat(cliProd.Select(ClientProductKey).Where(k => k != null).Select(k => k!.Value.Item2))
+                .Concat(packages.SelectMany(p => MainsOf(p.ServerRow))).DefaultIfEmpty(0).Max() + 1;
+            foreach (var (p, o, _) in changed)
+            {
+                if (!o.Shared) { inPlace[o.Main] = o.Price; continue; }
+                int nm = nextMain++;
+                var raw = srvProd.First(l => ServerProductKey(l) == (o.Base, o.Main));
+                newSrvProd.Add(SetFields(raw, ' ', new Dictionary<int, object> { [1] = nm, [2] = o.Price }));
+                foreach (var l in cliProd.Where(l => ClientProductKey(l) == (o.Base, o.Main)))
+                    newCliProd.Add(SetFields(l, '@', new Dictionary<int, object> { [5] = o.Price, [6] = nm }));
+                if (!remap.TryGetValue((p.Category, p.Main), out var r)) remap[(p.Category, p.Main)] = r = new();
+                r[o.Main] = nm;
+                o.Main = nm; o.Shared = false;
+            }
+            Rewrite(ProductFile, l => ServerProductKey(l) is { } k && inPlace.TryGetValue(k.Item2, out var v) && Cols(l)[2] != v.ToString() ? SetField(l, ' ', 2, v) : l, newSrvProd, beforeEnd: true);
+            if (ClientAvailable)
+                Rewrite(ClientProductFile, l => ClientProductKey(l) is { } k && inPlace.TryGetValue(k.Item2, out var v) && l.Split('@')[5] != v.ToString() ? SetField(l, '@', 5, v) : l, newCliProd, beforeEnd: false);
+        }
+        var descNotes = new List<string>();
 
         // ----- servidor: mantém a ordem e o texto original; só re-renderiza o que muda, remove o oculto, re-inclui o que voltou -----
         var (head, srvRows, tail) = ParseServer(ReadLines(ServerFile));
@@ -146,7 +232,11 @@ public static class CashShop
             var key = (int.Parse(cols[0]), int.Parse(cols[2]));
             present.Add(key);
             if (!wanted.TryGetValue(key, out var p) || p.Hidden) continue;   // some se foi escondido ou sumiu da lista
-            outLines.Add(p.Price == int.Parse(cols[5]) ? raw : SetField(raw, ' ', 5, p.Price));
+            var mods = new Dictionary<int, object>();
+            if (p.Price != int.Parse(cols[5])) mods[5] = p.Price;
+            if (remap.TryGetValue(key, out var rm))
+                for (int i = 17; i <= 26; i++) if (int.TryParse(cols[i], out var m) && rm.TryGetValue(m, out var nm)) mods[i] = nm;
+            outLines.Add(mods.Count == 0 ? raw : SetFields(raw, ' ', mods));
         }
         foreach (var p in packages.Where(p => !p.Hidden && !present.Contains((p.Category, p.Main))))   // voltou a aparecer
             outLines.Add(SetField(p.ServerRaw ?? throw new InvalidOperationException("linha do servidor perdida"), ' ', 5, p.Price));
@@ -166,7 +256,18 @@ public static class CashShop
                 var key = (int.Parse(cols[0]), int.Parse(cols[2]));
                 cPresent.Add(key);
                 if (!wanted.TryGetValue(key, out var p) || p.Hidden) continue;
-                cOut.Add(p.Price == int.Parse(cols[5]) ? raw : SetField(raw, '@', 5, p.Price)); cli++;
+                var mods = new Dictionary<int, object>();
+                if (p.Price != int.Parse(cols[5])) mods[5] = p.Price;
+                if (cols.Length > 23 && remap.TryGetValue(key, out var rm))
+                    mods[23] = string.Concat(cols[23].Split('|', StringSplitOptions.RemoveEmptyEntries).Select(t => (int.TryParse(t, out var m) && rm.TryGetValue(m, out var nm) ? nm.ToString() : t) + "|"));
+                var mine = changed.Where(c => c.P == p).Select(c => (c.O, c.Old)).ToList();
+                if (mine.Count > 0)
+                {
+                    var d = UpdateDescription(cols[6], mine, out var falta);
+                    if (d != cols[6]) mods[6] = d;
+                    if (falta.Count > 0) descNotes.Add($"{p.Name}: {string.Join(", ", falta)}");
+                }
+                cOut.Add(mods.Count == 0 ? raw : SetFields(raw, '@', mods)); cli++;
             }
             foreach (var p in packages.Where(p => !p.Hidden && p.HasClient && p.ClientRaw != null && !cPresent.Contains((p.Category, p.Main))))
             { cOut.Add(SetField(p.ClientRaw!, '@', 5, p.Price)); cli++; }
@@ -178,20 +279,53 @@ public static class CashShop
         var lines = hidden.Select(p => (p.ServerRaw ?? "") + "\u0001" + (p.ClientRaw ?? ""));
         File.WriteAllText(HiddenFile, string.Join("\r\n", lines) + (hidden.Count > 0 ? "\r\n" : ""), Cp1252);
 
-        // ----- pacotes criados pelo painel: o produto é só deles, então o preço do produto acompanha o do pacote -----
-        var price = new Dictionary<(int, int), int>();
-        foreach (var a in AddedList())
-            if (wanted.TryGetValue((a.Category, a.Main), out var p)) price[(a.ProductBase, a.ProductMain)] = p.Price;
-        if (price.Count > 0)
-        {
-            Rewrite(ProductFile, l => ServerProductKey(l) is { } k && price.TryGetValue(k, out var v) && Cols(l)[2] != v.ToString() ? SetField(l, ' ', 2, v) : l, Array.Empty<string>(), beforeEnd: true);
-            if (ClientAvailable)
-                Rewrite(ClientProductFile, l => ClientProductKey(l) is { } k && price.TryGetValue(k, out var v) && l.Split('@')[5] != v.ToString() ? SetField(l, '@', 5, v) : l, Array.Empty<string>(), beforeEnd: false);
-        }
+        foreach (var (_, o, _) in changed) o.OrigPrice = o.Price;
+        foreach (var p in packages) p.OrigPrice = p.Price;
 
+        var resumo = changed.Count == 0 ? "" : $" {changed.Count} preço(s) de opção mudado(s) (produto: o que o jogo cobra)" +
+            (newSrvProd.Count > 0 ? $"; {remap.Values.Sum(r => r.Count)} opção(ões) ganharam produto próprio (era compartilhado com outra aba)" : "") + ".";
+        if (descNotes.Count > 0) resumo += " Descrição sem o preço escrito (não mudou): " + string.Join("; ", descNotes) + ".";
         return ClientAvailable
-            ? $"Cash Shop salvo: servidor + cliente ({cli} pacotes na tela). Backup .bak-* ao lado dos arquivos."
-            : $"Cash Shop salvo só no SERVIDOR (o cliente não foi achado em {ClientDir}). O jogo vai cobrar o preço novo, mas a tela mostra o antigo até você atualizar o cliente.";
+            ? $"Cash Shop salvo: servidor + cliente ({cli} pacotes na tela).{resumo} Backup .bak-* ao lado dos arquivos."
+            : $"Cash Shop salvo só no SERVIDOR (o cliente não foi achado em {ClientDir}). O jogo vai cobrar o preço novo, mas a tela mostra o antigo até você atualizar o cliente.{resumo}";
+    }
+
+    /// <summary>
+    /// Troca o preço escrito na descrição do pacote ("100 W Coin - 1Day", "1EA - 100 W Coin", "3 dias - 200 W Coin",
+    /// "6 Hour - 200 Goblin Point"...). Só mexe no número colado a "W Coin"/"Goblin Point" (o "200 Point" das frutas de reset
+    /// são pontos, não preço). Com mais de uma linha com o mesmo preço antigo, escolhe a do prazo/quantidade da opção.
+    /// "falta" = opções cujo preço não estava escrito (a descrição fica como estava).
+    /// </summary>
+    static string UpdateDescription(string desc, IReadOnlyList<(Option O, int Old)> changes, out List<string> falta)
+    {
+        falta = new();
+        var lines = desc.Split('#');
+        var price = new Regex(@"(\d+)(?=\s*(?:W\s?Coin|WCoin|Goblin\s+Point))", RegexOptions.IgnoreCase);
+        var done = new HashSet<int>();
+        foreach (var (o, old) in changes)
+        {
+            var cand = Enumerable.Range(0, lines.Length).Where(i => !done.Contains(i) && price.Matches(lines[i]).Any(m => m.Value == old.ToString())).ToList();
+            if (cand.Count > 1) cand = cand.Where(i => AmountMatches(lines[i], o)).ToList() is { Count: > 0 } c ? c : cand;
+            if (cand.Count == 0) { falta.Add(o.Label); continue; }
+            int at = cand[0];
+            var m1 = price.Matches(lines[at]).First(m => m.Value == old.ToString());
+            lines[at] = lines[at][..m1.Index] + o.Price + lines[at][(m1.Index + m1.Length)..];
+            done.Add(at);
+        }
+        return string.Join("#", lines);
+    }
+
+    // a linha fala do prazo/quantidade desta opção? (1Day, 7Days, 3 dias, 6 Hour, 10EA...)
+    static bool AmountMatches(string line, Option o)
+    {
+        foreach (Match m in Regex.Matches(line, @"(\d+)\s*(Days?|dias?|Hours?|horas?|EA|un)\b", RegexOptions.IgnoreCase))
+        {
+            int n = int.Parse(m.Groups[1].Value); var u = m.Groups[2].Value.ToLowerInvariant();
+            if ((u.StartsWith("day") || u.StartsWith("dia")) && o.Seconds == n * 86400) return true;
+            if ((u.StartsWith("hour") || u.StartsWith("hora")) && o.Seconds == n * 3600) return true;
+            if ((u == "ea" || u == "un") && o.Seconds == 0 && Math.Max(1, o.ShownQuantity ?? o.Quantity) == n) return true;
+        }
+        return false;
     }
 
     // milissegundos no nome: dois salvamentos no mesmo segundo (script + painel) não colidem

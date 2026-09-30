@@ -432,6 +432,27 @@ Aba **Taxas e opções** (29/09/2026). Clique na célula e digite o valor novo (
 - `--testar-opcoes` (cópia): grava uma opção por plano e uma única nas 5 pastas, confere que só essas linhas mudaram, recusa opção travada e texto em opção numérica, e desfaz byte a byte.
 - `--testar-opcoes-aplicar` (GameServer de testes ligado): o ciclo inteiro deu `ItemDropRate_AL1` ✓ na hora e `WriteChatLog` ✗ só ao reiniciar.
 
+### Preço na loja de cash: vitrine x opções (29/09/2026)
+
+**O que o jogo mostra e cobra é o preço da OPÇÃO** (1 dia, 7 dias, 10 un...), guardado no **produto**: `CashShopProduct.txt` no servidor e `IBSProduct.txt` no cliente. O preço do pacote (`CashShopPackage` / `IBSPackage`) é só a **vitrine** da lista; no kit, ele é igual ao da 1ª opção.
+
+**O que estava errado:** até 29/09 o painel mudava só a vitrine. Pelo relato do dono: o Panda Ring (C) ficou "0" na lista, mas as opções continuaram 100 (1 dia) e 500 (7 dias), no jogo e na cobrança. O texto da descrição ("100 W Coin - 1Day") também não mudava.
+
+**Como ficou:**
+
+- A grade tem a coluna **Opções** (ex.: "1 dia: 100 · 7 dias: 500").
+- Pacote de **uma opção**: a coluna Preço muda a opção (o que é cobrado) e a vitrine juntas.
+- Pacote de **várias opções** (87 dos 140): duplo clique ou **"Preços das opções..."** abre uma janela com o preço de cada opção. A vitrine passa a ser o da 1ª.
+- **Produto compartilhado:** 108 produtos são usados pelo mesmo item nas abas W Coin (C) e (P). Ao mudar o preço de um deles, o pacote editado ganha uma **cópia própria** do produto (número novo, mesmas linhas). Assim o preço da outra aba não muda junto.
+- **Descrição:** troca o número colado a "W Coin"/"Goblin Point" na linha daquela opção. Quando há mais de uma linha, usa o prazo ou a quantidade. O "200 Point" das frutas são pontos e não é tocado. Quando a descrição não tem o preço escrito, o log avisa e ela fica como estava.
+- **Pacote de vários itens com um preço só** (ex.: "Level up Package", sem opções): continua pela coluna Preço (vitrine).
+- **Ajuste automático:** ao salvar, a vitrine que estava diferente da 1ª opção volta a mostrar o preço cobrado. Em 29/09 só havia um caso: o Panda Ring (C), com 0.
+
+**Testes (em cópias):**
+
+- `--testar-cashshop-precos`: Panda Ring (C) com 150/700, sem mexer no (P); vitrine, descrição e produto próprio; opção única pela coluna Preço; 2ª edição no mesmo produto, sem nova cópia.
+- `--testar-cashshop` e `--testar-cashshop-adicionar` continuam passando.
+
 ### Adicionar e remover itens da loja de cash
 
 Painel, aba **Loja de Cash** (29/09/2026).

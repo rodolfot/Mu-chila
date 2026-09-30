@@ -169,13 +169,15 @@ static class Program
                 if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null) { File.WriteAllText(args[2], "ERRO: use MUCHILA_ROOT apontando para uma cópia de testes"); return 1; }
                 var lista = CashShop.List();
                 var antes = lista.Select(p => (p.Category, p.Main, p.Price)).ToList();
-                var alvo = lista.FirstOrDefault(p => p.HasClient) ?? lista.First();
+                var divergentes = lista.Where(p => p.Options.Count > 0 && p.Price != p.Options[0].Price).Select(p => (p.Category, p.Main)).ToHashSet();
+                var alvo = lista.FirstOrDefault(p => p.HasClient && p.Options.Count <= 1) ?? lista.First();   // com várias opções o preço vem das opções
                 int original = alvo.Price;
                 alvo.Price = int.Parse(args[1]);
                 var msg = CashShop.Save(lista);
                 var depois = CashShop.List();
                 var mudou = depois.First(p => p.Category == alvo.Category && p.Main == alvo.Main).Price;
-                bool resto = depois.Where(p => !(p.Category == alvo.Category && p.Main == alvo.Main))
+                // pacote cuja vitrine já divergia da 1ª opção (ex.: Panda Ring (C) com 0 em 29/09) volta a mostrar o preço cobrado
+                bool resto = depois.Where(p => !(p.Category == alvo.Category && p.Main == alvo.Main) && !divergentes.Contains((p.Category, p.Main)))
                     .All(p => antes.Any(a => a.Category == p.Category && a.Main == p.Main && a.Price == p.Price));
                 File.WriteAllText(args[2], $"{msg}\r\npacotes: {lista.Count} -> {depois.Count}\r\nalvo {alvo.Name} [{alvo.Category},{alvo.Main}] {original} -> {mudou} (esperado {args[1]})\r\ndemais preços intactos: {resto}");
                 return mudou == int.Parse(args[1]) && depois.Count == lista.Count && resto ? 0 : 1;
@@ -284,6 +286,58 @@ static class Program
             catch (Exception ex) { log.Add("FALHA: " + ex); }
             File.WriteAllLines(args[1], log);
             return 0;
+        }
+
+        // "--testar-cashshop-precos <arquivo>": preço por OPÇÃO (o que o jogo mostra e cobra), em cópias (MUCHILA_ROOT e
+        // MUCHILA_CLIENTE): Panda Ring (C) 150/700 sem mexer no (P), vitrine e descrição juntas, produto próprio quando era
+        // compartilhado, pacote de opção única pela coluna Preço, e 2ª edição no mesmo produto (sem nova cópia).
+        if (args.Length == 2 && args[0] == "--testar-cashshop-precos")
+        {
+            var log = new List<string>(); int falhas = 0;
+            void Check(bool ok, string what) { log.Add((ok ? "ok     " : "FALHA  ") + what); if (!ok) falhas++; }
+            try
+            {
+                if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null || Environment.GetEnvironmentVariable("MUCHILA_CLIENTE") == null)
+                { File.WriteAllText(args[1], "ERRO: use MUCHILA_ROOT e MUCHILA_CLIENTE apontando para cópias de testes"); return 1; }
+                var t0 = CashShop.TestLines();
+                var l = CashShop.List();
+                var pc = l.First(p => p.Name == "Panda Ring" && p.CoinIndex == 508); var pp = l.First(p => p.Name == "[Panda Ring]" && p.CoinIndex == 509);
+                Check(pc.Options.Count == 2 && pc.Options.All(o => o.Shared) && pp.Options.Select(o => o.Main).SequenceEqual(pc.Options.Select(o => o.Main)),
+                      $"Panda Ring: 2 opções ({CashOptionsTextForTest(pc)}), as mesmas do [Panda Ring] da aba (P)");
+                var pOld = pp.Options.Select(o => o.Price).ToList();
+                pc.Options[0].Price = 150; pc.Options[1].Price = 700;
+                log.Add(CashShop.Save(l));
+                var t1 = CashShop.TestLines(); var l1 = CashShop.List();
+                var pc1 = l1.First(p => p.Category == pc.Category && p.Main == pc.Main); var pp1 = l1.First(p => p.Category == pp.Category && p.Main == pp.Main);
+                Check(pc1.Options.Select(o => o.Price).SequenceEqual(new[] { 150, 700 }) && pc1.Options.All(o => !o.Shared), $"(C) agora {CashOptionsTextForTest(pc1)}, produto próprio");
+                Check(pp1.Options.Select(o => o.Price).SequenceEqual(pOld) && pp1.Options.All(o => !o.Shared), $"(P) continua {CashOptionsTextForTest(pp1)}");
+                var sp = t1.SrvPkg.Single(c => c[0] == $"{pc.Category}" && c[2] == $"{pc.Main}"); var cp = t1.CliPkg.Single(c => c[0] == $"{pc.Category}" && c[2] == $"{pc.Main}");
+                Check(sp[5] == "150" && cp[5] == "150", $"vitrine (preço do pacote) = 1ª opção: servidor {sp[5]}, cliente {cp[5]}");
+                Check(cp[6].Contains("150 W Coin - 1Day") && cp[6].Contains("700 W Coin - 7Day"), $"descrição: {cp[6]}");
+                Check(t1.CliPkg.Single(c => c[0] == $"{pp.Category}" && c[2] == $"{pp.Main}")[6].Contains("100 W Coin - 1Day"), "descrição do (P) não mudou");
+                Check(cp[23] == string.Concat(pc1.Options.Select(o => o.Main + "|")) && pc1.Options.All(o => t1.CliProd.Count(r => r[6] == $"{o.Main}" && r[5] == $"{o.Price}") >= 1),
+                      $"cliente aponta para os produtos novos ({cp[23]}) com o preço novo");
+                Check(t1.SrvProd.Count == t0.SrvProd.Count + 2 && t1.CliProd.Count == t0.CliProd.Count + 6, $"produtos: servidor +{t1.SrvProd.Count - t0.SrvProd.Count}, cliente +{t1.CliProd.Count - t0.CliProd.Count} linhas");
+
+                // pacote de uma opção, pela coluna Preço (como a grade faz)
+                var um = l1.First(p => p.Options.Count == 1 && !p.Hidden && p.HasClient && p.CoinIndex == 508);
+                int umOld = um.Options[0].Price; um.Price = umOld + 11;
+                log.Add(CashShop.Save(l1));
+                var l2 = CashShop.List(); var um2 = l2.First(p => p.Category == um.Category && p.Main == um.Main);
+                Check(um2.Options[0].Price == umOld + 11 && um2.Price == umOld + 11, $"{um.Name}: opção única {umOld} -> {um2.Options[0].Price} (pacote {um2.Price})");
+
+                // 2ª edição do Panda (C): produto já é só dele -> muda no lugar
+                var t2 = CashShop.TestLines();
+                l2.First(p => p.Category == pc.Category && p.Main == pc.Main).Options[1].Price = 800;
+                CashShop.Save(l2);
+                var t3 = CashShop.TestLines(); var pc3 = CashShop.List().First(p => p.Category == pc.Category && p.Main == pc.Main);
+                Check(t3.SrvProd.Count == t2.SrvProd.Count && pc3.Options[1].Price == 800 && t3.CliPkg.Single(c => c[0] == $"{pc.Category}" && c[2] == $"{pc.Main}")[6].Contains("800 W Coin - 7Day"),
+                      "2ª edição muda no mesmo produto (sem nova cópia) e na descrição");
+            }
+            catch (Exception ex) { log.Add("FALHA  exceção: " + ex); falhas++; }
+            log.Add(falhas == 0 ? "RESULTADO: OK" : $"RESULTADO: {falhas} falha(s)");
+            File.WriteAllLines(args[1], log);
+            return falhas == 0 ? 0 : 1;
         }
 
         // "--cash-adicionar <aba> <seção> <índice> <qtd> <dias> <preço> <nome> <arquivo>" e "--cash-apagar <aba> <main> <arquivo>":
@@ -715,4 +769,6 @@ static class Program
         File.WriteAllText(output, sb.ToString());
         return failures;
     }
+
+    static string CashOptionsTextForTest(CashShop.Package p) => string.Join(" · ", p.Options.Select(o => $"{o.Label}: {o.Price}"));
 }
