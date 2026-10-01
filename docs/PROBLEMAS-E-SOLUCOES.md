@@ -145,11 +145,27 @@ No fim, as pendências que ainda estão abertas.
 
 ### Personagem novo aparece como "Blade Knight" no cliente, mas é Dark Knight no servidor
 - **Causa:** o cliente S14 mostra a classe básica e a 2ª classe com o mesmo nome (16 e 17 aparecem ambos como "Blade Knight"). O servidor, porém, cria o personagem na básica (+0). Com isso, o cliente oferecia itens e skills de 2ª classe que o servidor recusava ("Não pode vestir o item").
-- **Solução:**
-  - Gatilho `TR_MuChila_ClasseInicial` na tabela `Character`: DW, DK, Elfa e Summoner já nascem na 2ª classe, com +1, igual ao `/change`. O script é `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\ClasseInicial_2aClasse.sql`.
-  - Os personagens que ainda estavam na básica (MalocoBR, Yololo, asas, Quest4) subiram +1.
-  - MG, DL e RF não precisam. Grow Lancer e Rune Wizard não foram alterados, por falta de confirmação. Desde 27/09/2026 o `/change` está desligado: a evolução é pelas missões (ver OPERACAO.md).
-- **Complemento (issue #35, 01/10/2026):** só a classe +1 deixava as missões da 2ª classe (índices 0 e 1 do `Quest.txt`) por fazer. O jogo mostrava Blade Knight/Soul Master, mas o personagem tinha de fazer a evolução da 2ª classe para seguir a corrente de missões (2ª → 3ª → 4ª). O gatilho agora também marca as duas missões como concluídas em `Character.Quest` (1º byte `0xFA`, igual aos personagens de 2ª classe do kit) e dá os 20 pontos que elas dão. Os personagens já criados se corrigem com `ClasseInicial_MissoesDa2aClasse_existentes.sql` (rodar uma vez, com o servidor desligado; pula contas online). Testado no banco de desenvolvimento; **falta conferir no jogo** que o NPC das missões oferece direto a missão seguinte.
+- **Primeira tentativa (24/09/2026, desfeita em 01/10/2026):**
+  - o gatilho `TR_MuChila_ClasseInicial` na tabela `Character` fazia DW, DK, Elfa e Summoner nascerem na 2ª classe (+1, igual ao `/change`);
+  - os personagens que estavam na 1ª classe subiram +1;
+  - em 01/10 o gatilho passou também a marcar como concluídas as missões da 2ª classe (índices 0 e 1) e a dar 20 pontos.
+- **Decisão do dono (issue #35, 01/10/2026):** o personagem **nasce na 1ª classe** e só passa para a 2ª fazendo a missão. O erro era só o nome que o jogo mostra.
+- **Solução atual:**
+  - O gatilho é removido por `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\ClasseInicial_1aClasse.sql`.
+  - `DB\1 - Querys\MuChila-Issue35-VoltarPara1aClasse-ver.sql` lista quem volta. `-aplicar.sql` faz a volta e remove o gatilho. Rodar uma vez, com o servidor desligado; as contas online são puladas e ficam na lista, e basta rodar de novo depois.
+  - Quem volta para a 1ª classe:
+    - **A:** 2ª classe (1, 17, 33, 81) sem as missões 0 e 1 concluídas (os 2 bits mais baixos de cada uma no 1º byte de `Character.Quest`, nibble `0xA`);
+    - **B:** criados a partir de 01/10/2026 com as missões marcadas pelo gatilho. As missões são desmarcadas e saem os 20 pontos ainda não distribuídos;
+    - **C:** igual ao B, mas já na 1ª classe (o personagem de teste `fggg`): só as missões e os pontos.
+  - Quem fez a missão (nibble `0xA` e criado antes de 01/10) ou já está na 3ª/4ª classe não muda.
+  - Testado no banco de desenvolvimento com personagens criados pelo `WZ_CreateCharacter`: os casos A, B e C, conta online pulada, segunda e terceira rodadas, os personagens do kit sem mudança, e personagem novo nascendo na classe 16 com as missões zeradas.
+- **Pendente: o nome no cliente.**
+  - O cliente em português mostra "Blade Knight" para a classe 16. O dono confirmou no jogo em 01/10, com o personagem `fggg` voltado para 16 no banco.
+  - Os textos do cliente estão em `Data\Lang.mpr`: um ZIP com cada byte em XOR com `20 13 77` (pela posição, de 3 em 3). Dentro estão `por\Text(por).txt`, `eng\Text(eng).txt` e outros, mas as entradas têm senha (ZipCrypto), que não aparece no `main.exe` nem no `Main.dll` (compactados).
+  - Teste que separa as causas: rodar `Idioma - Ingles.reg` no cliente e abrir a janela C de um personagem na classe 16.
+    - Se aparecer "Dark Knight", o erro está só no texto em português.
+    - Se aparecer "Blade Knight", a causa está no cliente/GameServer e não no texto.
+  - MG, DL e RF não têm essa diferença. Desde 27/09/2026 o `/change` está desligado: a evolução é pelas missões (ver OPERACAO.md).
 
 ### Item comprado não pode ser usado / habilidades não funcionam em algumas contas (provável causa única)
 - **Caso da mamaeupo:**
