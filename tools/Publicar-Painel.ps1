@@ -67,9 +67,14 @@ Passo '5. Firewall'
 $cfgArq = Join-Path $env:ProgramData 'MuChilaAdmin\muchila-admin.json'
 $porta = 5170; $enderecos = @('localhost')
 if (Test-Path $cfgArq) {
-    $cfg = Get-Content $cfgArq -Raw -Encoding UTF8 | ConvertFrom-Json
-    if ($cfg.Web.Porta) { $porta = [int]$cfg.Web.Porta }
-    if ($cfg.Web.Enderecos) { $enderecos = @($cfg.Web.Enderecos) }
+    try {
+        # o painel aceita as linhas de comentário "//" do arquivo (o modelo tem várias); o ConvertFrom-Json do PowerShell 5.1 não
+        $texto = (Get-Content $cfgArq -Raw -Encoding UTF8) -replace '(?m)^\s*//.*$', ''
+        $cfg = $texto | ConvertFrom-Json
+        if ($cfg.Web.Porta) { $porta = [int]$cfg.Web.Porta }
+        if ($cfg.Web.Enderecos) { $enderecos = @($cfg.Web.Enderecos) }
+    }
+    catch { Write-Warning "não consegui ler $cfgArq ($($_.Exception.Message)): confira o arquivo. A regra do firewall não foi mexida." }
 }
 $regra = 'Mu Chila Admin (painel web, Radmin)'
 if (@($enderecos | Where-Object { $_ -notin 'localhost', '127.0.0.1', '::1' }).Count -eq 0) {
