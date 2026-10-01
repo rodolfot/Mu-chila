@@ -1,4 +1,4 @@
-# Instala o código do Mu Chila dentro do WebEngine (C:\MuServer\Site\www). Pode rodar de novo a qualquer momento
+﻿# Instala o código do Mu Chila dentro do WebEngine (C:\MuServer\Site\www). Pode rodar de novo a qualquer momento
 # (depois de atualizar o WebEngine ou de mudar algo em muchila\www): cada ajuste confere se já foi feito.
 #   1. copia muchila\www\* para www (loja, painel de pedidos, aviso do Mercado Pago, configurações)
 #   2. class.database.php e webengine.php: conexão com instância nomeada sem porta (.\MUONLINE) e certificado local aceito
@@ -9,6 +9,8 @@
 #   7. downloads: cliente, patch e LEIA-ME de C:\MuServer\Cliente para amigos (Apache /arquivos/) e cache da página
 #   8. tema "muchila" (30/09/2026): liga a template nova no webengine.json e copia as imagens que os módulos do WebEngine usam;
 #      loja de itens (usercp/lojaitens): menus, textos e a tabela MUCHILA_LOJAITENS_COMPRAS.
+#   01/10/2026: agenda de eventos na virada do mês (api\events.php), tabelas/procedimento do sql\MUCHILA_SITE.sql (Contate-nos,
+#      Comprar Zen, Resetar Skill-Tree), "Votar por créditos" e "Redefinir Personagem" fora do menu e downloads só com o launcher.
 #      Voltar ao tema padrão do WebEngine: .\Instalar-Modulos.ps1 -TemaPadrao (a página inicial e o painel do jogador
 #      originais voltam sozinhos: o passo 1 guarda o arquivo do WebEngine como .original antes de trocar).
 param([string]$Site = 'C:\MuServer\Site', [switch]$TemaPadrao)
@@ -79,6 +81,11 @@ if (-not ($itens | Where-Object link -eq 'usercp/mercado')) {
     "aplicado: item Mercado no menu do jogador"
 } else { "ja feito: item Mercado no menu do jogador" }
 foreach ($i in $itens | Where-Object link -eq 'donation') { $i.active = $false }
+# Votar por créditos e Redefinir Personagem (01/10/2026): módulos do WebEngine já desligados no passo 6 (créditos do WebEngine
+# não usados; o reset do site é o "Resets" do Mu Chila) que continuavam no menu e só mostravam "módulo desabilitado"
+foreach ($i in $itens | Where-Object { $_.link -in 'usercp/vote', 'usercp/reset' }) {
+    if ($i.active) { $i.active = $false; "aplicado: $($i.link) fora do menu do jogador" } else { "ja feito: $($i.link) fora do menu do jogador" }
+}
 [IO.File]::WriteAllText($menu, ($itens | ConvertTo-Json -Depth 4), $utf8)
 
 # 3b. menu do topo (navbar.json): "Doação" (PayPal, não usado) vira "Loja"
@@ -108,6 +115,16 @@ Ajustar 'api\events.php' 'muchila/eventos.php' {
     $t.Substring(0, $i) + "date_default_timezone_set('America/Sao_Paulo');`n`n// Mu Chila: agenda lida dos arquivos de evento do servidor (C:\MuServer\Data\Event)`n" +
         "`$eventTimes = require(__DIR__ . '/../includes/muchila/eventos.php');`n`n" + $t.Substring($f).Replace('date("D g:i A", strtotime($nextTime))', 'date("d/m H:i", strtotime($nextTime))')
 } 'agenda real no quadro de eventos'
+
+# 3e. quadro de eventos (01/10/2026): o WebEngine montava "amanhã" com o mês atual, e no último dia do mês o próximo evento
+#     virava o dia 1 do MESMO mês (no passado: o quadro mostrava 01/09 em 30/09); "ontem" tinha o mesmo erro no dia 1
+Ajustar 'api\events.php' 'Mu Chila: amanhã' {
+    param($t)
+    $t = [regex]::Replace($t, '\$tomorrow = date\(''d'', strtotime\(''tomorrow''\)\);\s*return date\("Y-m-\$tomorrow "\) \. \$eventSchedule\[0\];',
+        'return date(''Y-m-d '', strtotime(''tomorrow'')) . $$eventSchedule[0]; // Mu Chila: amanhã no mês certo (o original voltava ao dia 1 do mesmo mês)')
+    [regex]::Replace($t, '\$yesterday = date\(''d'', strtotime\(''yesterday''\)\);\s*return date\("Y-m-\$yesterday "\) \. end\(\$eventSchedule\);',
+        'return date(''Y-m-d '', strtotime(''yesterday'')) . end($$eventSchedule); // Mu Chila: ontem no mês certo')
+} 'agenda de eventos: virada do mês'
 
 # 4. idioma
 $frases = [ordered]@{ usercp_menu_txt_muchila_loja = 'Loja: VIP e Cash'; menu_txt_muchila_loja = 'VIP e Cash'; usercp_menu_txt_muchila_resets = 'Resets'; usercp_menu_txt_muchila_mercado = 'Mercado entre jogadores'
@@ -177,6 +194,12 @@ sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -f 65001 -i (Join-Path $PSScript
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao aplicar sql\MUCHILA_LOJAITENS.sql' }
 "aplicado: tabela MUCHILA_LOJAITENS_COMPRAS"
 
+# 4f. páginas do site de 01/10/2026 (reaplicável): mensagens do Contate-nos, compras de Zen e o Resetar Skill-Tree seguro
+#     (procedimento dbo.MuChila_LimparArvoreMaster; precisa do DB\1 - Querys\MuChila-Resets.sql aplicado)
+sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -f 65001 -i (Join-Path $PSScriptRoot 'sql\MUCHILA_SITE.sql') | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao aplicar sql\MUCHILA_SITE.sql' }
+"aplicado: tabelas MUCHILA_CONTATO e MUCHILA_ZEN_COMPRAS e procedimento MuChila_LimparArvoreMaster"
+
 # 5. painel admin
 Ajustar 'admincp\index.php' 'muchila_pedidos' {
     param($t)
@@ -189,7 +212,9 @@ Ajustar 'admincp\index.php' 'muchila_mercado' {
 
 # 6. módulos que não funcionam neste servidor ficam desligados (26/09/2026):
 #    - usercp.reset: o jogo tem /reset e reset automático com outras regras (Command.dat + ResetTable.txt); o do site daria outro resultado
-#    - usercp.buyzen e usercp.vote: dependem do sistema de créditos do WebEngine, que não está configurado (a moeda do Mu Chila é o cash)
+#    - usercp.buyzen e usercp.vote: dependem do sistema de créditos do WebEngine, que não está configurado (a moeda do Mu Chila é o cash).
+#      Desde 01/10/2026 a página "Comprar Zen" é a do Mu Chila (paga com Cash; liga/desliga no includes\config\muchila.zen.json),
+#      que não lê este XML: ele continua desligado só para o módulo original do WebEngine nunca voltar a funcionar.
 #    - forgotpassword: manda e-mail, e este PC não tem servidor de e-mail (senha esquecida: pedir ao administrador)
 foreach ($modulo in 'usercp.reset', 'usercp.buyzen', 'usercp.vote', 'forgotpassword') {
     $arq = Join-Path $www "includes\config\modules\$modulo.xml"
@@ -204,21 +229,21 @@ Ajustar 'modules\login.php' 'Mu Chila: sem e-mail' {
         "echo '<span id=`"helpBlock`" class=`"help-block`">Esqueceu a senha? Peça ao administrador do servidor.</span>'; // Mu Chila: sem e-mail para recuperar senha")
 } 'login: senha esquecida -> pedir ao administrador'
 
-# 7. downloads (título e descrição: até 100 caracteres, limite da tabela): cliente, patch e LEIA-ME da pasta "Cliente para amigos" (servida pelo Apache em /arquivos/, ver conf\httpd.conf).
-#    Cadastra ou atualiza pelo endereço do arquivo, com o tamanho atual, e regrava o cache que a página de downloads lê.
+# 7. downloads (título e descrição: até 100 caracteres, limite da tabela): só o launcher (01/10/2026: ele instala, atualiza e
+#    confere o jogo; cliente completo, patch e LEIA-ME saíram da página), da pasta "Cliente para amigos" (servida pelo Apache
+#    em /arquivos/, ver conf\httpd.conf). Cadastra ou atualiza pelo endereço do arquivo, com o tamanho atual, apaga os outros
+#    downloads e regrava o cache que a página de downloads lê.
+#    O arquivo deste script precisa ficar em UTF-8 COM BOM: sem ele o Windows PowerShell 5.1 lia os acentos como ANSI e a
+#    página mostrava "jÃ¡" no lugar de "já".
 $pastaArquivos = 'C:\MuServer\Cliente para amigos'
 $downloads = @(
-    @{ arquivo = 'Cliente Season 14 - Radmin.zip'; tipo = 1; titulo = 'Cliente Season 14 (completo)'
-       descricao = 'Extraia em C:\Jogos e abra 2 - Cliente Season 14 Full\main.exe. Precisa do Radmin VPN.' },
-    @{ arquivo = 'Patch Mu Chila - para quem ja tem o cliente.zip'; tipo = 2; titulo = 'Patch Mu Chila'
-       descricao = 'Para quem já tem o cliente: extraia na pasta do cliente, substituindo os arquivos.' },
-    @{ arquivo = 'LEIA-ME - Como jogar.txt'; tipo = 3; titulo = 'LEIA-ME: como jogar'
-       descricao = 'Radmin VPN, instalação, idioma português, resolução e comandos úteis.' },
     @{ arquivo = 'MuChilaLauncher.exe'; tipo = 2; titulo = 'Launcher Mu Chila (instala e atualiza o jogo)'
-       descricao = 'Instala e atualiza o jogo sozinho. Na 1ª vez, escolha a pasta (ou a do cliente que você já tem).' }
+       descricao = 'Instala, atualiza e confere o jogo sozinho. Na 1ª vez, escolha a pasta (ex.: C:\Jogos\Mu Chila).' }
 )
 $sql = New-Object Text.StringBuilder
 [void]$sql.AppendLine('SET NOCOUNT ON;')
+$links = ($downloads | ForEach-Object { "'/arquivos/" + [uri]::EscapeDataString($_.arquivo).Replace("'", "''") + "'" }) -join ', '
+[void]$sql.AppendLine("DELETE FROM WEBENGINE_DOWNLOADS WHERE download_link NOT IN ($links);")
 foreach ($d in $downloads) {
     if ($d.titulo.Length -gt 100 -or $d.descricao.Length -gt 100) { throw "Download '$($d.arquivo)': título e descrição têm no máximo 100 caracteres (colunas varchar(100))" }
     $caminho = Join-Path $pastaArquivos $d.arquivo

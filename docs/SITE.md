@@ -27,16 +27,17 @@ Conta e senha: até **10 caracteres** (limite do jogo). Não há verificação d
   - chances da Chaos Machine;
   - comandos ligados.
   A página original do WebEngine era um modelo com "x%" e comandos de outro servidor.
-- **Downloads:**
-  - Oferece o cliente completo, o patch e o LEIA-ME da pasta `C:\MuServer\Cliente para amigos`.
+- **Downloads** (desde 01/10/2026, só o launcher; ver [Páginas de 01/10/2026](#páginas-de-01102026)):
+  - Oferece o `MuChilaLauncher.exe` da pasta `C:\MuServer\Cliente para amigos`; ele baixa e atualiza o jogo. O cliente completo, o patch e o LEIA-ME saíram da página.
   - O Apache serve essa pasta em `/arquivos/` (`Alias` no `httpd.conf`, mesmo bloqueio do site, sem listar a pasta). Ela fica fora do `www` para o cliente de 1,3 GB não entrar no sincronismo do repositório.
-  - Trocou um arquivo da pasta: rode `Instalar-Modulos.ps1`, que atualiza o tamanho e o cache da página.
+  - Trocou o launcher: rode `Instalar-Modulos.ps1`, que atualiza o tamanho e o cache da página.
 - **Desligados:**
-  - Reset pelo site: o jogo tem `/reset` e reset automático com outras regras (`Command.dat` + `ResetTable.txt`).
-  - Comprar zen e votar: dependem do sistema de créditos do WebEngine, que não está configurado (a moeda do Mu Chila é o cash).
+  - Reset pelo site do WebEngine ("Redefinir Personagem"): o jogo tem `/reset` e reset automático com outras regras (`Command.dat` + `ResetTable.txt`); o reset do site é o **Resets** do Mu Chila. Saiu do menu em 01/10/2026.
+  - Votar por créditos: dava créditos do WebEngine por votar em sites de ranking, e esses créditos não valem nada aqui (a moeda do Mu Chila é o Cash). Saiu do menu em 01/10/2026.
+  - Comprar zen do WebEngine (dependia dos créditos): trocado pelo **Comprar Zen** do Mu Chila, pago com Cash.
   - Esqueci a senha: manda e-mail. No login aparece "Esqueceu a senha? Peça ao administrador do servidor."
 - **Continuam ligados:**
-  - Área do jogador: distribuir pontos, zerar pontos, limpar PK, zerar árvore master, desbugar personagem, trocar senha e e-mail.
+  - Área do jogador: distribuir pontos, zerar pontos (Resetar Status), limpar PK, Resetar Skill-Tree (o do Mu Chila desde 01/10/2026), Descolar personagem, trocar senha e e-mail.
   - Rankings, perfis, notícias e Castle Siege.
 
 ## Pendências
@@ -44,8 +45,10 @@ Conta e senha: até **10 caracteres** (limite do jogo). Não há verificação d
 1. ~~Preços do cash~~: definidos pelo dono em 26/09/2026, 200 cash por R$ 37, 500 por R$ 45 e 1.000 por R$ 60 (`cash-200`, `cash-500`, `cash-1000` no `muchila.pacotes.json`).
 2. **Mercado Pago (PIX real):** pronto, mas nunca testado contra a API. Passos na seção abaixo; o dono pediu para continuar no modo de teste por enquanto.
 3. **Teste pelo navegador (`teste-site.ps1`):** precisa da senha da conta admin do site e só roda com ela. O teste do núcleo da loja (`teste-loja.php`) passou 19 de 19 em 26/09.
-4. **Notícias:** não há nenhuma publicada. A página inicial mostra só o quadro de eventos e os rankings.
-5. ~~Segundo servidor~~: o "Users Online" do site conta as contas conectadas no banco (`MEMB_STAT.ConnectStat = 1`), então já inclui o Mu Chila Non-PvP.
+4. **Notícias:** publicar pela aba **Site → Notícias** do Mu Chila Admin (01/10/2026).
+5. ~~Segundo servidor~~: a situação do servidor na página inicial soma as contas conectadas de todos os servidores (`MEMB_STAT.ConnectStat = 1`) e mostra quantas há em cada um.
+6. **Revisar os textos** de Termos, Privacidade e Reembolso (escritos em 01/10/2026): o reembolso promete devolver em até 7 dias o que não foi usado e responder em até 3 dias úteis. Preencher os canais do Contate-nos (Discord, WhatsApp...) na aba **Site → Páginas**.
+7. **Distribuir os pontos master pelo site:** falta conferir o formato da árvore no servidor com `MuChilaAdmin.exe --arvore-master` (ver OPERACAO.md) antes de gravar a árvore pelo site.
 
 ## Loja de VIP e cash
 
@@ -134,7 +137,7 @@ O site inteiro usa a template **`templates\muchila`**: dark fantasy (preto, chum
 - **Painel do jogador**: carteira, plano VIP, Passe dos Mapas e as páginas do `usercp.json` em cartões com ícone. As páginas do jogador têm a carteira e o menu na coluna ao lado (a loja de itens ocupa a largura toda).
 - **Loja (VIP, Cash e Passe)**, **Mercado** e **Resets**: mesma lógica de antes, com visual novo.
   - Loja: cartões de pacote, PIX com QR e botão de copiar, e etapas do pedido.
-  - Mercado: abas em pílula e tabelas em cartão.
+  - Mercado: anúncios em cartões com foto (01/10/2026, ver abaixo).
   - Resets: um cartão por personagem.
 - **Arquivos**:
   - `templates\muchila\index.php` é o esqueleto da página.
@@ -183,11 +186,50 @@ Página **Painel do jogador → Loja de itens** (`usercp/lojaitens`, também no 
   - Com `--banco`, no servidor: compra de verdade com a conta descartável `lojaitensteste`. Confere cobrança, item no baú, registro, preço mudado, Cash insuficiente, conta no jogo, baú cheio e loja fechada.
   - Comando: `C:\MuServer\Site\php\php.exe muchila\testes\teste-lojaitens.php --banco`.
 
+## Páginas de 01/10/2026
+
+Textos e preços destas páginas são editados na aba **Site** do Mu Chila Admin (ver OPERACAO.md). Tabelas e procedimento: `muchila\sql\MUCHILA_SITE.sql` (o `Instalar-Modulos.ps1` aplica).
+
+- **Termos de Serviço, Política de Privacidade e Política de Reembolso** (`modules\tos.php`, `privacy.php`, `refunds.php`): o texto fica em `includes\config\muchila.paginas.json` (aba Site → Páginas). Os originais do WebEngine eram modelos vazios. **O dono precisa revisar** os textos, principalmente o reembolso.
+- **Contate-nos** (`modules\contact.php`): o PC não tem servidor de e-mail, então a mensagem fica na tabela `MUCHILA_CONTATO`. O dono lê e responde na aba **Site → Mensagens**.
+  - Quem manda logado vê as próprias mensagens e a resposta na página. Visitante precisa deixar um contato (e-mail, Discord ou WhatsApp).
+  - Limite: 3 mensagens por hora por conta ou por IP.
+  - Os canais (Discord, WhatsApp, e-mail, Instagram) só aparecem depois de preenchidos.
+- **Comprar Zen** (`modules\usercp\buyzen.php` + `includes\muchila\MuChilaZen.php`): troca o do WebEngine. Pacotes pagos com **Cash** (`WCoinC`); o Zen vai para o **baú da conta** (`warehouse.Money`).
+  - Pacotes em `includes\config\muchila.zen.json` (aba Site → Comprar Zen). Iniciais: 50 milhões por 10 Cash, 200 milhões por 35, 500 milhões por 80 e 1 bilhão por 150.
+  - Regras:
+    - a conta precisa estar fora do jogo há 30 s (o servidor regrava o baú ao sair);
+    - o baú não passa de 2 bilhões (limite do jogo);
+    - se o preço mudou depois que a página abriu, a compra é recusada.
+  - Numa transação só: débito do Cash, Zen no baú e registro em `MUCHILA_ZEN_COMPRAS`.
+- **Resetar Skill-Tree** (`modules\usercp\clearskilltree.php` + `MuChilaMaster.php` + `dbo.MuChila_LimparArvoreMaster`): troca o do WebEngine, que apagava a lista **inteira** de habilidades do personagem e devolvia os pontos master **sem** limpar a árvore (o personagem ficava com os poderes e com os pontos de novo).
+  - Agora faz o mesmo que o "Zerar habilidades master" do painel: árvore vazia, pontos = Master Level e só os poderes master saem da lista de habilidades.
+  - Custa o `zen_cost` do `usercp.clearskilltree.xml` (1.000.000 de Zen, do inventário do personagem) e exige a conta fora do jogo há 30 s. Guarda a árvore antiga em `MuChila_MasterResetBackup`.
+  - Diferença para o **Resetar Status** (do WebEngine): o Resetar Status devolve os **pontos de atributo** (Força, Agilidade, Vitalidade, Energia, Comando) para distribuir de novo; o Resetar Skill-Tree devolve os **pontos master** da árvore.
+- **Descolar personagem** (do WebEngine, continua): leva o personagem travado (preso em parede ou num mapa onde não consegue entrar) para Lorencia. Custa 1.000.000 de Zen (`usercp.unstick.xml`).
+- **Mercado entre jogadores**:
+  - mostra a **quantidade** dos itens que empilham (Jewel of Soul x50; regra do `ItemStack.txt`, ao lado do `Item.txt`);
+  - a venda é separada em **Vender itens** e **Vender personagem**;
+  - os anúncios ficam em cartões com foto, 20 por página, e o preço é digitado numa janela só, que mostra quanto o vendedor recebe depois da taxa.
+- **Rankings**: o filtro de classes fica numa linha, uma classe ao lado da outra; no celular, numa faixa que rola de lado.
+- **Página inicial**: a situação do servidor soma os jogadores de todos os servidores e mostra quantos há em cada um; o limite de jogadores saiu.
+- **Agenda de eventos**: o `api/events.php` do WebEngine montava "amanhã" com o mês atual. No último dia do mês, o próximo evento virava o dia 1 do **mesmo** mês (no passado), e o quadro mostrava datas antigas. O servidor estava certo. O `Instalar-Modulos.ps1` corrige o arquivo (passo 3e).
+- **Downloads** (`modules\downloads.php`): só o launcher, com "Como jogar" em 4 passos, o aviso do Radmin e o botão DIAGNÓSTICO do launcher. Os textos apareciam como "jÃ¡" porque o Windows PowerShell 5.1 lia o instalador (UTF-8 sem BOM) como ANSI; agora ele é salvo com BOM.
+- **Notícias**: publicadas pela aba Site → Notícias do painel.
+- **Erros (issue #38)**: nenhuma página do Mu Chila mostra erro de SQL ou do PHP.
+  - `MuChilaUI::erro()` troca o erro por uma mensagem amigável e grava o detalhe no log do PHP; só os avisos escritos para o jogador ("Cash insuficiente"...) aparecem como estão.
+  - A causa do #38 (permissão de EXECUTE negada no `WZ_GetItemSerial` para o `muchila_site`) foi resolvida com GRANT no `MUCHILA_LOJAITENS.sql`.
+- **Perguntas de confirmação** ("Comprar ...?", "Reset em ...?"): o texto vai como string do JavaScript. Antes, um nome com apóstrofo (61 itens, como "Gladiator's Dagger") quebrava a pergunta e o botão agia sem perguntar.
+- **Testes**: `muchila\testes\teste-paginas-site.php`.
+  - Sem argumento: 19 casos (quantidade dos empilháveis, pacotes e regras do Zen, árvore, páginas, Contate-nos, filtro de erros e confirmação).
+  - Com `--banco`, no servidor: compra de Zen e Contate-nos de verdade, com a conta descartável `zenteste`.
+  - `muchila\testes\teste-arvore-sql.ps1`: o procedimento do Resetar Skill-Tree em 12 casos (Zen, conta errada, sem árvore, no jogo, saiu há 10 s, árvore vazia, pontos, MagicList, backup), com tabelas simuladas no `tempdb`; não mexe no `MuOnlineS14`. Passou em 01/10/2026.
+
 ## Segurança
 
 - Usuário próprio do banco para o site: `muchila_site` (lê e grava dados do `MuOnlineS14` e cria tabelas; não é `sa`). Senha em `Site\config-local\banco.txt` e no `webengine.json`, **nunca no repositório** (o sincronismo e o `.gitignore` excluem `config-local`, `webengine.json`, `tmp`, cache e logs).
 - O instalador do WebEngine (`install/`) foi tirado de dentro do site (`Site\install-webengine-1.2.7`): se voltar para `www`, qualquer um na rede poderia reinstalar e trocar a configuração.
-- Erros do PHP vão para o log, não para a tela. O endpoint de cron do WebEngine por endereço web está desligado (`cron_api: false`); os rankings rodam pela tarefa agendada.
+- Erros do PHP vão para o log, não para a tela. Nas páginas do Mu Chila, erro de banco ou interno vira mensagem amigável (`MuChilaUI::erro()`, issue #38). O endpoint de cron do WebEngine por endereço web está desligado (`cron_api: false`); os rankings rodam pela tarefa agendada.
 - O WebEngine instalado foi conferido arquivo por arquivo contra a tag 1.2.7 do GitHub (647 idênticos) e revisado: sem execução de comandos, SQL sempre com parâmetros. Chamadas externas dele: consulta de versão (painel admin), plugins e `ip-api.com` (bandeira do país, desligada nos rankings).
 
 ## Arquivos do Mu Chila e ajustes no WebEngine
@@ -216,8 +258,16 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\api\muchila-item-imagem.php` | Foto de um item (as do MuEditor) |
 | `sql\MUCHILA_LOJAITENS.sql` | Tabela das compras da loja de itens |
 | `testes\teste-lojaitens.php` | Teste da loja de itens (28 casos sem banco; `--banco` faz compras de verdade com a conta `lojaitensteste`) |
+| `www\modules\tos.php`, `privacy.php`, `refunds.php`, `contact.php`, `downloads.php` | Termos, Privacidade, Reembolso, Contate-nos e Downloads (trocam os do WebEngine, guardados como `.original`) |
+| `www\includes\muchila\MuChilaPaginas.php`, `www\includes\config\muchila.paginas.json` | Textos das páginas e canais do Contate-nos; mensagens do Contate-nos (`MuChilaContato`) |
+| `www\modules\usercp\buyzen.php`, `www\includes\muchila\MuChilaZen.php`, `www\includes\config\muchila.zen.json` | Comprar Zen (página, núcleo e pacotes) |
+| `www\modules\usercp\clearskilltree.php`, `www\includes\muchila\MuChilaMaster.php` | Resetar Skill-Tree seguro |
+| `www\includes\muchila\noticias-cli.php` | Notícias pela linha de comando (usado pela aba Site do Mu Chila Admin; só roda na linha de comando) |
+| `sql\MUCHILA_SITE.sql` | Tabelas `MUCHILA_CONTATO` e `MUCHILA_ZEN_COMPRAS` e o procedimento `MuChila_LimparArvoreMaster` |
+| `testes\teste-paginas-site.php` | Teste das páginas de 01/10/2026 (19 casos sem banco; `--banco` com a conta `zenteste`) |
+| `testes\teste-arvore-sql.ps1` | Teste do procedimento do Resetar Skill-Tree no `tempdb` (12 casos; `-Servidor .` em outro PC) |
 
-Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "VIP e Cash" e "Loja de itens" no menu do topo, itens "Loja de itens" e "Loja: VIP e Cash" no menu do jogador; tema "muchila" ligado (imagens copiadas da template padrão); tabela da loja de itens; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin; módulos sem suporte desligados e link de senha do login; downloads da pasta "Cliente para amigos" e cache da página.
+Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "VIP e Cash" e "Loja de itens" no menu do topo, itens "Loja de itens" e "Loja: VIP e Cash" no menu do jogador; tema "muchila" ligado (imagens copiadas da template padrão); tabela da loja de itens; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin; módulos sem suporte desligados e link de senha do login; "Votar por créditos" e "Redefinir Personagem" fora do menu do jogador; agenda de eventos na virada do mês (`api/events.php`); tabelas e procedimento do `MUCHILA_SITE.sql`; downloads (só o launcher) da pasta "Cliente para amigos" e cache da página.
 Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas ("100x dinâmico (VIP até +80%)", antes "100x (VIP até 2000x)", drop "1% (VIP até 3%)", antes "5% (VIP até 14%)" e "50% (VIP até 150%)"; EXP "200x dinâmico (VIP até +80%)"), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
 
 **Atualizar o WebEngine**: baixar a versão nova, conferir, copiar por cima de `www` (sem `install`), rodar `Instalar-Modulos.ps1` e os dois testes.

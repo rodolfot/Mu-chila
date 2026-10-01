@@ -10,9 +10,7 @@ include('inc/template.functions.php');
 
 $serverInfoCache = LoadCacheData('server_info.cache');
 if(is_array($serverInfoCache)) $srvInfo = explode("|", $serverInfoCache[1][0]);
-$maxOnline = config('maximum_online', true);
-$onlinePlayers = isset($srvInfo[3]) ? (int)$srvInfo[3] : 0;
-$onlinePlayersPercent = check_value($maxOnline) && $maxOnline > 0 ? min(100, $onlinePlayers * 100 / $maxOnline) : 0;
+$onlinePlayers = isset($srvInfo[3]) ? (int)$srvInfo[3] : 0;   // reserva: o herói usa a contagem ao vivo (MuChilaUI::online)
 
 if(!isset($_REQUEST['page'])) $_REQUEST['page'] = '';
 if(!isset($_REQUEST['subpage'])) $_REQUEST['subpage'] = '';
@@ -115,8 +113,19 @@ $mcCash = $mcLogado ? MuChilaUI::cashDaConta($mcConta) : 0;
 					<span class="mc-status__title">Situação do servidor</span>
 					<span class="mc-live">Online</span>
 				</div>
-				<div class="mc-status__online"><?php echo number_format($onlinePlayers, 0, ',', '.'); ?> <small>jogadores agora<?php echo check_value($maxOnline) ? ' de ' . number_format((int)$maxOnline, 0, ',', '.') : ''; ?></small></div>
-				<div class="mc-bar"><span style="width:<?php echo max(2, round($onlinePlayersPercent)); ?>%"></span></div>
+				<?php
+				// soma de TODOS os servidores, ao vivo (o número do cache do WebEngine só muda quando a tarefa agendada roda)
+				$mcOnline = MuChilaUI::online();
+				$mcTotal = $mcOnline['total'] ?? $onlinePlayers;
+				?>
+				<div class="mc-status__online"><?php echo number_format($mcTotal, 0, ',', '.'); ?> <small><?php echo $mcTotal === 1 ? 'jogador no jogo agora' : 'jogadores no jogo agora'; ?></small></div>
+				<?php if($mcOnline && count($mcOnline['servidores']) > 0) { ?>
+				<div class="mc-servers" aria-label="Jogadores por servidor">
+					<?php foreach($mcOnline['servidores'] as $mcServidor => $mcQtd) echo '<span class="mc-server"><i></i>' . MuChilaUI::h($mcServidor) . ' <strong>' . (int)$mcQtd . '</strong></span>'; ?>
+				</div>
+				<?php } elseif($mcTotal === 0) { ?>
+				<p class="mc-status__empty">Ninguém jogando neste momento. Que tal ser o primeiro?</p>
+				<?php } ?>
 				<div class="mc-status__grid">
 					<div class="mc-status__cell"><span><?php echo lang('server_time'); ?></span><strong id="tServerTime">--:--:--</strong> <small id="tServerDate"></small></div>
 					<div class="mc-status__cell"><span><?php echo lang('user_time'); ?></span><strong id="tLocalTime">--:--:--</strong> <small id="tLocalDate"></small></div>

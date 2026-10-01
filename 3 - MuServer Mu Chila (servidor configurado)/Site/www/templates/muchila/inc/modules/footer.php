@@ -29,7 +29,7 @@ $mcSociais = array_filter(['discord' => config('social_link_discord', true), 'in
 				<li><a href="<?php echo __BASE_URL__; ?>tos/"><?php echo lang('footer_terms'); ?></a></li>
 				<li><a href="<?php echo __BASE_URL__; ?>privacy/"><?php echo lang('footer_privacy'); ?></a></li>
 				<li><a href="<?php echo __BASE_URL__; ?>refunds/"><?php echo lang('footer_refund'); ?></a></li>
-				<li><a href="<?php echo __BASE_URL__; ?>contact/"><?php echo lang('footer_contact'); ?></a></li>
+				<li><a href="<?php echo __BASE_URL__; ?>contact/"><?php echo lang('module_titles_txt_26'); ?></a></li>
 			</ul>
 		</div>
 	</div>

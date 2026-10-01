@@ -73,8 +73,9 @@ class MuChilaLoja
             return self::abrirPdo($c['SQL_DB_HOST'], $c['SQL_DB_PORT'] ?? '', $c['SQL_DB_NAME'], $c['SQL_DB_USER'], $c['SQL_DB_PASS']);
         }
         $c = [];
-        foreach (file(self::pastaSite() . '/config-local/banco.txt') as $l)
+        foreach (@file(self::pastaSite() . '/config-local/banco.txt') ?: [] as $l)
             if (preg_match('/^(\w+)=(.*)$/', trim($l), $m)) $c[$m[1]] = $m[2];
+        if (!isset($c['servidor'], $c['banco'], $c['usuario'], $c['senha'])) throw new RuntimeException('Banco não configurado (config-local\\banco.txt).');
         return self::abrirPdo($c['servidor'], $c['porta'] ?? '', $c['banco'], $c['usuario'], $c['senha']);
     }
 

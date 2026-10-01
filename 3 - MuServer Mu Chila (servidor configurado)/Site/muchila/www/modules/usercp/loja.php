@@ -32,8 +32,8 @@ try {
 			redirect(1, 'usercp/loja?pedido=' . (int)$_POST['pedido']);
 		}
 	}
-} catch(Exception $ex) {
-	$erro = $ex->getMessage();
+} catch(Throwable $ex) {
+	$erro = MuChilaUI::erro($ex);   // issue #38: erro do banco nunca aparece na tela
 }
 
 echo $ui::titulo('Loja', 'VIP, Cash e Passe dos Mapas, pagos na hora por PIX.', 'coin',

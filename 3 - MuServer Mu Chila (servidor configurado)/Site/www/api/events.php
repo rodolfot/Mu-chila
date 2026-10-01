@@ -27,8 +27,7 @@ function getEventNextTime($eventSchedule) {
 			return date("Y-m-d ") . $time;
 		}
 	}
-	$tomorrow = date('d', strtotime('tomorrow'));
-	return date("Y-m-$tomorrow ") . $eventSchedule[0];
+	return date('Y-m-d ', strtotime('tomorrow')) . $eventSchedule[0]; // Mu Chila: amanhÃ£ no mÃªs certo (o original voltava ao dia 1 do mesmo mÃªs)
 }
 
 function getEventPreviousTime($eventSchedule) {
@@ -37,8 +36,7 @@ function getEventPreviousTime($eventSchedule) {
 		if($time > $currentTime) {
 			$last = $key-1;
 			if($last < 0) {
-				$yesterday = date('d', strtotime('yesterday'));
-				return date("Y-m-$yesterday ") . end($eventSchedule);
+				return date('Y-m-d ', strtotime('yesterday')) . end($eventSchedule); // Mu Chila: ontem no mÃªs certo
 			}
 			return date("Y-m-d ") . $eventSchedule[$last];
 			return;

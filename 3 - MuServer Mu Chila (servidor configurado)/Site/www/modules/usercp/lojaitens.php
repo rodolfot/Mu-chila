@@ -26,8 +26,9 @@ try {
 		$_SESSION['muchila_lojaitens_ok'] = $r;
 		redirect(1, 'usercp/lojaitens?item=' . rawurlencode($itemId));
 	}
-} catch(Exception $ex) {
-	$erro = $ex->getMessage();
+} catch(Throwable $ex) {
+	// issue #38: erro do banco nunca aparece na tela (MuChilaUI::erro manda o detalhe para o log)
+	$erro = MuChilaUI::erro($ex, 'Não foi possível concluir a compra agora. Nada foi cobrado; tente de novo em alguns minutos.');
 }
 
 $saldo = isset($loja) ? (function() use ($loja, $conta) { try { return $loja->saldo($conta); } catch(Exception $e) { return 0; } })() : 0;

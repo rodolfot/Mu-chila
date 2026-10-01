@@ -49,7 +49,7 @@ try {
 		echo '<td>'.($p['entregue_em'] ? MuChilaLoja::data($p['entregue_em']).'<br><small>'.$h($p['entregue_por']).'</small>' : '').$zen.'</td>';
 		echo '<td><small>'.$h($p['obs']).'</small></td><td style="white-space:nowrap">';
 		if($aberto) {
-			echo '<form method="post" style="display:inline" onsubmit="return confirm(\'Entregar o pedido '.(int)$p['id'].' ('.$h($p['descricao']).') para '.$h($p['conta']).'? Use só se o pagamento foi conferido.\')">'
+			echo '<form method="post" style="display:inline" onsubmit="return confirm('.$h(json_encode('Entregar o pedido '.(int)$p['id'].' ('.$p['descricao'].') para '.$p['conta'].'? Use só se o pagamento foi conferido.', JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE)).')">'
 				.'<input type="hidden" name="csrf" value="'.$h($csrf).'"><input type="hidden" name="pedido" value="'.(int)$p['id'].'">'
 				.'<button name="acao" value="entregar" class="btn btn-xs btn-success">Entregar</button></form> ';
 			echo '<form method="post" style="display:inline" onsubmit="return confirm(\'Cancelar o pedido '.(int)$p['id'].'?\')">'

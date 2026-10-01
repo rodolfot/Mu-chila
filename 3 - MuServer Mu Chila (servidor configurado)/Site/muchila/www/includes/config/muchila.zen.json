@@ -1,0 +1,10 @@
+{
+  "_comentario": "Comprar Zen (usercp/buyzen): pacotes de Zen pagos com Cash (WCoinC). O Zen vai para o baú da conta (warehouse.Money, limite de 2.000.000.000 do jogo), com a conta fora do jogo. Editável pela aba Site > Comprar Zen do Mu Chila Admin. Valores iniciais de 01/10/2026: ajustar à economia do servidor.",
+  "ativo": true,
+  "pacotes": [
+    { "id": "zen-50kk", "zen": 50000000, "cash": 10 },
+    { "id": "zen-200kk", "zen": 200000000, "cash": 35 },
+    { "id": "zen-500kk", "zen": 500000000, "cash": 80 },
+    { "id": "zen-1kkk", "zen": 1000000000, "cash": 150 }
+  ]
+}

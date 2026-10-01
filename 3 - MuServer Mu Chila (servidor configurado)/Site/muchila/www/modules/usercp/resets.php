@@ -5,6 +5,7 @@
  */
 if(!isLoggedIn()) redirect(1,'login');
 require_once(__PATH_INCLUDES__ . 'muchila/MuChilaResets.php');
+require_once(__PATH_INCLUDES__ . 'muchila/MuChilaUI.php');
 
 $h = function($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); };
 $conta = $_SESSION['username'];
@@ -22,9 +23,8 @@ try {
 		if(isset($_POST['supreme'])) $_SESSION['muchila_msg'] = $svc->supremeReset($nome, $conta);
 		if(isset($_POST['reset']) || isset($_POST['master']) || isset($_POST['supreme'])) redirect(1, 'usercp/resets');
 	}
-} catch(Exception $ex) { $erro = $ex->getMessage(); }
+} catch(Throwable $ex) { $erro = MuChilaUI::erro($ex); }   // issue #38: erro do banco nunca aparece na tela
 
-require_once(__PATH_INCLUDES__ . 'muchila/MuChilaUI.php');
 $ui = 'MuChilaUI';
 echo $ui::titulo('Resets', 'Reset, Master Reset e Supreme Reset direto pelo site.', 'reset');
 if($erro) echo $ui::aviso('perigo', 'Não deu certo', $h($erro));
@@ -76,12 +76,12 @@ foreach($chars as $c) {
 		echo '<div><span>'.$rot.'</span><strong>'.number_format((int)$v,0,',','.').'</strong></div>';
 	echo '</div><div class="mc-char__actions">';
 	$f = '<form method="post"><input type="hidden" name="csrf" value="'.$h($csrf).'"><input type="hidden" name="personagem" value="'.$h($c['Name']).'">';
-	echo $f.'<button name="reset" class="mc-btn mc-btn--sm" '.($podeReset?'':'disabled title="Precisa do nível 400"').' '
-		.'onclick="return confirm(\'Reset em '.$h($c['Name']).'? Volta ao nível 1, zera os atributos e dá os pontos escaláveis.\')">Reset</button></form>';
-	echo $f.'<button name="master" class="mc-btn mc-btn--sm mc-btn--gold" '.($podeMaster?'':'disabled title="Precisa do Master Level 600"').' '
-		.'onclick="return confirm(\'Master Reset em '.$h($c['Name']).'? O Master Level e a árvore de skills serão zerados.\')">Master</button></form>';
-	echo $f.'<button name="supreme" class="mc-btn mc-btn--sm mc-btn--ruby" '.($podeSupreme?'':'disabled title="Precisa do nível 400, Master 600 e atributos no máximo"').' '
-		.'onclick="return confirm(\'Supreme Reset em '.$h($c['Name']).'? TUDO será reiniciado (inclusive os resets normais voltam a 0).\')">Supreme</button></form>';
+	echo $f.'<button name="reset" class="mc-btn mc-btn--sm" '.($podeReset?'':'disabled title="Precisa do nível 400"')
+		.$ui::confirma('Reset em '.$c['Name'].'? Volta ao nível 1, zera os atributos e dá os pontos escaláveis.').'>Reset</button></form>';
+	echo $f.'<button name="master" class="mc-btn mc-btn--sm mc-btn--gold" '.($podeMaster?'':'disabled title="Precisa do Master Level 600"')
+		.$ui::confirma('Master Reset em '.$c['Name'].'? O Master Level e a árvore de skills serão zerados.').'>Master</button></form>';
+	echo $f.'<button name="supreme" class="mc-btn mc-btn--sm mc-btn--ruby" '.($podeSupreme?'':'disabled title="Precisa do nível 400, Master 600 e atributos no máximo"')
+		.$ui::confirma('Supreme Reset em '.$c['Name'].'? TUDO será reiniciado (inclusive os resets normais voltam a 0).').'>Supreme</button></form>';
 	echo '</div></article>';
 }
 echo '</div>';

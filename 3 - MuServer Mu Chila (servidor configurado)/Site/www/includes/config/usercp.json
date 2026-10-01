@@ -50,7 +50,7 @@
     "order": 10
   },
   {
-    "active": true,
+    "active": false,
     "type": "internal",
     "phrase": "usercp_menu_txt_2",
     "link": "usercp/reset",
@@ -110,7 +110,7 @@
     "order": 70
   },
   {
-    "active": true,
+    "active": false,
     "type": "internal",
     "phrase": "usercp_menu_txt_4",
     "link": "usercp/vote",

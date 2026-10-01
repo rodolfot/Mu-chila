@@ -8,6 +8,15 @@ class MuChilaUI
 {
     public static function h($v): string { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
+    /**
+     * Atributo onclick/onsubmit com a pergunta de confirmação. O texto vai como string do JavaScript (json_encode): nome de
+     * item com apóstrofo ("Gladiator's Dagger") não quebra a pergunta, que senão seria pulada e o botão faria a ação direto.
+     */
+    public static function confirma(string $pergunta, string $evento = 'onclick'): string
+    {
+        return ' ' . $evento . '="return confirm(' . self::h(json_encode($pergunta, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE)) . ')"';
+    }
+
     /** URL do sprite de ícones do tema (não depende da template ativa). */
     public static function sprite(): string { return __BASE_URL__ . 'templates/muchila/img/icones.svg'; }
 
@@ -77,6 +86,38 @@ class MuChilaUI
                  'usercp/resetstats' => 'eraser', 'usercp/addstats' => 'stats', 'usercp/clearskilltree' => 'tree', 'usercp/vote' => 'vote', 'usercp/buyzen' => 'coin',
                  'donation' => 'gift'];
         return $mapa[$link] ?? 'chevron-right';
+    }
+
+    /**
+     * Texto de erro que pode ir para a tela (issue #38: erro de SQL nunca aparece para o jogador). As mensagens do próprio
+     * Mu Chila (Exception com texto para o jogador) passam; erro do banco (PDOException), outros erros internos
+     * (RuntimeException, ErrorException) ou do PHP viram o texto genérico, e o detalhe vai só para o log de erros do PHP.
+     */
+    public static function erro(Throwable $e, string $generico = 'Não foi possível concluir agora. Tente de novo em alguns minutos; se continuar, fale com a administração.'): string
+    {
+        if ($e instanceof RuntimeException || $e instanceof ErrorException || !($e instanceof Exception)) {   // PDOException é RuntimeException
+            error_log('[Mu Chila] ' . get_class($e) . ': ' . $e->getMessage() . ' em ' . $e->getFile() . ':' . $e->getLine());
+            return $generico;
+        }
+        return $e->getMessage();
+    }
+
+    /**
+     * Jogadores no jogo agora, somando todos os servidores (MEMB_STAT.ConnectStat = 1), e quantos em cada um
+     * (ServerName). null se o banco não responder (a página usa o número do cache do WebEngine).
+     * @return array{total:int, servidores:array<string,int>}|null
+     */
+    public static function online(): ?array
+    {
+        try {
+            require_once(__DIR__ . '/MuChilaLoja.php');
+            $linhas = MuChilaLoja::conectar()->query("SELECT ISNULL(NULLIF(LTRIM(RTRIM(ServerName)), ''), '?') AS s, COUNT(*) AS n
+                FROM MEMB_STAT WHERE ConnectStat = 1 GROUP BY ISNULL(NULLIF(LTRIM(RTRIM(ServerName)), ''), '?') ORDER BY COUNT(*) DESC")->fetchAll(PDO::FETCH_KEY_PAIR);
+            $linhas = array_map('intval', $linhas ?: []);
+            return ['total' => array_sum($linhas), 'servidores' => $linhas];
+        } catch (Throwable $e) {
+            return null;
+        }
     }
 
     /** Saldo de Cash da conta logada (0 se não der para ler); uma consulta por página, guardada. */

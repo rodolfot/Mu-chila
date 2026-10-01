@@ -78,6 +78,17 @@
 		if (c) { var j = c.closest('.mc-modal'); if (j) fecharJanela(j); }
 	});
 
+	// ---------------- busca numa grade: <input data-mc-filtro="#grade">, cada cartão com data-nome
+	var semAcento = function (s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
+	document.querySelectorAll('[data-mc-filtro]').forEach(function (campo) {
+		var grade = document.querySelector(campo.getAttribute('data-mc-filtro'));
+		if (!grade) return;
+		campo.addEventListener('input', function () {
+			var q = semAcento(campo.value.trim());
+			Array.prototype.forEach.call(grade.children, function (c) { c.hidden = q !== '' && semAcento(c.getAttribute('data-nome') || '').indexOf(q) < 0; });
+		});
+	});
+
 	// ---------------- copiar (PIX): <button data-mc-copy="#id">
 	document.addEventListener('click', function (e) {
 		var b = e.target.closest && e.target.closest('[data-mc-copy]');
@@ -151,7 +162,7 @@ function loadEventSchedule() {
 	});
 }
 function eventSchedule(id, openTime, duration, offset, timeLeft) {
-	var el = document.getElementById(id);
+	var el = document.getElementById(id), proximaRecarga = 0;
 	function recarregar() {
 		$.getJSON(baseUrl + 'api/events.php?event=' + id, function (d) {
 			openTime = d.opentime; duration = d.duration; offset = d.offset; timeLeft = d.timeleft;
@@ -160,7 +171,12 @@ function eventSchedule(id, openTime, duration, offset, timeLeft) {
 		});
 	}
 	setInterval(function () {
-		if (timeLeft < 1) { recarregar(); timeLeft = 1; return; }
+		// passou do horário: pede o próximo à API no máximo a cada 30 s (antes pedia a cada segundo se a resposta viesse no passado)
+		if (timeLeft < 1) {
+			if (Date.now() >= proximaRecarga) { proximaRecarga = Date.now() + 30000; recarregar(); }
+			el.textContent = 'em instantes';
+			return;
+		}
 		if (openTime > 0 && offset - timeLeft < openTime) { el.innerHTML = '<span class="event-schedule-open">Entrada aberta</span>'; timeLeft--; return; }
 		if (openTime <= 0 && duration > 0 && offset - timeLeft < duration) { el.innerHTML = '<span class="event-schedule-inprogress">Acontecendo</span>'; timeLeft--; return; }
 		var d = Math.floor(timeLeft / 86400), h = Math.floor(timeLeft % 86400 / 3600), m = Math.floor(timeLeft % 3600 / 60), s = timeLeft % 60;

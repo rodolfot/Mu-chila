@@ -21,3 +21,13 @@ BEGIN
 END
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_MUCHILA_LOJAITENS_COMPRAS_conta')
     CREATE INDEX IX_MUCHILA_LOJAITENS_COMPRAS_conta ON dbo.MUCHILA_LOJAITENS_COMPRAS (conta, id DESC);
+
+-- Login do site (muchila_site): a compra gera a série do item novo pelo mesmo contador do servidor (issue #38: sem este
+-- GRANT a compra parava em "A permissão EXECUTE foi negada no objeto 'WZ_GetItemSerial'").
+IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = 'muchila_site')
+BEGIN
+    GRANT EXECUTE ON dbo.WZ_GetItemSerial TO [muchila_site];
+    GRANT SELECT, INSERT ON dbo.MUCHILA_LOJAITENS_COMPRAS TO [muchila_site];
+    PRINT 'permissoes da loja de itens concedidas a muchila_site';
+END
+ELSE PRINT 'AVISO: usuario muchila_site nao existe neste banco; ajuste o GRANT.';

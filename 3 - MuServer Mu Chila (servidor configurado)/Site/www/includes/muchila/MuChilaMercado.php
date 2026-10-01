@@ -326,7 +326,8 @@ class MuChilaMercado
     public function anunciosAtivos(string $tipo = '', string $busca = '', int $limite = 200): array
     {
         $this->expirarVencidos();
-        $sql = "SELECT TOP (" . max(1, $limite) . ") * FROM MUCHILA_MERCADO_ANUNCIOS WHERE status = 'ativo'";
+        // item_hex: os 16 bytes do item, para a tela mostrar foto e quantidade (anúncios antigos não tinham a quantidade no texto)
+        $sql = "SELECT TOP (" . max(1, $limite) . ") *, CONVERT(varchar(32), item, 2) AS item_hex FROM MUCHILA_MERCADO_ANUNCIOS WHERE status = 'ativo'";
         $p = [];
         if (in_array($tipo, ['item', 'personagem'], true)) { $sql .= " AND tipo = ?"; $p[] = $tipo; }
         if ($busca !== '') { $sql .= " AND (titulo LIKE ? OR detalhes LIKE ?)"; $p[] = "%$busca%"; $p[] = "%$busca%"; }
@@ -338,7 +339,7 @@ class MuChilaMercado
     public function anunciosDoVendedor(string $conta): array
     {
         $this->expirarVencidos();
-        $st = $this->db->prepare("SELECT TOP 100 * FROM MUCHILA_MERCADO_ANUNCIOS WHERE vendedor = ? ORDER BY id DESC");
+        $st = $this->db->prepare("SELECT TOP 100 *, CONVERT(varchar(32), item, 2) AS item_hex FROM MUCHILA_MERCADO_ANUNCIOS WHERE vendedor = ? ORDER BY id DESC");
         $st->execute([$conta]);
         return $st->fetchAll();
     }
