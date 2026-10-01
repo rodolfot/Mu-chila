@@ -1,7 +1,7 @@
 <?php
 // Teste do núcleo da loja de itens (MuChilaLojaItens).
 //   php teste-lojaitens.php            regras, preços e montagem do item (sem banco; roda em qualquer PC com o repositório)
-//   php teste-lojaitens.php --banco    também a compra de verdade no banco do servidor, com a conta descartável "lojaitensteste"
+//   php teste-lojaitens.php --banco    também a compra de verdade no banco do servidor, com a conta descartável "lojateste"
 //                                      (criada e apagada pelo teste). Rodar no PC do servidor: C:\MuServer\Site\php\php.exe ...
 require __DIR__ . '/../www/includes/muchila/MuChilaLojaItens.php';
 
@@ -82,7 +82,15 @@ confere('tipo acima de 255 (bit 8 no byte 7)', $d && $d['secao'] === 12 && $d['t
 // ------------------------------------------------------------------ compra no banco (só no servidor)
 if (in_array('--banco', $argv, true)) {
     $db = MuChilaLoja::conectar();
-    $conta = 'lojaitensteste';
+    $conta = 'lojateste';   // o nome da conta no banco do jogo tem no máximo 10 letras (MEMB_INFO.memb___id)
+    // nunca mexe numa conta de verdade com o mesmo nome: a do teste é a que tem o e-mail teste@exemplo.com
+    $s = $db->prepare("SELECT mail_addr FROM MEMB_INFO WHERE memb___id = ?");
+    $s->execute([$conta]);
+    $mail = $s->fetchColumn();
+    if ($mail !== false && trim((string)$mail) !== 'teste@exemplo.com') {
+        echo PHP_EOL . "PARADO: já existe uma conta \"$conta\" que não é deste teste; nada foi alterado." . PHP_EOL;
+        exit(1);
+    }
     $limpar = function() use ($db, $conta) {
         foreach (["DELETE FROM MUCHILA_LOJAITENS_COMPRAS WHERE conta = ?", "DELETE FROM warehouse WHERE AccountID = ?", "DELETE FROM CashShopData WHERE AccountID = ?",
                   "DELETE FROM MEMB_STAT WHERE memb___id = ?", "DELETE FROM AccountCharacter WHERE Id = ?", "DELETE FROM MEMB_INFO WHERE memb___id = ?"] as $sql)

@@ -183,7 +183,7 @@ Página **Painel do jogador → Loja de itens** (`usercp/lojaitens`, também no 
 - **Fotos**: as do MuEditor (`api/muchila-item-imagem.php?s=<seção>&t=<tipo>`, lidas de `C:\MuServer\1 - MuEditor\Item`, 60×60). Item sem foto mostra o ícone da categoria.
 - **Testes**: `muchila\testes\teste-lojaitens.php`.
   - Sem argumento: 28 casos de regras, preços e montagem dos 16 bytes, conferida com o decodificador do Mercado. Roda em qualquer PC com o repositório.
-  - Com `--banco`, no servidor: compra de verdade com a conta descartável `lojaitensteste`. Confere cobrança, item no baú, registro, preço mudado, Cash insuficiente, conta no jogo, baú cheio e loja fechada.
+  - Com `--banco`, no servidor: compra de verdade com a conta descartável `lojateste`. Confere cobrança, item no baú, registro, preço mudado, Cash insuficiente, conta no jogo, baú cheio e loja fechada.
   - Comando: `C:\MuServer\Site\php\php.exe muchila\testes\teste-lojaitens.php --banco`.
 
 ## Páginas de 01/10/2026
@@ -257,7 +257,7 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\includes\config\muchila.lojaitens.json` | Catálogo e preços da loja de itens (página "Site → Loja de itens" do Mu Chila Admin) |
 | `www\api\muchila-item-imagem.php` | Foto de um item (as do MuEditor) |
 | `sql\MUCHILA_LOJAITENS.sql` | Tabela das compras da loja de itens |
-| `testes\teste-lojaitens.php` | Teste da loja de itens (28 casos sem banco; `--banco` faz compras de verdade com a conta `lojaitensteste`) |
+| `testes\teste-lojaitens.php` | Teste da loja de itens (28 casos sem banco; `--banco` faz compras de verdade com a conta `lojateste`) |
 | `www\modules\tos.php`, `privacy.php`, `refunds.php`, `contact.php`, `downloads.php` | Termos, Privacidade, Reembolso, Contate-nos e Downloads (trocam os do WebEngine, guardados como `.original`) |
 | `www\includes\muchila\MuChilaPaginas.php`, `www\includes\config\muchila.paginas.json` | Textos das páginas e canais do Contate-nos; mensagens do Contate-nos (`MuChilaContato`) |
 | `www\modules\usercp\buyzen.php`, `www\includes\muchila\MuChilaZen.php`, `www\includes\config\muchila.zen.json` | Comprar Zen (página, núcleo e pacotes) |

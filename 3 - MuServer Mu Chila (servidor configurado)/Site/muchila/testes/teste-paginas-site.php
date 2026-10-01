@@ -71,6 +71,14 @@ confere('confirmação: nome com apóstrofo vira JavaScript válido', isset($m[1
 if (in_array('--banco', $argv, true)) {
     $db = MuChilaLoja::conectar();
     $conta = 'zenteste';
+    // nunca mexe numa conta de verdade com o mesmo nome: a do teste é a que tem o e-mail teste@exemplo.com
+    $s = $db->prepare("SELECT mail_addr FROM MEMB_INFO WHERE memb___id = ?");
+    $s->execute([$conta]);
+    $mail = $s->fetchColumn();
+    if ($mail !== false && trim((string)$mail) !== 'teste@exemplo.com') {
+        echo PHP_EOL . "PARADO: já existe uma conta \"$conta\" que não é deste teste; nada foi alterado." . PHP_EOL;
+        exit(1);
+    }
     $limpar = function() use ($db, $conta) {
         foreach (["DELETE FROM MUCHILA_ZEN_COMPRAS WHERE conta = ?", "DELETE FROM MUCHILA_CONTATO WHERE conta = ?", "DELETE FROM warehouse WHERE AccountID = ?",
                   "DELETE FROM CashShopData WHERE AccountID = ?", "DELETE FROM MEMB_STAT WHERE memb___id = ?", "DELETE FROM MEMB_INFO WHERE memb___id = ?"] as $sql)
