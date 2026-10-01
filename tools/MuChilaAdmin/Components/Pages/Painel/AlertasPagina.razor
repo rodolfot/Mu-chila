@@ -1,0 +1,116 @@
+@page "/alertas"
+@implements IDisposable
+@inject Alertas Alertas
+@inject ExecutorAcoes Acoes
+@inject IJSRuntime JS
+
+<CabecalhoPagina Titulo="Alertas" Descricao="O painel confere a cada 30 segundos: servidor e vigia parados, mensagens do site, compras com problema, logins errados, disco e backup." Icone="bell">
+    <button type="button" class="btn btn-secundario btn-sm" @onclick="Notificacoes"><Icone Nome="bell" Classe="h-3.5 w-3.5" />@(permissao == "granted" ? "Notificações ligadas" : "Avisar no Windows")</button>
+    <button type="button" class="btn btn-secundario btn-sm" @onclick="TodosLidos"><Icone Nome="check" Classe="h-3.5 w-3.5" />Marcar todos como lidos</button>
+</CabecalhoPagina>
+
+<div class="abas mb-4">
+    <button type="button" class="aba @(soAbertos ? "ativa" : "")" @onclick="() => Mudar(true)">Abertos (@abertos)</button>
+    <button type="button" class="aba @(!soAbertos ? "ativa" : "")" @onclick="() => Mudar(false)">Todos (inclui resolvidos)</button>
+</div>
+
+@if (lista == null)
+{
+    <Carregando />
+}
+else if (lista.Count == 0)
+{
+    <Cartao><Vazio Texto="@(soAbertos ? "Nenhum alerta aberto. Tudo certo." : "Nenhum alerta registrado ainda.")" Icone="check-circle" /></Cartao>
+}
+else
+{
+    <div class="space-y-3">
+        @foreach (var a in lista)
+        {
+            <div class="cartao flex gap-4 p-4 @(a.Aberto && !a.Lido ? "ring-1 ring-inset ring-amber-500/30" : "") @(a.Aberto ? "" : "opacity-70")">
+                <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full @Fundo(a)"><Icone Nome="@IconeDe(a)" Classe="ico" /></span>
+                <div class="min-w-0 flex-1">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <p class="font-semibold text-slate-900 dark:text-white">@a.Titulo</p>
+                        <span class="etiqueta @(a.Severidade == Severidade.Critico ? "etq-vermelha" : a.Severidade == Severidade.Aviso ? "etq-amarela" : "etq-azul")">@NomeSev(a.Severidade)</span>
+                        @if (!a.Aberto) { <span class="etiqueta etq-verde">resolvido @a.ResolvidoEm?.ToString("dd/MM HH:mm")</span> }
+                        else if (!a.Lido) { <span class="etiqueta etq-amarela">novo</span> }
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(a.Texto)) { <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">@a.Texto</p> }
+                    <p class="mt-1.5 text-xs text-slate-500">
+                        desde @a.Criado.ToString("dd/MM/yyyy HH:mm")@(a.Vezes > 1 ? $" · atualizado {a.Vezes} vezes, a última {a.Atualizado:dd/MM HH:mm}" : "")
+                        @if (a.Lido) { <span> · lido por @a.LidoPor @a.LidoEm?.ToString("dd/MM HH:mm")</span> }
+                    </p>
+                </div>
+                <div class="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:items-start">
+                    @if (a.Link != null) { <a href="@a.Link.TrimStart('/')" class="btn btn-secundario btn-sm">Abrir<Icone Nome="arrow-right" Classe="h-3.5 w-3.5" /></a> }
+                    @if (a.Aberto && !a.Lido) { <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Lido(a)">Lido</button> }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    List<Alerta>? lista;
+    bool soAbertos = true;
+    int abertos;
+    string permissao = "default";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Alertas.Mudou += Recarregar;
+        await Carregar();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool primeira)
+    {
+        if (primeira) { try { permissao = await JS.InvokeAsync<string>("muAdmin.permissaoNotificacoes"); StateHasChanged(); } catch { } }
+    }
+
+    async Task Carregar()
+    {
+        try
+        {
+            var todos = await Task.Run(() => Alertas.Lista(incluirResolvidos: !soAbertos, max: 300));
+            abertos = (await Task.Run(Alertas.Contagem)).Abertos;
+            lista = todos;
+        }
+        catch (Exception ex) { Registro.Erro("alertas", ex); lista = new(); }
+    }
+
+    void Recarregar() => _ = InvokeAsync(async () => { await Carregar(); StateHasChanged(); });
+    async Task Mudar(bool a) { soAbertos = a; lista = null; await Carregar(); }
+
+    async Task Lido(Alerta a)
+    {
+        var u = await Acoes.Login();
+        await Task.Run(() => Alertas.MarcarLido(a.Id, u));
+        await Acoes.Registrar("alerta.lido", a.Titulo, null);
+        await Carregar();
+    }
+
+    async Task TodosLidos()
+    {
+        var u = await Acoes.Login();
+        await Task.Run(() => Alertas.MarcarTodosLidos(u));
+        await Carregar();
+    }
+
+    async Task Notificacoes()
+    {
+        permissao = await JS.InvokeAsync<string>("muAdmin.pedirNotificacoes");
+        if (permissao == "granted") await JS.InvokeVoidAsync("muAdmin.notificar", "Mu Chila Admin", "Pronto: os alertas críticos também aparecem como notificação do Windows enquanto o painel estiver aberto.");
+    }
+
+    static string NomeSev(string s) => s switch { Severidade.Critico => "crítico", Severidade.Aviso => "atenção", _ => "informação" };
+    static string IconeDe(Alerta a) => a.Tipo switch { "processo" or "servidor" => "server", "vigia" => "shield", "site" => "inbox", "vendas" => "cart", "seguranca" => "lock", "banco" => "database", _ => "bell" };
+    static string Fundo(Alerta a) => a.Severidade switch
+    {
+        Severidade.Critico => "bg-rose-500/10 text-rose-500",
+        Severidade.Aviso => "bg-amber-500/10 text-amber-500",
+        _ => "bg-sky-500/10 text-sky-500",
+    };
+
+    public void Dispose() => Alertas.Mudou -= Recarregar;
+}

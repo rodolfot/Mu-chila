@@ -1,0 +1,510 @@
+@page "/contas/{Conta}"
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Bans Bans
+@inject Avisos Avisos
+@inject NavigationManager Nav
+
+@if (carregando && c == null)
+{
+    <Carregando />
+}
+else if (c == null)
+{
+    <CabecalhoPagina Titulo="Conta não encontrada" Icone="users" />
+    <Vazio Texto="@($"A conta \"{Conta}\" não existe.")" Icone="search"><a href="contas" class="btn btn-secundario btn-sm mt-3">Voltar às contas</a></Vazio>
+}
+else
+{
+    <a href="contas" class="mb-3 inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-800 dark:hover:text-white"><Icone Nome="arrow-left" Classe="h-3.5 w-3.5" />Contas</a>
+    <CabecalhoPagina Titulo="@c.Conta" Descricao="@($"{c.Plano}{(c.VipAtivo ? $" até {c.VipAte:dd/MM/yyyy HH:mm}" : "")} · {personagens.Count} personagem(ns)")" Icone="user">
+        @if (c.Online)
+        {
+            <span class="etiqueta etq-verde"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>online @(c.Servidor != null ? $"· {c.Servidor}" : "")</span>
+        }
+        @if (c.Banida)
+        {
+            <span class="etiqueta etq-vermelha"><Icone Nome="ban" Classe="h-3 w-3" />banida</span>
+        }
+        <button type="button" class="btn btn-secundario btn-sm" @onclick="Carregar"><Icone Nome="refresh" Classe="h-3.5 w-3.5" />Atualizar</button>
+    </CabecalhoPagina>
+
+    <AuthorizeView Policy="@Politicas.Moderar">
+        <div class="mb-5 flex flex-wrap gap-2">
+            @if (c.Online)
+            {
+                <button type="button" class="btn btn-secundario btn-sm" @onclick="Deslogar" disabled="@ocupado"><Icone Nome="logout" Classe="h-3.5 w-3.5" />Deslogar agora</button>
+            }
+            @if (c.Banida)
+            {
+                <button type="button" class="btn btn-sucesso btn-sm" @onclick="@(() => janela = "desban")" disabled="@ocupado"><Icone Nome="unlock" Classe="h-3.5 w-3.5" />Desbanir</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-perigo btn-sm" @onclick="@(() => janela = "ban")" disabled="@ocupado"><Icone Nome="ban" Classe="h-3.5 w-3.5" />Banir</button>
+            }
+            <button type="button" class="btn btn-secundario btn-sm" @onclick="@(() => janela = "senha")" disabled="@ocupado"><Icone Nome="key" Classe="h-3.5 w-3.5" />Senha do jogo</button>
+            <AuthorizeView Policy="@Politicas.Administrar" Context="adm">
+                <button type="button" class="btn btn-secundario btn-sm" @onclick="@(() => janela = "cash")" disabled="@ocupado"><Icone Nome="coin" Classe="h-3.5 w-3.5" />Dar/tirar Cash</button>
+            </AuthorizeView>
+            <a href="@($"itens?conta={Uri.EscapeDataString(c.Conta)}")" class="btn btn-secundario btn-sm"><Icone Nome="chest" Classe="h-3.5 w-3.5" />Itens e baú</a>
+            <a href="@($"passe?conta={Uri.EscapeDataString(c.Conta)}")" class="btn btn-secundario btn-sm"><Icone Nome="map" Classe="h-3.5 w-3.5" />Passe dos Mapas</a>
+        </div>
+    </AuthorizeView>
+
+    <div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
+        <Cartao Titulo="Resumo" Icone="info">
+            <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+                <dt class="text-slate-500">Plano</dt>
+                <dd><span class="etiqueta @(c.VipAtivo ? "etq-roxa" : "etq-cinza")">@c.Plano</span> @(c.VipAtivo ? $"até {c.VipAte:dd/MM/yyyy HH:mm}" : c.NivelVip > 0 ? "(VIP vencido)" : "")</dd>
+                <dt class="text-slate-500">Criada</dt><dd>@(c.Criada?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
+                <dt class="text-slate-500">E-mail</dt><dd class="break-all">@(string.IsNullOrWhiteSpace(c.Email) ? "—" : c.Email)</dd>
+                <dt class="text-slate-500">Cash</dt><dd class="tabular-nums">@N(c.CashC) <span class="text-xs text-slate-500">· W Coin (P) @N(c.CashP) · Goblin @N(c.Goblin)</span></dd>
+                <dt class="text-slate-500">Créditos do site</dt><dd class="tabular-nums">@N(c.Creditos)</dd>
+                <dt class="text-slate-500">Passe dos Mapas</dt><dd>@(c.PasseAte is { } p && p > DateTime.Now ? $"até {p:dd/MM/yyyy HH:mm}" : "não tem")</dd>
+                <dt class="text-slate-500">Última conexão</dt>
+                <dd>@(c.Entrou?.ToString("dd/MM/yyyy HH:mm") ?? "—")@(c.Ip != null ? $" · IP {c.Ip}" : "")@(c.Servidor != null ? $" · {c.Servidor}" : "")</dd>
+                <dt class="text-slate-500">Tempo de jogo</dt><dd>@c.HorasOnline h</dd>
+            </dl>
+        </Cartao>
+
+        <Cartao Titulo="VIP" Icone="crown" Classe="xl:col-span-2" Subtitulo="Vale no próximo login. Conta online é deslogada sozinha.">
+            <AuthorizeView Policy="@Politicas.Moderar">
+                <Authorized>
+                    <div class="flex flex-wrap items-end gap-3">
+                        <div>
+                            <label class="rotulo" for="vipnivel">Nível</label>
+                            <select id="vipnivel" class="entrada w-36" @bind="vipNivel">
+                                @for (int i = 1; i <= 3; i++) { <option value="@i">@Accounts.Levels[i]</option> }
+                            </select>
+                        </div>
+                        <div>
+                            <label class="rotulo" for="vipdias">Dias</label>
+                            <input id="vipdias" type="number" min="1" max="3650" class="entrada w-28" @bind="vipDias" />
+                        </div>
+                        <div class="flex gap-1.5">
+                            @foreach (var d in new[] { 7, 30, 90 })
+                            {
+                                <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => vipDias = d">@d d</button>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-primario" @onclick="AplicarVip" disabled="@ocupado"><Icone Nome="crown" Classe="ico-sm" />Aplicar VIP</button>
+                        @if (c.NivelVip > 0)
+                        {
+                            <button type="button" class="btn btn-secundario" @onclick="RemoverVip" disabled="@ocupado">Remover VIP</button>
+                        }
+                    </div>
+                    <p class="ajuda mt-3">O prazo conta a partir de agora (não soma ao que sobrou). Benefícios de cada nível: linhas *_AL1/_AL2/_AL3 do GameServerInfo - Common.dat (tela Taxas e opções).</p>
+                </Authorized>
+                <NotAuthorized><p class="text-sm text-slate-500">Seu papel só permite ver.</p></NotAuthorized>
+            </AuthorizeView>
+        </Cartao>
+    </div>
+
+    <Cartao Titulo="Personagens" Icone="sword" SemPadding="true" Classe="mt-5">
+        @if (personagens.Count == 0)
+        {
+            <Vazio Texto="Esta conta não tem personagens." Icone="user" />
+        }
+        else
+        {
+            <div class="rolagem">
+                <table class="tabela">
+                    <thead><tr><th>Personagem</th><th>Classe</th><th class="text-right">Nível</th><th class="text-right">Master</th><th class="text-right">Resets</th><th class="text-right">Pontos</th><th class="text-right">Zen</th><th>Mapa</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var p in personagens)
+                        {
+                            <tr class="@(p.Nome == Destaque ? "selecionada" : "")">
+                                <td class="font-medium text-slate-900 dark:text-white">
+                                    @p.Nome
+                                    @if (p.Jogando) { <span class="etiqueta etq-verde ml-1">jogando</span> }
+                                    @if (p.Ctl > 0) { <span class="etiqueta etq-amarela ml-1" title="CtlCode @p.Ctl">GM/bloq.</span> }
+                                </td>
+                                <td>@p.Classe</td>
+                                <td class="num">@p.Nivel</td>
+                                <td class="num">@p.Master</td>
+                                <td class="num">@p.Resets<span class="text-slate-400">/@p.MResets/@p.SResets</span></td>
+                                <td class="num" title="pontos de atributo / pontos master livres">@p.Pontos<span class="text-slate-400">/@p.PontosMaster</span></td>
+                                <td class="num">@N(p.Zen)</td>
+                                <td class="whitespace-nowrap">@p.Mapa</td>
+                                <td class="whitespace-nowrap text-right">
+                                    <AuthorizeView Policy="@Politicas.Moderar">
+                                        <button type="button" class="btn btn-fantasma btn-sm" title="Dar ou tirar pontos" @onclick="() => AbrirPontos(p.Nome)" disabled="@ocupado"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Pontos</button>
+                                        <button type="button" class="btn btn-fantasma btn-sm" title="Nível, EXP, master level e resets" @onclick="() => AbrirNivel(p.Nome)" disabled="@ocupado"><Icone Nome="stats" Classe="h-3.5 w-3.5" />Nível/reset</button>
+                                        <button type="button" class="btn btn-fantasma btn-sm" title="Zerar a árvore master" @onclick="() => ZerarMaster(p.Nome)" disabled="@ocupado"><Icone Nome="tree" Classe="h-3.5 w-3.5" />Árvore</button>
+                                    </AuthorizeView>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </Cartao>
+
+    <div class="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <Cartao Titulo="Bans desta conta" Icone="ban" SemPadding="true">
+            @if (bans.Count == 0)
+            {
+                <Vazio Texto="Nunca foi banida pelo painel." Icone="shield-check" />
+            }
+            else
+            {
+                <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                    @foreach (var b in bans)
+                    {
+                        <li class="px-5 py-3 text-sm">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="etiqueta @(b.Ativo ? "etq-vermelha" : "etq-cinza")">@(b.Ativo ? "ativo" : "encerrado")</span>
+                                <span class="font-medium text-slate-800 dark:text-slate-100">@b.Motivo</span>
+                            </div>
+                            <p class="mt-1 text-xs text-slate-500">
+                                @b.Inicio.ToString("dd/MM/yyyy HH:mm") por @b.Por · @b.Prazo
+                                @if (b.EncerradoEm != null) { <span> · encerrado @b.EncerradoEm.Value.ToString("dd/MM HH:mm") por @b.EncerradoPor@(b.MotivoEncerramento != null ? $" ({b.MotivoEncerramento})" : "")</span> }
+                            </p>
+                        </li>
+                    }
+                </ul>
+            }
+        </Cartao>
+        <Cartao Titulo="O que o painel fez nesta conta" Icone="shield-check" SemPadding="true">
+            @if (historico.Count == 0)
+            {
+                <Vazio Texto="Nada registrado na auditoria." Icone="shield-check" />
+            }
+            else
+            {
+                <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                    @foreach (var e in historico)
+                    {
+                        <li class="flex gap-3 px-5 py-2.5 text-sm">
+                            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full @(e.Ok ? "bg-emerald-500" : "bg-rose-500")"></span>
+                            <span class="min-w-0 flex-1">
+                                <span class="block"><span class="font-medium text-slate-800 dark:text-slate-100">@MuChilaAdmin.Core.Painel.Acoes.Nome(e.Acao)</span> por @e.Usuario</span>
+                                @if (!string.IsNullOrWhiteSpace(e.Mensagem)) { <span class="block truncate text-xs text-slate-500" title="@e.Mensagem">@e.Mensagem</span> }
+                            </span>
+                            <span class="shrink-0 text-xs text-slate-400">@e.Quando.ToString("dd/MM HH:mm")</span>
+                        </li>
+                    }
+                </ul>
+            }
+        </Cartao>
+    </div>
+
+    @* ---------------- janelas ---------------- *@
+    <Janela Aberta="@(janela == "ban")" AbertaChanged="Fechou" Titulo="@($"Banir {c.Conta}")" Subtitulo="O jogo recusa o login enquanto durar. Conta online é deslogada.">
+        <ChildContent>
+            <label class="rotulo" for="banmotivo">Motivo (fica no histórico)</label>
+            <textarea id="banmotivo" class="entrada" rows="3" maxlength="300" @bind="banMotivo" placeholder="ex.: uso de programa de trapaça (speed hack)"></textarea>
+            <label class="rotulo mt-4">Prazo</label>
+            <div class="flex flex-wrap gap-2">
+                @foreach (var (id, nome) in Prazos)
+                {
+                    <button type="button" class="btn btn-sm @(banPrazo == id ? "btn-primario" : "btn-secundario")" @onclick="() => banPrazo = id">@nome</button>
+                }
+            </div>
+            @if (banPrazo == "data")
+            {
+                <input type="datetime-local" class="entrada mt-3 w-auto" @bind="banAte" />
+            }
+        </ChildContent>
+        <Rodape>
+            <button type="button" class="btn btn-secundario" @onclick="() => janela = null">Cancelar</button>
+            <button type="button" class="btn btn-perigo" @onclick="Banir" disabled="@ocupado"><Icone Nome="ban" Classe="ico-sm" />Banir</button>
+        </Rodape>
+    </Janela>
+
+    <Janela Aberta="@(janela == "desban")" AbertaChanged="Fechou" Titulo="@($"Desbanir {c.Conta}")">
+        <ChildContent>
+            <label class="rotulo" for="desbanmotivo">Motivo (opcional)</label>
+            <input id="desbanmotivo" class="entrada" maxlength="300" @bind="desbanMotivo" placeholder="ex.: recurso aceito" />
+        </ChildContent>
+        <Rodape>
+            <button type="button" class="btn btn-secundario" @onclick="() => janela = null">Cancelar</button>
+            <button type="button" class="btn btn-sucesso" @onclick="Desbanir" disabled="@ocupado"><Icone Nome="unlock" Classe="ico-sm" />Desbanir</button>
+        </Rodape>
+    </Janela>
+
+    <Janela Aberta="@(janela == "senha")" AbertaChanged="Fechou" Titulo="Senha do jogo" Subtitulo="A mesma do site. O jogador usa no próximo login.">
+        <ChildContent>
+            <label class="rotulo" for="novasenha">Senha nova</label>
+            <div class="flex gap-2">
+                <input id="novasenha" class="entrada mono" maxlength="10" @bind="novaSenha" autocomplete="off" />
+                <button type="button" class="btn btn-secundario" @onclick="GerarSenha" title="Gerar uma senha"><Icone Nome="refresh" Classe="ico-sm" /></button>
+            </div>
+            <p class="ajuda">4 a 10 letras ou números (limite do jogo). Combine com o jogador por um canal seguro.</p>
+        </ChildContent>
+        <Rodape>
+            <button type="button" class="btn btn-secundario" @onclick="() => janela = null">Cancelar</button>
+            <button type="button" class="btn btn-primario" @onclick="TrocarSenha" disabled="@ocupado"><Icone Nome="key" Classe="ico-sm" />Trocar</button>
+        </Rodape>
+    </Janela>
+
+    <Janela Aberta="@(janela == "cash")" AbertaChanged="Fechou" Titulo="Dar ou tirar Cash" Subtitulo="Número negativo tira (sem ficar abaixo de 0).">
+        <ChildContent>
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                    <label class="rotulo" for="moeda">Moeda</label>
+                    <select id="moeda" class="entrada" @bind="cashMoeda">
+                        @foreach (var (col, nome) in MuChilaAdmin.Core.Contas.Moedas) { <option value="@col">@nome</option> }
+                    </select>
+                </div>
+                <div>
+                    <label class="rotulo" for="qtdcash">Quantidade</label>
+                    <input id="qtdcash" type="number" class="entrada" @bind="cashQtd" />
+                </div>
+            </div>
+            <label class="rotulo mt-3" for="cashmotivo">Motivo (vai para a auditoria)</label>
+            <input id="cashmotivo" class="entrada" maxlength="200" @bind="cashMotivo" placeholder="ex.: compra por PIX conferida à mão, pedido #12" />
+        </ChildContent>
+        <Rodape>
+            <button type="button" class="btn btn-secundario" @onclick="() => janela = null">Cancelar</button>
+            <button type="button" class="btn btn-primario" @onclick="AjustarCash" disabled="@ocupado"><Icone Nome="coin" Classe="ico-sm" />Aplicar</button>
+        </Rodape>
+    </Janela>
+
+    <Janela Aberta="@(janela == "pontos")" AbertaChanged="Fechou" Titulo="@($"Pontos: {alvo}")" Subtitulo="Conta online é deslogada antes (o servidor gravaria por cima).">
+        <ChildContent>
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                    <label class="rotulo" for="tipopontos">Tipo</label>
+                    <select id="tipopontos" class="entrada" @bind="pontosTipo">
+                        @for (int i = 0; i < Accounts.PointKinds.Length; i++) { <option value="@i">@Accounts.PointKinds[i]</option> }
+                    </select>
+                </div>
+                <div>
+                    <label class="rotulo" for="qtdpontos">Quantidade (negativo tira)</label>
+                    <input id="qtdpontos" type="number" min="-100000" max="100000" class="entrada" @bind="pontosQtd" />
+                </div>
+            </div>
+            <p class="ajuda mt-2">Pontos de atributo: o jogador distribui na janela (C). Pontos master: só para quem já tem árvore master.</p>
+        </ChildContent>
+        <Rodape>
+            <button type="button" class="btn btn-secundario" @onclick="() => janela = null">Cancelar</button>
+            <button type="button" class="btn btn-primario" @onclick="DarPontos" disabled="@ocupado">Aplicar</button>
+        </Rodape>
+    </Janela>
+
+    <Janela Aberta="@(janela == "nivel")" AbertaChanged="Fechou" Titulo="@($"Nível e reset: {alvo}")" Largura="sm:max-w-xl">
+        <ChildContent>
+            <p class="mb-3 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600 dark:bg-white/5 dark:text-slate-300">Agora: @statusAlvo</p>
+            <label class="rotulo" for="acaonivel">Ação</label>
+            <select id="acaonivel" class="entrada" value="@nivelAcao" @onchange="MudarAcao">
+                @for (int i = 0; i < CharacterAdjust.Actions.Length; i++) { <option value="@i">@CharacterAdjust.Actions[i].Text</option> }
+            </select>
+            @if (AcaoAtual.NeedsValue)
+            {
+                <label class="rotulo mt-3" for="valornivel">Valor</label>
+                <input id="valornivel" type="number" min="@AcaoAtual.Min" max="@AcaoAtual.Max" class="entrada w-48" @bind="nivelValor" />
+            }
+            <p class="ajuda mt-2">@AcaoAtual.Hint</p>
+            @if (aguardandoVigia)
+            {
+                <Nota Tipo="info" Classe="mt-3">Pedido entregue ao vigia: se o personagem estiver jogando, ele vai para a seleção de personagem e a mudança vale ao entrar de novo. Aguardando...</Nota>
+            }
+        </ChildContent>
+        <Rodape>
+            <button type="button" class="btn btn-secundario" @onclick="() => janela = null">Fechar</button>
+            <button type="button" class="btn btn-primario" @onclick="AplicarNivel" disabled="@(ocupado || aguardandoVigia)">Aplicar</button>
+        </Rodape>
+    </Janela>
+}
+
+@code {
+    [Parameter] public string Conta { get; set; } = "";
+    [SupplyParameterFromQuery(Name = "personagem")] public string? Destaque { get; set; }
+
+    sealed record Pers(string Nome, string Classe, int Nivel, int Master, int Resets, int MResets, int SResets, int Pontos, int PontosMaster, long Zen, string Mapa, bool Jogando, int Ctl);
+
+    static readonly (string, string)[] Prazos = { ("1h", "1 hora"), ("1d", "1 dia"), ("3d", "3 dias"), ("7d", "7 dias"), ("30d", "30 dias"), ("perm", "Permanente"), ("data", "Até a data...") };
+
+    DetalheConta? c;
+    List<Pers> personagens = new();
+    List<Ban> bans = new();
+    List<EventoAuditoria> historico = new();
+    bool carregando = true, ocupado, aguardandoVigia;
+    string? janela, alvo, statusAlvo;
+    int vipNivel = 1, vipDias = 30, pontosTipo, pontosQtd = 100, nivelAcao, cashQtd = 100;
+    long nivelValor;
+    string banMotivo = "", banPrazo = "7d", desbanMotivo = "", novaSenha = "", cashMoeda = "WCoinC", cashMotivo = "";
+    DateTime banAte = DateTime.Now.AddDays(7);
+    string? contaCarregada;
+
+    CharacterAdjust.Action AcaoAtual => CharacterAdjust.Actions[Math.Clamp(nivelAcao, 0, CharacterAdjust.Actions.Length - 1)];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (contaCarregada != Conta) { contaCarregada = Conta; await Carregar(); }
+    }
+
+    async Task Carregar()
+    {
+        carregando = true;
+        try
+        {
+            await Task.Run(() =>
+            {
+                c = MuChilaAdmin.Core.Contas.Detalhes(Conta);
+                if (c == null) return;
+                var mapas = Monsters.NomesDosMapas();
+                personagens = MuChilaAdmin.Core.Contas.Personagens(c.Conta).Rows.Cast<DataRow>().Select(r => new Pers(
+                    (string)r["Personagem"], Dashboard.Familia(Convert.ToInt32(r["_classe"])), Convert.ToInt32(r["Nível"]), Convert.ToInt32(r["Master"]),
+                    Convert.ToInt32(r["Resets"]), Convert.ToInt32(r["M. resets"]), Convert.ToInt32(r["S. resets"]), Convert.ToInt32(r["Pontos livres"]),
+                    Convert.ToInt32(r["Pontos master"]), Convert.ToInt64(r["Zen"]), MuChilaAdmin.Core.Contas.NomeDoMapa(Convert.ToInt32(r["_mapa"]), mapas),
+                    Convert.ToInt32(r["_jogando"]) == 1, Convert.ToInt32(r["_ctl"]))).ToList();
+                bans = Bans.Historico(c.Conta, 20);
+                historico = new AuditoriaSql().Buscar(new FiltroAuditoria { Texto = c.Conta, PorPagina = 15 }).Itens;
+            });
+        }
+        catch (Exception ex) { Registro.Erro("conta " + Conta, ex); Avisos.Erro(ExecutorAcoes.MensagemDe(ex)); }
+        finally { carregando = false; }
+    }
+
+    void Fechou(bool aberta) { if (!aberta) janela = null; }
+    static string N(long v) => v.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
+
+    async Task Rodar(string acao, string? detalhes, Func<string?> trabalho, string politica = Politicas.Moderar)
+    {
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar(acao, c!.Conta, trabalho, politica, detalhes)) janela = null;
+        }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+
+    async Task Deslogar()
+    {
+        if (!await Confirmar.Perguntar("Deslogar a conta?", $"{c!.Conta} volta à seleção de servidor; o servidor salva o personagem antes.", "Deslogar")) return;
+        await Rodar("conta.logout", null, () => ServerControl.ForceLogout(c!.Conta));
+    }
+
+    Task AplicarVip() => Rodar("conta.vip", $"nivel={vipNivel} dias={vipDias}", () =>
+    {
+        if (vipDias is < 1 or > 3650) throw new InvalidOperationException("Dias de 1 a 3650.");
+        Accounts.SetVip(c!.Conta, vipNivel, vipDias);
+        return OperacoesConta.Juntar(new[] { $"{c.Conta}: {Accounts.Levels[vipNivel]} por {vipDias} dia(s), até {DateTime.Now.AddDays(vipDias):dd/MM/yyyy HH:mm}.",
+                                             OperacoesConta.DeslogarSeOnline(c.Conta, "o VIP novo vale no próximo login") });
+    });
+
+    async Task RemoverVip()
+    {
+        if (!await Confirmar.Perguntar("Remover o VIP?", $"{c!.Conta} volta a Free no próximo login.", "Remover", perigo: true)) return;
+        await Rodar("conta.vip.remover", null, () =>
+        {
+            Accounts.SetVip(c!.Conta, 0, 0);
+            return OperacoesConta.Juntar(new[] { $"{c.Conta}: VIP removido.", OperacoesConta.DeslogarSeOnline(c.Conta, "a remoção vale no próximo login") });
+        });
+    }
+
+    async Task Banir()
+    {
+        var quem = await Acoes.Login();
+        DateTime? ate = banPrazo switch
+        {
+            "1h" => DateTime.Now.AddHours(1), "1d" => DateTime.Now.AddDays(1), "3d" => DateTime.Now.AddDays(3), "7d" => DateTime.Now.AddDays(7),
+            "30d" => DateTime.Now.AddDays(30), "data" => banAte, _ => null,
+        };
+        await Rodar("conta.ban", $"prazo={(ate?.ToString("yyyy-MM-dd HH:mm") ?? "permanente")} motivo={banMotivo}", () =>
+        {
+            var b = Bans.Banir(c!.Conta, banMotivo, ate, quem);
+            return OperacoesConta.Juntar(new[] { $"{c.Conta} banida ({b.Prazo}). Motivo: {b.Motivo}", OperacoesConta.DeslogarSeOnline(c.Conta, "o ban impede o próximo login") });
+        });
+    }
+
+    async Task Desbanir()
+    {
+        var quem = await Acoes.Login();
+        await Rodar("conta.desban", desbanMotivo, () =>
+        {
+            Bans.Desbanir(c!.Conta, desbanMotivo, quem);
+            return $"{c.Conta} desbanida: já pode entrar no jogo.";
+        });
+    }
+
+    void GerarSenha()
+    {
+        const string letras = "abcdefghjkmnpqrstuvwxyz23456789";
+        novaSenha = new string(Enumerable.Range(0, 8).Select(_ => letras[System.Security.Cryptography.RandomNumberGenerator.GetInt32(letras.Length)]).ToArray());
+    }
+
+    Task TrocarSenha() => Rodar("conta.senha", null, () => MuChilaAdmin.Core.Contas.TrocarSenha(c!.Conta, novaSenha));
+
+    Task AjustarCash() => Rodar("conta.cash", $"moeda={cashMoeda} qtd={cashQtd} motivo={cashMotivo}", () =>
+    {
+        if (cashMotivo.Trim().Length < 3) throw new InvalidOperationException("Escreva o motivo (fica na auditoria).");
+        return MuChilaAdmin.Core.Contas.AjustarCash(c!.Conta, cashMoeda, cashQtd);
+    }, Politicas.Administrar);
+
+    void AbrirPontos(string nome) { alvo = nome; janela = "pontos"; }
+
+    Task DarPontos() => Rodar("conta.pontos", $"personagem={alvo} tipo={Accounts.PointKinds[pontosTipo]} qtd={pontosQtd}", () =>
+    {
+        if (pontosQtd == 0) throw new InvalidOperationException("Quantidade 0: nada foi alterado.");
+        var log = OperacoesConta.GarantirFora(c!.Conta, "receber os pontos");
+        log.Add(Accounts.GivePoints(c.Conta, alvo!, pontosTipo, pontosQtd));
+        return OperacoesConta.Juntar(log);
+    });
+
+    async Task ZerarMaster(string nome)
+    {
+        if (!await Confirmar.Perguntar($"Zerar a árvore master de {nome}?",
+            "A árvore master é apagada, os pontos voltam a ficar livres (1 por Master Level) e os poderes master saem da lista de habilidades " +
+            "(os melhorados voltam a ser a habilidade normal). Use quando a janela (C) mostrar \"Suces de Atq\" negativo. Conta online é deslogada antes.", "Zerar", perigo: true)) return;
+        await Rodar("conta.master", $"personagem={nome}", () =>
+        {
+            var log = OperacoesConta.GarantirFora(c!.Conta, "zerar as habilidades master");
+            log.Add(Accounts.ClearMasterSkills(c.Conta, nome));
+            return OperacoesConta.Juntar(log);
+        });
+    }
+
+    async Task AbrirNivel(string nome)
+    {
+        alvo = nome; nivelAcao = 0; nivelValor = CharacterAdjust.Actions[0].Default; aguardandoVigia = false;
+        statusAlvo = await Task.Run(() => CharacterAdjust.Status(nome));
+        janela = "nivel";
+    }
+
+    void MudarAcao(ChangeEventArgs e)
+    {
+        nivelAcao = int.TryParse(e.Value?.ToString(), out var i) ? i : 0;
+        nivelValor = AcaoAtual.Default;
+    }
+
+    async Task AplicarNivel()
+    {
+        var a = AcaoAtual;
+        var v = a.NeedsValue ? nivelValor : 0;
+        if (a.NeedsValue && (v < a.Min || v > a.Max)) { Avisos.Erro($"Valor de {a.Min:N0} a {a.Max:N0}."); return; }
+        var o = a.NeedsValue ? $"{a.Text.ToLowerInvariant()} = {v:N0}" : a.Text;
+        if (!await Confirmar.Perguntar($"{alvo}: {o}?", $"Agora: {statusAlvo}" + (c!.Online ? "\n\nA conta está online: se o personagem estiver jogando, ele vai para a seleção de personagem." : ""), "Aplicar")) return;
+        ocupado = true;
+        try
+        {
+            await Acoes.ExecutarAsync("conta.personagem", c.Conta, async () =>
+            {
+                string resultado;
+                if (ResetWatcher.IsRunning())
+                {
+                    int id = CharacterAdjust.Queue(c.Conta, alvo!, a.Kind, v);
+                    await InvokeAsync(() => { aguardandoVigia = true; StateHasChanged(); });
+                    string? r = null;
+                    for (int i = 0; i < 60 && (r = CharacterAdjust.Result(id)) == null; i++) await Task.Delay(500);
+                    resultado = r ?? "ainda aguardando: o vigia aplica assim que o personagem sair do jogo (o pedido expira em 3 minutos)";
+                }
+                else
+                {
+                    var log = OperacoesConta.GarantirFora(c.Conta, a.Text.ToLowerInvariant());
+                    log.Add(CharacterAdjust.Direct(alvo!, a.Kind, v));
+                    resultado = OperacoesConta.Juntar(log);
+                }
+                return $"{alvo}: {o}: {resultado}. Agora: {CharacterAdjust.Status(alvo!)}";
+            }, Politicas.Moderar, $"personagem={alvo} acao={a.Kind} valor={v}");
+        }
+        finally { ocupado = false; aguardandoVigia = false; }
+        statusAlvo = await Task.Run(() => CharacterAdjust.Status(alvo!));
+        await Carregar();
+    }
+}

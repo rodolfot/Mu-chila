@@ -1,0 +1,211 @@
+@page "/exp"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="EXP dinâmica" Descricao="% da EXP por faixa de nível (Data\Util\ExperienceTable.txt). EXP do jogador = taxa do plano × % da faixa do nível dele; nível sem faixa fica em 100%." Icone="activity">
+    @if (mudou)
+    {
+        <span class="etiqueta etq-amarela">não salvo</span>
+    }
+    <button type="button" class="btn btn-secundario" @onclick="CurvaPadrao" disabled="@ocupado">Curva padrão</button>
+    <button type="button" class="btn btn-secundario" @onclick="Descartar" disabled="@(ocupado || !mudou)">Descartar</button>
+    <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@(ocupado || !mudou || problemas.Count > 0)"><Icone Nome="save" Classe="ico-sm" />Salvar e aplicar</button>
+</CabecalhoPagina>
+
+@if (fora > 0)
+{
+    <Nota Tipo="info" Classe="mb-5">O arquivo tem @fora faixa(s) fora do bloco do painel (postas à mão). O servidor também usa essas; o painel não mexe nelas.</Nota>
+}
+
+<div class="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    @for (int p = 0; p < 4; p++)
+    {
+        <Indicador Rotulo="@($"EXP {ServerSettings.Plans[p]}")" Valor="@($"{taxas[p]}x")" Detalhe="taxa do plano (Taxas e opções)" Icone="@(p == 0 ? "user" : "crown")" Tom="@(p == 0 ? "azul" : "ouro")" />
+    }
+</div>
+
+<Cartao Titulo="Curva de EXP por nível" Icone="activity" Subtitulo="Altura = % da faixa (100% = neutro). Faixas só de master/resets ficam por cima, mais claras." Classe="mb-5">
+    @{
+        var max = Math.Max(100, faixas.Select(f => f.Rate).DefaultIfEmpty(100).Max());
+        const double L = 400, A = 120;
+    }
+    <svg viewBox="-34 -8 444 150" class="h-56 w-full" role="img" aria-label="Curva de EXP por nível">
+        @foreach (var y in new[] { 0, max / 2, max })
+        {
+            var yy = A - A * y / max;
+            <line x1="0" x2="@L" y1="@F(yy)" y2="@F(yy)" class="stroke-slate-200 dark:stroke-white/10" stroke-width="0.5" />
+            @Rotulo(-4, yy + 3, "end", $"{y}%")
+        }
+        @{ var y100 = A - A * 100 / max; }
+        <line x1="0" x2="@L" y1="@F(y100)" y2="@F(y100)" class="stroke-amber-500/60" stroke-width="0.6" stroke-dasharray="3 2" />
+        @foreach (var f in faixas.OrderByDescending(f => Geral(f) ? 1 : 0))
+        {
+            var x = (f.LevelMin - 1) * L / 400;
+            var w = Math.Max(1, (f.LevelMax - f.LevelMin + 1) * L / 400);
+            var h = A * Math.Min(f.Rate, max) / max;
+            <rect x="@F(x)" y="@F(A - h)" width="@F(w)" height="@F(h)" rx="1" class="@(Geral(f) ? "fill-amber-500/70" : "fill-sky-400/30")">
+                <title>Níveis @f.LevelMin–@f.LevelMax: @f.Rate%</title>
+            </rect>
+        }
+        @foreach (var n in new[] { 1, 100, 200, 300, 400 })
+        {
+            @Rotulo((n - 1) * L / 400, A + 12, "middle", n.ToString())
+        }
+    </svg>
+</Cartao>
+
+<Cartao Titulo="Faixas" Icone="list" SemPadding="true" Subtitulo="@($"{faixas.Count} faixa(s)")">
+    <Acoes>
+        <button type="button" class="btn btn-secundario btn-sm" @onclick="Adicionar"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar faixa</button>
+    </Acoes>
+    <ChildContent>
+        <div class="rolagem">
+            <table class="tabela tabela-compacta">
+                <thead>
+                    <tr>
+                        <th class="w-24">Nível de</th><th class="w-24">Nível até</th><th class="w-24">EXP %</th>
+                        @for (int p = 0; p < 4; p++)
+                        {
+                            <th class="text-right">@ServerSettings.Plans[p]</th>
+                        }
+                        <th class="w-20">Master de</th><th class="w-20">Master até</th><th class="w-20">Resets de</th><th class="w-24">Resets até</th>
+                        <th class="w-20">M.res. de</th><th class="w-24">M.res. até</th><th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var f in faixas)
+                    {
+                        <tr>
+                            <td><input type="number" min="1" max="400" class="entrada entrada-sm font-semibold" value="@f.LevelMin" aria-label="Nível de" @onchange="e => Mudar(() => f.LevelMin = Num(e, f.LevelMin))" /></td>
+                            <td><input type="number" min="1" max="400" class="entrada entrada-sm font-semibold" value="@f.LevelMax" aria-label="Nível até" @onchange="e => Mudar(() => f.LevelMax = Num(e, f.LevelMax))" /></td>
+                            <td><input type="number" min="0" max="10000" class="entrada entrada-sm font-semibold" value="@f.Rate" aria-label="EXP %" @onchange="e => Mudar(() => f.Rate = Num(e, f.Rate))" /></td>
+                            @for (int n = 0; n < 4; n++)
+                            {
+                                <td class="num text-slate-500">@($"{taxas[n] * f.Rate / 100.0:0.#}x")</td>
+                            }
+                            <td><input type="number" min="0" class="entrada entrada-sm" value="@f.MasterMin" aria-label="Master de" @onchange="e => Mudar(() => f.MasterMin = Num(e, f.MasterMin))" /></td>
+                            <td><input type="number" min="0" class="entrada entrada-sm" value="@f.MasterMax" aria-label="Master até" @onchange="e => Mudar(() => f.MasterMax = Num(e, f.MasterMax))" /></td>
+                            <td><input type="number" min="0" class="entrada entrada-sm" value="@f.ResetMin" aria-label="Resets de" @onchange="e => Mudar(() => f.ResetMin = Num(e, f.ResetMin))" /></td>
+                            <td><input type="number" min="0" class="entrada entrada-sm" value="@f.ResetMax" aria-label="Resets até" @onchange="e => Mudar(() => f.ResetMax = Num(e, f.ResetMax))" /></td>
+                            <td><input type="number" min="0" class="entrada entrada-sm" value="@f.MResetMin" aria-label="Master resets de" @onchange="e => Mudar(() => f.MResetMin = Num(e, f.MResetMin))" /></td>
+                            <td><input type="number" min="0" class="entrada entrada-sm" value="@f.MResetMax" aria-label="Master resets até" @onchange="e => Mudar(() => f.MResetMax = Num(e, f.MResetMax))" /></td>
+                            <td class="text-right"><button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover faixa" @onclick="() => Mudar(() => faixas.Remove(f))"><Icone Nome="trash" Classe="h-4 w-4" /></button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="space-y-1 border-t border-slate-200 px-5 py-3 text-xs dark:border-white/10">
+            @foreach (var p in problemas)
+            {
+                <p class="text-rose-600 dark:text-rose-400">@p</p>
+            }
+            <p class="text-slate-500">
+                @(lacunas.Length > 0 ? $"Níveis sem faixa (ficam em 100%): {lacunas}." : "Todos os níveis de 1 a 400 têm faixa.")
+                Master/resets: a faixa só vale para quem está dentro deles (0–600 e 0–10000 = todos).
+            </p>
+        </div>
+    </ChildContent>
+</Cartao>
+
+<ResultadoAcao Linhas="resultado" Titulo="EXP dinâmica" Quando="quando" />
+
+@code {
+    List<DynamicExp.Band> faixas = new();
+    int[] taxas = { 100, 100, 100, 100 };
+    int fora;
+    bool mudou, ocupado;
+    List<string> problemas = new(), resultado = new();
+    string lacunas = "";
+    DateTime quando;
+    IDisposable? trava;
+
+    static string F(double v) => v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+    // <text> é palavra reservada do Razor: o rótulo do SVG sai pronto como marcação
+    static MarkupString Rotulo(double x, double y, string ancora, string texto) =>
+        new($"<text x=\"{F(x)}\" y=\"{F(y)}\" text-anchor=\"{ancora}\" class=\"fill-slate-400\" font-size=\"8\">{System.Net.WebUtility.HtmlEncode(texto)}</text>");
+    static bool Geral(DynamicExp.Band f) => f.MasterMin == 0 && f.MasterMax >= 600 && f.ResetMin == 0 && f.ResetMax >= 10000 && f.MResetMin == 0 && f.MResetMax >= 10000;
+    static int Num(ChangeEventArgs e, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? v : atual;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (mudou && !await Confirmar.Perguntar("Sair sem salvar?", "A EXP dinâmica tem alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        try
+        {
+            (faixas, fora, taxas) = await Task.Run(() =>
+            {
+                var (b, o) = DynamicExp.Load();
+                var r = ServerSettings.Load("Common").FirstOrDefault(x => x.BaseKey == "AddExperienceRate");
+                var t = r?.Values.Select(v => int.TryParse(v, out var x) ? x : 100).ToArray() ?? new[] { 100, 100, 100, 100 };
+                return (b, o, t);
+            });
+            mudou = false;
+            Conferir();
+        }
+        catch (Exception ex) { Registro.Erro("exp", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+    }
+
+    void Conferir()
+    {
+        problemas = DynamicExp.Validate(faixas);
+        lacunas = DynamicExp.Gaps(faixas);
+    }
+
+    void Mudar(Action a) { a(); mudou = true; Conferir(); }
+
+    void Adicionar()
+    {
+        int de = faixas.Count > 0 ? Math.Min(400, faixas.Max(f => f.LevelMax) + 1) : 1;
+        Mudar(() => faixas.Add(new DynamicExp.Band { LevelMin = de, LevelMax = Math.Max(de, 400), Rate = 100 }));
+    }
+
+    async Task CurvaPadrao()
+    {
+        if (!await Confirmar.Perguntar("Voltar à curva padrão?", "Troca a lista pela curva de 28/09: 100% até o nível 50, caindo até 10% nos 351–399 e 100% no 400. Só grava ao clicar em \"Salvar e aplicar\".", "Trocar")) return;
+        Mudar(() => faixas = DynamicExp.Default());
+    }
+
+    async Task Descartar()
+    {
+        if (!await Confirmar.Perguntar("Descartar as alterações?", "Volta ao que está gravado no ExperienceTable.txt.", "Descartar", perigo: true)) return;
+        await Carregar();
+    }
+
+    async Task Salvar()
+    {
+        Conferir();
+        if (problemas.Count > 0) { Toast.Erro(string.Join(" ", problemas)); return; }
+        var lista = faixas.OrderBy(b => b.LevelMin).Select(b => $"níveis {b.LevelMin}–{b.LevelMax}: {b.Rate}% (Free {taxas[0] * b.Rate / 100.0:0.#}x, Vipzão {taxas[3] * b.Rate / 100.0:0.#}x)").ToList();
+        if (!await Confirmar.Perguntar("Gravar a EXP dinâmica e aplicar?", string.Join("\n", lista), "Gravar e aplicar")) return;
+        var bandas = faixas.ToList();
+        var linhas = new List<string>();
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("exp.salvar", null, () =>
+                {
+                    linhas.Add(DynamicExp.Save(bandas));
+                    linhas.AddRange(ServerControl.Reload("Util (GMs, avisos)"));
+                    return linhas;
+                }, Politicas.Administrar, string.Join("; ", lista)))
+                await Carregar();
+        }
+        finally { ocupado = false; }
+        resultado = linhas; quando = DateTime.Now;
+    }
+}

@@ -1,0 +1,221 @@
+@* Grade avançada: as regras do ItemDrop.txt como estão no arquivo, com todos os campos. Mexe só na memória (DropsVisao). *@
+@inject Confirmacao Confirmar
+
+<Cartao SemPadding="true" Titulo="Regras do ItemDrop.txt" Icone="file" Subtitulo="@($"{Visao.Regras.Count} regras")">
+    <Acoes>
+        <button type="button" class="btn btn-primario btn-sm" @onclick="() => escolher = true"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar regra</button>
+    </Acoes>
+    <ChildContent>
+        <div class="border-b border-slate-200 p-3 dark:border-white/10">
+            <label class="relative block max-w-md">
+                <span class="sr-only">Buscar regra</span>
+                <Icone Nome="search" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input class="entrada entrada-sm pl-8" placeholder="Item, mapa, monstro, comentário ou código..." value="@busca" @oninput="e => { busca = e.Value?.ToString() ?? string.Empty; pagina = 0; }" />
+            </label>
+        </div>
+        <p class="border-b border-slate-200 px-5 py-2.5 text-xs text-slate-500 dark:border-white/10">
+            O item cai dos monstros que se encaixam em Mapa, Monstro e Nível do monstro ("*" = qualquer), com a Chance em %. Nível do item 0-15;
+            Grade e Op0-Op6 como no cabeçalho do arquivo ("*" = sorteado).
+        </p>
+        @{
+            var lista = Filtradas().ToList();
+            var paginas = Math.Max(1, (lista.Count + PorPagina - 1) / PorPagina);
+            if (pagina >= paginas) pagina = paginas - 1;
+        }
+        @if (lista.Count == 0)
+        {
+            <Vazio Texto="Nenhuma regra com essa busca." Icone="search" />
+        }
+        else
+        {
+            <div class="rolagem">
+                <table class="tabela tabela-compacta">
+                    <thead>
+                        <tr><th>Item</th><th class="text-right">Nível</th><th>Mapa</th><th>Monstro</th><th>Nível do monstro</th><th class="text-right">Chance</th><th>Comentário</th><th class="w-28"></th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in lista.Skip(pagina * PorPagina).Take(PorPagina))
+                        {
+                            <tr class="@(DropsVisao.RegraMudou(r) ? "bg-amber-50/60 dark:bg-amber-400/5" : "")">
+                                <td>
+                                    <div class="flex items-center gap-2.5">
+                                        <FotoItem Secao="r.Section" Tipo="r.Type" Nome="@DropsVisao.NomeItem(r.Item)" Tamanho="h-8 w-8" />
+                                        <div class="min-w-0">
+                                            <p class="truncate font-medium text-slate-900 dark:text-white">@DropsVisao.NomeItem(r.Item)</p>
+                                            <p class="mono text-slate-400">@r.Section,@r.Type</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="num">@r.Level</td>
+                                <td class="whitespace-nowrap text-sm"><span class="mono text-slate-400">@r.Map</span> @(r.Map == "*" ? "" : Visao.NomeMapa(r.Map))</td>
+                                <td class="whitespace-nowrap text-sm"><span class="mono text-slate-400">@r.Monster</span> @(r.Monster == "*" ? "" : Visao.NomeMonstro(r.Monster))</td>
+                                <td class="whitespace-nowrap text-sm">@(r.LevelMin == "*" && r.LevelMax == "*" ? "qualquer" : $"{r.LevelMin} – {r.LevelMax}")</td>
+                                <td class="num font-medium" title="@DropsVisao.UmEm(r.Rate)">@DropsVisao.Pct(r.Rate)</td>
+                                <td class="max-w-[16rem] truncate text-xs text-slate-500" title="@r.Comment">@r.Comment</td>
+                                <td class="whitespace-nowrap text-right">
+                                    <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Editar(r)"><Icone Nome="edit" Classe="h-3.5 w-3.5" />Editar</button>
+                                    <button type="button" class="btn btn-fantasma btn-sm text-rose-600 dark:text-rose-400" title="Remover" @onclick="() => Remover(r)"><Icone Nome="trash" Classe="h-3.5 w-3.5" /></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex items-center justify-between gap-3 border-t border-slate-200 px-4 py-2.5 text-xs text-slate-500 dark:border-white/10">
+                <span>@(pagina * PorPagina + 1)–@Math.Min(lista.Count, (pagina + 1) * PorPagina) de @lista.Count · linhas em amarelo mudaram</span>
+                <div class="flex gap-1">
+                    <button type="button" class="btn btn-secundario btn-sm" @onclick="() => pagina--" disabled="@(pagina == 0)">Anterior</button>
+                    <button type="button" class="btn btn-secundario btn-sm" @onclick="() => pagina++" disabled="@(pagina >= paginas - 1)">Próxima</button>
+                </div>
+            </div>
+        }
+    </ChildContent>
+</Cartao>
+
+<Janela @bind-Aberta="editando" Titulo="@($"Regra: {(regra == null ? "" : DropsVisao.NomeItem(regra.Item))}")" Subtitulo="Asterisco (*) = qualquer; nas opções, sorteado." Largura="sm:max-w-2xl">
+    <ChildContent>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div><label class="rotulo" for="rg-nivel">Nível do item</label><input id="rg-nivel" class="entrada" @bind="fNivel" /></div>
+            <div><label class="rotulo" for="rg-grade">Grade</label><input id="rg-grade" class="entrada" @bind="fGrade" /></div>
+            <div><label class="rotulo" for="rg-dur">Duração</label><input id="rg-dur" class="entrada" @bind="fDuracao" /></div>
+            <div><label class="rotulo" for="rg-chance">Chance (%)</label><input id="rg-chance" class="entrada" @bind="fChance" @bind:event="oninput" /></div>
+        </div>
+        <p class="ajuda">@ChancePrevia</p>
+        <p class="rotulo mt-3">Opções (Op0 a Op6)</p>
+        <div class="grid grid-cols-4 gap-2 sm:grid-cols-7">
+            @for (int n = 0; n < 7; n++)
+            {
+                var i = n;
+                <input class="entrada entrada-sm text-center" aria-label="@($"Op{i}")" value="@fOps[i]" @onchange="e => fOps[i] = e.Value?.ToString() ?? string.Empty" />
+            }
+        </div>
+        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+                <label class="rotulo" for="rg-mapa">Mapa</label>
+                <input id="rg-mapa" class="entrada" list="dl-mapas" @bind="fMapa" @bind:event="oninput" />
+                <p class="ajuda">@Visao.NomeMapa(fMapa.Trim())</p>
+            </div>
+            <div>
+                <label class="rotulo" for="rg-monstro">Monstro</label>
+                <input id="rg-monstro" class="entrada" list="dl-monstros" @bind="fMonstro" @bind:event="oninput" />
+                <p class="ajuda">@Visao.NomeMonstro(fMonstro.Trim())</p>
+            </div>
+            <div><label class="rotulo" for="rg-lmin">Nível mín. do monstro</label><input id="rg-lmin" class="entrada" @bind="fLmin" /></div>
+            <div><label class="rotulo" for="rg-lmax">Nível máx. do monstro</label><input id="rg-lmax" class="entrada" @bind="fLmax" /></div>
+        </div>
+        <div class="mt-3"><label class="rotulo" for="rg-com">Comentário</label><input id="rg-com" class="entrada" maxlength="120" @bind="fComentario" /></div>
+        @if (erroForm != null)
+        {
+            <p class="mt-3 text-sm text-rose-600 dark:text-rose-400">@erroForm</p>
+        }
+        <datalist id="dl-mapas">
+            <option value="*">(todos)</option>
+            @foreach (var (c, n) in Visao.NomesMapas.OrderBy(k => k.Key))
+            {
+                <option value="@c">@n</option>
+            }
+        </datalist>
+        <datalist id="dl-monstros">
+            <option value="*">(todos)</option>
+            @foreach (var m in Visao.Monstros.OrderBy(m => m.Index))
+            {
+                <option value="@m.Index">@m.Name (nível @m.Level)</option>
+            }
+        </datalist>
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => editando = false">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="Aplicar">Aplicar</button>
+    </Rodape>
+</Janela>
+
+<EscolherItem @bind-Aberta="escolher" Titulo="Nova regra de drop: escolha o item" Subtitulo="Começa como 0,1% de qualquer monstro; depois escolha monstro ou mapa e a chance." BotaoTexto="Continuar" AoEscolher="Nova" />
+
+@code {
+    [Parameter, EditorRequired] public DropsVisao Visao { get; set; } = default!;
+    [Parameter] public EventCallback Mudou { get; set; }
+
+    const int PorPagina = 30;
+    string busca = "";
+    int pagina;
+    bool escolher, editando, nova;
+    DropRule? regra;
+    string fNivel = "", fGrade = "", fDuracao = "", fChance = "", fMapa = "", fMonstro = "", fLmin = "", fLmax = "", fComentario = "";
+    string[] fOps = new string[7];
+    string? erroForm;
+
+    IEnumerable<DropRule> Filtradas()
+    {
+        var q = busca.Trim();
+        if (q.Length == 0) return Visao.Regras;
+        return Visao.Regras.Where(r => DropsVisao.NomeItem(r.Item).Contains(q, StringComparison.OrdinalIgnoreCase) || $"{r.Section},{r.Type}" == q
+                                       || (r.Map != "*" && Visao.NomeMapa(r.Map).Contains(q, StringComparison.OrdinalIgnoreCase))
+                                       || (r.Monster != "*" && Visao.NomeMonstro(r.Monster).Contains(q, StringComparison.OrdinalIgnoreCase))
+                                       || r.Comment.Contains(q, StringComparison.OrdinalIgnoreCase));
+    }
+
+    string ChancePrevia
+    {
+        get
+        {
+            try { return "= " + DropsVisao.UmEm(Drops.ParsePercent(fChance)) + " monstros"; }
+            catch (FormatException) { return "Use de 0 a 100 (ex.: 0,5)."; }
+        }
+    }
+
+    void Nova(List<ItemDef> escolhidos)
+    {
+        if (escolhidos.Count == 0) return;
+        var d = escolhidos[0];
+        Abrir(Visao.NovaRegra(d.Section * 512 + d.Type, 1000), true);
+    }
+
+    void Editar(DropRule r) => Abrir(r, false);
+
+    void Abrir(DropRule r, bool ehNova)
+    {
+        regra = r; nova = ehNova; erroForm = null;
+        fNivel = r.Level; fGrade = r.Grade; fDuracao = r.Duration; fChance = DropsVisao.Pct(r.Rate).TrimEnd('%');
+        fMapa = r.Map; fMonstro = r.Monster; fLmin = r.LevelMin; fLmax = r.LevelMax; fComentario = r.Comment;
+        fOps = r.Options.ToArray();
+        editando = true;
+    }
+
+    async Task Aplicar()
+    {
+        if (regra == null) return;
+        string? Conferir(string rotulo, string v, int min, int max) => Drops.Valid(v.Trim(), min, max) ? null : $"\"{rotulo}\" inválido ({v}). Use \"*\" ou um número de {min} a {max}.";
+        erroForm = Conferir("Nível do item", fNivel, 0, 15) ?? Conferir("Grade", fGrade, 0, 255) ?? Conferir("Duração", fDuracao, 0, int.MaxValue)
+                   ?? fOps.Select((o, i) => Conferir($"Op{i}", o, 0, 255)).FirstOrDefault(x => x != null)
+                   ?? Conferir("Mapa", fMapa, 0, 255) ?? Conferir("Monstro", fMonstro, 0, 65535)
+                   ?? Conferir("Nível mín.", fLmin, 0, 1000) ?? Conferir("Nível máx.", fLmax, 0, 1000)
+                   ?? (fComentario.Contains('\n') ? "O comentário não pode ter quebra de linha." : null);
+        int rate = 0;
+        if (erroForm == null)
+        {
+            try { rate = Drops.ParsePercent(fChance); }
+            catch (FormatException ex) { erroForm = ex.Message; }
+        }
+        if (erroForm != null) return;
+
+        regra.Level = fNivel.Trim(); regra.Grade = fGrade.Trim(); regra.Duration = fDuracao.Trim();
+        regra.Options = fOps.Select(o => o.Trim()).ToArray();
+        regra.Map = fMapa.Trim(); regra.Monster = fMonstro.Trim(); regra.LevelMin = fLmin.Trim(); regra.LevelMax = fLmax.Trim();
+        regra.Rate = rate; regra.Comment = fComentario.Trim();
+        if (nova)
+        {
+            Visao.Regras.Add(regra);
+            busca = ""; pagina = int.MaxValue;   // vai para a última página (a regra nova fica no fim)
+        }
+        editando = false;
+        await Mudou.InvokeAsync();
+    }
+
+    async Task Remover(DropRule r)
+    {
+        int alcance = Visao.Alcance(r);
+        if (!await Confirmar.Perguntar($"Remover a regra de {DropsVisao.NomeItem(r.Item)}?", $"Vale para {Visao.ParaQuem(r)} ({alcance} monstro(s)). O item deixa de cair deles por esta regra.", "Remover", perigo: true)) return;
+        Visao.Regras.Remove(r);
+        await Mudou.InvokeAsync();
+    }
+}

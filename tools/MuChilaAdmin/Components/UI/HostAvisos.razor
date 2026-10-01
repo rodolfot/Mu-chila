@@ -1,0 +1,50 @@
+@implements IDisposable
+@inject Avisos Avisos
+
+<div class="pointer-events-none fixed bottom-4 right-4 z-[60] flex w-[min(26rem,calc(100vw-2rem))] flex-col gap-2" aria-live="polite">
+    @foreach (var a in Avisos.Atuais)
+    {
+        <div @key="a.Id" class="animar-entrada pointer-events-auto flex gap-3 rounded-xl border p-3.5 shadow-lg backdrop-blur @Cor(a.Tipo)">
+            <Icone Nome="@IconeDe(a.Tipo)" Classe="ico mt-0.5" />
+            <div class="min-w-0 flex-1 text-sm">
+                @if (a.Titulo != null)
+                {
+                    <p class="font-semibold">@a.Titulo</p>
+                }
+                <p class="whitespace-pre-line break-words opacity-90">@a.Texto</p>
+            </div>
+            <button type="button" class="-m-1 h-7 w-7 shrink-0 rounded-md p-1 opacity-70 hover:bg-black/10 hover:opacity-100 dark:hover:bg-white/10" @onclick="() => Avisos.Fechar(a.Id)" aria-label="Fechar">
+                <Icone Nome="close" Classe="h-4 w-4" />
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    readonly HashSet<Guid> agendados = new();
+
+    protected override void OnInitialized() => Avisos.Mudou += Atualizar;
+
+    void Atualizar()
+    {
+        foreach (var a in Avisos.Atuais.Where(a => agendados.Add(a.Id)))
+        {
+            // sucesso some sozinho; erro fica mais tempo (o texto costuma ser maior)
+            var tempo = a.Tipo == "erro" ? 14000 : a.Texto.Length > 160 ? 10000 : 6000;
+            _ = Task.Delay(tempo).ContinueWith(_ => Avisos.Fechar(a.Id));
+        }
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    static string Cor(string tipo) => tipo switch
+    {
+        "sucesso" => "border-emerald-200 bg-emerald-50/95 text-emerald-900 dark:border-emerald-400/25 dark:bg-emerald-950/90 dark:text-emerald-100",
+        "erro" => "border-rose-200 bg-rose-50/95 text-rose-900 dark:border-rose-400/30 dark:bg-rose-950/90 dark:text-rose-100",
+        "atencao" => "border-amber-200 bg-amber-50/95 text-amber-900 dark:border-amber-400/30 dark:bg-amber-950/90 dark:text-amber-100",
+        _ => "border-sky-200 bg-sky-50/95 text-sky-900 dark:border-sky-400/25 dark:bg-slate-900/95 dark:text-sky-100",
+    };
+
+    static string IconeDe(string tipo) => tipo switch { "sucesso" => "check-circle", "erro" => "x-circle", "atencao" => "alert", _ => "info" };
+
+    public void Dispose() => Avisos.Mudou -= Atualizar;
+}

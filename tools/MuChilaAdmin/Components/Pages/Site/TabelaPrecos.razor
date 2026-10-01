@@ -1,0 +1,36 @@
+@* Uma linha de preços da loja de itens (nível, adicional ou excelentes): rótulo em cima, Cash embaixo. Muda o array direto. *@
+
+<div class="rolagem">
+    <table class="w-full min-w-max text-sm">
+        <thead>
+            <tr>
+                @for (int i = 0; i < Valores.Length; i++)
+                {
+                    <th class="px-1 pb-1.5 text-center text-xs font-semibold text-slate-500">@Rotulo(i)</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (int n = 0; n < Valores.Length; n++)
+                {
+                    var i = n;
+                    <td class="px-1"><input type="number" min="0" max="100000" class="entrada entrada-sm min-w-[4.5rem] text-center" value="@Valores[i]" aria-label="@Rotulo(i)" @onchange="e => Mudar(i, e)" /></td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public int[] Valores { get; set; } = Array.Empty<int>();
+    [Parameter, EditorRequired] public Func<int, string> Rotulo { get; set; } = i => i.ToString();
+    [Parameter] public EventCallback Mudou { get; set; }
+
+    async Task Mudar(int i, ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var v)) return;
+        Valores[i] = Math.Clamp(v, 0, 100_000);
+        await Mudou.InvokeAsync();
+    }
+}

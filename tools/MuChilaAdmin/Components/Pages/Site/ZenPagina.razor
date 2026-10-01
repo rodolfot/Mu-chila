@@ -1,0 +1,158 @@
+@page "/site/zen"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Comprar Zen" Descricao="Página Comprar Zen do site: o jogador paga com Cash e o Zen vai para o baú da conta (limite de 2 bilhões), com a conta fora do jogo." Icone="coin">
+    @if (mudou)
+    {
+        <span class="etiqueta etq-amarela">não salvo</span>
+    }
+    <button type="button" class="btn btn-secundario" @onclick="Recarregar" disabled="@ocupado">Recarregar</button>
+    <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@(ocupado || !mudou)"><Icone Nome="save" Classe="ico-sm" />Salvar</button>
+</CabecalhoPagina>
+
+<Cartao Titulo="Pacotes" Icone="package" SemPadding="true" Subtitulo="Zen em número inteiro (500000000 = 500 milhões). Milhões por Cash ajuda a comparar os pacotes.">
+    <Acoes>
+        <label class="flex items-center gap-2 text-sm font-medium"><input type="checkbox" class="caixa" checked="@ativo" @onchange="e => Mudar(() => ativo = e.Value is true)" />Aberto no site</label>
+        <button type="button" class="btn btn-secundario btn-sm" @onclick="Adicionar"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Pacote</button>
+    </Acoes>
+    <ChildContent>
+        @if (pacotes == null)
+        {
+            <Carregando />
+        }
+        else if (pacotes.Count == 0)
+        {
+            <Vazio Texto="Nenhum pacote." Icone="coin" />
+        }
+        else
+        {
+            <div class="rolagem">
+                <table class="tabela tabela-compacta">
+                    <thead><tr><th class="w-44">Id (sem espaço)</th><th>Zen</th><th class="w-32">Preço (Cash)</th><th class="text-right">Milhões por Cash</th><th class="w-20 text-center">À venda</th><th class="w-10"></th></tr></thead>
+                    <tbody>
+                        @foreach (var p in pacotes)
+                        {
+                            <tr class="@(p.Ativo ? "" : "opacity-60")">
+                                <td><input class="entrada entrada-sm mono" value="@p.Id" aria-label="Id" @onchange="e => Mudar(() => p.Id = (e.Value?.ToString() ?? string.Empty).Trim())" /></td>
+                                <td>
+                                    <input type="number" min="1" max="2000000000" class="entrada entrada-sm" value="@p.Zen" aria-label="Zen" @onchange="e => Mudar(() => p.Zen = long.TryParse(e.Value?.ToString(), out var z) ? z : p.Zen)" />
+                                    <p class="mt-0.5 text-xs text-slate-500">@p.Zen.ToString("N0") de Zen</p>
+                                </td>
+                                <td><input type="number" min="1" max="1000000" class="entrada entrada-sm" value="@p.Cash" aria-label="Preço" @onchange="e => Mudar(() => p.Cash = int.TryParse(e.Value?.ToString(), out var c) ? c : p.Cash)" /></td>
+                                <td class="num">@(p.Cash > 0 ? (p.Zen / 1_000_000.0 / p.Cash).ToString("0.0") : "—")</td>
+                                <td class="text-center"><input type="checkbox" class="caixa" checked="@p.Ativo" aria-label="À venda" @onchange="e => Mudar(() => p.Ativo = e.Value is true)" /></td>
+                                <td><button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover" @onclick="() => Mudar(() => pacotes.Remove(p))"><Icone Nome="trash" Classe="h-4 w-4" /></button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        @foreach (var e in problemas)
+        {
+            <p class="px-5 py-1 text-sm text-rose-600 dark:text-rose-400">@e</p>
+        }
+    </ChildContent>
+</Cartao>
+
+<Cartao Titulo="Últimas compras de Zen" Icone="cart" SemPadding="true" Classe="mt-5">
+    @if (avisoVendas != null)
+    {
+        <Vazio Texto="@avisoVendas" Icone="database" />
+    }
+    else
+    {
+        <TabelaDados Dados="vendas" Titulo="Compras de Zen" TextoVazio="Nenhuma compra ainda." />
+    }
+</Cartao>
+
+@code {
+    bool ativo, mudou, ocupado;
+    List<SiteConfig.PacoteZen>? pacotes;
+    List<string> problemas = new();
+    DataTable? vendas;
+    string? avisoVendas;
+    string carimbo = "";
+    IDisposable? trava;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        await CarregarVendas();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (mudou && !await Confirmar.Perguntar("Sair sem salvar?", "Os pacotes de Zen têm alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        try
+        {
+            (ativo, pacotes, carimbo) = await Task.Run(() =>
+            {
+                var (a, p) = SiteConfig.CarregarZen();
+                return (a, p, ExecutorAcoes.Carimbo(SiteConfig.Arquivos("muchila.zen.json").ToArray()));
+            });
+            mudou = false; problemas.Clear();
+        }
+        catch (Exception ex) { Registro.Erro("zen", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); pacotes = new(); }
+    }
+
+    async Task CarregarVendas()
+    {
+        avisoVendas = null;
+        try
+        {
+            if (!await Task.Run(() => Db.TableExists("MUCHILA_ZEN_COMPRAS"))) { avisoVendas = "A compra de Zen ainda não foi instalada neste banco (rode o Instalar-Modulos.ps1 do site)."; return; }
+            vendas = await Task.Run(() => SiteConfig.ComprasZen(300));
+        }
+        catch (Exception ex) { Registro.Erro("zen vendas", ex); avisoVendas = ExecutorAcoes.MensagemDe(ex); }
+    }
+
+    void Mudar(Action a)
+    {
+        a();
+        mudou = true;
+        if (problemas.Count > 0 && pacotes != null) problemas = SiteConfig.ValidarZen(pacotes);
+    }
+
+    void Adicionar()
+    {
+        if (pacotes is not { } l) return;
+        Mudar(() => l.Add(new SiteConfig.PacoteZen { Id = $"zen-{l.Count + 1}", Zen = 100_000_000, Cash = 20, Ativo = true }));
+    }
+
+    async Task Recarregar()
+    {
+        if (mudou && !await Confirmar.Perguntar("Descartar as alterações?", "Volta ao que está gravado no muchila.zen.json.", "Descartar", perigo: true)) return;
+        await Carregar();
+    }
+
+    async Task Salvar()
+    {
+        if (pacotes == null) return;
+        problemas = SiteConfig.ValidarZen(pacotes);
+        if (problemas.Count > 0) { Toast.Erro("Corrija os pacotes (veja abaixo da tabela)."); return; }
+        if (await Task.Run(() => ExecutorAcoes.Carimbo(SiteConfig.Arquivos("muchila.zen.json").ToArray())) != carimbo &&
+            !await Confirmar.Perguntar("O arquivo mudou", "Alguém gravou os pacotes de Zen depois que você abriu. Salvar agora sobrescreve o que foi feito.", "Salvar por cima", perigo: true)) return;
+        var lista = string.Join("\n", pacotes.Where(p => p.Ativo).Select(p => $"{p.Zen:N0} de Zen por {p.Cash} Cash"));
+        if (!await Confirmar.Perguntar($"Gravar os pacotes ({(ativo ? "aberto" : "FECHADO")})?", lista.Length > 0 ? lista : "Nenhum pacote à venda.", "Gravar")) return;
+        var p = pacotes.ToList(); bool a = ativo;
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("site.zen", null, () => SiteConfig.SalvarZen(a, p), Politicas.Administrar, $"{(a ? "aberto" : "fechado")}; {lista.Replace("\n", "; ")}"))
+                await Carregar();
+        }
+        finally { ocupado = false; }
+    }
+}

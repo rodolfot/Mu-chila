@@ -1,0 +1,175 @@
+@page "/itens-novos"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+
+<CabecalhoPagina Titulo="Itens novos" Descricao="Item novo com o visual (modelo 3D) de um item que já existe, com nome e atributos próprios. Vale na hora no servidor; os jogadores só veem depois de publicar o cliente." Icone="sparkle">
+    <button type="button" class="btn btn-secundario" @onclick="Publicar" disabled="@ocupado"><Icone Nome="upload" Classe="ico-sm" />Publicar para o launcher</button>
+    <button type="button" class="btn btn-primario" @onclick="() => escolher = true" disabled="@(ocupado || !clienteOk)"><Icone Nome="plus" Classe="ico-sm" />Criar item novo</button>
+</CabecalhoPagina>
+
+@if (!clienteOk)
+{
+    <Nota Tipo="atencao" Classe="mb-5" Titulo="Cliente não encontrado">Pasta <span class="mono">@NewItems.ClientDir</span>. O item precisa existir no servidor e no cliente: sem a pasta do cliente não dá para criar.</Nota>
+}
+<Nota Tipo="info" Classe="mb-5">
+    Antes de publicar, teste abrindo o jogo pela pasta do cliente do repositório. Depois é só pôr o item numa loja (Lojas de NPC) ou num drop (Drops).
+    Remover um item que jogadores já têm faz ele sumir ou virar item inválido.
+</Nota>
+
+<Cartao Titulo="Itens criados por este painel" Icone="sparkle" SemPadding="true">
+    @if (itens == null)
+    {
+        <Carregando />
+    }
+    else if (itens.Count == 0)
+    {
+        <Vazio Texto="Nenhum item novo ainda." Icone="sparkle" Detalhe="Use o botão Criar item novo e escolha o item que empresta o visual." />
+    }
+    else
+    {
+        <div class="rolagem">
+            <table class="tabela">
+                <thead><tr><th>Item</th><th>Código</th><th>Visual de</th><th>Criado em</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var i in itens)
+                    {
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-2.5">
+                                    <FotoItem Secao="i.BaseSection" Tipo="i.BaseIndex" Nome="@i.Name" Tamanho="h-9 w-9" />
+                                    <span class="font-medium text-slate-900 dark:text-white">@i.Name</span>
+                                </div>
+                            </td>
+                            <td class="mono">@i.Section,@i.Index</td>
+                            <td class="text-sm text-slate-500">@Shops.Name(i.BaseSection, i.BaseIndex) <span class="mono text-slate-400">[@i.BaseSection,@i.BaseIndex]</span></td>
+                            <td class="whitespace-nowrap text-sm text-slate-500">@i.Created.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="text-right"><button type="button" class="btn btn-fantasma btn-sm text-rose-600 dark:text-rose-400" @onclick="() => Remover(i)" disabled="@ocupado"><Icone Nome="trash" Classe="h-3.5 w-3.5" />Remover</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</Cartao>
+
+<ResultadoAcao Linhas="resultado" Titulo="itens novos" Quando="quando" />
+
+<EscolherItem @bind-Aberta="escolher" Titulo="Item novo: escolha o item base" Subtitulo="O item novo terá o mesmo visual, classes, tamanho, skill e opções dele." BotaoTexto="Continuar" AoEscolher="BaseEscolhida" />
+
+<Janela @bind-Aberta="editando" Titulo="@($"Item novo com o visual de {baseItem?.Name}")" Subtitulo="Classes, tamanho, skill e opções ficam iguais ao item base." Largura="sm:max-w-xl">
+    <ChildContent>
+        @if (baseItem != null)
+        {
+            <div class="mb-4 flex items-center gap-3">
+                <FotoItem Secao="baseItem.Section" Tipo="baseItem.Type" Nome="@baseItem.Name" Tamanho="h-16 w-14" />
+                <div class="min-w-0 flex-1">
+                    <label class="rotulo" for="in-nome">Nome</label>
+                    <input id="in-nome" class="entrada" maxlength="40" @bind="nome" />
+                </div>
+            </div>
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                @foreach (var f in NewItems.Fields.Where(f => atributos.ContainsKey(f.Column)))
+                {
+                    var col = f.Column;
+                    <div>
+                        <label class="rotulo" for="@($"in-{col}")">@f.Label</label>
+                        <input id="@($"in-{col}")" type="number" min="0" max="65535" class="entrada @(atributos[col] != originais[col] ? "ring-2 ring-amber-400" : "")" value="@atributos[col]"
+                               @onchange="e => atributos[col] = int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, 0, 65535) : atributos[col]" />
+                    </div>
+                }
+            </div>
+        }
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => editando = false">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="Criar" disabled="@ocupado">Criar item</button>
+    </Rodape>
+</Janela>
+
+@code {
+    List<NewItemInfo>? itens;
+    bool clienteOk, ocupado, escolher, editando;
+    ItemDef? baseItem;
+    string nome = "";
+    Dictionary<string, int> atributos = new(), originais = new();
+    List<string> resultado = new();
+    DateTime quando;
+
+    protected override async Task OnInitializedAsync() => await Carregar();
+
+    async Task Carregar()
+    {
+        try { (itens, clienteOk) = await Task.Run(() => (NewItems.List(), NewItems.ClientAvailable)); }
+        catch (Exception ex) { Registro.Erro("itens-novos", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); itens = new(); }
+    }
+
+    async Task BaseEscolhida(List<ItemDef> escolhidos)
+    {
+        if (escolhidos.Count == 0) return;
+        var d = escolhidos[0];
+        try
+        {
+            originais = await Task.Run(() => NewItems.BaseStats(d.Section, d.Type));
+            atributos = new(originais);
+            baseItem = d;
+            nome = d.Name + " Mu Chila";
+            editando = true;
+        }
+        catch (Exception ex) { Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+    }
+
+    async Task Criar()
+    {
+        if (baseItem == null) return;
+        string n;
+        try { n = NewItems.CleanName(nome); }
+        catch (InvalidOperationException ex) { Toast.Erro(ex.Message); return; }
+        var b = baseItem;
+        var mudados = atributos.Where(a => a.Value != originais[a.Key]).ToDictionary(a => a.Key, a => a.Value);
+        var linhas = new List<string>();
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("itemnovo.criar", n, () =>
+                {
+                    var info = NewItems.Create(b.Section, b.Type, n, mudados);
+                    linhas.Add($"Item \"{info.Name}\" criado com o código {info.Section},{info.Index} (visual de {b.Name}). Backups .bak-* ao lado de cada arquivo.");
+                    linhas.AddRange(ServerControl.Reload("Item"));
+                    linhas.Add("Falta: testar abrindo o jogo pela pasta do cliente do repositório e depois \"Publicar para o launcher\" para os jogadores receberem.");
+                    return linhas;
+                }, Politicas.Administrar, $"visual de [{b.Section},{b.Type}] {b.Name}; {string.Join(", ", mudados.Select(m => $"{m.Key}={m.Value}"))}"))
+                editando = false;
+        }
+        finally { ocupado = false; }
+        resultado = linhas; quando = DateTime.Now;
+        await Carregar();
+    }
+
+    async Task Remover(NewItemInfo i)
+    {
+        if (!await Confirmar.Perguntar($"Remover \"{i.Name}\"?", "Sai do servidor e do cliente. Quem tiver esse item fica com um item inválido. Depois publique a atualização do cliente.", "Remover", perigo: true)) return;
+        var linhas = new List<string>();
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("itemnovo.remover", i.Name, () =>
+            {
+                NewItems.Remove(i.Section, i.Index);
+                linhas.Add($"Item \"{i.Name}\" removido.");
+                linhas.AddRange(ServerControl.Reload("Item"));
+                return linhas;
+            }, Politicas.Administrar, $"{i.Section},{i.Index}");
+        }
+        finally { ocupado = false; }
+        resultado = linhas; quando = DateTime.Now;
+        await Carregar();
+    }
+
+    async Task Publicar()
+    {
+        if (!await Confirmar.Perguntar("Publicar a atualização do cliente?", "Copia as mudanças da pasta do cliente do repositório (item.bmd, loja de cash...) e gera a lista nova do launcher, numa janela do PowerShell no PC do servidor.", "Publicar")) return;
+        await Acoes.Executar("servidor.publicar", null, ServerControl.PublishClient, Politicas.Administrar);
+    }
+}

@@ -1,0 +1,162 @@
+@page "/bonus"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Configuracao Cfg
+
+<CabecalhoPagina Titulo="Bônus de EXP e drop" Descricao="Ex.: EXP e EXP master x2 por 60 minutos. Multiplica a taxa de cada plano em todos os GameServers e avisa os jogadores." Icone="zap" />
+
+@if (!vigia)
+{
+    <Nota Tipo="perigo" Titulo="O vigia está parado" Classe="mb-5">Sem ele os bônus não ligam nem desligam. Ao agendar, o painel liga o vigia sozinho (ou use a tela Servidor).</Nota>
+}
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
+    <Cartao Titulo="Novo bônus" Icone="plus">
+        <p class="rotulo">O que aumenta</p>
+        <div class="flex flex-wrap gap-2">
+            @foreach (var t in TimedBonuses.Types)
+            {
+                var marcado = tipos.Contains(t.Index);
+                <button type="button" class="btn btn-sm @(marcado ? "btn-primario" : "btn-secundario")" @onclick="() => Alternar(t.Index)">
+                    @if (marcado) { <Icone Nome="check" Classe="h-3.5 w-3.5" /> }@t.Name
+                </button>
+            }
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+            <div>
+                <label class="rotulo" for="mult">Multiplicador</label>
+                <select id="mult" class="entrada" @bind="multiplicador">
+                    @foreach (var m in new[] { 1.5m, 2m, 2.5m, 3m, 4m, 5m }) { <option value="@m">x@(m.ToString("0.#", System.Globalization.CultureInfo.GetCultureInfo("pt-BR")))</option> }
+                </select>
+            </div>
+            <div>
+                <label class="rotulo" for="dur">Duração (min)</label>
+                <input id="dur" type="number" min="1" max="10080" class="entrada" @bind="duracao" />
+            </div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1.5">
+            @foreach (var (r, m) in new[] { ("30 min", 30), ("1 h", 60), ("2 h", 120), ("1 dia", 1440) })
+            {
+                <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => duracao = m">@r</button>
+            }
+        </div>
+        <div class="mt-4">
+            <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="caixa" @bind="agendar" />Começar numa data e hora</label>
+            @if (agendar)
+            {
+                <input type="datetime-local" class="entrada mt-2" @bind="inicio" />
+            }
+        </div>
+        <button type="button" class="btn btn-primario mt-5 w-full" @onclick="Agendar" disabled="@(ocupado || tipos.Count == 0)"><Icone Nome="zap" Classe="ico-sm" />@(agendar ? "Agendar bônus" : "Ligar bônus agora")</button>
+        <p class="ajuda mt-3">O bônus multiplica a taxa de cada plano (Free, Vipzinho, Vip e Vipzão continuam na mesma proporção). O vigia avisa os jogadores no início, a cada 5 minutos e no fim.</p>
+    </Cartao>
+
+    <Cartao Titulo="Bônus do painel" Icone="clock" SemPadding="true" Classe="xl:col-span-2">
+        <Acoes><button type="button" class="btn btn-fantasma btn-sm" @onclick="LimparTerminados" disabled="@ocupado">Limpar terminados</button></Acoes>
+        <ChildContent>
+            @if (lista.Count == 0)
+            {
+                <Vazio Texto="Nenhum bônus agendado." Icone="zap" />
+            }
+            else
+            {
+                <div class="rolagem">
+                    <table class="tabela">
+                        <thead><tr><th>Bônus</th><th>Início</th><th>Fim</th><th>Situação</th><th></th></tr></thead>
+                        <tbody>
+                            @foreach (var b in lista)
+                            {
+                                var s = b.StateAt(DateTime.Now);
+                                <tr>
+                                    <td class="font-medium text-slate-900 dark:text-white">@b.Description</td>
+                                    <td class="whitespace-nowrap">@b.Start.ToString("dd/MM HH:mm")</td>
+                                    <td class="whitespace-nowrap">@b.End.ToString("dd/MM HH:mm")</td>
+                                    <td><span class="etiqueta @(s == "ATIVO" ? "etq-verde" : s == "agendado" ? "etq-amarela" : "etq-cinza")">@s.ToLowerInvariant()</span></td>
+                                    <td class="text-right">
+                                        @if (s is "ATIVO" or "agendado")
+                                        {
+                                            <button type="button" class="btn btn-fantasma btn-sm text-rose-600 dark:text-rose-400" @onclick="() => Cancelar(b)" disabled="@ocupado">Cancelar</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </ChildContent>
+    </Cartao>
+</div>
+
+<ResultadoAcao Linhas="resultado" Titulo="@titulo" Quando="quando" />
+
+@code {
+    readonly HashSet<int> tipos = new() { 0, 1 };
+    decimal multiplicador = 2;
+    int duracao = 60;
+    bool agendar, ocupado, vigia = true;
+    DateTime inicio = DateTime.Now.AddHours(1);
+    List<TimedBonus> lista = new();
+    List<string> resultado = new();
+    string titulo = "";
+    DateTime quando;
+
+    protected override async Task OnInitializedAsync() => await Carregar();
+
+    async Task Carregar()
+    {
+        try { (lista, vigia) = await Task.Run(() => (TimedBonuses.List(), ResetWatcher.IsRunning())); }
+        catch (Exception ex) { Registro.Erro("bônus", ex); }
+    }
+
+    void Alternar(int t) { if (!tipos.Remove(t)) tipos.Add(t); }
+
+    async Task Agendar()
+    {
+        // o servidor confere a agenda minuto a minuto: começa no minuto cheio
+        var start = agendar ? new DateTime(inicio.Year, inicio.Month, inicio.Day, inicio.Hour, inicio.Minute, 0) : DateTime.Now;
+        if (duracao is < 1 or > 10080) { return; }
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            await Acoes.Executar("bonus.agendar", null, () =>
+            {
+                var b = TimedBonuses.Schedule(tipos.OrderBy(x => x).ToList(), multiplicador, duracao, start);
+                linhas.Add($"Bônus \"{b.Description}\" agendado: {b.Start:dd/MM HH:mm} até {b.End:dd/MM HH:mm}.");
+                if (!Cfg.Desenvolvimento && Vigia.LigarSeParado()) linhas.Add("O vigia estava parado e foi ligado (sem ele o bônus não liga nem desliga).");
+                linhas.AddRange(TimedBonuses.Tick(DateTime.Now));   // se for "agora", já liga sem esperar o vigia
+                return OperacoesConta.Juntar(linhas);
+            }, Politicas.Administrar, $"tipos={string.Join(",", tipos)} x{multiplicador} {duracao} min inicio={start:yyyy-MM-dd HH:mm}");
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = "bônus"; quando = DateTime.Now;
+        await Carregar();
+    }
+
+    async Task Cancelar(TimedBonus b)
+    {
+        if (!await Confirmar.Perguntar($"Cancelar \"{b.Description}\"?", "Se estiver ativo, as taxas voltam ao normal em alguns segundos e os jogadores são avisados.", "Cancelar o bônus", perigo: true)) return;
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            await Acoes.Executar("bonus.cancelar", b.Description, () =>
+            {
+                linhas.Add(TimedBonuses.Cancel(b.Id));
+                linhas.AddRange(TimedBonuses.Tick(DateTime.Now));   // já aplica, sem esperar o vigia
+                return OperacoesConta.Juntar(linhas);
+            }, Politicas.Administrar);
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = "cancelamento do bônus"; quando = DateTime.Now;
+        await Carregar();
+    }
+
+    async Task LimparTerminados()
+    {
+        await Acoes.Executar("bonus.limpar", null, () => $"{TimedBonuses.CleanupFinished()} bônus terminado(s) removido(s) da lista.", Politicas.Administrar);
+        await Carregar();
+    }
+}

@@ -1,0 +1,127 @@
+@* Faz um item passar a cair: de um monstro, de todos os monstros de um mapa, de uma faixa de nível ou de qualquer monstro. *@
+
+<Janela Aberta="Aberta" AbertaChanged="AbertaChanged" Titulo="@($"{DropsVisao.NomeItem(Item)}: de onde vai cair?")" Largura="sm:max-w-xl">
+    <ChildContent>
+        <div class="flex items-center gap-3">
+            <FotoItem Secao="Item / 512" Tipo="Item % 512" Nome="@DropsVisao.NomeItem(Item)" Tamanho="h-12 w-12" />
+            <p class="mono text-slate-500">[@(Item / 512),@(Item % 512)]</p>
+        </div>
+        <fieldset class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <legend class="rotulo">Cai de</legend>
+            @foreach (var (id, texto) in Alvos)
+            {
+                <label class="flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm @(alvo == id ? "border-amber-400 bg-amber-50 dark:bg-amber-400/10" : "border-slate-200 dark:border-white/10")">
+                    <input type="radio" name="alvo-drop" class="accent-amber-500" checked="@(alvo == id)" @onchange="() => MudarAlvo(id)" />@texto
+                </label>
+            }
+        </fieldset>
+
+        <div class="mt-4">
+            @switch (alvo)
+            {
+                case "monstro":
+                    <label class="rotulo" for="nr-busca">Monstro</label>
+                    <input id="nr-busca" class="entrada mb-2" placeholder="Filtrar pelo nome..." @bind="buscaMonstro" @bind:event="oninput" />
+                    <select class="entrada" size="7" @bind="monstro" aria-label="Monstro">
+                        @foreach (var m in Visao.MonstrosOrdenados().Where(m => buscaMonstro.Length == 0 || m.Name.Contains(buscaMonstro, StringComparison.OrdinalIgnoreCase)).Take(300))
+                        {
+                            <option value="@m.Index">@m.Name (nível @m.Level) · @Visao.Onde(m.Index, 2)</option>
+                        }
+                    </select>
+                    break;
+                case "mapa":
+                    <label class="rotulo" for="nr-mapa">Mapa</label>
+                    <select id="nr-mapa" class="entrada" @bind="mapa">
+                        @foreach (var (c, n) in Visao.NomesMapas.OrderBy(k => k.Key))
+                        {
+                            <option value="@c">@c.ToString("000") · @n</option>
+                        }
+                    </select>
+                    break;
+                case "nivel":
+                    <div class="flex items-end gap-3">
+                        <div><label class="rotulo" for="nr-de">Nível de</label><input id="nr-de" type="number" min="0" max="1000" class="entrada w-28" @bind="nivelDe" /></div>
+                        <div><label class="rotulo" for="nr-ate">até</label><input id="nr-ate" type="number" min="0" max="1000" class="entrada w-28" @bind="nivelAte" /></div>
+                    </div>
+                    break;
+            }
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-end gap-3">
+            <div>
+                <label class="rotulo" for="nr-pct">Chance (%)</label>
+                <input id="nr-pct" type="number" step="any" min="0.0001" max="100" class="entrada w-36" @bind="pct" @bind:event="oninput" />
+            </div>
+            <p class="pb-2 text-sm text-slate-600 dark:text-slate-300">= <b>@DropsVisao.UmEm(Rate)</b> monstros</p>
+        </div>
+        @if (Montar() is { } previa)
+        {
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Vale para <b>@Visao.ParaQuem(previa)</b>: alcança <b>@Visao.Alcance(previa)</b> monstro(s).</p>
+        }
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => AbertaChanged.InvokeAsync(false)">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="Criar" disabled="@(Montar() == null)">Adicionar</button>
+    </Rodape>
+</Janela>
+
+@code {
+    [Parameter, EditorRequired] public DropsVisao Visao { get; set; } = default!;
+    [Parameter] public bool Aberta { get; set; }
+    [Parameter] public EventCallback<bool> AbertaChanged { get; set; }
+    [Parameter] public int Item { get; set; }
+    [Parameter] public EventCallback<DropRule> AoCriar { get; set; }
+
+    static readonly (string, string)[] Alvos = { ("monstro", "Um monstro"), ("mapa", "Todos os monstros de um mapa"), ("nivel", "Monstros de uma faixa de nível"), ("todos", "Qualquer monstro") };
+    string alvo = "monstro", buscaMonstro = "";
+    int monstro = -1, mapa, nivelDe = 1, nivelAte = 150;
+    decimal pct = 1m;
+    bool estavaAberta;
+
+    int Rate => (int)Math.Round(pct * Drops.RateBase / 100);
+
+    protected override void OnParametersSet()
+    {
+        if (Aberta && !estavaAberta)
+        {
+            alvo = "monstro"; buscaMonstro = ""; monstro = -1; pct = 1m;
+            mapa = Visao.NomesMapas.Keys.DefaultIfEmpty(0).Min();
+        }
+        estavaAberta = Aberta;
+    }
+
+    void MudarAlvo(string a)
+    {
+        alvo = a;
+        pct = a == "todos" ? 0.01m : 1m;   // regra de qualquer monstro: chance bem menor (vale para todos)
+    }
+
+    /// <summary>A regra como vai ficar, ou null se falta escolher algo.</summary>
+    DropRule? Montar()
+    {
+        if (pct is < 0.0001m or > 100m) return null;
+        var r = Visao.NovaRegra(Item, Rate);
+        switch (alvo)
+        {
+            case "monstro":
+                if (monstro < 0) return null;
+                r.Monster = monstro.ToString();
+                break;
+            case "mapa":
+                r.Map = mapa.ToString();
+                break;
+            case "nivel":
+                int de = Math.Clamp(Math.Min(nivelDe, nivelAte), 0, 1000), ate = Math.Clamp(Math.Max(nivelDe, nivelAte), 0, 1000);
+                r.LevelMin = de.ToString(); r.LevelMax = ate.ToString();
+                break;
+        }
+        return r;
+    }
+
+    async Task Criar()
+    {
+        if (Montar() is not { } r) return;
+        await AbertaChanged.InvokeAsync(false);
+        await AoCriar.InvokeAsync(r);
+    }
+}

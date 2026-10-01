@@ -1,0 +1,50 @@
+@* Barras horizontais (rótulo, valor) — ex.: personagens por classe. Barras verticais com Vertical="true" (ex.: contas por dia). *@
+@using System.Globalization
+
+@if (Itens == null || Itens.Count == 0)
+{
+    <Vazio Texto="@TextoVazio" Icone="chart" />
+}
+else if (Vertical)
+{
+    var max = Math.Max(1, Itens.Max(i => i.Valor));
+    // com muitas barras, o rótulo aparece de tantas em tantas (o valor de todas fica no "passar o mouse")
+    var passo = Itens.Count > 10 ? (int)Math.Ceiling(Itens.Count / 7.0) : 1;
+    <div class="flex h-40 items-end gap-1.5">
+        @foreach (var (i, n) in Itens.Select((i, n) => (i, n)))
+        {
+            <div class="group flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1" title="@($"{i.Rotulo}: {i.Valor.ToString("N0", Br)}")">
+                <span class="text-[10px] tabular-nums text-slate-500 @(i.Valor > 0 ? "" : "opacity-0") transition">@(i.Valor > 0 ? i.Valor.ToString("N0", Br) : "0")</span>
+                <div class="w-full rounded-t bg-amber-500/80 transition group-hover:bg-amber-400" style="height:@(Pct(i.Valor, max))%; min-height:@(i.Valor > 0 ? "3px" : "1px")"></div>
+                <span class="w-full whitespace-nowrap text-center text-[10px] text-slate-400 @((Itens.Count - 1 - n) % passo == 0 ? "" : "invisible")">@i.Rotulo</span>
+            </div>
+        }
+    </div>
+}
+else
+{
+    var max = Math.Max(1, Itens.Max(i => i.Valor));
+    <ul class="space-y-2.5">
+        @foreach (var i in Itens)
+        {
+            <li>
+                <div class="mb-1 flex items-center justify-between gap-3 text-xs">
+                    <span class="truncate text-slate-600 dark:text-slate-300">@i.Rotulo</span>
+                    <span class="tabular-nums font-medium text-slate-900 dark:text-white">@i.Valor.ToString("N0", Br)</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
+                    <div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-300" style="width:@(Pct(i.Valor, max))%"></div>
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    public sealed record Item(string Rotulo, double Valor);
+    [Parameter] public List<Item>? Itens { get; set; }
+    [Parameter] public bool Vertical { get; set; }
+    [Parameter] public string TextoVazio { get; set; } = "Ainda sem dados.";
+    static readonly CultureInfo Br = CultureInfo.GetCultureInfo("pt-BR");
+    static string Pct(double v, double max) => (v / max * 100).ToString("0.#", CultureInfo.InvariantCulture);
+}

@@ -65,6 +65,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `GameServer*\DATA\GameServerInfo - Common/Command/Custom.dat`, `Data\Item\ItemDrop.txt`, lojas | 29/09/2026 à noite, pelo dono na aba "Taxas e opções" do painel: EXP 200/260/300/360 (era 100/130/150/180); EXP master 30/50/80/100 (era 7/20/57/133); EXP master a partir do monstro nível 90 (era 95); drop de itens 1/1/2/3 (era 5/10/12/14); zen 1/3/3/4 (era 50); máximo por atributo 65.000 (era 25.000); Goblin Point por entrega 1/2/3/4; baús extras do Free 2 (era 1); /offattack 5M/2,5M/1,25M/500k (era 50M/25M/12,5M/5M); joias no ItemDrop 100 por 1.000.000 = 0,01% (era 0,1%); mudanças nas lojas do Hanzo, Liaman e Martin | Ajuste de economia do dono |
 | `MuChilaAdmin\` + `Mu Chila Admin.lnk` (novos) | Painel de administração compilado de `tools\MuChilaAdmin` (24/09/2026) | Pedido: disparar eventos, dar VIP, banir e controlar o servidor por um programa |
 | `MuChilaAdmin\` (26/09/2026) | Abas novas: **Bônus** (EXP/EXP master/drop por tempo, pelo `BonusManager.dat`), **Lojas** (editor das lojas dos NPCs) e **Itens e baú** (ver e remover itens; presentes pela Gremory Case após calibração). Painel e scripts só mexem em processos de `C:\MuServer` | Pedido do dono: dobro de XP por uma hora, controlar o que cada NPC vende e administrar itens |
+| `MuChilaAdmin\` (01/10/2026) | O painel virou **web** (http://localhost:5170, ícone na bandeja, liga com o Windows pelo atalho "Mu Chila - Painel"): login com usuário e senha, papéis (administrador, moderador, somente leitura), auditoria, alertas, dashboard, bans com motivo e prazo, relatórios CSV/PDF. Tabelas novas `MUCHILA_ADMIN_*` no banco (criadas sozinhas). Ver [MU-ADMIN.md](MU-ADMIN.md) | Pedido do dono: painel mais moderno, seguro e com login |
 
 ## Banco de dados (`.\MUONLINE`)
 
@@ -73,6 +74,7 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 - `MuCastle_DATA`: datas do cerco atualizadas.
 - Gremory Case e Restore Item: tabelas e procedimentos criados, também no `BattleCore`.
 - Gatilho `TR_MuChila_ClasseInicial` (DW, DK, Elfa e Summoner nascem na 2ª classe) e +1 de classe nos personagens que estavam na básica (24/09/2026).
+- Em 01/10/2026 (issue #35) o gatilho passou a marcar também as missões da 2ª classe (0 e 1) como concluídas e a dar os 20 pontos delas; `ClasseInicial_MissoesDa2aClasse_existentes.sql` corrige uma vez os personagens criados antes.
 - `DefaultClassType.Inventory` (inventário inicial de cada classe): tirados os Wizard's Ring +1 e +2 (Warrior's Ring e Champion's Ring), que todo personagem novo ganhava presos ao personagem e sem efeito (issue #11, 24/09/2026). Personagens já criados continuam com eles. Backup em `C:\MuServer\DB\backup-caixas-DefaultClassType-inventario-*.csv`.
 - Caixas sem suporte removidas de inventários, inventários de evento e baús (backup em `C:\MuServer\DB\backup-caixas-*.csv`).
 - Site (25/09/2026, ver [SITE.md](SITE.md)): login SQL `muchila_site` (leitura, escrita e criação de tabelas no `MuOnlineS14`), 18 tabelas `WEBENGINE_*` do instalador do WebEngine e a tabela `MUCHILA_PEDIDOS` da loja (com `zen`/`zen_entregue_em` para o Zen do VIP) e a tarefa "Mu Chila - Zen do VIP" na `WEBENGINE_CRON`. A entrega do Zen cria a linha do baú (`warehouse`) de quem nunca abriu o baú.
@@ -89,6 +91,8 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `Config - Dev.ini` | `IpAddress = 26.139.39.123`; `WindowName = Mu Chila` |
 | `Data\Local\ServerList.bmd`, `Data\Local\{Eng,Por,Spn}\serverlist_*.bmd` | Grupo 1: "Helheim" → "Mu Chila" |
 | `Data\Local\{Eng,Por,Spn}\item_*.bmd` | Frost Soul (7617) e Soul Anvil (7618): permissões `0111000` → `0111110` (iguais às do Jewel of Bless), com a soma de verificação recalculada (`tools\Liberar-ItemCliente.ps1`). Issue #10: agora podem ser vendidos. Vai no pacote de patch. |
+| `Data\Local\Por\masterskilltooltip_por.bmd` | Dicas da árvore master em português (issue #36, 01/10/2026, `tools\Corrigir-DicasArvoreMaster.ps1`): "/20" → "/10" nas 11 habilidades que vão só até o 10 (e o contrário na 662); tirado o "%" das que somam pontos (Defense Increase: +445 de defesa, não 445%); descrições quebradas refeitas (392–395, 529, 574, 577); "%" que faltava em 415 e 517. Vai no pacote do launcher. |
+| `Data\Local\masterskilltreedata.bmd` | Habilidade 470: nível máximo 20 → 10, igual ao servidor (issue #36, mesmo script) |
 
 Formato dos `.bmd`: registros de 41 bytes (`WORD índice` + `nome[32]` + 7 bytes). Cada registro tem XOR próprio com a chave `FC CF AB`.
 
@@ -101,6 +105,13 @@ WebEngine CMS 1.2.7 + código do Mu Chila (loja de VIP e cash em modo de teste, 
 - **Página Informações:** refeita com os valores reais do servidor (planos, Chaos Machine, reset, comandos).
 - **Downloads:** cliente, patch e LEIA-ME, servidos pelo Apache em `/arquivos/`.
 - **Desligados:** reset pelo site, comprar zen, votar e "esqueci a senha".
+
+01/10/2026 (ver [Páginas de 01/10/2026](SITE.md#páginas-de-01102026)):
+
+- **Páginas novas ou refeitas:** Termos, Privacidade, Reembolso, Contate-nos (mensagens no banco, respondidas pelo painel), Comprar Zen (Cash → Zen no baú), Resetar Skill-Tree (o do WebEngine apagava todas as habilidades e devolvia os pontos sem limpar a árvore) e Downloads (só o launcher).
+- **Correções:** agenda de eventos com datas antigas no último dia do mês (defeito do `api/events.php` do WebEngine); quantidade dos itens empilhados no Mercado; erros de SQL na tela (issue #38); confirmação pulada em itens com apóstrofo no nome.
+- **Menu do jogador:** "Votar por créditos" e "Redefinir Personagem" saíram.
+- **Banco:** `MUCHILA_CONTATO`, `MUCHILA_ZEN_COMPRAS` e o procedimento `MuChila_LimparArvoreMaster` (`muchila\sql\MUCHILA_SITE.sql`); GRANT do `WZ_GetItemSerial` para o `muchila_site`.
 
 ## Máquina do dono (fora do repositório)
 

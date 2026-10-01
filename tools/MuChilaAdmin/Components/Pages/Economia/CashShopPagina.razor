@@ -1,0 +1,355 @@
+@page "/cashshop"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Loja de Cash" Descricao="A loja da tecla X no jogo. Preço em W Coin ou Goblin Point: quem cobra é o servidor, o cliente só mostra." Icone="coin">
+    <button type="button" class="btn btn-secundario" @onclick="Publicar" disabled="@ocupado"><Icone Nome="upload" Classe="ico-sm" />Publicar para o launcher</button>
+</CabecalhoPagina>
+
+@if (!clienteOk)
+{
+    <Nota Tipo="atencao" Classe="mb-5" Titulo="Cliente não encontrado">
+        Pasta <span class="mono">@CashShop.ClientDir</span>. Sem ela só o preço do servidor é gravado (o jogo cobra o novo, mas a tela mostra o antigo) e não dá para adicionar itens.
+    </Nota>
+}
+<Nota Tipo="info" Classe="mb-5">
+    Os jogadores só <b>veem</b> itens, nomes e preços novos depois de atualizar o cliente: depois de salvar, use <b>Publicar para o launcher</b>.
+    "Remover" apaga de vez o que foi criado pelo painel; os pacotes do kit só saem da loja (desmarque "Na loja"; dá para voltar).
+</Nota>
+
+<Cartao SemPadding="true" Titulo="Pacotes" Icone="package" Subtitulo="@($"{todos.Count} pacotes, {todos.Count(p => !p.Hidden)} na loja")">
+    <Etiqueta>
+        @if (mudou)
+        {
+            <span class="etiqueta etq-amarela">não salvo</span>
+        }
+    </Etiqueta>
+    <Acoes>
+        <button type="button" class="btn btn-secundario btn-sm" @onclick="AbrirAdicionar" disabled="@(ocupado || !clienteOk)"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar item</button>
+        <button type="button" class="btn btn-secundario btn-sm" @onclick="Descartar" disabled="@(ocupado || !mudou)">Descartar</button>
+        <button type="button" class="btn btn-primario btn-sm" @onclick="Salvar" disabled="@(ocupado || !mudou)"><Icone Nome="save" Classe="h-3.5 w-3.5" />Salvar e aplicar</button>
+    </Acoes>
+    <ChildContent>
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 px-4 py-3 dark:border-white/10">
+            <label class="relative min-w-[14rem] flex-1">
+                <span class="sr-only">Buscar pacote</span>
+                <Icone Nome="search" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input class="entrada entrada-sm pl-8" placeholder="Nome do pacote..." value="@busca" @oninput="e => { busca = e.Value?.ToString() ?? string.Empty; pagina = 0; }" />
+            </label>
+            <select class="entrada entrada-sm w-auto" @bind="moeda" @bind:after="() => pagina = 0" aria-label="Moeda">
+                <option value="">Todas as moedas</option>
+                @foreach (var m in todos.Select(p => p.CoinLabel).Distinct().Order())
+                {
+                    <option value="@m">@m</option>
+                }
+            </select>
+            <select class="entrada entrada-sm w-auto" @bind="situacao" @bind:after="() => pagina = 0" aria-label="Situação">
+                <option value="">Todos</option>
+                <option value="na">Na loja</option>
+                <option value="fora">Fora da loja</option>
+                <option value="painel">Criados pelo painel</option>
+            </select>
+        </div>
+        @if (carregando)
+        {
+            <Carregando />
+        }
+        else if (Filtrados.Count == 0)
+        {
+            <Vazio Texto="Nenhum pacote com esse filtro." Icone="search" />
+        }
+        else
+        {
+            <div class="rolagem">
+                <table class="tabela tabela-compacta">
+                    <thead>
+                        <tr><th>Pacote</th><th>Opções</th><th>Moeda</th><th class="w-36 text-right">Preço</th><th class="w-20 text-center">Na loja</th><th class="w-20">Origem</th><th class="w-24"></th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Filtrados.Skip(pagina * PorPagina).Take(PorPagina))
+                        {
+                            <tr class="@(p.Hidden ? "opacity-60" : "")">
+                                <td>
+                                    <div class="flex items-center gap-2.5">
+                                        @if (p.ItemIndex > 0)
+                                        {
+                                            <FotoItem Secao="p.ItemIndex / 512" Tipo="p.ItemIndex % 512" Nome="@p.Name" Tamanho="h-8 w-8" />
+                                        }
+                                        else
+                                        {
+                                            <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400"><Icone Nome="package" Classe="h-4 w-4" /></span>
+                                        }
+                                        <div class="min-w-0">
+                                            <p class="truncate font-medium text-slate-900 dark:text-white">@(p.HasClient ? p.Name : $"(pacote {p.Category},{p.Main}: sem tela no cliente)")</p>
+                                            <p class="mono text-slate-400">pacote @p.Category,@p.Main</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="max-w-[22rem] text-xs text-slate-500">@TextoOpcoes(p)</td>
+                                <td class="whitespace-nowrap text-xs">@p.CoinLabel</td>
+                                <td class="text-right">
+                                    @if (p.Options.Count > 1)
+                                    {
+                                        <button type="button" class="btn btn-secundario btn-sm" @onclick="() => AbrirOpcoes(p)" title="Cada opção tem o seu preço">@p.Options.Count preços…</button>
+                                    }
+                                    else
+                                    {
+                                        <input type="number" min="0" max="9000000" class="entrada entrada-sm text-right" value="@(p.Options.Count == 1 ? p.Options[0].Price : p.Price)" aria-label="Preço"
+                                               @onchange="e => MudarPreco(p, e)" disabled="@(p.Hidden)" />
+                                    }
+                                </td>
+                                <td class="text-center"><input type="checkbox" class="caixa" checked="@(!p.Hidden)" @onchange="e => { p.Hidden = e.Value is not true; mudou = true; }" aria-label="Na loja" /></td>
+                                <td>@if (p.Added) { <span class="etiqueta etq-azul">painel</span> } else { <span class="etiqueta etq-cinza">kit</span> }</td>
+                                <td class="text-right">
+                                    @if (p.Added)
+                                    {
+                                        <button type="button" class="btn btn-fantasma btn-sm text-rose-600 dark:text-rose-400" @onclick="() => Remover(p)" disabled="@ocupado"><Icone Nome="trash" Classe="h-3.5 w-3.5" />Remover</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (Filtrados.Count > PorPagina)
+            {
+                var paginas = (Filtrados.Count + PorPagina - 1) / PorPagina;
+                <div class="flex items-center justify-between gap-3 border-t border-slate-200 px-4 py-2.5 text-xs text-slate-500 dark:border-white/10">
+                    <span>@(pagina * PorPagina + 1)–@Math.Min(Filtrados.Count, (pagina + 1) * PorPagina) de @Filtrados.Count</span>
+                    <div class="flex gap-1">
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="() => pagina--" disabled="@(pagina == 0)">Anterior</button>
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="() => pagina++" disabled="@(pagina >= paginas - 1)">Próxima</button>
+                    </div>
+                </div>
+            }
+        }
+    </ChildContent>
+</Cartao>
+
+<Janela @bind-Aberta="opcoesAbertas" Titulo="@($"Preços: {opcoesDe?.Name}")" Subtitulo="@($"Em {opcoesDe?.CoinLabel}. É o preço que o jogo mostra e cobra em cada opção; a vitrine mostra o da 1ª.")">
+    <ChildContent>
+        @if (opcoesDe != null)
+        {
+            <div class="space-y-2">
+                @for (int n = 0; n < opcoesDe.Options.Count; n++)
+                {
+                    var i = n;
+                    var o = opcoesDe.Options[i];
+                    <div class="flex items-center gap-3">
+                        <label class="flex-1 text-sm" for="@($"op{i}")">
+                            @o.Label
+                            @if (o.Shared)
+                            {
+                                <span class="block text-xs text-slate-500">usado também em outro pacote: vira produto só deste</span>
+                            }
+                        </label>
+                        <input id="@($"op{i}")" type="number" min="0" max="9000000" class="entrada w-36 text-right" value="@precosOpcoes[i]" @onchange="e => precosOpcoes[i] = int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, 0, 9_000_000) : precosOpcoes[i]" />
+                    </div>
+                }
+            </div>
+        }
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => opcoesAbertas = false">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="AplicarOpcoes">Aplicar</button>
+    </Rodape>
+</Janela>
+
+<EscolherItem @bind-Aberta="adicionar" Titulo="Adicionar item à Loja de Cash" Subtitulo="Cria um pacote novo (um item, um preço) na aba escolhida." BotaoTexto="Adicionar" Selecionado="ItemEscolhido" AoEscolher="Adicionar">
+    <Extra>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-6">
+            <div class="sm:col-span-4">
+                <label class="rotulo" for="naba">Aba da loja</label>
+                <select id="naba" class="entrada" @bind="nAba">
+                    @foreach (var c in categorias)
+                    {
+                        <option value="@c.Id">@c.CoinName › @c.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="sm:col-span-2"><label class="rotulo" for="npreco">Preço</label><input id="npreco" type="number" min="1" max="9000000" class="entrada" @bind="nPreco" /></div>
+            <div><label class="rotulo" for="nnivel">Nível</label><input id="nnivel" type="number" min="0" max="15" class="entrada" @bind="nNivel" /></div>
+            <div><label class="rotulo" for="nop">Adicional</label>
+                <select id="nop" class="entrada" @bind="nOpcao">@for (int o = 0; o <= 7; o++) { <option value="@o">@(o == 0 ? "nenhum" : $"+{o * 4}")</option> }</select>
+            </div>
+            <div><label class="rotulo" for="nexc" title="Soma das opções excelentes (1, 2, 4, 8, 16, 32)">Exc. (0-63)</label><input id="nexc" type="number" min="0" max="63" class="entrada" @bind="nExc" /></div>
+            <div><label class="rotulo" for="nqtd">Quantidade</label><input id="nqtd" type="number" min="1" max="@nMaxPilha" class="entrada" @bind="nQtd" disabled="@(nMaxPilha <= 1)" /></div>
+            <div><label class="rotulo" for="ndias" title="0 = para sempre">Prazo (dias)</label><input id="ndias" type="number" min="0" max="3650" class="entrada" @bind="nDias" /></div>
+            <div class="flex items-end gap-3 pb-2">
+                <label class="flex items-center gap-1.5 text-sm"><input type="checkbox" class="caixa" @bind="nSkill" />Skill</label>
+                <label class="flex items-center gap-1.5 text-sm"><input type="checkbox" class="caixa" @bind="nSorte" />Sorte</label>
+            </div>
+            <div class="sm:col-span-6"><label class="rotulo" for="nnome">Nome na loja</label><input id="nnome" class="entrada" maxlength="60" @bind="nNome" /></div>
+            <div class="sm:col-span-6">
+                <label class="rotulo" for="ndesc">Descrição (até 4 linhas)</label>
+                <textarea id="ndesc" rows="3" class="entrada" @bind="nDesc" placeholder="Aparece na loja"></textarea>
+                <p class="ajuda">A fonte da loja não tem acento: o painel tira. @(nMaxPilha > 1 ? $"Este item empilha até {nMaxPilha}." : "")</p>
+            </div>
+        </div>
+    </Extra>
+</EscolherItem>
+
+@code {
+    const int PorPagina = 40;
+    List<CashShop.Package> todos = new();
+    List<CashShop.Category> categorias = new();
+    string busca = "", moeda = "", situacao = "", carimbo = "";
+    int pagina;
+    bool carregando = true, mudou, ocupado, clienteOk, opcoesAbertas, adicionar;
+    CashShop.Package? opcoesDe;
+    int[] precosOpcoes = Array.Empty<int>();
+    int nAba, nPreco = 100, nNivel, nOpcao, nExc, nQtd = 1, nDias, nMaxPilha = 1;
+    bool nSkill, nSorte;
+    string nNome = "", nDesc = "";
+    IDisposable? trava;
+
+    List<CashShop.Package> Filtrados => todos.Where(p =>
+        (busca.Length == 0 || p.Name.Contains(busca, StringComparison.OrdinalIgnoreCase) || $"{p.Category},{p.Main}" == busca.Trim()) &&
+        (moeda.Length == 0 || p.CoinLabel == moeda) &&
+        situacao switch { "na" => !p.Hidden, "fora" => p.Hidden, "painel" => p.Added, _ => true }).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (mudou && !await Confirmar.Perguntar("Sair sem salvar?", "A Loja de Cash tem alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        carregando = true;
+        try
+        {
+            (todos, categorias, clienteOk, carimbo) = await Task.Run(() => (CashShop.List(), CashShop.Categories(), CashShop.ClientAvailable, ExecutorAcoes.Carimbo(CashShop.DataFiles.ToArray())));
+            mudou = false;
+            if (categorias.Count > 0 && !categorias.Any(c => c.Id == nAba)) nAba = categorias[0].Id;
+        }
+        catch (Exception ex) { Registro.Erro("cashshop", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+        finally { carregando = false; }
+    }
+
+    static string TextoOpcoes(CashShop.Package p) => p.Options.Count switch
+    {
+        0 => "vários itens, um preço",
+        1 => p.Options[0].Label,
+        _ => string.Join(" · ", p.Options.Select(o => $"{o.Label}: {o.Price:N0}")),
+    };
+
+    void MudarPreco(CashShop.Package p, ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var v)) return;
+        v = Math.Clamp(v, 0, 9_000_000);
+        if (p.Options.Count == 1) p.Options[0].Price = v;
+        p.Price = v;
+        mudou = true;
+    }
+
+    void AbrirOpcoes(CashShop.Package p)
+    {
+        if (p.Hidden) { Toast.Atencao($"\"{p.Name}\" está fora da loja: marque \"Na loja\" antes de mudar os preços."); return; }
+        opcoesDe = p;
+        precosOpcoes = p.Options.Select(o => o.Price).ToArray();
+        opcoesAbertas = true;
+    }
+
+    void AplicarOpcoes()
+    {
+        if (opcoesDe == null) return;
+        for (int i = 0; i < opcoesDe.Options.Count; i++)
+            if (opcoesDe.Options[i].Price != precosOpcoes[i]) { opcoesDe.Options[i].Price = precosOpcoes[i]; mudou = true; }
+        opcoesAbertas = false;
+    }
+
+    async Task Descartar()
+    {
+        if (!await Confirmar.Perguntar("Descartar as alterações?", "Volta aos preços e pacotes gravados nos arquivos.", "Descartar", perigo: true)) return;
+        await Carregar();
+    }
+
+    async Task<bool> ArquivosIguais()
+    {
+        if (await Task.Run(() => ExecutorAcoes.Carimbo(CashShop.DataFiles.ToArray())) == carimbo) return true;
+        return await Confirmar.Perguntar("Os arquivos da loja mudaram", "Alguém gravou a Loja de Cash depois que você abriu esta página. Salvar agora sobrescreve o que foi feito. Melhor descartar e refazer.", "Salvar por cima", perigo: true);
+    }
+
+    async Task Salvar()
+    {
+        if (!clienteOk && !await Confirmar.Perguntar("Gravar só no servidor?", $"O cliente não foi encontrado em {CashShop.ClientDir}. O jogo cobra o preço novo, mas a tela do cliente mostra o antigo.", "Gravar só no servidor")) return;
+        if (!await ArquivosIguais()) return;
+        var lista = todos;
+        bool cliente = clienteOk;
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("cashshop.salvar", null, () =>
+                new[] { CashShop.Save(lista) }.Concat(ServerControl.Reload("CashShop"))
+                    .Append(cliente ? "Cliente atualizado. Use \"Publicar para o launcher\" para os jogadores receberem." : ""),
+                Politicas.Administrar, $"{lista.Count(p => !p.Hidden)} pacotes na loja");
+        }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+
+    void AbrirAdicionar()
+    {
+        if (mudou) { Toast.Atencao("Há mudanças não salvas: salve ou descarte antes de adicionar."); return; }
+        if (categorias.Count == 0) { Toast.Erro("Não achei as abas da loja no cliente (IBSCategory.txt)."); return; }
+        adicionar = true;
+    }
+
+    void ItemEscolhido(ItemDef? d)
+    {
+        if (d == null) return;
+        nNome = d.Name;
+        nMaxPilha = Math.Max(1, CashShop.MaxStack(d.Section, d.Type));
+        nQtd = Math.Clamp(nQtd, 1, nMaxPilha);
+    }
+
+    async Task Adicionar(List<ItemDef> escolhidos)
+    {
+        if (escolhidos.Count == 0) return;
+        var d = escolhidos[0];
+        var novo = new CashShop.NewPackage(nAba, d.Section, d.Type, Math.Clamp(nNivel, 0, 15), nSkill, nSorte, Math.Clamp(nOpcao, 0, 7), Math.Clamp(nExc, 0, 63),
+                                           Math.Clamp(nQtd, 1, nMaxPilha), Math.Clamp(nDias, 0, 3650), Math.Clamp(nPreco, 1, 9_000_000), string.IsNullOrWhiteSpace(nNome) ? d.Name : nNome, nDesc);
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("cashshop.adicionar", novo.Name, () =>
+                new[] { CashShop.Add(novo) }.Concat(ServerControl.Reload("CashShop")).Append("Para os jogadores VEREM o item novo: \"Publicar para o launcher\"."),
+                Politicas.Administrar, $"[{d.Section},{d.Type}] aba {nAba} preço {novo.Price} nível {novo.Level} qtd {novo.Quantity} dias {novo.Days}");
+        }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+
+    async Task Remover(CashShop.Package p)
+    {
+        if (mudou) { Toast.Atencao("Há mudanças não salvas: salve ou descarte antes de apagar."); return; }
+        var nome = p.Name.Length > 0 ? p.Name : $"pacote {p.Category},{p.Main}";
+        if (!await Confirmar.Perguntar($"Apagar \"{nome}\" de vez?", "Foi criado pelo painel: as linhas dele saem do servidor e do cliente (com backup).", "Apagar", perigo: true)) return;
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("cashshop.remover", nome, () =>
+                new[] { CashShop.RemoveAdded(p.Category, p.Main) }.Concat(ServerControl.Reload("CashShop")).Append("Use \"Publicar para o launcher\" para sumir também da tela dos jogadores."),
+                Politicas.Administrar, $"pacote {p.Category},{p.Main}");
+        }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+
+    async Task Publicar()
+    {
+        if (!await Confirmar.Perguntar("Publicar a atualização do cliente?", "Copia as mudanças da pasta do cliente do repositório (loja de cash, item.bmd...) e gera a lista nova do launcher, numa janela do PowerShell no PC do servidor.", "Publicar")) return;
+        await Acoes.Executar("servidor.publicar", null, ServerControl.PublishClient, Politicas.Administrar);
+    }
+}

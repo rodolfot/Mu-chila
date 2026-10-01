@@ -1,0 +1,64 @@
+@page "/contas"
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Contas" Descricao="Contas do jogo: plano VIP, situação, Cash e personagens. Clique numa conta para abrir." Icone="users" />
+
+<Cartao SemPadding="true">
+    <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 px-4 pt-3 dark:border-white/10">
+        <nav class="abas border-0" aria-label="Filtro">
+            @foreach (var (id, nome) in MuChilaAdmin.Core.Contas.Filtros)
+            {
+                <button type="button" class="aba @(filtro == id ? "ativa" : "")" @onclick="() => Filtrar(id)">@nome</button>
+            }
+        </nav>
+    </div>
+    <TabelaDados Dados="dados" Titulo="Contas" TextoBusca="Conta, personagem ou e-mail..." Selecionavel="true" SelecionadaChanged="Abrir"
+                 Celulas="celulas" ColunaDestaque="Conta" TextoVazio="Nenhuma conta com esse filtro." PorPagina="30">
+        <Ferramentas>
+            <label class="relative min-w-[12rem] flex-1 sm:max-w-xs">
+                <span class="sr-only">Buscar no banco</span>
+                <Icone Nome="database" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input class="entrada pl-8" placeholder="Buscar no banco (Enter)..." value="@busca" @onchange="Buscar" title="Procura no banco: conta, nome de personagem ou e-mail" />
+            </label>
+        </Ferramentas>
+    </TabelaDados>
+</Cartao>
+
+@code {
+    [SupplyParameterFromQuery(Name = "filtro")] public string? FiltroUrl { get; set; }
+    [SupplyParameterFromQuery(Name = "busca")] public string? BuscaUrl { get; set; }
+    DataTable? dados;
+    string filtro = "todas";
+    string busca = "";
+    Dictionary<string, RenderFragment<DataRow>> celulas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        filtro = MuChilaAdmin.Core.Contas.Filtros.Any(f => f.Id == FiltroUrl) ? FiltroUrl! : "todas";
+        busca = BuscaUrl ?? "";
+        celulas = new()
+        {
+            ["Plano"] = r => @<span class="etiqueta @((string)r["Plano"] == "Free" ? "etq-cinza" : "etq-roxa")">@r["Plano"]</span>,
+            ["Situação"] = r => (string)r["Situação"] switch
+            {
+                "banida" => @<span class="etiqueta etq-vermelha"><Icone Nome="ban" Classe="h-3 w-3" />banida</span>,
+                "online" => @<span class="etiqueta etq-verde"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>online@(r["_servidor"] is string s ? $" · {s}" : "")</span>,
+                _ => @<span class="text-slate-400">—</span>,
+            },
+            ["Nomes"] = r => @<span class="block max-w-[22rem] truncate text-slate-500" title="@r["Nomes"]">@r["Nomes"]</span>,
+        };
+        await Carregar();
+    }
+
+    async Task Carregar()
+    {
+        dados = null;
+        StateHasChanged();
+        try { dados = await Task.Run(() => MuChilaAdmin.Core.Contas.Lista(busca, filtro)); }
+        catch (Exception ex) { Registro.Erro("contas", ex); dados = new DataTable(); }
+    }
+
+    async Task Filtrar(string id) { filtro = id; await Carregar(); }
+    async Task Buscar(ChangeEventArgs e) { busca = e.Value?.ToString() ?? ""; await Carregar(); }
+    void Abrir(DataRow? r) { if (r != null) Nav.NavigateTo($"contas/{Uri.EscapeDataString((string)r["Conta"])}"); }
+}

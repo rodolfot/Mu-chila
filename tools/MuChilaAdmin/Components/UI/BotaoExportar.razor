@@ -1,0 +1,40 @@
+@* Botão "Exportar" com as opções CSV (Excel) e PDF. *@
+<div class="relative" id="@id">
+    <button type="button" class="btn btn-secundario btn-sm" @onclick="Alternar" disabled="@ocupado" aria-haspopup="menu" aria-expanded="@aberto">
+        @if (ocupado)
+        {
+            <svg class="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-opacity=".3" stroke-width="3" /><path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" /></svg>
+        }
+        else
+        {
+            <Icone Nome="download" Classe="h-3.5 w-3.5" />
+        }
+        Exportar
+    </button>
+    @if (aberto)
+    {
+        <div class="animar-entrada absolute right-0 z-30 mt-1 w-48 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-lg dark:border-white/10 dark:bg-slate-900" role="menu">
+            <button type="button" role="menuitem" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50 dark:hover:bg-white/5" @onclick="@(() => Exportar("csv"))">
+                <Icone Nome="file" Classe="ico-sm text-emerald-500" /> CSV (Excel)
+            </button>
+            <button type="button" role="menuitem" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-50 dark:hover:bg-white/5" @onclick="@(() => Exportar("pdf"))">
+                <Icone Nome="file" Classe="ico-sm text-rose-500" /> PDF
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public EventCallback<string> AoExportar { get; set; }
+    readonly string id = "exp-" + Guid.NewGuid().ToString("N")[..8];
+    bool aberto, ocupado;
+
+    void Alternar() => aberto = !aberto;
+
+    async Task Exportar(string formato)
+    {
+        aberto = false; ocupado = true;
+        try { await AoExportar.InvokeAsync(formato); }
+        finally { ocupado = false; }
+    }
+}

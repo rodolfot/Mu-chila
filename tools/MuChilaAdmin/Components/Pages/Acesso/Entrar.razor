@@ -1,0 +1,115 @@
+@page "/entrar"
+@layout LayoutSimples
+@attribute [AllowAnonymous]
+@attribute [ExcludeFromInteractiveRouting]
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject ServicoUsuarios Usuarios
+@inject IAuditoria Auditoria
+@inject Alertas Alertas
+@inject NavigationManager Nav
+
+<PageTitle>Entrar · Mu Chila Admin</PageTitle>
+
+<div class="rounded-2xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
+    @if (Saiu == "1" && erro == null)
+    {
+        <div class="nota nota-sucesso mb-4"><Icone Nome="check-circle" Classe="ico" /><span>Você saiu do painel.</span></div>
+    }
+    @if (erro != null)
+    {
+        <div class="nota nota-perigo mb-4" role="alert"><Icone Nome="alert" Classe="ico" /><span>@erro</span></div>
+    }
+    <EditForm Model="Dados" FormName="entrar" OnValidSubmit="EntrarAsync" method="post" Enhance="false" class="space-y-4">
+        <DataAnnotationsValidator />
+        <div>
+            <label class="rotulo text-slate-300" for="usuario">Usuário</label>
+            <InputText id="usuario" class="entrada" @bind-Value="Dados!.Usuario" autocomplete="username" autofocus maxlength="30" />
+            <ValidationMessage For="() => Dados!.Usuario" class="ajuda text-rose-400" />
+        </div>
+        <div>
+            <label class="rotulo text-slate-300" for="senha">Senha</label>
+            <InputText id="senha" type="password" class="entrada" @bind-Value="Dados!.Senha" autocomplete="current-password" maxlength="128" />
+            <ValidationMessage For="() => Dados!.Senha" class="ajuda text-rose-400" />
+        </div>
+        <button type="submit" class="btn btn-primario w-full py-2.5"><Icone Nome="login" Classe="ico-sm" />Entrar</button>
+    </EditForm>
+    <p class="mt-5 text-center text-xs text-slate-500">
+        Esqueceu a senha? Peça a um administrador do painel para redefinir.<br />
+        5 senhas erradas seguidas bloqueiam o usuário por 15 minutos.
+    </p>
+</div>
+
+@code {
+    [CascadingParameter] HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm(FormName = "entrar")] Modelo? Dados { get; set; }
+    [SupplyParameterFromQuery(Name = "voltar")] string? Voltar { get; set; }
+    [SupplyParameterFromQuery(Name = "saiu")] string? Saiu { get; set; }
+    string? erro;
+
+    protected override void OnInitialized()
+    {
+        Dados ??= new();
+        if (!HttpMethods.IsGet(HttpContext.Request.Method)) return;
+        bool primeiroAcesso;
+        try { primeiroAcesso = Usuarios.PrecisaPrimeiroAcesso(); }
+        catch (Exception ex)
+        {
+            Registro.Erro("login: conferir usuários", ex);
+            erro = "O painel não conseguiu acessar o banco de dados. Confira se o SQL Server está ligado (detalhe no painel-erros.log).";
+            return;
+        }
+        // a navegação fica fora do try: ela não é erro de banco
+        if (primeiroAcesso) { Nav.NavigateTo("primeiro-acesso"); return; }
+        if (HttpContext.User.Identity?.IsAuthenticated == true) Nav.NavigateTo(Redirecionamento.Seguro(Voltar));
+    }
+
+    async Task EntrarAsync()
+    {
+        var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var login = ServicoUsuarios.Normalizar(Dados!.Usuario ?? "");
+        ResultadoLogin r;
+        try { r = Usuarios.Entrar(login, Dados!.Senha ?? "", ip); }
+        catch (Exception ex)
+        {
+            Registro.Erro("login", ex);
+            erro = "O painel não conseguiu acessar o banco de dados. Tente de novo em instantes.";
+            return;
+        }
+        if (!r.Ok)
+        {
+            Auditoria.Registrar(new EventoAuditoria(DateTime.Now, login.Length == 0 ? "?" : login[..Math.Min(30, login.Length)], ip, "login.falha", null, null, false,
+                r.Situacao switch
+                {
+                    SituacaoLogin.Bloqueado => $"usuário bloqueado até {r.BloqueadoAte:HH:mm}",
+                    SituacaoLogin.IpBloqueado => "IP bloqueado por excesso de tentativas",
+                    SituacaoLogin.Inativo => "usuário desativado",
+                    _ => "usuário ou senha incorretos",
+                }));
+            if (r.Situacao == SituacaoLogin.Bloqueado && r.Usuario != null && r.BloqueadoAte > DateTime.Now.AddMinutes(14))
+            {
+                try
+                {
+                    Alertas.Abrir($"bloqueio:{r.Usuario.Login}", "seguranca", Severidade.Aviso, $"Usuário {r.Usuario.Login} bloqueado por senha errada",
+                        $"{ServicoUsuarios.MaxTentativas} tentativas erradas seguidas (última do IP {ip}). O bloqueio acaba às {r.BloqueadoAte:HH:mm}; um administrador pode desbloquear antes em Usuários do painel.", "/usuarios");
+                }
+                catch { }
+            }
+            erro = r.Situacao == SituacaoLogin.Inativo ? "Este usuário está desativado. Fale com um administrador do painel." : r.Mensagem;
+            Dados!.Senha = "";
+            return;
+        }
+        var u = r.Usuario!;
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, Identidade.Criar(u), new AuthenticationProperties { IsPersistent = true });
+        Auditoria.Registrar(new EventoAuditoria(DateTime.Now, u.Login, ip, "login.ok", null, null, true, u.TrocarSenha ? "entrou com senha temporária" : null));
+        try { Alertas.Resolver($"bloqueio:{u.Login}"); } catch { }
+        Nav.NavigateTo(u.TrocarSenha ? "minha-conta/senha" : Redirecionamento.Seguro(Voltar));
+    }
+
+    sealed class Modelo
+    {
+        [Required(ErrorMessage = "Digite o usuário.")] public string? Usuario { get; set; }
+        [Required(ErrorMessage = "Digite a senha.")] public string? Senha { get; set; }
+    }
+}

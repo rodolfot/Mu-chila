@@ -1,0 +1,251 @@
+@* Drops por monstro / por item: escolhe um monstro e vê tudo o que ele dropa (inclusive as regras de mapa, faixa de nível ou
+   qualquer monstro), ou um item e vê de onde ele cai. Mexe só na memória (DropsVisao); a página grava. *@
+@inject Confirmacao Confirmar
+
+<div class="grid grid-cols-1 gap-5 lg:grid-cols-[22rem_minmax(0,1fr)]">
+    <Cartao SemPadding="true">
+        <div class="space-y-2 border-b border-slate-200 p-3 dark:border-white/10">
+            <div class="grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1 dark:bg-white/5" role="tablist">
+                <button type="button" role="tab" aria-selected="@(!porItem)" class="rounded-md px-3 py-1.5 text-sm font-medium @(porItem ? "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200" : "bg-white text-slate-900 shadow-sm dark:bg-slate-800 dark:text-white")" @onclick="() => Modo(false)">Por monstro</button>
+                <button type="button" role="tab" aria-selected="@porItem" class="rounded-md px-3 py-1.5 text-sm font-medium @(!porItem ? "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200" : "bg-white text-slate-900 shadow-sm dark:bg-slate-800 dark:text-white")" @onclick="() => Modo(true)">Por item</button>
+            </div>
+            <label class="relative block">
+                <span class="sr-only">Buscar</span>
+                <Icone Nome="search" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input class="entrada entrada-sm pl-8" placeholder="@(porItem ? "Nome ou código do item..." : "Monstro ou mapa...")" @bind="busca" @bind:event="oninput" />
+            </label>
+            @if (porItem)
+            {
+                <button type="button" class="btn btn-secundario btn-sm w-full" @onclick="OutroItem"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Outro item (que ainda não cai)</button>
+            }
+        </div>
+        <ul class="rolagem max-h-[38vh] divide-y divide-slate-100 lg:max-h-[66vh] dark:divide-white/5">
+            @if (!porItem)
+            {
+                var lista = MonstrosFiltrados().ToList();
+                foreach (var m in lista.Take(Limite))
+                {
+                    <li>
+                        <button type="button" class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm @(monstroSel == m.Index ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")" @onclick="() => EscolherMonstro(m.Index)">
+                            <div class="min-w-0 flex-1">
+                                <p class="truncate font-medium text-slate-900 dark:text-white">@m.Name <span class="text-xs font-normal text-slate-400">nível @m.Level</span></p>
+                                <p class="truncate text-xs text-slate-500">@Visao.Onde(m.Index, 3)</p>
+                            </div>
+                            <span class="etiqueta @(contagem.GetValueOrDefault(m.Index) > 0 ? "etq-azul" : "etq-cinza")" title="Regras de drop que valem para ele">@contagem.GetValueOrDefault(m.Index)</span>
+                        </button>
+                    </li>
+                }
+                if (lista.Count > Limite)
+                {
+                    <li class="px-4 py-2 text-xs text-slate-500">Mostrando @Limite de @lista.Count. Digite para achar.</li>
+                }
+                if (lista.Count == 0)
+                {
+                    <li><Vazio Texto="Nenhum monstro." Icone="search" /></li>
+                }
+            }
+            else
+            {
+                var lista = ItensFiltrados().ToList();
+                foreach (var (it, nome, n) in lista.Take(Limite))
+                {
+                    <li>
+                        <button type="button" class="flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm @(itemSel == it ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")" @onclick="() => EscolherItemLista(it)">
+                            <FotoItem Secao="it / 512" Tipo="it % 512" Nome="@nome" Tamanho="h-8 w-8" />
+                            <div class="min-w-0 flex-1">
+                                <p class="truncate font-medium text-slate-900 dark:text-white">@nome</p>
+                                <p class="mono text-slate-400">@(it / 512),@(it % 512)</p>
+                            </div>
+                            <span class="etiqueta etq-cinza" title="Regras">@n</span>
+                        </button>
+                    </li>
+                }
+                if (lista.Count > Limite)
+                {
+                    <li class="px-4 py-2 text-xs text-slate-500">Mostrando @Limite de @lista.Count. Digite para achar.</li>
+                }
+                if (lista.Count == 0)
+                {
+                    <li><Vazio Texto="Nenhum item." Icone="search" /></li>
+                }
+            }
+        </ul>
+    </Cartao>
+
+    <div class="min-w-0 space-y-5">
+        @if (!porItem && monstroSel is int idx && Visao.Monstro(idx) is { } m)
+        {
+            <Cartao Titulo="@($"{m.Name} (nível {m.Level})")" Icone="skull" Subtitulo="@Visao.Onde(m.Index)">
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div>
+                        <label class="rotulo" for="tx-item">Drop comum</label>
+                        <input id="tx-item" type="number" min="0" max="1000000" class="entrada" value="@m.ItemRate" @onchange="e => Taxa(m, e, 0)" />
+                    </div>
+                    <div>
+                        <label class="rotulo" for="tx-zen">Zen</label>
+                        <input id="tx-zen" type="number" min="0" max="1000000" class="entrada" value="@m.MoneyRate" @onchange="e => Taxa(m, e, 1)" />
+                    </div>
+                    <div>
+                        <label class="rotulo" for="tx-nivel">Item comum até +</label>
+                        <input id="tx-nivel" type="number" min="0" max="15" class="entrada" value="@m.MaxItemLevel" @onchange="e => Taxa(m, e, 2)" />
+                    </div>
+                </div>
+                <p class="ajuda">Drop comum = chance de soltar um item comum sorteado (até o nível acima); Zen = chance de soltar zen. Números do kit: maior = mais vezes.</p>
+            </Cartao>
+            <Cartao Titulo="O que ele dropa" Icone="gift" SemPadding="true" Subtitulo="Chance por monstro morto (1% = 1 em 100). Inclui as regras de mapa, nível e qualquer monstro.">
+                <Acoes>
+                    <button type="button" class="btn btn-primario btn-sm" @onclick="() => escolherParaMonstro = true"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar item</button>
+                </Acoes>
+                <ChildContent>
+                    <TabelaRegras Regras="Visao.DoMonstro(m).ToList()" Visao="Visao" UmMonstro="true" Mudar="AbrirChance" Remover="Remover" />
+                </ChildContent>
+            </Cartao>
+        }
+        else if (porItem && itemSel is int it)
+        {
+            <Cartao Titulo="@DropsVisao.NomeItem(it)" Icone="item" SemPadding="true" Subtitulo="@($"[{it / 512},{it % 512}] · onde cai")">
+                <Acoes>
+                    <button type="button" class="btn btn-primario btn-sm" @onclick="() => novaRegraItem = it"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Fazer cair em...</button>
+                </Acoes>
+                <ChildContent>
+                    <div class="flex items-center gap-4 border-b border-slate-200 px-5 py-4 dark:border-white/10">
+                        <FotoItem Secao="it / 512" Tipo="it % 512" Nome="@DropsVisao.NomeItem(it)" Tamanho="h-20 w-16" />
+                        <p class="text-sm text-slate-500">@Visao.DoItem(it).Count() regra(s). Regra de vários monstros mostra quantos ela alcança.</p>
+                    </div>
+                    <TabelaRegras Regras="Visao.DoItem(it).ToList()" Visao="Visao" UmMonstro="false" Mudar="AbrirChance" Remover="Remover" />
+                </ChildContent>
+            </Cartao>
+        }
+        else
+        {
+            <Cartao><Vazio Texto="@(porItem ? "Escolha um item na lista para ver de onde ele cai." : "Escolha um monstro na lista para ver o que ele dropa.")" Icone="@(porItem ? "item" : "skull")" /></Cartao>
+        }
+    </div>
+</div>
+
+<DropsChanceJanela @bind-Aberta="chanceAberta" Titulo="@chanceTitulo" Atual="chanceAtual" Alcance="chanceAlcance" ParaQuem="@chanceParaQuem" AoConfirmar="ChanceConfirmada" />
+<DropsNovaRegra Visao="Visao" @bind-Aberta="NovaRegraAberta" Item="novaRegraItem ?? 0" AoCriar="RegraCriada" />
+<EscolherItem @bind-Aberta="escolherParaMonstro" Titulo="@($"Item que {Visao.Monstro(monstroSel ?? -1)?.Name} vai dropar")" BotaoTexto="Continuar" AoEscolher="ItemParaMonstro" />
+<EscolherItem @bind-Aberta="escolherOutro" Titulo="Item que vai passar a cair" BotaoTexto="Continuar" AoEscolher="OutroEscolhido" />
+
+@code {
+    [Parameter, EditorRequired] public DropsVisao Visao { get; set; } = default!;
+    [Parameter] public EventCallback Mudou { get; set; }
+
+    const int Limite = 250;
+    bool porItem, escolherParaMonstro, escolherOutro, chanceAberta;
+    string busca = "";
+    int? monstroSel, itemSel, novaRegraItem;
+    Dictionary<int, int> contagem = new();
+
+    // janela de chance: regra existente (mudar) ou nova (adicionar ao monstro)
+    DropRule? regraChance, regraNova;
+    string chanceTitulo = "", chanceParaQuem = "";
+    int chanceAtual, chanceAlcance;
+
+    bool NovaRegraAberta
+    {
+        get => novaRegraItem != null;
+        set { if (!value) novaRegraItem = null; }
+    }
+
+    protected override void OnInitialized()
+    {
+        Recontar();
+        monstroSel = Visao.MonstrosOrdenados().FirstOrDefault()?.Index;
+    }
+
+    void Recontar() => contagem = Visao.Monstros.ToDictionary(m => m.Index, m => Visao.Regras.Count(r => Visao.Vale(r, m)));
+
+    IEnumerable<MonsterRate> MonstrosFiltrados()
+    {
+        var q = busca.Trim();
+        return Visao.MonstrosOrdenados().Where(m => q.Length == 0 || m.Name.Contains(q, StringComparison.OrdinalIgnoreCase)
+                                                    || Visao.Onde(m.Index).Contains(q, StringComparison.OrdinalIgnoreCase) || m.Index.ToString() == q);
+    }
+
+    IEnumerable<(int, string, int)> ItensFiltrados()
+    {
+        var q = busca.Trim();
+        return Visao.Itens().Where(x => q.Length == 0 || x.Nome.Contains(q, StringComparison.OrdinalIgnoreCase) || $"{x.Item / 512},{x.Item % 512}" == q);
+    }
+
+    void Modo(bool item) { porItem = item; busca = ""; }
+    void EscolherMonstro(int i) => monstroSel = i;
+    void EscolherItemLista(int i) => itemSel = i;
+
+    async Task Taxa(MonsterRate m, ChangeEventArgs e, int campo)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var v)) return;
+        v = campo == 2 ? Math.Clamp(v, 0, 15) : Math.Clamp(v, 0, 1_000_000);
+        var atual = Visao.Monstro(m.Index) ?? m;
+        Visao.MudarTaxas(m.Index, campo == 0 ? v : atual.ItemRate, campo == 1 ? v : atual.MoneyRate, campo == 2 ? v : atual.MaxItemLevel);
+        await Mudou.InvokeAsync();
+    }
+
+    void AbrirChance(DropRule r)
+    {
+        regraChance = r; regraNova = null;
+        chanceTitulo = $"{DropsVisao.NomeItem(r.Item)}: {Visao.ParaQuem(r)}";
+        chanceAtual = Math.Max(r.Rate, 1); chanceAlcance = Visao.Alcance(r); chanceParaQuem = Visao.ParaQuem(r);
+        chanceAberta = true;
+    }
+
+    async Task ChanceConfirmada(int rate)
+    {
+        if (regraNova != null)
+        {
+            regraNova.Rate = rate;
+            Visao.Regras.Add(regraNova);
+            regraNova = null;
+            Recontar();
+        }
+        else if (regraChance != null)
+        {
+            regraChance.Rate = rate;
+            regraChance = null;
+        }
+        await Mudou.InvokeAsync();
+    }
+
+    async Task Remover(DropRule r)
+    {
+        int alcance = Visao.Alcance(r);
+        var texto = alcance > 1
+            ? $"Esta regra vale para {alcance} monstros ({Visao.ParaQuem(r)}), não só para um: o item deixa de cair de todos eles. Para mexer em um monstro só, mude a regra dele."
+            : $"{DropsVisao.NomeItem(r.Item)} deixa de cair ({Visao.ParaQuem(r)}).";
+        if (!await Confirmar.Perguntar($"Tirar o drop de {DropsVisao.NomeItem(r.Item)}?", texto, alcance > 1 ? $"Tirar dos {alcance}" : "Tirar", perigo: true)) return;
+        Visao.Regras.Remove(r);
+        Recontar();
+        await Mudou.InvokeAsync();
+    }
+
+    void ItemParaMonstro(List<ItemDef> escolhidos)
+    {
+        if (escolhidos.Count == 0 || monstroSel is not int idx || Visao.Monstro(idx) is not { } m) return;
+        var d = escolhidos[0];
+        regraNova = Visao.NovaRegra(d.Section * 512 + d.Type, 10_000);
+        regraNova.Monster = m.Index.ToString();
+        regraChance = null;
+        chanceTitulo = $"{d.Name} em {m.Name}";
+        chanceAtual = 10_000; chanceAlcance = 1; chanceParaQuem = $"só {m.Name}";
+        chanceAberta = true;
+    }
+
+    void OutroItem() => escolherOutro = true;
+
+    void OutroEscolhido(List<ItemDef> escolhidos)
+    {
+        if (escolhidos.Count == 0) return;
+        var d = escolhidos[0];
+        novaRegraItem = d.Section * 512 + d.Type;
+    }
+
+    async Task RegraCriada(DropRule r)
+    {
+        Visao.Regras.Add(r);
+        Recontar();
+        porItem = true; itemSel = r.Item; busca = "";
+        await Mudou.InvokeAsync();
+    }
+}

@@ -1,0 +1,159 @@
+@page "/auditoria"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@inject Downloads Downloads
+
+<CabecalhoPagina Titulo="Auditoria" Descricao="Tudo o que foi feito no painel: quem, quando, de onde (IP) e se deu certo. Nada aqui pode ser apagado pela tela." Icone="shield-check" />
+
+<Cartao SemPadding="true">
+    <div class="grid grid-cols-1 gap-3 border-b border-slate-200 p-4 sm:grid-cols-2 lg:grid-cols-6 dark:border-white/10">
+        <div>
+            <label class="rotulo" for="de">De</label>
+            <input id="de" type="date" class="entrada" @bind="de" />
+        </div>
+        <div>
+            <label class="rotulo" for="ate">Até</label>
+            <input id="ate" type="date" class="entrada" @bind="ate" />
+        </div>
+        <div>
+            <label class="rotulo" for="usu">Usuário</label>
+            <select id="usu" class="entrada" @bind="usuario">
+                <option value="">Todos</option>
+                @foreach (var u in usuarios) { <option value="@u">@u</option> }
+            </select>
+        </div>
+        <div>
+            <label class="rotulo" for="acao">Ação</label>
+            <select id="acao" class="entrada" @bind="acao">
+                <option value="">Todas</option>
+                @foreach (var g in Grupos) { <option value="@g.Prefixo">@g.Nome</option> }
+                <optgroup label="Uma ação">
+                    @foreach (var a in acoes) { <option value="@a">@MuChilaAdmin.Core.Painel.Acoes.Nome(a)</option> }
+                </optgroup>
+            </select>
+        </div>
+        <div>
+            <label class="rotulo" for="txt">Texto</label>
+            <input id="txt" class="entrada" placeholder="conta, item, mensagem..." @bind="texto" @onkeydown="Enter" />
+        </div>
+        <div class="flex items-end gap-2">
+            <label class="mb-2 flex items-center gap-2 text-sm"><input type="checkbox" class="caixa" @bind="soFalhas" />Só erros</label>
+            <button type="button" class="btn btn-primario ml-auto" @onclick="() => Buscar(1)"><Icone Nome="search" Classe="ico-sm" />Filtrar</button>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-xs text-slate-500">
+        <span>@total.ToString("N0") registro(s)@(total > itens.Count ? $" · página {pagina} de {Paginas}" : "")</span>
+        <BotaoExportar AoExportar="Exportar" />
+    </div>
+
+    @if (carregando)
+    {
+        <Carregando />
+    }
+    else if (itens.Count == 0)
+    {
+        <Vazio Texto="Nada registrado com esses filtros." Icone="shield-check" />
+    }
+    else
+    {
+        <div class="rolagem">
+            <table class="tabela">
+                <thead><tr><th>Quando</th><th>Usuário</th><th>Ação</th><th>Alvo</th><th>Resultado</th><th>IP</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var e in itens)
+                    {
+                        <tr class="cursor-pointer" @onclick="() => aberto = aberto == e.Id ? 0 : e.Id">
+                            <td class="whitespace-nowrap tabular-nums">@e.Quando.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td class="font-medium text-slate-900 dark:text-white">@e.Usuario</td>
+                            <td>@MuChilaAdmin.Core.Painel.Acoes.Nome(e.Acao)<span class="mono ml-1 text-slate-400">@e.Acao</span></td>
+                            <td class="max-w-[14rem] truncate" title="@e.Alvo">@e.Alvo</td>
+                            <td>@if (e.Ok) { <span class="etiqueta etq-verde">ok</span> } else { <span class="etiqueta etq-vermelha">erro</span> }</td>
+                            <td class="mono text-slate-500">@e.Ip</td>
+                            <td class="text-right"><Icone Nome="chevron-down" Classe="@($"h-4 w-4 text-slate-400 transition {(aberto == e.Id ? "rotate-180" : "")}")" /></td>
+                        </tr>
+                        @if (aberto == e.Id)
+                        {
+                            <tr>
+                                <td colspan="7" class="bg-slate-50 dark:bg-white/[0.02]">
+                                    <div class="space-y-2 py-1 text-xs">
+                                        @if (!string.IsNullOrWhiteSpace(e.Mensagem)) { <p><span class="font-semibold">Resultado:</span> <span class="whitespace-pre-line">@e.Mensagem</span></p> }
+                                        @if (!string.IsNullOrWhiteSpace(e.Detalhes)) { <p><span class="font-semibold">Detalhes:</span> <span class="mono">@e.Detalhes</span></p> }
+                                        <p class="text-slate-500">registro nº @e.Id</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (Paginas > 1)
+        {
+            <div class="flex items-center justify-end gap-1 border-t border-slate-200 px-4 py-2.5 dark:border-white/10">
+                <button type="button" class="btn btn-secundario btn-sm" disabled="@(pagina <= 1)" @onclick="() => Buscar(pagina - 1)"><Icone Nome="arrow-left" Classe="h-3.5 w-3.5" />Anterior</button>
+                <button type="button" class="btn btn-secundario btn-sm" disabled="@(pagina >= Paginas)" @onclick="() => Buscar(pagina + 1)">Próxima<Icone Nome="arrow-right" Classe="h-3.5 w-3.5" /></button>
+            </div>
+        }
+    }
+</Cartao>
+
+@code {
+    [SupplyParameterFromQuery(Name = "acao")] public string? AcaoUrl { get; set; }
+    [SupplyParameterFromQuery(Name = "texto")] public string? TextoUrl { get; set; }
+
+    static readonly (string Prefixo, string Nome)[] Grupos =
+    {
+        ("login.", "Logins e saídas"), ("usuario.", "Usuários do painel"), ("conta.", "Contas do jogo"), ("item.", "Itens e baú"), ("passe.", "Passe dos Mapas"),
+        ("servidor.", "Servidor"), ("evento.", "Eventos"), ("bonus.", "Bônus"), ("aviso.", "Avisos"), ("loja.", "Lojas de NPC"), ("cashshop.", "Loja de Cash"),
+        ("drops.", "Drops"), ("opcoes.", "Taxas e opções"), ("monstros.", "Monstros"), ("itemnovo.", "Itens novos"), ("site.", "Site"), ("relatorio.", "Relatórios"),
+    };
+
+    readonly AuditoriaSql aud = new();
+    List<EventoAuditoria> itens = new();
+    List<string> usuarios = new(), acoes = new();
+    DateTime? de = DateTime.Today.AddDays(-30), ate = DateTime.Today;
+    string usuario = "", acao = "", texto = "";
+    bool soFalhas, carregando = true;
+    int total, pagina = 1;
+    long aberto;
+    const int PorPagina = 50;
+    int Paginas => Math.Max(1, (int)Math.Ceiling(total / (double)PorPagina));
+
+    protected override async Task OnInitializedAsync()
+    {
+        acao = AcaoUrl ?? "";
+        texto = TextoUrl ?? "";
+        await Task.Run(() => { usuarios = aud.Usuarios(); acoes = aud.Acoes(); });
+        await Buscar(1);
+    }
+
+    FiltroAuditoria Filtro(int p, int porPagina) => new()
+    {
+        De = de, Ate = ate?.AddDays(1), Usuario = usuario == "" ? null : usuario, Acao = acao == "" ? null : acao,
+        Texto = texto == "" ? null : texto, SoFalhas = soFalhas, Pagina = p, PorPagina = porPagina,
+    };
+
+    async Task Buscar(int p)
+    {
+        carregando = true;
+        pagina = p;
+        try { (itens, total) = await Task.Run(() => aud.Buscar(Filtro(p, PorPagina))); }
+        catch (Exception ex) { Registro.Erro("auditoria", ex); itens = new(); total = 0; }
+        finally { carregando = false; }
+    }
+
+    Task Enter(KeyboardEventArgs e) => e.Key == "Enter" ? Buscar(1) : Task.CompletedTask;
+
+    async Task Exportar(string formato)
+    {
+        var (todos, n) = await Task.Run(() => aud.Buscar(Filtro(1, 5000)));
+        var r = new Relatorio
+        {
+            Titulo = "Auditoria do painel",
+            Subtitulo = $"{de:dd/MM/yyyy} a {ate:dd/MM/yyyy}{(usuario != "" ? $" · usuário {usuario}" : "")}{(acao != "" ? $" · ação {acao}" : "")}{(texto != "" ? $" · \"{texto}\"" : "")}{(n > todos.Count ? $" · {todos.Count} de {n}" : "")}",
+            Colunas = new() { new("Quando"), new("Usuário"), new("IP"), new("Ação"), new("Alvo"), new("Resultado"), new("Mensagem") },
+            Linhas = todos.Select(e => new[] { e.Quando.ToString("dd/MM/yyyy HH:mm:ss"), e.Usuario, e.Ip ?? "", MuChilaAdmin.Core.Painel.Acoes.Nome(e.Acao), e.Alvo ?? "", e.Ok ? "ok" : "erro", e.Mensagem ?? "" }).ToList(),
+        };
+        await Downloads.Exportar(r, formato);
+    }
+}

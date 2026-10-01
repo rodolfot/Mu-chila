@@ -1,0 +1,172 @@
+@page "/avisos"
+@attribute [Authorize(Policy = Politicas.Moderar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+
+<CabecalhoPagina Titulo="Avisos aos jogadores" Descricao="Mensagem no topo da tela de todos os jogadores de todos os servidores (Data\Util\Notice.txt)." Icone="megaphone" />
+
+<Cartao Titulo="Enviar agora" Icone="megaphone" Subtitulo="Aparece para todos em 1–2 segundos, uma vez só.">
+    <div class="flex flex-col gap-2 sm:flex-row">
+        <input class="entrada flex-1" maxlength="90" placeholder="Mensagem para todos (até 90 caracteres)" @bind="agora" @bind:event="oninput" @onkeydown="EnterAgora" />
+        <button type="button" class="btn btn-primario" @onclick="EnviarAgora" disabled="@(ocupado || string.IsNullOrWhiteSpace(agora))"><Icone Nome="megaphone" Classe="ico-sm" />Enviar agora</button>
+    </div>
+    <p class="ajuda">@agora.Length/90 · acentos aparecem normalmente no jogo. O vigia tira a mensagem do arquivo em menos de 1 minuto.</p>
+</Cartao>
+
+<Cartao Titulo="Avisos automáticos" Icone="refresh" SemPadding="true" Classe="mt-5"
+        Subtitulo="O servidor manda um de cada vez, em ordem. A espera conta a partir do aviso anterior: cada um volta a cada SOMA das esperas.">
+    <Acoes>
+        <AuthorizeView Policy="@Politicas.Administrar">
+            <span class="text-xs text-slate-500">@Ciclo</span>
+            <button type="button" class="btn btn-secundario btn-sm" @onclick="Adicionar"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar</button>
+            <button type="button" class="btn btn-secundario btn-sm" @onclick="Carregar" disabled="@ocupado">Descartar</button>
+            <button type="button" class="btn btn-primario btn-sm" @onclick="Salvar" disabled="@(ocupado || !mudou)"><Icone Nome="save" Classe="h-3.5 w-3.5" />Salvar e aplicar</button>
+        </AuthorizeView>
+    </Acoes>
+    <ChildContent>
+        @if (lista.Count == 0)
+        {
+            <Vazio Texto="Nenhum aviso automático." Icone="megaphone" />
+        }
+        else
+        {
+            <AuthorizeView Policy="@Politicas.Administrar">
+                <Authorized>
+                    <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                        @foreach (var (n, i) in lista.Select((n, i) => (n, i)))
+                        {
+                            <li class="flex flex-wrap items-center gap-3 px-5 py-3">
+                                <span class="w-6 text-right text-xs text-slate-400">@(i + 1)</span>
+                                <input class="entrada min-w-[16rem] flex-1" maxlength="90" value="@n.Message" @onchange="@(e => { n.Message = e.Value?.ToString() ?? ""; mudou = true; })" />
+                                <label class="flex items-center gap-2 text-xs text-slate-500">
+                                    espera
+                                    <input type="number" min="1" class="entrada entrada-sm w-24" value="@n.RepeatTime" @onchange="e => { n.RepeatTime = int.TryParse(e.Value?.ToString(), out var s) ? s : n.RepeatTime; mudou = true; }" />
+                                    s
+                                </label>
+                                <div class="flex gap-1">
+                                    <button type="button" class="btn btn-fantasma btn-icone" title="Subir" @onclick="() => Mover(i, -1)" disabled="@(i == 0)"><Icone Nome="chevron-down" Classe="h-4 w-4 rotate-180" /></button>
+                                    <button type="button" class="btn btn-fantasma btn-icone" title="Descer" @onclick="() => Mover(i, 1)" disabled="@(i == lista.Count - 1)"><Icone Nome="chevron-down" Classe="h-4 w-4" /></button>
+                                    <button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover" @onclick="() => { lista.RemoveAt(i); mudou = true; }"><Icone Nome="trash" Classe="h-4 w-4" /></button>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </Authorized>
+                <NotAuthorized>
+                    <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                        @foreach (var n in lista) { <li class="flex justify-between gap-3 px-5 py-3 text-sm"><span>@n.Message</span><span class="text-xs text-slate-500">@n.RepeatTime s</span></li> }
+                    </ul>
+                </NotAuthorized>
+            </AuthorizeView>
+        }
+        @if (mudou)
+        {
+            <p class="border-t border-slate-200 px-5 py-2 text-xs text-amber-600 dark:border-white/10 dark:text-amber-400">Alterações não salvas.</p>
+        }
+    </ChildContent>
+</Cartao>
+
+<ResultadoAcao Linhas="resultado" Titulo="@titulo" Quando="quando" />
+
+@code {
+    string agora = "";
+    List<Notice> lista = new(), ocultos = new();
+    bool ocupado, mudou;
+    List<string> resultado = new();
+    string titulo = "";
+    DateTime quando;
+
+    string Ciclo
+    {
+        get
+        {
+            int c = lista.Sum(n => Math.Max(0, n.RepeatTime));
+            return c <= 0 ? "" : $"cada um volta a cada {(c >= 120 ? $"{c / 60} min {c % 60} s" : $"{c} s")}";
+        }
+    }
+
+    protected override async Task OnInitializedAsync() => await Carregar();
+
+    async Task Carregar()
+    {
+        try
+        {
+            var todos = await Task.Run(Notices.Load);
+            ocultos = todos.Where(n => n.IsManaged).ToList();   // "enviar agora" e lembretes de bônus: o vigia cuida
+            lista = todos.Where(n => !n.IsManaged).ToList();
+            mudou = false;
+        }
+        catch (Exception ex) { Registro.Erro("avisos", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+    }
+
+    Task EnterAgora(KeyboardEventArgs e) => e.Key == "Enter" ? EnviarAgora() : Task.CompletedTask;
+
+    async Task EnviarAgora()
+    {
+        var msg = agora;
+        if (string.IsNullOrWhiteSpace(msg)) return;
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            if (await Acoes.Executar("aviso.enviar", null, () =>
+                {
+                    var limpo = Notices.Clean(msg);
+                    Notices.AddOneShot(limpo);   // não mexe na lista editável
+                    linhas.AddRange(ServerControl.Reload("Util (GMs, avisos)"));
+                    // o Reload não reinicia o rodízio de avisos do GameServer (#31): põe o aviso novo (1ª linha) para sair já
+                    linhas.AddRange(ResetWatcher.NoticeRestart(sendFirstNow: true, firstMessage: limpo));
+                    linhas.Insert(0, $"Aviso enviado para todos: \"{limpo}\".");
+                    return OperacoesConta.Juntar(linhas);
+                }, Politicas.Moderar, msg))
+                agora = "";
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = "aviso enviado"; quando = DateTime.Now;
+        if (!mudou) await Carregar();
+    }
+
+    void Adicionar() { lista.Add(new Notice { Message = "Bem-vindo ao Mu Chila!", RepeatTime = 600 }); mudou = true; }
+
+    void Mover(int i, int d)
+    {
+        int j = i + d;
+        if (j < 0 || j >= lista.Count) return;
+        (lista[i], lista[j]) = (lista[j], lista[i]);
+        mudou = true;
+    }
+
+    async Task Salvar()
+    {
+        if (!await Confirmar.Perguntar("Salvar os avisos automáticos?", $"{lista.Count} aviso(s). O painel faz backup do Notice.txt, dá Reload Util nos servidores e mostra na hora o primeiro aviso novo ou alterado.", "Salvar e aplicar")) return;
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            await Acoes.Executar("aviso.salvar", null, () =>
+            {
+                var novos = new List<Notice>(ocultos);
+                var mudados = new List<string>();   // avisos novos ou com texto/tempo trocado: o 1º deles sai na hora
+                foreach (var n in lista)
+                {
+                    n.Message = Notices.Clean(n.Message);
+                    if (n.RepeatTime < 1) throw new InvalidOperationException($"\"{n.Message}\": a espera mínima é 1 segundo.");
+                    if (n.Raw == null || n.Key() != n.RawKey) mudados.Add(n.Message);
+                    novos.Add(n);
+                }
+                var backup = Notices.Save(novos, userList: true);
+                linhas.Add($"Avisos salvos (backup {System.IO.Path.GetFileName(backup)}).");
+                linhas.AddRange(ServerControl.Reload("Util (GMs, avisos)"));
+                var salvos = Notices.Load();
+                int i = salvos.FindIndex(n => !n.IsManaged && mudados.Contains(n.Message));
+                linhas.AddRange(i >= 0 ? ResetWatcher.NoticeRestart(i, true, salvos[i].Message) : ResetWatcher.NoticeRestart(0, false, null));
+                if (i >= 0) linhas.Add($"\"{salvos[i].Message}\" aparece na tela agora; depois o rodízio segue na ordem da lista.");
+                return OperacoesConta.Juntar(linhas);
+            }, Politicas.Administrar, $"{lista.Count} aviso(s)");
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = "avisos automáticos"; quando = DateTime.Now;
+        await Carregar();
+    }
+}

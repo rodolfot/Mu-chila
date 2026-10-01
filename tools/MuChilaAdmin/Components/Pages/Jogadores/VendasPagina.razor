@@ -1,0 +1,85 @@
+@page "/vendas"
+@attribute [Authorize(Policy = Politicas.Moderar)]
+
+<CabecalhoPagina Titulo="Vendas" Descricao="Compras pelo site: VIP, Cash e Passe (PIX), loja de itens (Cash), Zen (Cash) e o mercado entre jogadores." Icone="cart" />
+
+<Nota Tipo="info" Classe="mb-5">
+    Para entregar de novo ou cancelar um pedido, use o painel admin do site (Mu Chila → Pedidos da loja / Mercado entre jogadores).
+    Pedidos de teste (provedor "simulado") aparecem aqui, mas não entram na receita do dashboard.
+</Nota>
+
+<nav class="abas mb-4">
+    @foreach (var (id, nome, icone) in Abas)
+    {
+        <button type="button" class="aba @(aba == id ? "ativa" : "")" @onclick="() => Mudar(id)"><Icone Nome="@icone" Classe="ico-sm" />@nome</button>
+    }
+</nav>
+
+@if (aviso != null)
+{
+    <Cartao><Vazio Texto="@aviso" Icone="database" /></Cartao>
+}
+else
+{
+    <Cartao SemPadding="true">
+        <TabelaDados Dados="dados" Titulo="@Abas.First(a => a.Item1 == aba).Item2" Celulas="celulas" TextoVazio="Nenhuma compra ainda." PorPagina="30">
+            <Ferramentas>
+                @if (aba is "pedidos" or "mercado")
+                {
+                    <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="caixa" @bind="soProblema" @bind:after="Carregar" />Só com problema</label>
+                }
+            </Ferramentas>
+        </TabelaDados>
+    </Cartao>
+}
+
+@code {
+    static readonly (string, string, string)[] Abas = { ("pedidos", "VIP, Cash e Passe", "crown"), ("lojaitens", "Loja de itens", "package"), ("zen", "Zen", "coin"), ("mercado", "Mercado", "market") };
+    string aba = "pedidos";
+    string? aviso;
+    bool soProblema;
+    DataTable? dados;
+    Dictionary<string, RenderFragment<DataRow>> celulas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        celulas = new()
+        {
+            ["Situação"] = r => (r["Situação"] as string) switch
+            {
+                "entregue" => @<span class="etiqueta etq-verde">entregue</span>,
+                "falhou" => @<span class="etiqueta etq-vermelha">com problema</span>,
+                "pendente" => @<span class="etiqueta etq-amarela">aguardando PIX</span>,
+                "pago" => @<span class="etiqueta etq-azul">pago</span>,
+                var s => @<span class="etiqueta etq-cinza">@s</span>,
+            },
+            ["Conta"] = r => @<a class="link" href="@($"contas/{Uri.EscapeDataString(r["Conta"] as string ?? "")}")">@r["Conta"]</a>,
+        };
+        await Carregar();
+    }
+
+    async Task Mudar(string id) { aba = id; soProblema = false; await Carregar(); }
+
+    async Task Carregar()
+    {
+        dados = null; aviso = null;
+        var tabela = aba switch { "pedidos" => "MUCHILA_PEDIDOS", "lojaitens" => "MUCHILA_LOJAITENS_COMPRAS", "zen" => "MUCHILA_ZEN_COMPRAS", _ => "MUCHILA_MERCADO_PEDIDOS" };
+        try
+        {
+            if (!await Task.Run(() => Db.TableExists(tabela))) { aviso = "Esta parte do site ainda não foi instalada neste banco (rode o Instalar-Modulos.ps1 do site)."; return; }
+            var filtro = soProblema ? "WHERE status = 'falhou'" : "";
+            dados = await Task.Run(() => aba switch
+            {
+                "pedidos" => Db.Query($@"SELECT TOP 2000 id AS Pedido, criado AS Data, conta AS Conta, tipo AS Tipo, descricao AS Descrição, valor AS [Valor (R$)],
+                                status AS Situação, provedor AS Provedor, entregue_em AS Entregue, ISNULL(obs, '') AS Observação FROM dbo.MUCHILA_PEDIDOS {filtro} ORDER BY id DESC"),
+                "lojaitens" => Db.Query(@"SELECT TOP 2000 id AS Compra, criado AS Data, conta AS Conta, descricao AS Item, preco AS Cash, saldo_antes AS [Saldo antes], posicao AS Posição
+                                FROM dbo.MUCHILA_LOJAITENS_COMPRAS ORDER BY id DESC"),
+                "zen" => Db.Query(@"SELECT TOP 2000 id AS Compra, criado AS Data, conta AS Conta, pacote AS Pacote, zen AS Zen, cash AS Cash, saldo_antes AS [Saldo antes]
+                                FROM dbo.MUCHILA_ZEN_COMPRAS ORDER BY id DESC"),
+                _ => Db.Query($@"SELECT TOP 2000 id AS Pedido, criado AS Data, comprador AS Conta, vendedor AS Vendedor, descricao AS Anúncio, valor AS [Valor (R$)],
+                                taxa AS [Taxa (R$)], status AS Situação, provedor AS Provedor, ISNULL(obs, '') AS Observação FROM dbo.MUCHILA_MERCADO_PEDIDOS {filtro} ORDER BY id DESC"),
+            });
+        }
+        catch (Exception ex) { Registro.Erro("vendas", ex); aviso = ExecutorAcoes.MensagemDe(ex); }
+    }
+}

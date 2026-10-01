@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="robots" content="noindex, nofollow" />
+    <base href="/" />
+    <script src="js/tema.js"></script>
+    <link rel="stylesheet" href="@Assets["css/app.css"]" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <HeadOutlet @rendermode="ModoRender" />
+</head>
+<body class="min-h-screen">
+    <Routes @rendermode="ModoRender" Ip="@ip" />
+    <div id="blazor-error-ui" class="fixed inset-x-0 bottom-0 z-[100] hidden bg-rose-600 px-4 py-3 text-sm text-white" data-nosnippet>
+        A conexão com o painel caiu. <a href="" class="reload font-semibold underline">Recarregar a página</a>
+    </div>
+    <script src="@Assets["js/app.js"]"></script>
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+</body>
+</html>
+
+@code {
+    [CascadingParameter] HttpContext HttpContext { get; set; } = default!;
+
+    // telas do painel: interativas (Blazor no servidor); login e primeiro acesso: página comum (o cookie é gravado pelo HTTP)
+    IComponentRenderMode? ModoRender => HttpContext.AcceptsInteractiveRouting() ? InteractiveServer : null;
+
+    string? ip;
+
+    protected override void OnInitialized() => ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+}

@@ -1,0 +1,80 @@
+@page "/resets"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@inject ExecutorAcoes Acoes
+@inject Avisos Toast
+
+<CabecalhoPagina Titulo="Resets" Descricao="Valores dos resets feitos pelo site (área do jogador). O reset normal continua sendo /reset no jogo." Icone="reset" />
+
+<div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+    <Cartao Titulo="Valores" Icone="sliders" Classe="lg:col-span-2">
+        @if (v == null)
+        {
+            <Carregando />
+        }
+        else
+        {
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="rotulo" for="rs-master">Créditos por Master Reset</label>
+                    <input id="rs-master" type="number" min="0" max="1000000" class="entrada" @bind="v.MasterCreditos" />
+                    <p class="ajuda">Master Level 600.</p>
+                </div>
+                <div>
+                    <label class="rotulo" for="rs-supreme">Créditos por Supreme Reset</label>
+                    <input id="rs-supreme" type="number" min="0" max="1000000" class="entrada" @bind="v.SupremeCreditos" />
+                    <p class="ajuda">Nível 400 + Master 600 + atributos no máximo.</p>
+                </div>
+                <div>
+                    <label class="rotulo" for="rs-stat">Atributo máximo (libera o Supreme)</label>
+                    <input id="rs-stat" type="number" min="0" max="65535" class="entrada" @bind="v.MaxStat" />
+                    <p class="ajuda">Valor que cada atributo precisa ter. O servidor usa 65000.</p>
+                </div>
+                <div class="flex items-center">
+                    <label class="flex items-center gap-2 text-sm font-medium"><input type="checkbox" class="caixa" @bind="v.Ativo" />Resets pelo site ativos</label>
+                </div>
+            </div>
+            <div class="mt-5 flex gap-2">
+                <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@ocupado"><Icone Nome="save" Classe="ico-sm" />Salvar</button>
+                <button type="button" class="btn btn-secundario" @onclick="Carregar" disabled="@ocupado">Recarregar</button>
+            </div>
+        }
+    </Cartao>
+    <Cartao Titulo="Como funciona" Icone="info">
+        <ul class="list-disc space-y-2 pl-4 text-sm text-slate-600 dark:text-slate-300">
+            <li>Master Reset e Supreme Reset são feitos pelo site e dão créditos do site.</li>
+            <li>Salvar aqui vale na hora para o site; o cron do master reset usa o valor novo no próximo minuto.</li>
+            <li>Grava no muchila.resets.json do site ativo (www) e no do repositório (muchila\www).</li>
+        </ul>
+    </Cartao>
+</div>
+
+@code {
+    ResetConfig.Valores? v;
+    bool ocupado;
+
+    protected override async Task OnInitializedAsync() => await Carregar();
+
+    async Task Carregar()
+    {
+        try { v = await Task.Run(ResetConfig.Carregar); }
+        catch (Exception ex) { Registro.Erro("resets", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); v = new(); }
+    }
+
+    async Task Salvar()
+    {
+        if (v == null) return;
+        var valores = new ResetConfig.Valores
+        {
+            Ativo = v.Ativo, MasterCreditos = Math.Clamp(v.MasterCreditos, 0, 1_000_000),
+            SupremeCreditos = Math.Clamp(v.SupremeCreditos, 0, 1_000_000), MaxStat = Math.Clamp(v.MaxStat, 0, 65535),
+        };
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("resets.salvar", null, () => ResetConfig.Salvar(valores), Politicas.Administrar,
+                $"ativo={valores.Ativo} master={valores.MasterCreditos} supreme={valores.SupremeCreditos} maxstat={valores.MaxStat}");
+        }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+}

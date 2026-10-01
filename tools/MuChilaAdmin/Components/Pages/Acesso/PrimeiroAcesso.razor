@@ -1,0 +1,104 @@
+@page "/primeiro-acesso"
+@layout LayoutSimples
+@attribute [AllowAnonymous]
+@attribute [ExcludeFromInteractiveRouting]
+@using System.ComponentModel.DataAnnotations
+@using System.Net
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject ServicoUsuarios Usuarios
+@inject IAuditoria Auditoria
+@inject NavigationManager Nav
+
+<PageTitle>Primeiro acesso · Mu Chila Admin</PageTitle>
+
+<div class="rounded-2xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
+    @if (!podeCriar)
+    {
+        <div class="nota nota-atencao"><Icone Nome="lock" Classe="ico" />
+            <span>@motivo</span>
+        </div>
+        <a href="entrar" class="btn btn-secundario mt-4 w-full">Ir para o login</a>
+    }
+    else
+    {
+        <h2 class="text-base font-semibold text-white">Criar o primeiro administrador</h2>
+        <p class="mt-1 text-sm text-slate-400">Ainda não há nenhum usuário do painel. Este será o administrador; depois ele cria os outros em <span class="text-slate-300">Usuários do painel</span>.</p>
+        @if (erro != null)
+        {
+            <div class="nota nota-perigo mt-4" role="alert"><Icone Nome="alert" Classe="ico" /><span>@erro</span></div>
+        }
+        <EditForm Model="Dados" FormName="primeiro" OnValidSubmit="Criar" method="post" Enhance="false" class="mt-4 space-y-4">
+            <DataAnnotationsValidator />
+            <div>
+                <label class="rotulo text-slate-300" for="u">Usuário (para entrar)</label>
+                <InputText id="u" class="entrada" @bind-Value="Dados!.Usuario" autocomplete="username" maxlength="30" placeholder="ex.: rodolfo" />
+                <ValidationMessage For="() => Dados!.Usuario" class="ajuda text-rose-400" />
+            </div>
+            <div>
+                <label class="rotulo text-slate-300" for="n">Nome</label>
+                <InputText id="n" class="entrada" @bind-Value="Dados!.Nome" maxlength="60" placeholder="Como aparece no painel" />
+            </div>
+            <div>
+                <label class="rotulo text-slate-300" for="s">Senha</label>
+                <InputText id="s" type="password" class="entrada" @bind-Value="Dados!.Senha" autocomplete="new-password" maxlength="128" />
+                <p class="ajuda">Pelo menos 8 caracteres, com letra e número.</p>
+                <ValidationMessage For="() => Dados!.Senha" class="ajuda text-rose-400" />
+            </div>
+            <div>
+                <label class="rotulo text-slate-300" for="c">Repita a senha</label>
+                <InputText id="c" type="password" class="entrada" @bind-Value="Dados!.Confirmacao" autocomplete="new-password" maxlength="128" />
+                <ValidationMessage For="() => Dados!.Confirmacao" class="ajuda text-rose-400" />
+            </div>
+            <button type="submit" class="btn btn-primario w-full py-2.5"><Icone Nome="user-plus" Classe="ico-sm" />Criar e entrar</button>
+        </EditForm>
+    }
+</div>
+
+@code {
+    [CascadingParameter] HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm(FormName = "primeiro")] Modelo? Dados { get; set; }
+    bool podeCriar;
+    string? erro, motivo;
+
+    protected override void OnInitialized()
+    {
+        Dados ??= new();
+        var ip = HttpContext.Connection.RemoteIpAddress;
+        // só no próprio PC do servidor: alguém na rede do Radmin não pode "tomar" o painel antes do dono
+        if (ip == null || !IPAddress.IsLoopback(ip)) { motivo = "O primeiro administrador só pode ser criado no próprio PC do servidor (http://localhost)."; return; }
+        try
+        {
+            if (!Usuarios.PrecisaPrimeiroAcesso()) { motivo = "O painel já tem usuários. Entre com o seu usuário."; return; }
+        }
+        catch (Exception ex)
+        {
+            Registro.Erro("primeiro acesso", ex);
+            motivo = "O painel não conseguiu acessar o banco de dados: " + ExecutorAcoes.MensagemDe(ex);
+            return;
+        }
+        podeCriar = true;
+    }
+
+    async Task Criar()
+    {
+        if (!podeCriar) return;
+        if (Dados!.Senha != Dados!.Confirmacao) { erro = "As duas senhas não são iguais."; return; }
+        Usuario u;
+        try { u = Usuarios.Criar(Dados!.Usuario ?? "", Dados!.Nome ?? "", Papeis.Admin, Dados!.Senha ?? "", trocarSenha: false, criadoPor: "primeiro acesso"); }
+        catch (Exception ex) { erro = ExecutorAcoes.MensagemDe(ex); return; }
+        var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+        Auditoria.Registrar(new EventoAuditoria(DateTime.Now, u.Login, ip, "usuario.criar", u.Login, "papel=admin", true, "primeiro administrador do painel"));
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, Identidade.Criar(u), new AuthenticationProperties { IsPersistent = true });
+        Auditoria.Registrar(new EventoAuditoria(DateTime.Now, u.Login, ip, "login.ok", null, null, true, null));
+        Nav.NavigateTo("");
+    }
+
+    sealed class Modelo
+    {
+        [Required(ErrorMessage = "Escolha o usuário.")] public string? Usuario { get; set; }
+        public string? Nome { get; set; }
+        [Required(ErrorMessage = "Escolha a senha.")] public string? Senha { get; set; }
+        [Required(ErrorMessage = "Repita a senha.")] public string? Confirmacao { get; set; }
+    }
+}

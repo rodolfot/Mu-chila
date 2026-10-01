@@ -1,0 +1,97 @@
+@page "/minha-conta/senha"
+@layout LayoutSimples
+@attribute [ExcludeFromInteractiveRouting]
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject ServicoUsuarios Usuarios
+@inject IAuditoria Auditoria
+@inject NavigationManager Nav
+
+<PageTitle>Trocar a senha · Mu Chila Admin</PageTitle>
+
+<div class="rounded-2xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl backdrop-blur">
+    <h2 class="text-base font-semibold text-white">Trocar a senha</h2>
+    @if (obrigatoria)
+    {
+        <p class="mt-1 text-sm text-amber-300">Você entrou com uma senha temporária: escolha uma senha sua para continuar.</p>
+    }
+    else
+    {
+        <p class="mt-1 text-sm text-slate-400">As outras sessões abertas com a senha antiga são encerradas.</p>
+    }
+    @if (erro != null)
+    {
+        <div class="nota nota-perigo mt-4" role="alert"><Icone Nome="alert" Classe="ico" /><span>@erro</span></div>
+    }
+    <EditForm Model="Dados" FormName="senha" OnValidSubmit="Trocar" method="post" Enhance="false" class="mt-4 space-y-4">
+        <DataAnnotationsValidator />
+        <input type="text" name="username" value="@login" autocomplete="username" class="hidden" readonly />
+        <div>
+            <label class="rotulo text-slate-300" for="a">Senha atual @(obrigatoria ? "(a temporária)" : "")</label>
+            <InputText id="a" type="password" class="entrada" @bind-Value="Dados!.Atual" autocomplete="current-password" maxlength="128" />
+            <ValidationMessage For="() => Dados!.Atual" class="ajuda text-rose-400" />
+        </div>
+        <div>
+            <label class="rotulo text-slate-300" for="n">Senha nova</label>
+            <InputText id="n" type="password" class="entrada" @bind-Value="Dados!.Nova" autocomplete="new-password" maxlength="128" />
+            <p class="ajuda">Pelo menos 8 caracteres, com letra e número, diferente do usuário.</p>
+            <ValidationMessage For="() => Dados!.Nova" class="ajuda text-rose-400" />
+        </div>
+        <div>
+            <label class="rotulo text-slate-300" for="c">Repita a senha nova</label>
+            <InputText id="c" type="password" class="entrada" @bind-Value="Dados!.Confirmacao" autocomplete="new-password" maxlength="128" />
+            <ValidationMessage For="() => Dados!.Confirmacao" class="ajuda text-rose-400" />
+        </div>
+        <button type="submit" class="btn btn-primario w-full py-2.5"><Icone Nome="key" Classe="ico-sm" />Trocar a senha</button>
+    </EditForm>
+    @if (!obrigatoria)
+    {
+        <a href="minha-conta" class="mt-4 block text-center text-sm link">Voltar ao painel</a>
+    }
+    else
+    {
+        <form method="post" action="sair" class="mt-4 text-center"><AntiforgeryToken /><button type="submit" class="text-sm text-slate-400 hover:text-white">Sair</button></form>
+    }
+</div>
+
+@code {
+    [CascadingParameter] HttpContext HttpContext { get; set; } = default!;
+    [SupplyParameterFromForm(FormName = "senha")] Modelo? Dados { get; set; }
+    bool obrigatoria;
+    string? erro, login;
+
+    protected override void OnInitialized()
+    {
+        Dados ??= new();
+        obrigatoria = Identidade.PrecisaTrocarSenha(HttpContext.User);
+        login = HttpContext.User.Identity?.Name;
+    }
+
+    async Task Trocar()
+    {
+        if (Identidade.IdDe(HttpContext.User) is not int id) { Nav.NavigateTo("entrar"); return; }
+        if (Dados!.Nova != Dados!.Confirmacao) { erro = "As duas senhas novas não são iguais."; return; }
+        var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+        try { Usuarios.TrocarSenha(id, Dados!.Atual ?? "", Dados!.Nova ?? ""); }
+        catch (Exception ex)
+        {
+            erro = ExecutorAcoes.MensagemDe(ex);
+            Auditoria.Registrar(new EventoAuditoria(DateTime.Now, login ?? "?", ip, "usuario.senha", login, null, false, erro));
+            return;
+        }
+        ValidacaoSessao.Esquecer();
+        var u = Usuarios.Repositorio.PorId(id)!;
+        // cookie novo com o carimbo novo (as outras sessões caem) e sem a marca de senha temporária
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, Identidade.Criar(u), new AuthenticationProperties { IsPersistent = true });
+        Auditoria.Registrar(new EventoAuditoria(DateTime.Now, u.Login, ip, "usuario.senha", u.Login, null, true, "senha trocada"));
+        Nav.NavigateTo("minha-conta?senha=ok");
+    }
+
+    sealed class Modelo
+    {
+        [Required(ErrorMessage = "Digite a senha atual.")] public string? Atual { get; set; }
+        [Required(ErrorMessage = "Digite a senha nova.")] public string? Nova { get; set; }
+        [Required(ErrorMessage = "Repita a senha nova.")] public string? Confirmacao { get; set; }
+    }
+}

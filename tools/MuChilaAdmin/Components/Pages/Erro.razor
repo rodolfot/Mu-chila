@@ -1,0 +1,23 @@
+@page "/erro"
+@layout LayoutSimples
+@attribute [AllowAnonymous]
+@attribute [ExcludeFromInteractiveRouting]
+@using System.Diagnostics
+
+<PageTitle>Erro · Mu Chila Admin</PageTitle>
+<div class="rounded-2xl border border-white/10 bg-slate-900/80 p-6 text-center shadow-2xl">
+    <span class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-rose-500/10 text-rose-400"><Icone Nome="alert" Classe="h-6 w-6" /></span>
+    <h2 class="mt-3 text-base font-semibold text-white">Algo deu errado no painel</h2>
+    <p class="mt-2 text-sm text-slate-400">O erro foi registrado no painel-erros.log (pasta do painel). Tente de novo; se continuar, mande esse arquivo para quem cuida do painel.</p>
+    @if (id != null)
+    {
+        <p class="mono mt-3 text-slate-500">código: @id</p>
+    }
+    <a href="" class="btn btn-secundario mt-5">Voltar ao início</a>
+</div>
+
+@code {
+    [CascadingParameter] HttpContext? HttpContext { get; set; }
+    string? id;
+    protected override void OnInitialized() => id = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

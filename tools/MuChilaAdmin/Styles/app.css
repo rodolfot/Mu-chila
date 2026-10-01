@@ -1,0 +1,121 @@
+/* Mu Chila Admin — design system (Tailwind CSS v4). Entrada do Tailwind; a saída vai para wwwroot/css/app.css.
+   Gerar:  .ferramentas\tailwindcss.exe -i Styles\app.css -o wwwroot\css\app.css --minify   (o build faz sozinho se o .exe existir)
+   Cores: grafite (slate) com dourado (amber) de destaque, como o site; verde = ok, vermelho (rose) = perigo, azul (sky) = info.
+   Tema escuro é o padrão; o claro fica a um clique (classe "dark" no <html>). */
+@import "tailwindcss";
+
+@source "../Components";
+@source "../Web";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "Cascadia Mono", Consolas, "Courier New", monospace;
+    --color-ouro-300: #fcd34d;
+    --color-ouro-400: #fbbf24;
+    --color-ouro-500: #f59e0b;
+    --shadow-brilho: 0 0 0 1px rgb(245 158 11 / 0.25), 0 8px 30px -12px rgb(245 158 11 / 0.45);
+}
+
+@layer base {
+    html { -webkit-text-size-adjust: 100%; }
+    body { @apply bg-slate-100 text-sm text-slate-700 antialiased dark:bg-slate-950 dark:text-slate-300; }
+    h1, h2, h3 { @apply text-slate-900 dark:text-white; }
+    ::selection { @apply bg-amber-400/40; }
+    /* ícones do sprite: o <style> do arquivo de ícones não vale para quem usa de fora, então o traço vem daqui (herdado) */
+    svg.i { fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    /* o foco que o Blazor põe no título ao trocar de tela não precisa de moldura */
+    h1:focus, h1:focus-visible { outline: none; }
+    :focus-visible { outline: 2px solid rgb(245 158 11 / 0.7); outline-offset: 2px; }
+    input[type=number]::-webkit-inner-spin-button { opacity: .6; }
+    /* barras de rolagem discretas no tema escuro */
+    .dark ::-webkit-scrollbar { width: 10px; height: 10px; }
+    .dark ::-webkit-scrollbar-thumb { background: rgb(255 255 255 / 0.12); border-radius: 999px; border: 2px solid transparent; background-clip: content-box; }
+    .dark ::-webkit-scrollbar-track { background: transparent; }
+}
+
+@layer components {
+    /* ---------------- cartões ---------------- */
+    .cartao { @apply rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900/70 dark:shadow-none; }
+    .cartao-cab { @apply flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 sm:px-5 dark:border-white/10; }
+    .cartao-titulo { @apply flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white; }
+    .cartao-corpo { @apply p-4 sm:p-5; }
+
+    /* ---------------- botões ---------------- */
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3.5 py-2 text-sm font-medium transition
+               disabled:cursor-not-allowed disabled:opacity-50;
+    }
+    .btn-primario { @apply bg-amber-500 text-slate-950 shadow-sm hover:bg-amber-400 active:bg-amber-500; }
+    .btn-secundario { @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10; }
+    .btn-perigo { @apply bg-rose-600 text-white shadow-sm hover:bg-rose-500; }
+    .btn-sucesso { @apply bg-emerald-600 text-white shadow-sm hover:bg-emerald-500; }
+    .btn-fantasma { @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white; }
+    .btn-sm { @apply gap-1.5 px-2.5 py-1.5 text-xs; }
+    .btn-icone { @apply p-2; }
+
+    /* ---------------- formulários ---------------- */
+    .entrada {
+        @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400
+               focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/30 disabled:opacity-60
+               dark:border-white/15 dark:bg-slate-950/60 dark:text-white dark:placeholder:text-slate-500;
+    }
+    .entrada-sm { @apply px-2 py-1 text-xs; }
+    select.entrada { @apply pr-8; }
+    .rotulo { @apply mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400; }
+    .ajuda { @apply mt-1 text-xs text-slate-500 dark:text-slate-500; }
+    .caixa { @apply h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-500/40 dark:border-white/20 dark:bg-slate-900; }
+
+    /* ---------------- tabelas ---------------- */
+    .tabela { @apply w-full text-left text-sm; }
+    .tabela th {
+        @apply whitespace-nowrap border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-slate-500
+               dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-400;
+    }
+    .tabela td { @apply border-b border-slate-100 px-3 py-2 align-middle text-slate-700 dark:border-white/5 dark:text-slate-300; }
+    .tabela tbody tr:hover td { @apply bg-slate-50 dark:bg-white/[0.03]; }
+    .tabela tr.selecionada td { @apply bg-amber-50 dark:bg-amber-400/10; }
+    .tabela .num { @apply text-right tabular-nums; }
+    .tabela-compacta td { @apply py-1.5; }
+
+    /* ---------------- etiquetas ---------------- */
+    .etiqueta { @apply inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset; }
+    .etq-verde { @apply bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-400/25; }
+    .etq-vermelha { @apply bg-rose-50 text-rose-700 ring-rose-600/20 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-400/25; }
+    .etq-amarela { @apply bg-amber-50 text-amber-800 ring-amber-600/25 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/25; }
+    .etq-azul { @apply bg-sky-50 text-sky-700 ring-sky-600/20 dark:bg-sky-400/10 dark:text-sky-300 dark:ring-sky-400/25; }
+    .etq-roxa { @apply bg-violet-50 text-violet-700 ring-violet-600/20 dark:bg-violet-400/10 dark:text-violet-300 dark:ring-violet-400/25; }
+    .etq-cinza { @apply bg-slate-100 text-slate-600 ring-slate-500/20 dark:bg-white/5 dark:text-slate-300 dark:ring-white/15; }
+
+    /* ---------------- avisos fixos (callouts) ---------------- */
+    .nota { @apply flex gap-3 rounded-xl border px-4 py-3 text-sm; }
+    .nota-info { @apply border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-400/20 dark:bg-sky-400/[0.07] dark:text-sky-100; }
+    .nota-atencao { @apply border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/25 dark:bg-amber-400/[0.08] dark:text-amber-100; }
+    .nota-perigo { @apply border-rose-200 bg-rose-50 text-rose-900 dark:border-rose-400/25 dark:bg-rose-400/[0.08] dark:text-rose-100; }
+    .nota-sucesso { @apply border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/25 dark:bg-emerald-400/[0.08] dark:text-emerald-100; }
+
+    /* ---------------- outros ---------------- */
+    .link { @apply font-medium text-amber-700 hover:text-amber-600 hover:underline dark:text-amber-400 dark:hover:text-amber-300; }
+    .ico { @apply h-5 w-5 shrink-0; }
+    .ico-sm { @apply h-4 w-4 shrink-0; }
+    .abas { @apply flex gap-1 overflow-x-auto border-b border-slate-200 dark:border-white/10; scrollbar-width: none; }
+    .aba {
+        @apply -mb-px inline-flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent px-3 py-2.5 text-sm font-medium text-slate-500
+               hover:border-slate-300 hover:text-slate-800 dark:text-slate-400 dark:hover:border-white/20 dark:hover:text-white;
+    }
+    .aba.ativa { @apply border-amber-500 text-amber-700 dark:border-amber-400 dark:text-amber-300; }
+    .menu-link {
+        @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white;
+    }
+    .menu-link.active { @apply bg-amber-400/10 text-amber-300 ring-1 ring-inset ring-amber-400/20; }
+    .menu-grupo { @apply px-3 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-slate-500; }
+    .kbd { @apply rounded border border-slate-300 bg-slate-50 px-1.5 py-0.5 font-mono text-[11px] text-slate-500 dark:border-white/15 dark:bg-white/5 dark:text-slate-400; }
+    .mono { @apply font-mono text-xs; }
+    .rolagem { @apply overflow-auto; scrollbar-width: thin; }
+}
+
+@keyframes entra { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
+.animar-entrada { animation: entra .18s ease-out both; }
+@keyframes pulso { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+.pulsar { animation: pulso 1.6s ease-in-out infinite; }

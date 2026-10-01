@@ -1,0 +1,229 @@
+@page "/"
+@implements IDisposable
+@inject Alertas Alertas
+@inject Configuracao Cfg
+@inject AuthenticationStateProvider Auth
+
+<CabecalhoPagina Titulo="Dashboard" Descricao="@($"Situação do servidor e do site · atualizado às {atualizado:HH:mm:ss}")" Icone="grid">
+    <button type="button" class="btn btn-secundario btn-sm" @onclick="Carregar" disabled="@carregando">
+        <Icone Nome="refresh" Classe="@($"h-3.5 w-3.5 {(carregando ? "animate-spin" : "")}")" />Atualizar
+    </button>
+</CabecalhoPagina>
+
+@if (erro != null)
+{
+    <Nota Tipo="perigo" Titulo="Não deu para ler os dados" Classe="mb-5">@erro</Nota>
+}
+
+@if (r == null && erro == null)
+{
+    <Carregando Texto="Juntando os números do servidor..." />
+}
+else if (r != null)
+{
+    @* ---------------- indicadores ---------------- *@
+    <div class="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-4">
+        <Indicador Rotulo="Jogando agora" Valor="@N(r.Online)" Icone="activity" Tom="verde" Href="servidor"
+                   Detalhe="@(r.OnlinePorServidor.Count == 0 ? "ninguém conectado" : string.Join(" · ", r.OnlinePorServidor.Select(kv => $"{kv.Key}: {kv.Value}")))" />
+        <Indicador Rotulo="Contas" Valor="@N(r.Contas)" Icone="users" Href="contas" Detalhe="@($"+{N(r.ContasNovas24h)} em 24 h · +{N(r.ContasNovas7d)} em 7 dias")" />
+        <Indicador Rotulo="VIP ativos" Valor="@N(r.VipTotal)" Icone="crown" Tom="roxo" Href="contas?filtro=vip"
+                   Detalhe="@string.Join(" · ", Enumerable.Range(1, 3).Select(n => $"VIP {n}: {r.VipPorNivel.GetValueOrDefault(n)}"))" />
+        <Indicador Rotulo="Personagens" Valor="@N(r.Personagens)" Icone="sword" Tom="azul" Href="relatorios" Detalhe="@($"{N(r.ContasBanidas)} conta(s) banida(s)")" />
+        <Indicador Rotulo="Vendas em 30 dias" Valor="@($"R$ {r.Receita30d:N2}")" Icone="cart" Href="vendas" Detalhe="@($"7 dias: R$ {r.Receita7d:N2} · 24 h: R$ {r.Receita24h:N2}")" />
+        <Indicador Rotulo="Cash gasto no site (30 d)" Valor="@N(r.CashLojaItens30d + r.CashZen30d)" Icone="coin" Href="vendas"
+                   Detalhe="@($"loja de itens {N(r.CashLojaItens30d)} ({N(r.ComprasLojaItens30d)} compras) · Zen {N(r.CashZen30d)}")" />
+        <Indicador Rotulo="Mensagens novas" Valor="@N(r.MensagensNovas)" Icone="inbox" Tom="@(r.MensagensNovas > 0 ? "ouro" : "cinza")" Href="site/mensagens" Detalhe="Contate-nos do site" />
+        <Indicador Rotulo="Compras com problema" Valor="@N(r.PedidosComProblema)" Icone="alert" Tom="@(r.PedidosComProblema > 0 ? "vermelho" : "cinza")" Href="vendas"
+                   Detalhe="@($"{N(r.PedidosPendentes)} PIX aguardando · {N(r.AnunciosMercado)} anúncio(s) no mercado")" />
+    </div>
+
+    <div class="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-3">
+        @* ---------------- online 24 h ---------------- *@
+        <Cartao Titulo="Jogadores online nas últimas 24 horas" Icone="activity" Classe="xl:col-span-2"
+                Subtitulo="Amostra a cada 5 minutos, enquanto o painel está ligado">
+            <GraficoLinha Pontos="online" Titulo="Jogadores online" Unidade="jogador(es)" TextoVazio="O painel ainda está juntando as amostras (uma a cada 5 minutos)." />
+        </Cartao>
+
+        @* ---------------- servidor ---------------- *@
+        <Cartao Titulo="Servidor" Icone="server" Subtitulo="@(Cfg.Desenvolvimento ? "ambiente de desenvolvimento: sem servidor de verdade" : null)">
+            <Acoes><a href="servidor" class="btn btn-fantasma btn-sm">Controlar<Icone Nome="arrow-right" Classe="h-3.5 w-3.5" /></a></Acoes>
+            <ChildContent>
+                <ul class="space-y-2">
+                    @foreach (var p in processos)
+                    {
+                        <li class="flex items-center justify-between gap-3 text-sm">
+                            <span class="flex min-w-0 items-center gap-2">
+                                <span class="h-2 w-2 shrink-0 rounded-full @(p.Rodando ? "bg-emerald-500 shadow-[0_0_8px] shadow-emerald-500/60" : "bg-slate-400 dark:bg-slate-600")"></span>
+                                <span class="truncate">@p.Nome</span>
+                            </span>
+                            <span class="shrink-0 text-xs text-slate-500">@(p.Rodando ? Ligado(p.Desde) : "parado")</span>
+                        </li>
+                    }
+                </ul>
+                <div class="mt-4 space-y-1.5 border-t border-slate-200 pt-3 text-xs text-slate-500 dark:border-white/10">
+                    <p class="flex items-center gap-2"><span class="h-2 w-2 rounded-full @(vigia ? "bg-emerald-500" : "bg-rose-500")"></span>Vigia @(vigia ? "ligado" : "PARADO")</p>
+                    @foreach (var g in gameServers)
+                    {
+                        <p>@g.Nome: @(g.Jogadores == "" ? "-" : g.Jogadores) jogadores, @(g.Monstros?.ToString("N0") ?? "-") monstros</p>
+                    }
+                    @if (invasaoAte != null)
+                    {
+                        <p class="text-amber-600 dark:text-amber-400">Invasão no ar até @invasaoAte.Value.ToString("HH:mm")</p>
+                    }
+                </div>
+            </ChildContent>
+        </Cartao>
+    </div>
+
+    <div class="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
+        <Cartao Titulo="Contas novas por dia" Icone="user-plus" Subtitulo="Últimos 14 dias">
+            <GraficoBarras Vertical="true" Itens="@r.ContasPorDia.Select(d => new GraficoBarras.Item(d.Dia.ToString("dd/MM"), d.Quantidade)).ToList()" />
+        </Cartao>
+        <Cartao Titulo="Personagens por classe" Icone="users">
+            <GraficoBarras Itens="@r.PersonagensPorClasse.Select(c => new GraficoBarras.Item(c.Familia, c.Quantidade)).ToList()" TextoVazio="Nenhum personagem criado." />
+        </Cartao>
+        <Cartao Titulo="Mais fortes" Icone="trophy" SemPadding="true" Subtitulo="Por resets e nível (sem GMs)">
+            @if (r.TopPersonagens.Count == 0)
+            {
+                <Vazio Texto="Nenhum personagem ainda." Icone="trophy" />
+            }
+            else
+            {
+                <table class="tabela tabela-compacta">
+                    <thead><tr><th>#</th><th>Personagem</th><th class="text-right">Nível</th><th class="text-right">Master</th><th class="text-right">Resets</th></tr></thead>
+                    <tbody>
+                        @foreach (var (p, i) in r.TopPersonagens.Select((p, i) => (p, i)))
+                        {
+                            <tr>
+                                <td class="w-8 text-slate-400">@(i + 1)</td>
+                                <td><a class="link" href="@($"contas/{Uri.EscapeDataString(p.Conta)}")">@p.Nome</a></td>
+                                <td class="num">@p.Nivel</td>
+                                <td class="num">@p.Master</td>
+                                <td class="num">@p.Resets</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </Cartao>
+    </div>
+
+    <div class="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <Cartao Titulo="Alertas abertos" Icone="bell" SemPadding="true">
+            <Acoes><a href="alertas" class="btn btn-fantasma btn-sm">Ver todos<Icone Nome="arrow-right" Classe="h-3.5 w-3.5" /></a></Acoes>
+            <ChildContent>
+                @if (alertas.Count == 0)
+                {
+                    <Vazio Texto="Tudo certo: nenhum alerta aberto." Icone="check-circle" />
+                }
+                else
+                {
+                    <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                        @foreach (var a in alertas.Take(6))
+                        {
+                            <li>
+                                <a href="@(a.Link ?? "alertas")" class="flex gap-3 px-5 py-3 hover:bg-slate-50 dark:hover:bg-white/[0.03]">
+                                    <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full @CorSev(a.Severidade)"></span>
+                                    <span class="min-w-0">
+                                        <span class="block text-sm font-medium text-slate-800 dark:text-slate-100">@a.Titulo</span>
+                                        <span class="block truncate text-xs text-slate-500">@a.Texto</span>
+                                    </span>
+                                    <span class="ml-auto shrink-0 text-xs text-slate-400">@BarraTopo.Tempo(a.Atualizado)</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </ChildContent>
+        </Cartao>
+        <AuthorizeView Policy="@Politicas.Administrar">
+            <Cartao Titulo="Últimas ações no painel" Icone="shield-check" SemPadding="true">
+                <Acoes><a href="auditoria" class="btn btn-fantasma btn-sm">Auditoria<Icone Nome="arrow-right" Classe="h-3.5 w-3.5" /></a></Acoes>
+                <ChildContent>
+                    @if (ultimas.Count == 0)
+                    {
+                        <Vazio Texto="Nada registrado ainda." Icone="shield-check" />
+                    }
+                    else
+                    {
+                        <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                            @foreach (var e in ultimas)
+                            {
+                                <li class="flex items-center gap-3 px-5 py-2.5 text-sm">
+                                    <span class="h-2 w-2 shrink-0 rounded-full @(e.Ok ? "bg-emerald-500" : "bg-rose-500")"></span>
+                                    <span class="min-w-0 flex-1 truncate"><span class="font-medium text-slate-800 dark:text-slate-100">@e.Usuario</span> · @Acoes.Nome(e.Acao)@(e.Alvo != null ? $": {e.Alvo}" : "")</span>
+                                    <span class="shrink-0 text-xs text-slate-400">@BarraTopo.Tempo(e.Quando)</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </ChildContent>
+            </Cartao>
+        </AuthorizeView>
+    </div>
+}
+
+@code {
+    ResumoDashboard? r;
+    List<GraficoLinha.Ponto> online = new();
+    List<ServerControl.ProcessoInfo> processos = new();
+    List<ServerControl.GameServerInfo> gameServers = new();
+    List<Alerta> alertas = new();
+    List<EventoAuditoria> ultimas = new();
+    bool vigia, carregando;
+    DateTime? invasaoAte;
+    DateTime atualizado = DateTime.Now;
+    string? erro;
+    Timer? timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        timer = new Timer(_ => InvokeAsync(Carregar), null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
+    }
+
+    async Task Carregar()
+    {
+        if (carregando) return;
+        carregando = true;
+        StateHasChanged();
+        try
+        {
+            var user = (await Auth.GetAuthenticationStateAsync()).User;
+            var admin = Identidade.Admin(user);
+            await Task.Run(() =>
+            {
+                r = Dashboard.Resumo();
+                online = Metricas.Online(24).Select(p => new GraficoLinha.Ponto(p.Quando, p.Online)).ToList();
+                processos = ServerControl.Processos();
+                gameServers = ServerControl.GameServers();
+                vigia = ResetWatcher.IsRunning();
+                try { invasaoAte = ServerControl.InvasionEnd(DateTime.Now); } catch { invasaoAte = null; }
+                alertas = Alertas.Lista(incluirResolvidos: false, max: 10);
+                ultimas = admin ? new AuditoriaSql().Buscar(new FiltroAuditoria { PorPagina = 8 }).Itens : new();
+            });
+            erro = null;
+            atualizado = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            Registro.Erro("dashboard", ex);
+            erro = ExecutorAcoes.MensagemDe(ex);
+        }
+        finally { carregando = false; }
+        StateHasChanged();
+    }
+
+    static string N(int v) => v.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
+
+    static string Ligado(DateTime? desde)
+    {
+        if (desde is not DateTime d || d == DateTime.MinValue) return "rodando";
+        var t = DateTime.Now - d;
+        return t.TotalDays >= 1 ? $"há {(int)t.TotalDays} d {t.Hours} h" : t.TotalHours >= 1 ? $"há {(int)t.TotalHours} h {t.Minutes} min" : $"há {(int)t.TotalMinutes} min";
+    }
+
+    public static string CorSev(string s) => s switch { Severidade.Critico => "bg-rose-500", Severidade.Aviso => "bg-amber-500", _ => "bg-sky-500" };
+
+    public void Dispose() => timer?.Dispose();
+}

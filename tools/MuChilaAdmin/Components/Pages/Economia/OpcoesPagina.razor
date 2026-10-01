@@ -1,0 +1,237 @@
+@page "/opcoes"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Taxas e opções" Descricao="Opções dos GameServers (GameServerInfo - *.dat) e a chance de drop das joias. Grava igual nos 5 GameServers, recarrega e confere na memória se valeu na hora." Icone="sliders">
+    @if (edicoes.Count > 0)
+    {
+        <span class="etiqueta etq-amarela">@edicoes.Count mudança(s) não salva(s)</span>
+    }
+    <button type="button" class="btn btn-secundario" @onclick="Descartar" disabled="@(ocupado || edicoes.Count == 0)">Descartar</button>
+    <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@(ocupado || edicoes.Count == 0)"><Icone Nome="save" Classe="ico-sm" />@(ocupado ? "Aplicando..." : "Salvar e aplicar")</button>
+</CabecalhoPagina>
+
+<div class="cartao mb-5 flex flex-wrap items-end gap-3 p-4">
+    <div class="w-full min-w-0 sm:w-auto">
+        <label class="rotulo" for="op-visao">Mostrar</label>
+        <select id="op-visao" class="entrada w-full sm:w-auto sm:min-w-[20rem]" value="@visao" @onchange="TrocarVisao" @key="chaveVisao">
+            <option value="-1">Principais (EXP, drop, zen, joias, Chaos Machine...)</option>
+            @for (int i = 0; i < ServerSettings.Files.Length; i++)
+            {
+                <option value="@i">Todas: @ServerSettings.Files[i].Label</option>
+            }
+        </select>
+    </div>
+    <div class="min-w-[14rem] flex-1">
+        <label class="rotulo" for="op-filtro">Filtrar</label>
+        <input id="op-filtro" class="entrada" placeholder="Nome da opção ou seção..." @bind="filtro" @bind:event="oninput" />
+    </div>
+</div>
+
+@if (bonusAtivo)
+{
+    <Nota Tipo="atencao" Classe="mb-5">Há um bônus por tempo ativo: as taxas dele estão com o valor do bônus no arquivo e ficam travadas até ele acabar (ou cancele na página Bônus).</Nota>
+}
+
+<Cartao SemPadding="true">
+    @if (linhas == null)
+    {
+        <Carregando />
+    }
+    else if (Visiveis.Count == 0)
+    {
+        <Vazio Texto="Nenhuma opção com esse filtro." Icone="search" />
+    }
+    else
+    {
+        <div class="rolagem max-h-[72vh]">
+            <table class="tabela tabela-compacta">
+                <thead class="sticky top-0 z-10">
+                    <tr>
+                        <th>Opção</th>
+                        @for (int p = 0; p < 4; p++)
+                        {
+                            <th class="w-28">@(p == 0 ? "Free / valor" : ServerSettings.Plans[p])</th>
+                        }
+                        <th>Obs.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var grupo in Visiveis.GroupBy(r => ServerSettings.SectionLabel(r.Section)))
+                    {
+                        <tr><td colspan="6" class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:bg-white/[0.03]">@(grupo.Key.Length > 0 ? grupo.Key : "Geral")</td></tr>
+                        @foreach (var r in grupo)
+                        {
+                            var trava = Trava(r);
+                            <tr class="@(trava != null ? "opacity-60" : "")">
+                                <td>
+                                    <p class="font-medium text-slate-900 dark:text-white">@r.Label</p>
+                                    @if (r.Label != r.BaseKey && r.File != ServerSettings.ItemDropFile)
+                                    {
+                                        <p class="mono text-slate-400" title="@($"{r.File}: {r.BaseKey}{(r.PerPlan ? "_AL0..3" : "")}")">@r.BaseKey</p>
+                                    }
+                                </td>
+                                @for (int n = 0; n < 4; n++)
+                                {
+                                    var p = n;
+                                    <td>
+                                        @if (p == 0 || r.PerPlan)
+                                        {
+                                            <input class="entrada entrada-sm @(edicoes.ContainsKey((r.Id, p)) ? "ring-2 ring-amber-400" : "")" value="@Valor(r, p)" disabled="@(trava != null || ocupado)"
+                                                   aria-label="@($"{r.Label} {ServerSettings.Plans[p]}")" @onchange="e => Editar(r, p, e)" />
+                                        }
+                                        else
+                                        {
+                                            <span class="text-slate-300 dark:text-slate-600">—</span>
+                                        }
+                                    </td>
+                                }
+                                <td class="max-w-[24rem] text-xs @(trava != null ? "text-amber-700 dark:text-amber-400" : "text-slate-500")">@(trava ?? r.Help)@(r.File == ServerSettings.ItemDropFile ? " (em %)" : "")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="border-t border-slate-200 px-5 py-2.5 text-xs text-slate-500 dark:border-white/10">
+            @Visiveis.Count de @linhas.Count opções. Free/Vip1/Vip2/Vipzão = um valor por plano; opção única usa só a 1ª coluna. Linhas apagadas não se mexem por aqui (o motivo está em Obs.).
+        </p>
+    }
+</Cartao>
+
+@if (log.Count > 0)
+{
+    <ResultadoAcao Linhas="log" Titulo="@(ocupado ? "aplicando..." : "taxas e opções")" Quando="quando" />
+}
+
+@code {
+    int visao = -1, chaveVisao;
+    string filtro = "";
+    List<ServerSettings.Row>? linhas;
+    readonly Dictionary<(string Id, int Plano), string> edicoes = new();
+    bool ocupado, bonusAtivo;
+    List<string> log = new();
+    DateTime quando;
+    IDisposable? trava;
+
+    List<ServerSettings.Row> Visiveis
+    {
+        get
+        {
+            var q = filtro.Trim();
+            return (linhas ?? new()).Where(r => q.Length == 0 || r.Label.Contains(q, StringComparison.OrdinalIgnoreCase) || r.BaseKey.Contains(q, StringComparison.OrdinalIgnoreCase)
+                                                || ServerSettings.SectionLabel(r.Section).Contains(q, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (edicoes.Count > 0 && !await Confirmar.Perguntar("Sair sem salvar?", $"Há {edicoes.Count} mudança(s) não salva(s) nas taxas e opções.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        linhas = null;
+        edicoes.Clear();
+        int v = visao;
+        try
+        {
+            (linhas, bonusAtivo) = await Task.Run(() => (v < 0 ? ServerSettings.Main() : ServerSettings.Load(ServerSettings.Files[v].Name),
+                                                         TimedBonuses.List().Any(b => b.ActiveAt(DateTime.Now))));
+        }
+        catch (Exception ex) { Registro.Erro("opcoes", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); linhas = new(); }
+    }
+
+    async Task TrocarVisao(ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var v) || v == visao) return;
+        if (edicoes.Count > 0 && !await Confirmar.Perguntar("Descartar as mudanças?", $"Há {edicoes.Count} mudança(s) não salva(s) nesta lista.", "Descartar", perigo: true))
+        {
+            chaveVisao++;   // recria o select para ele voltar à lista atual
+            return;
+        }
+        visao = v;
+        await Carregar();
+    }
+
+    string? Trava(ServerSettings.Row r) =>
+        r.LockReason ?? (bonusAtivo && ServerSettings.BonusKeys.Contains(r.BaseKey) ? "bônus por tempo ativo: o arquivo está com o valor do bônus; mude depois que ele acabar" : null);
+
+    string Valor(ServerSettings.Row r, int p) => edicoes.TryGetValue((r.Id, p), out var v) ? v : r.Values[p] ?? "";
+
+    void Editar(ServerSettings.Row r, int p, ChangeEventArgs e)
+    {
+        var v = (e.Value?.ToString() ?? "").Trim();
+        if (v == (r.Values[p] ?? "")) edicoes.Remove((r.Id, p));
+        else edicoes[(r.Id, p)] = v;
+    }
+
+    async Task Descartar()
+    {
+        if (!await Confirmar.Perguntar("Descartar as mudanças?", $"{edicoes.Count} mudança(s) não salva(s).", "Descartar", perigo: true)) return;
+        await Carregar();
+    }
+
+    async Task Salvar()
+    {
+        if (linhas == null || edicoes.Count == 0) return;
+        var porId = linhas.ToDictionary(r => r.Id);
+        var mudancas = new List<ServerSettings.Change>();
+        var joias = new List<(ServerSettings.Row, string)>();
+        var texto = new List<string>();
+        try
+        {
+            foreach (var ((id, p), v) in edicoes)
+            {
+                var r = porId[id];
+                if (r.File == ServerSettings.ItemDropFile)
+                {
+                    Drops.ParsePercent(v);
+                    joias.Add((r, v));
+                    texto.Add($"{r.Label}: {r.Values[0]}% → {v}%");
+                }
+                else
+                {
+                    mudancas.Add(new ServerSettings.Change(r.File, r.KeyOf(p), v, r));
+                    texto.Add($"{r.Label}{(r.PerPlan ? $" ({ServerSettings.Plans[p]})" : "")}: {r.Values[p]} → {v}");
+                }
+            }
+            ServerSettings.Validate(mudancas);
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or FormatException) { Toast.Erro(ex.Message); return; }
+
+        if (!await Confirmar.Perguntar($"Gravar {texto.Count} mudança(s)?", $"Grava nos 5 GameServers (com backup), recarrega e confere na memória.\n\n{string.Join("\n", texto.Take(25))}{(texto.Count > 25 ? "\n..." : "")}", "Gravar e aplicar")) return;
+
+        ocupado = true;
+        log = new() { $"Gravando {texto.Count} mudança(s)..." };
+        quando = DateTime.Now;
+        var linhasLog = log;
+        bool ok = false;
+        try
+        {
+            ok = await Acoes.Executar("opcoes.salvar", visao < 0 ? "principais" : ServerSettings.Files[visao].Name, () =>
+            {
+                ServerSettings.SaveAndApply(mudancas, joias, msg =>
+                {
+                    lock (linhasLog) linhasLog.Add(msg);
+                    _ = InvokeAsync(StateHasChanged);
+                });
+                lock (linhasLog) return linhasLog.Skip(1).ToList();
+            }, Politicas.Administrar, string.Join("; ", texto), avisoSucesso: false);
+        }
+        finally { ocupado = false; }
+        if (ok) Toast.Sucesso($"{texto.Count} mudança(s) gravada(s). Veja abaixo o que valeu na hora.");
+        await Carregar();
+    }
+}

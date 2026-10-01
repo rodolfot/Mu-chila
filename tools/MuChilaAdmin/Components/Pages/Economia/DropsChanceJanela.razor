@@ -1,0 +1,66 @@
+@* Pergunta a chance de uma regra de drop em %, mostrando "1 em N" ao lado. Regra que vale para vários monstros avisa
+   antes (para mexer em um só, o certo é uma regra própria nele). *@
+
+<Janela Aberta="Aberta" AbertaChanged="AbertaChanged" Titulo="@Titulo" Subtitulo="Chance por monstro morto. 1% = 1 em cada 100 monstros.">
+    <ChildContent>
+        <div class="flex flex-wrap items-end gap-3">
+            <div>
+                <label class="rotulo" for="chance-pct">Chance (%)</label>
+                <input id="chance-pct" type="number" step="any" min="0.0001" max="100" class="entrada w-40" @bind="pct" @bind:event="oninput" />
+            </div>
+            <p class="pb-2 text-sm text-slate-600 dark:text-slate-300">= <b>@DropsVisao.UmEm(Rate)</b> monstros</p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5">
+            @foreach (var (rotulo, v) in Atalhos)
+            {
+                <button type="button" class="btn btn-secundario btn-sm" @onclick="() => pct = v">@rotulo</button>
+            }
+        </div>
+        @if (Alcance > 1)
+        {
+            <Nota Tipo="atencao" Classe="mt-4">
+                Esta regra vale para <b>@Alcance monstros</b> (@ParaQuem), não só para um. A chance muda para todos eles.
+                Para mexer em um monstro só, adicione uma regra própria nele.
+            </Nota>
+        }
+        @if (!Valido)
+        {
+            <p class="mt-3 text-sm text-rose-600 dark:text-rose-400">Use de 0,0001 a 100.</p>
+        }
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => AbertaChanged.InvokeAsync(false)">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="Confirmar" disabled="@(!Valido)">@(Alcance > 1 ? $"Mudar para os {Alcance}" : "OK")</button>
+    </Rodape>
+</Janela>
+
+@code {
+    [Parameter] public bool Aberta { get; set; }
+    [Parameter] public EventCallback<bool> AbertaChanged { get; set; }
+    [Parameter] public string Titulo { get; set; } = "Chance";
+    [Parameter] public int Atual { get; set; } = 10_000;
+    [Parameter] public int Alcance { get; set; }
+    [Parameter] public string? ParaQuem { get; set; }
+    [Parameter] public EventCallback<int> AoConfirmar { get; set; }
+
+    static readonly (string, decimal)[] Atalhos = { ("0,01%", 0.01m), ("0,1%", 0.1m), ("0,5%", 0.5m), ("1%", 1m), ("5%", 5m), ("10%", 10m) };
+    decimal pct;
+    bool estavaAberta;
+
+    int Rate => (int)Math.Round(pct * Drops.RateBase / 100);
+    bool Valido => pct is >= 0.0001m and <= 100m;
+
+    protected override void OnParametersSet()
+    {
+        if (Aberta && !estavaAberta) pct = Math.Clamp((decimal)Atual * 100 / Drops.RateBase, 0.0001m, 100m);
+        estavaAberta = Aberta;
+    }
+
+    async Task Confirmar()
+    {
+        if (!Valido) return;
+        int r = Rate;
+        await AbertaChanged.InvokeAsync(false);
+        await AoConfirmar.InvokeAsync(r);
+    }
+}

@@ -1,0 +1,124 @@
+@page "/eventos"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+
+<CabecalhoPagina Titulo="Eventos" Descricao="Disparar um evento fora da agenda: o painel marca uma execução única no arquivo do evento e recarrega os GameServers." Icone="calendar" />
+
+<Nota Tipo="info" Classe="mb-5">
+    O servidor não tem comando para iniciar evento na hora. Eventos com sala (Blood Castle, Devil Square, Chaos Castle, Illusion Temple) avisam
+    5 minutos antes para os jogadores entrarem, por isso o padrão é 6 minutos. Invasões começam no minuto marcado (direto na memória do GameServer).
+</Nota>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
+    <Cartao Titulo="Disparar evento" Icone="flame" Classe="xl:col-span-2" SemPadding="true">
+        <ul class="divide-y divide-slate-100 dark:divide-white/5">
+            @foreach (var (ev, i) in EventScheduler.Events.Select((e, i) => (e, i)))
+            {
+                <li class="flex flex-wrap items-center gap-3 px-5 py-3">
+                    <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg @(ev.IsInvasion ? "bg-rose-500/10 text-rose-500" : ev.OnCastleSiege ? "bg-violet-500/10 text-violet-500" : "bg-amber-500/10 text-amber-500")">
+                        <Icone Nome="@(ev.IsInvasion ? "zap" : ev.OnCastleSiege ? "castle" : "flame")" Classe="ico-sm" />
+                    </span>
+                    <div class="min-w-0 flex-1">
+                        <p class="font-medium text-slate-900 dark:text-white">@ev.Name</p>
+                        <p class="text-xs text-slate-500">@ev.File@(ev.OnCastleSiege ? " · roda no Castle Siege" : "")</p>
+                    </div>
+                    <label class="flex items-center gap-2 text-xs text-slate-500">
+                        daqui a
+                        <input type="number" min="1" max="1440" class="entrada entrada-sm w-16" value="@Minutos(i)" @onchange="e => minutos[i] = int.TryParse(e.Value?.ToString(), out var m) ? Math.Clamp(m, 1, 1440) : ev.LeadMinutes" />
+                        min
+                    </label>
+                    <button type="button" class="btn btn-primario btn-sm" @onclick="() => Disparar(ev, i)" disabled="@ocupado"><Icone Nome="play" Classe="h-3.5 w-3.5" />Disparar</button>
+                </li>
+            }
+        </ul>
+    </Cartao>
+
+    <Cartao Titulo="Disparos agendados pelo painel" Icone="clock" SemPadding="true">
+        <Acoes><button type="button" class="btn btn-fantasma btn-sm" @onclick="Limpar" disabled="@ocupado">Limpar executados</button></Acoes>
+        <ChildContent>
+            @if (pendentes.Count == 0)
+            {
+                <Vazio Texto="Nenhum disparo registrado." Icone="calendar" />
+            }
+            else
+            {
+                <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                    @foreach (var p in pendentes)
+                    {
+                        <li class="flex items-center gap-3 px-5 py-2.5 text-sm">
+                            <span class="h-2 w-2 shrink-0 rounded-full @(p.When > DateTime.Now ? "bg-amber-500" : "bg-slate-400")"></span>
+                            <span class="min-w-0 flex-1 truncate">@p.Name</span>
+                            <span class="shrink-0 text-xs @(p.When > DateTime.Now ? "text-amber-600 dark:text-amber-400" : "text-slate-400")">@p.When.ToString("dd/MM HH:mm") · @(p.When > DateTime.Now ? "pendente" : "executado")</span>
+                        </li>
+                    }
+                </ul>
+            }
+        </ChildContent>
+    </Cartao>
+</div>
+
+<ResultadoAcao Linhas="resultado" Titulo="@titulo" Quando="quando" />
+
+@code {
+    readonly Dictionary<int, int> minutos = new();
+    List<(DateTime When, string Name, string File)> pendentes = new();
+    List<string> resultado = new();
+    string titulo = "";
+    DateTime quando;
+    bool ocupado;
+
+    int Minutos(int i) => minutos.TryGetValue(i, out var m) ? m : EventScheduler.Events[i].LeadMinutes;
+
+    protected override async Task OnInitializedAsync() => await Carregar();
+
+    async Task Carregar()
+    {
+        try { pendentes = await Task.Run(EventScheduler.Pending); }
+        catch (Exception ex) { Registro.Erro("eventos", ex); }
+    }
+
+    async Task Disparar(EventDef ev, int i)
+    {
+        if (ev.OnCastleSiege && !await Confirmar.Perguntar($"Disparar {ev.Name}?",
+                $"{ev.Name} roda no servidor do Castle Siege. Para ele pegar o disparo, o Castle Siege recarrega os eventos, e isso reinicia o ciclo do cerco: " +
+                "os jogadores veem \"começou o período de preparação do Castle Siege\" e o cerco é adiado ~15 minutos.", "Disparar mesmo assim", perigo: true)) return;
+        // segundo 0 do minuto alvo: o agendador do servidor compara minuto a minuto
+        var w = DateTime.Now.AddMinutes(Minutos(i));
+        var when = new DateTime(w.Year, w.Month, w.Day, w.Hour, w.Minute, 0);
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            await Acoes.Executar("evento.disparar", ev.Name, () =>
+            {
+                linhas.Add(EventScheduler.Schedule(ev, when));   // a linha no arquivo vale se o GameServer reiniciar antes da hora
+                linhas.AddRange(ev.IsInvasion ? ResetWatcher.InvasionStartAt(ev.Index!.Value, when)
+                                              : ev.OnCastleSiege ? ServerControl.ReloadCastleSiegeOnly("Event") : ServerControl.ReloadGameServersOnly("Event"));
+                return OperacoesConta.Juntar(linhas);
+            }, Politicas.Administrar, $"quando={when:yyyy-MM-dd HH:mm}");
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = $"{ev.Name} às {when:HH:mm}"; quando = DateTime.Now;
+        await Carregar();
+    }
+
+    async Task Limpar()
+    {
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            await Acoes.Executar("evento.limpar", null, () =>
+            {
+                int n = EventScheduler.CleanupPast(TimeSpan.FromMinutes(30));
+                if (n > 0) linhas.AddRange(ServerControl.ReloadGameServersOnly("Event"));   // no Castle Siege reiniciaria o cerco
+                linhas.Insert(0, $"{n} disparo(s) antigo(s) removido(s).");
+                return OperacoesConta.Juntar(linhas);
+            }, Politicas.Administrar);
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = "limpeza dos disparos"; quando = DateTime.Now;
+        await Carregar();
+    }
+}

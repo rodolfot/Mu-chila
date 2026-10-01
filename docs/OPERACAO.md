@@ -54,32 +54,37 @@ Mudar a trava depois: edite o `ServerLock` no `Common.dat` do servidor e reinici
 
 ## Painel Mu Chila Admin
 
-Atalho: `C:\MuServer\Mu Chila Admin.lnk` (programa em `C:\MuServer\MuChilaAdmin`, código em `tools\MuChilaAdmin`).
-Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque conversa com as janelas dos servidores e com o SQL local.
+**Painel web** desde 01/10/2026: http://localhost:5170 no PC do servidor (atalho **Mu Chila Admin** na área de trabalho), com usuário e
+senha. Programa em `C:\MuServer\MuChilaAdmin`, código em `tools\MuChilaAdmin` e `tools\MuChilaAdmin.Core`. Instalação, usuários e
+papéis, segurança, todas as páginas, configuração e o ambiente de desenvolvimento: **[MU-ADMIN.md](MU-ADMIN.md)**.
+Roda na máquina do servidor, porque conversa com as janelas dos servidores e com o SQL local. As abas do programa antigo viraram
+páginas (menu à esquerda), com as mesmas regras:
 
-| Aba | O que faz |
+| Página | O que faz |
 |---|---|
-| **Servidor** | Mostra os 8 processos (os três GameServers separados), os jogadores online (conta, personagem, IP) e jogadores e monstros de cada GameServer. Atualiza a cada 5 s. |
+| **Processos e jogadores** | Mostra os processos (os GameServers separados), os jogadores online (conta, personagem, IP) e jogadores e monstros de cada GameServer. Atualiza a cada 5 s. |
 | | Botões: iniciar e parar tudo pelo launcher, desconectar todos os jogadores (os personagens são salvos), abrir o MuEditor e o launcher. |
 | | "Recarregar sem reiniciar": manda o Reload escolhido para os dois GameServers **e** o Castle Siege ao mesmo tempo. |
 | **Eventos** | Escolha o evento e em quantos minutos ele começa, e clique em "Disparar evento". Veja [Eventos](#eventos). |
-| **Bônus** | Ex.: "EXP + EXP master x2 por 60 minutos", começando agora ou numa data e hora. Multiplica a taxa de cada plano em todos os GameServers e avisa os jogadores no início, a cada 5 minutos e no fim. Cancela a qualquer momento. Quem liga e desliga é o vigia. Ver [Bônus de EXP e drop](#bônus-de-exp-e-drop). |
-| **Avisos** | "Enviar agora" manda uma mensagem para todos os jogadores. Também lista e edita os avisos automáticos (repetidos). Ver [Avisos para todos os jogadores](#avisos-para-todos-os-jogadores). |
-| **Lojas** | Escolha o NPC e edite o que ele vende: adicionar (busca pelo nome), remover, reordenar, nível, durabilidade e opções. Mostra quantos dos 120 espaços (8×15) da janela a loja ocupa e avisa o que não cabe. "Salvar e aplicar" faz backup e recarrega as lojas sem reiniciar. |
-| **Loja de Cash** | A loja da tecla X. Muda o preço, esconde e mostra pacotes, **adiciona item** (pacote novo: item, aba/moeda, preço, nível e opções, quantidade ou prazo) e **remove da loja**: apaga de vez o que o painel criou, e os pacotes do kit ficam só escondidos. Grava servidor + cliente e recarrega a loja. Os jogadores só veem depois de "Publicar p/ launcher". Ver [Adicionar e remover itens da loja de cash](#adicionar-e-remover-itens-da-loja-de-cash). |
-| **Drops** | **Por monstro / por item** (a primeira sub-aba): escolha um monstro e veja tudo o que ele dropa (inclusive as regras que valem para vários monstros), com a chance em % e em "1 em N", para quem a regra vale e quantos monstros ela alcança, mais o drop comum e o zen dele; ou escolha um item e veja de onde ele cai. Adiciona item a um monstro, faz um item cair de um monstro, mapa, faixa de nível ou qualquer monstro, muda a chance (duplo clique) e remove; regras que valem para vários monstros avisam antes. Edita as mesmas linhas das abas avançadas. As duas abas **Avançado** são o arquivo completo: **Itens que os monstros dropam** (`Data\Item\ItemDrop.txt`): cada regra diz qual item cai de qual monstro, mapa ou faixa de nível e com que chance em % (1% = 1 em 100). Adicionar (busca pelo nome), escolher monstro ou mapa numa lista, remover, filtrar; "Salvar e aplicar" faz backup e dá Reload Item. **Drop comum e zen por monstro** (`Monster.txt`: ItemRate, MoneyRate, MaxItemLevel): "Salvar e aplicar" faz backup e recarrega os monstros só nos GameServers e só fora da invasão (se houver uma no ar, agenda para quando ela acabar; o painel precisa ficar aberto). Linhas não alteradas são regravadas iguais. |
+| **Bônus de EXP e drop** | Ex.: "EXP + EXP master x2 por 60 minutos", começando agora ou numa data e hora. Multiplica a taxa de cada plano em todos os GameServers e avisa os jogadores no início, a cada 5 minutos e no fim. Cancela a qualquer momento. Quem liga e desliga é o vigia. Ver [Bônus de EXP e drop](#bônus-de-exp-e-drop). |
+| **Avisos aos jogadores** | "Enviar agora" manda uma mensagem para todos os jogadores. Também lista e edita os avisos automáticos (repetidos). Ver [Avisos para todos os jogadores](#avisos-para-todos-os-jogadores). |
+| **Lojas de NPC** | Escolha o NPC e edite o que ele vende: adicionar (busca pelo nome), remover, reordenar, nível, durabilidade e opções. Mostra quantos dos 120 espaços (8×15) da janela a loja ocupa e avisa o que não cabe. "Salvar e aplicar" faz backup e recarrega as lojas sem reiniciar. |
+| **Loja de Cash** | A loja da tecla X. Muda o preço, esconde e mostra pacotes, **adiciona item** (pacote novo: item, aba/moeda, preço, nível e opções, quantidade ou prazo) e **remove da loja**: apaga de vez o que o painel criou, e os pacotes do kit ficam só escondidos. Grava servidor + cliente e recarrega a loja. Os jogadores só veem depois de "Publicar para o launcher". Ver [Adicionar e remover itens da loja de cash](#adicionar-e-remover-itens-da-loja-de-cash). |
+| **Drops** | **Por monstro / por item** (a primeira aba da página): escolha um monstro e veja tudo o que ele dropa (inclusive as regras que valem para vários monstros), com a chance em % e em "1 em N", para quem a regra vale e quantos monstros ela alcança, mais o drop comum e o zen dele; ou escolha um item e veja de onde ele cai. Adiciona item a um monstro, faz um item cair de um monstro, mapa, faixa de nível ou qualquer monstro, muda a chance e remove; regras que valem para vários monstros avisam antes. Edita as mesmas linhas das abas avançadas. As abas **Regras do arquivo** e **Drop comum e zen** são os arquivos completos: **Regras do arquivo** (`Data\Item\ItemDrop.txt`): cada regra diz qual item cai de qual monstro, mapa ou faixa de nível e com que chance em % (1% = 1 em 100). Adicionar (busca pelo nome), escolher monstro ou mapa numa lista, remover, filtrar; "Salvar e aplicar" faz backup e dá Reload Item. **Drop comum e zen por monstro** (`Monster.txt`: ItemRate, MoneyRate, MaxItemLevel): "Salvar e aplicar" faz backup e recarrega os monstros só nos GameServers e só fora da invasão (se houver uma no ar, o painel agenda para quando ela acabar). Linhas não alteradas são regravadas iguais. |
 | **Taxas e opções** | Muda as opções dos GameServers sem abrir arquivo. **Principais** junta a economia num lugar só: EXP, EXP master, drop de itens, zen, **drop de joias** (`ItemDrop.txt`), chance das joias (Soul/Life/Harmony), Chaos Machine +10 a +15, pontos por nível e máximo por atributo, baús (/ware), MU Helper, /offattack, Goblin Point e EXP em party. As outras visões mostram **todas** as opções de cada um dos 7 arquivos `GameServerInfo - X.dat`. Colunas Free/Vip1/Vip2/Vipzão nas opções por plano. Ver [Taxas e opções](#taxas-e-opções-painel). |
 | **EXP dinâmica** | As faixas de nível do `Data\Util\ExperienceTable.txt` (issue #37): para cada faixa, a EXP é um % da taxa do plano. Mostra ao lado a EXP efetiva de Free/Vip1/Vip2/Vipzão. Adicionar, remover e mudar faixas; recusa faixas sobrepostas; "Salvar e aplicar" faz backup e dá Reload Util. Ver [EXP dinâmica (painel)](#exp-dinâmica-painel). |
 | **Itens novos** | Cria um item novo a partir de um que já existe: mesmo visual (modelo 3D), nome e atributos próprios (dano, defesa, velocidade, durabilidade, requisitos). Grava no `Item.txt` do servidor (Reload Item na hora) e nos arquivos do cliente da pasta do repositório. Os jogadores só recebem depois de "Publicar atualização do cliente". Teste antes abrindo o jogo pela pasta do repositório. Ver [Itens novos](#itens-novos). |
 | **Itens e baú** | Mostra o inventário de qualquer personagem ou o baú da conta, com nome, nível e opções. **Colocar item...** (29/09/2026) põe um item novo (nível, opção, excelente, skill, sorte, quantidade para os que empilham) no inventário do personagem escolhido ou no baú da conta, no 1º espaço livre em que ele cabe. Remover e colocar deslogam a conta se ela estiver no jogo e salvam antes o inventário/baú em `C:\MuServer\DB\backup-itens-*.csv`. Ver [Colocar item no inventário ou no baú](#colocar-item-no-inventário-ou-no-baú). |
-| **VIP e contas** | Lista as contas com nível, validade, ban, status e personagens. Aplica VIP 1–3 por N dias, remove VIP, bane e desbane. |
-| **Loja de itens** | Catálogo e preços da **loja de itens do site** (o jogador monta o item, paga com Cash e recebe no baú). **Catálogo**: categorias (nome, grupo Defesa/Ataque, ícone, visível ou não, ordem) e os itens de cada uma (preço base, nível máximo, tipo de excelente, destaque, à venda), com a foto do item; "Adicionar itens..." busca no Item.txt. **Preços**: Cash de cada nível, adicional e quantidade de excelentes, sorte e skill, com exemplos calculados. **Vendas**: últimas compras e o Cash gasto em 24 h, 7 e 30 dias. Na barra de cima: abrir/fechar a loja, nível máximo e quantidade máxima de excelentes. "Salvar" grava o `muchila.lojaitens.json` (cópia ativa e repositório, com backup) e o site usa na hora. Testes: `--testar-lojaitens <saida>` (numa cópia, MUCHILA_ROOT) e `--testar-lojaitens-visao <saida> <foto.png>`. Ver [Loja de itens](SITE.md#loja-de-itens-30092026). |
-| **Passe dos Mapas** | Dá passe a uma conta (em minutos, horas ou dias; soma ao que ela já tem) e tira o passe. Mostra quem tem e quanto falta, os mapas que exigem passe, o histórico (loja de cash, site e painel) e quem o vigia tirou dos mapas. A caixa "Vigia cobra o passe" liga e desliga a cobrança. Ver [Passe dos Mapas](#passe-dos-mapas-acima-do-nível-400). |
-| | "Zerar habilidades master": escolhe um personagem da conta, apaga a árvore master, devolve os pontos (1 por Master Level) e tira os poderes master da lista de habilidades (`MagicList`). Os melhorados voltam à habilidade normal (ex.: 330 Twisting Slash Improved → 41 Twisting Slash), seguindo a coluna `ReplaceSkill` do `MasterSkillTree.txt`. Serve também para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. |
-| | "Dar pontos" (aba VIP e contas): escolhe um personagem da conta, o tipo e a quantidade. **Pontos de atributo** somam em `Character.LevelUpPoint` (o jogador distribui na janela C); **pontos master** somam em `MasterSkillTree.MasterPoint` (só quem já tem árvore master). Número negativo tira, sem passar de 0. Cada entrega fica em `C:\MuServer\DB\muchila-pontos-dados.csv`. Linha de comando: `MuChilaAdmin.exe --dar-pontos <conta> <personagem> <atributo\|master> <quantidade> <arquivo-de-resultado>`. |
+| **Contas** | Lista as contas com nível, validade, ban, status e personagens (busca e filtros). Na página da conta: VIP 1–3 por N dias, remover VIP, banir com motivo e prazo e desbanir (página **Bans**: banidas agora e histórico), senha do jogo, Cash, pontos, nível e reset, zerar a árvore master e o histórico de ações. |
+| **Site → Loja de itens** | Catálogo e preços da **loja de itens do site** (o jogador monta o item, paga com Cash e recebe no baú). **Catálogo**: categorias (nome, grupo Defesa/Ataque, ícone, visível ou não, ordem) e os itens de cada uma (preço base, nível máximo, tipo de excelente, destaque, à venda), com a foto do item; "Adicionar itens..." busca no Item.txt. **Preços**: Cash de cada nível, adicional e quantidade de excelentes, sorte e skill, com exemplos calculados. **Vendas**: últimas compras e o Cash gasto em 24 h, 7 e 30 dias. Na barra de cima: abrir/fechar a loja, nível máximo e quantidade máxima de excelentes. "Salvar" grava o `muchila.lojaitens.json` (cópia ativa e repositório, com backup) e o site usa na hora. Testes: `--testar-lojaitens <saida>` (numa cópia, MUCHILA_ROOT). Ver [Loja de itens](SITE.md#loja-de-itens-30092026). |
+| **Site → Notícias, Páginas, Comprar Zen e Mensagens** | O conteúdo do site (01/10/2026). **Notícias**: lista as publicadas; "Nova notícia" ou clique numa notícia para editar (título, autor, data, comentários e o texto em HTML, com botões Negrito, Título, Lista, Link, Imagem...); "Publicar / salvar" grava no banco do WebEngine e já atualiza o cache, então a notícia aparece na hora na página inicial; "Apagar" e "Ver no site". **Páginas**: os textos de Termos de Serviço, Política de Privacidade e Política de Reembolso e o Contate-nos (texto do topo, formulário ligado ou não e os canais: Discord, WhatsApp, e-mail, Instagram; canal vazio não aparece). "Salvar páginas" grava o `muchila.paginas.json` (cópia ativa e repositório, com backup). **Comprar Zen**: abrir/fechar e os pacotes (Zen, preço em Cash, ativo), com "milhões por Cash" calculado; "Salvar" grava o `muchila.zen.json`; embaixo, as últimas compras. **Mensagens**: o que os jogadores mandaram pelo Contate-nos (novas primeiro); "Marcar como lida", "Arquivar" e "Enviar resposta" (a resposta aparece para o jogador na própria página, se ele mandou logado; quem mandou sem conta deixou um contato). As notícias usam o PHP do site (`Site\php\php.exe` + `includes\muchila\noticias-cli.php`). Ver [Páginas de 01/10/2026](SITE.md#páginas-de-01102026). |
+| **Passe dos Mapas** | Dá passe a uma conta (em minutos, horas ou dias; soma ao que ela já tem) e tira o passe. Mostra quem tem e quanto falta, os mapas que exigem passe, o histórico (loja de cash, site e painel) e quem o vigia tirou dos mapas. O cartão "Cobrança" liga e desliga a cobrança. Ver [Passe dos Mapas](#passe-dos-mapas-acima-do-nível-400). |
+| | "Zerar habilidades master": escolhe um personagem da conta, apaga a árvore master, devolve os pontos (1 por Master Level) e tira os poderes master da lista de habilidades (`MagicList`). Os melhorados voltam à habilidade normal (ex.: 330 Twisting Slash Improved → 41 Twisting Slash), seguindo a coluna `ReplaceSkill` do `MasterSkillTree.txt`. Serve também para quem mostra "Suces de Atq" negativo na janela (C); ver PROBLEMAS-E-SOLUCOES. O "Resetar Skill-Tree" do site faz o mesmo (procedimento `dbo.MuChila_LimparArvoreMaster`), cobrando Zen. |
+| | Raio-x da árvore master (só leitura, 01/10/2026): `MuChilaAdmin.exe --arvore-master <personagem> <arquivo>` grava os pontos, cada posição ocupada da árvore (`MasterSkill`, 3 bytes: índice baixo, nível, índice alto) com o nome do poder (`Skill.txt`) e a regra dele na árvore (seção, grupo, níveis, pré-requisitos, do `MasterSkillTree.txt`), e o mesmo para a `MagicList`. Serve para conferir o formato antes de deixar distribuir os pontos master pelo site: rode antes e depois de aprender um poder no jogo e compare. |
+| | "Dar pontos" (página da conta): escolhe um personagem da conta, o tipo e a quantidade. **Pontos de atributo** somam em `Character.LevelUpPoint` (o jogador distribui na janela C); **pontos master** somam em `MasterSkillTree.MasterPoint` (só quem já tem árvore master). Número negativo tira, sem passar de 0. Cada entrega fica em `C:\MuServer\DB\muchila-pontos-dados.csv`. Linha de comando: `MuChilaAdmin.exe --dar-pontos <conta> <personagem> <atributo\|master> <quantidade> <arquivo-de-resultado>`. |
 
-- **Mexeu na conta, ela sai do jogo sozinha** (decisão do dono, 28/09/2026). VIP, ban, "Dar pontos", "Zerar habilidades master" e remover item (aba Itens e baú), com a conta online, deslogam a conta **sem perguntar**. VIP e ban valem no próximo login, e os outros precisam dela fora porque o servidor grava o personagem na saída e desfaria a mudança. "Nível e reset..." só manda o personagem para a seleção de personagem (não precisa deslogar a conta).
-- **Como o painel desloga** (também no botão "Desconectar jogador selecionado", aba Servidor):
+- **Mexeu na conta, ela sai do jogo sozinha** (decisão do dono, 28/09/2026). VIP, ban, "Dar pontos", "Zerar habilidades master" e remover item (página Itens e baú), com a conta online, deslogam a conta **sem perguntar**. VIP e ban valem no próximo login, e os outros precisam dela fora porque o servidor grava o personagem na saída e desfaria a mudança. "Nível e reset..." só manda o personagem para a seleção de personagem (não precisa deslogar a conta).
+- **Como o painel desloga** (também no botão "Desconectar" da página Processos e jogadores):
   1. Pela memória do GameServer, como a opção "Trocar servidor" do jogo: o jogo volta à seleção de servidor, o servidor salva o personagem e fecha a conta. Não pede administrador e só aquela conta sai. Procura a conta em todos os GameServers e no Castle Siege, jogando ou na seleção de personagem (`ResetWatcher.LogoutAccount`).
   2. Se a conta não sair em 10 s: plano B, derruba a conexão de rede (pede permissão de administrador e derruba também as contas do mesmo IP, pelo IP de `MEMB_STAT`), agora no GameServer certo (Mu Chila, Non-PvP, VIP ou Castle Siege).
   - Linha de comando: `MuChilaAdmin.exe --forcar-logout <conta> <arquivo-de-resultado>`.
@@ -93,13 +98,13 @@ Precisa do .NET 10 Desktop Runtime e deve rodar na máquina do servidor, porque 
     - Dispara quando o personagem cai de nível ≥ 50 para ≤ 10. A troca é imediata: o Vigia confere a cada 250 ms e marca a contagem de saída em 1, sem os 5 s de contagem na tela que o "Trocar personagem" do menu tem (a pedido do dono, 26/09).
     - Testado com o Mario: `/reset` às 16:04:44; às 16:04:50 foi para a seleção sem desconectar (`DelCharacterInfo` no log do GameServer).
   - Registro: `C:\MuServer\MuChilaAdmin\vigia.log`. Conferir sem mexer em nada: `MuChilaAdmin.exe --vigia-sondar C:\temp\vigia.txt`.
-  - Botão "Levar à seleção de personagem" (aba Servidor): o mesmo que o jogador escolher "Trocar personagem" no jogo, sem desconectar.
+  - Botão "Levar à seleção de personagem" (página Processos e jogadores): o mesmo que o jogador escolher "Trocar personagem" no jogo, sem desconectar.
   - Também: resets pedidos pelo site com o jogo aberto, bônus por tempo, avisos "enviar agora", [Passe dos Mapas](#passe-dos-mapas-acima-do-nível-400) (`vigia-passe-mapas.ligado`) e Magic Backpack (`vigia-mochila.ligado`).
-- Para publicar depois de mudar o código: feche o painel e rode `.\tools\Publicar-Painel.ps1`. Ele fecha o vigia, publica em `C:\MuServer\MuChilaAdmin`, cria as chaves `.ligado` que faltarem, refaz o atalho da pasta Inicializar, liga o vigia e mostra a sonda.
+- Para publicar depois de mudar o código: rode `.\tools\Publicar-Painel.ps1` (como administrador; ver [MU-ADMIN.md](MU-ADMIN.md)). Ele fecha o painel e o vigia, publica em `C:\MuServer\MuChilaAdmin`, cria as chaves `.ligado` que faltarem, refaz os atalhos da pasta Inicializar (painel e vigia), liga os dois e confere.
 
 ## Bônus de EXP e drop
 
-Aba **Bônus** do painel. Desde 28/09/2026 quem liga e desliga é o **vigia** (`MuChilaAdmin --vigia-reset`), não mais o `BonusManager.dat` do kit.
+Página **Bônus de EXP e drop** do painel. Desde 28/09/2026 quem liga e desliga é o **vigia** (`MuChilaAdmin --vigia-reset`), não mais o `BonusManager.dat` do kit.
 O BonusManager era caixa-preta: não mostrava se o bônus tinha começado, não deixava cancelar um ativo, e cada agendamento pedia Reload Event, que reinicia a contagem do Blood Castle.
 
 - **Como funciona:** os bônus ficam em `C:\MuServer\MuChilaAdmin\bonus.json`. A cada 5 s o vigia confere:
@@ -109,15 +114,15 @@ O BonusManager era caixa-preta: não mostrava se o bônus tinha começado, não 
 - **Taxa mudada à mão durante um bônus:** o valor novo vira a taxa normal e não é sobrescrito na volta.
 - **Avisos na tela** (pelo `Notice.txt`): "Começou: ... até HH:mm" no início, lembrete "Bônus ativo" a cada 5 minutos e "Terminou..." no fim (ou "foi encerrado", se cancelado).
 - **Início:** agora, ou numa data e hora escolhida. **Cancelar** vale a qualquer momento, inclusive com o bônus ativo.
-- **O vigia precisa estar rodando.** A aba avisa em vermelho quando ele está parado, e agendar um bônus liga o vigia.
+- **O vigia precisa estar rodando.** A página avisa em vermelho quando ele está parado, e agendar um bônus liga o vigia.
 - Durante um bônus, a página Informações do site mostra as taxas com o bônus, porque lê o `Common.dat`.
 - As linhas antigas do painel no `BonusManager.dat` (vagas 3–9, `//MuChilaAdmin`) não são mais criadas e podem ser apagadas à mão.
 - Testes: `MuChilaAdmin.exe --testar-bonus <saída>` com `MUCHILA_ROOT` apontando para uma cópia (9 checagens).
 
 ## Itens e baú
 
-- **Formato:** cada item ocupa 16 bytes em `Character.Inventory` (237 posições; 0–11 equipado) e em `warehouse.Items` (240 posições: 0–119 baú, 120–239 baú estendido). O layout, conferido em inventários reais, está descrito no topo de `tools\MuChilaAdmin\Items.cs`.
-- **MuEditor:** é da Season 8 e **não deve salvar** inventários do S14, porque pode apagar o inventário expandido e o baú estendido. Use a aba **Itens e baú** para ver e remover.
+- **Formato:** cada item ocupa 16 bytes em `Character.Inventory` (237 posições; 0–11 equipado) e em `warehouse.Items` (240 posições: 0–119 baú, 120–239 baú estendido). O layout, conferido em inventários reais, está descrito no topo de `tools\MuChilaAdmin.Core\Jogo\Items.cs`.
+- **MuEditor:** é da Season 8 e **não deve salvar** inventários do S14, porque pode apagar o inventário expandido e o baú estendido. Use a página **Itens e baú** do painel para ver e remover.
 - **Mais de um baú:** `/ware <número>`, com o baú fechado, troca o baú da conta (`/ware 0` = o principal). O limite é `CommandWareNumber_AL0..3` (`Command.dat`: 1/5/7/9, ou seja 2, 6, 8 e 10 baús). Os extras ficam em `ExtWarehouse` (coluna `Number`). O baú é da **conta**: todos os personagens veem os mesmos.
 - **Baú estendido:** o Vault Expansion Certificate (14,163) libera a 2ª metade do baú (`AccountCharacter.ExtWarehouse`, máximo 1).
 - **Magic Backpack (14,162):** cada uso soma uma faixa ao inventário (`Character.ExtInventory`, **máximo 2**, limite do GameServer em 0x421FF9; com 2 o item é recusado). O servidor não avisa o cliente, então a faixa só aparece ao reentrar. Com `vigia-mochila.ligado`, o vigia manda o personagem para a seleção logo depois do uso.
@@ -179,7 +184,7 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
 - **Invasões** (`InvasionManager.dat`): 0 Underworld, 1 Red Dragon, 2 Golden, 3 White Wizard, 4 Ano Novo, 5 Páscoa, 6 Verão, 7 Christmas, 8 Medusa, 9 Demônios invocados, 10 Ovos.
   - **Golden:** a cada **10 minutos** (00, 10, 20, 30, 40 e 50), com duração de **540 s**, para não sobrepor.
   - **Red Dragon:** 0:15, 4:15, 8:15, 12:15, 16:15 e 18:32.
-- **Disparar uma vez:** aba **Eventos** do painel. Ela grava uma linha com data exata no `.dat` do evento, marcada com `//MuChilaAdmin` (vale se o GameServer reiniciar antes da hora), e então:
+- **Disparar uma vez:** página **Eventos** do painel. Ela grava uma linha com data exata no `.dat` do evento, marcada com `//MuChilaAdmin` (vale se o GameServer reiniciar antes da hora), e então:
   - **Invasões** (29/09/2026): marca o horário direto na **memória** dos GameServers (`ResetWatcher.Invasoes.cs`). O **Reload Event NÃO recalcula** o horário das invasões: o GameServer só calcula o próximo horário quando liga e quando a rodada anterior termina. Por isso, até 29/09, disparar invasão pelo painel nunca funcionava (a Páscoa das 20:41 continuava marcada para as 02:15).
   - Estado de cada invasão na memória: 1 = esperando (com o horário-alvo), 2 = acontecendo (com o horário do fim). Se já estiver acontecendo, o painel avisa e não mexe.
   - **Os outros eventos** (Blood Castle, Devil Square, Chaos Castle, Illusion Temple, Moss Merchant, Castle Deep) ainda vão pelo arquivo + Reload Event, só nos GameServers (o Castle Deep, só no Castle Siege). **Ainda não é garantido** que comecem na hora: pelos logs de 29/09, o Reload Event também não refaz o horário deles ("Sync Start Time" só aparece no fim de cada rodada).
@@ -198,7 +203,7 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
 
 ## Colocar item no inventário ou no baú
 
-Aba **Itens e baú** do painel → escolha a conta e o personagem (ou "baú") → **Colocar item...** → busque o item, escolha nível, opção, excelente, skill, sorte e quantidade → **Colocar**.
+Página **Itens e baú** do painel → escolha a conta e o personagem (ou "baú") → **Colocar item...** → busque o item, escolha nível, opção, excelente, skill, sorte e quantidade → **Colocar**.
 
 **O que o painel faz:**
 
@@ -219,7 +224,7 @@ Aba **Itens e baú** do painel → escolha a conta e o personagem (ou "baú") �
 
 ## Itens novos
 
-Aba **Itens novos** do painel (`tools\MuChilaAdmin\NewItems.cs`, desde 28/09/2026). O item novo copia o item base e troca:
+Página **Itens novos** do painel (`tools\MuChilaAdmin.Core\Jogo\NewItems.cs`, desde 28/09/2026). O item novo copia o item base e troca:
 
 - o índice (o próximo livre na seção, acima de todos os usados no servidor e no cliente);
 - o nome;
@@ -241,7 +246,7 @@ Classes, tamanho, skill e opções continuam iguais aos do item base.
 
 ## Avisos para todos os jogadores
 
-Aba **Avisos** do painel, usando o `Data\Util\Notice.txt` do kit. O GameServer não tem opção de aviso no menu.
+Página **Avisos aos jogadores** do painel, usando o `Data\Util\Notice.txt` do kit. O GameServer não tem opção de aviso no menu.
 
 - **Enviar agora:** manda uma vez para todos, em todos os servidores. O aviso entra no topo do `Notice.txt` com 1 s e o painel dá Reload Util; o vigia tira a linha do arquivo em menos de 1 minuto.
 - **Avisos automáticos:** o servidor manda um de cada vez, em ordem. Cada um espera o seu tempo ("Repetir a cada", em segundos) depois do anterior; com um aviso só, esse tempo é o intervalo. O do kit é "Server Season 14 AM" a cada 60 s.
@@ -299,7 +304,7 @@ Reset, Master Reset e Supreme Reset ficam em **Painel do jogador → Resets** (`
 - O reset zera a EXP (desde 28/09/2026 à noite). Antes ela ficava a do nível 400, e o personagem subia 1 nível por abate depois do reset. Os 4 personagens nessa situação foram corrigidos.
 - O master level **não** muda no Reset normal, só no Master Reset (no 600) e no Supreme. Como a tela soma nível + master, um nível 400 com master 140 aparece como 540 e, depois do reset, como ~141.
 
-**Pelo painel (testes):** aba **VIP e contas → "Nível e reset..."**. Define nível (1–400) ou master level (0–600), dá EXP (sobe os níveis que ela der), ou faz Reset, Master Reset e Supreme Reset num personagem. Usa a mesma fila (`Tipo` `nivel`, `exp`, `mlevel`, ou os do site, com o valor em `Valor`) e a procedure `MuChila_AjustarPersonagem`. Com o jogo aberto, o personagem vai para a seleção e a mudança vale ao entrar de novo. Subindo de nível, soma os pontos da regra do jogo (5 ou 7 por nível, +1 da 3ª classe; 1 ponto master por master level). Os resets seguem os mesmos requisitos do site.
+**Pelo painel (testes):** página da conta (**Contas** → a conta → **"Nível e reset..."**). Define nível (1–400) ou master level (0–600), dá EXP (sobe os níveis que ela der), ou faz Reset, Master Reset e Supreme Reset num personagem. Usa a mesma fila (`Tipo` `nivel`, `exp`, `mlevel`, ou os do site, com o valor em `Valor`) e a procedure `MuChila_AjustarPersonagem`. Com o jogo aberto, o personagem vai para a seleção e a mudança vale ao entrar de novo. Subindo de nível, soma os pontos da regra do jogo (5 ou 7 por nível, +1 da 3ª classe; 1 ponto master por master level). Os resets seguem os mesmos requisitos do site.
 
 ## Passe dos Mapas (acima do nível 400)
 
@@ -309,15 +314,15 @@ Decisão do dono (28/09/2026): Nixies Lake, Deep Dungeon 1–5, Swamp of Darknes
 - **No jogo (WCoin):** Gold Channel Ticket da Cash Shop, de 1, 3, 7 ou 30 dias. Ao usar o ticket guardado na loja, o GameServer manda o JoinServer rodar `WZ_SetAccountLevel`, que foi ajustada para somar ao passe (nível 0 do produto) sem mexer no VIP. Preços e textos: `tools\Loja-PasseMapas.ps1` (`-Restaurar` volta ao kit).
 - **No site (PIX):** Loja → "Passe dos Mapas" (pacotes `passe-1/3/7/30` em `muchila.pacotes.json`, R$ 9/18/27/45). Vale na hora, sem sair do jogo.
 - **Quem cobra:** o vigia (`vigia-passe-mapas.ligado`) confere a cada 1 s. Quem estiver num mapa da lista sem passe vai para a seleção de personagem e, 2 s depois de sair do jogo, é posto em Lorencia (área do gate 17) no banco. Se reentrar antes, é mandado de novo. Se a consulta ao banco falhar, ninguém é tirado.
-- **Dar ou tirar passe (testes):** aba **Passe dos Mapas** do painel. Para testar o vencimento, dê alguns minutos, entre num mapa da lista e espere. Pela linha de comando: `MuChilaAdmin.exe --testar-passe <saida>` (conta descartável, criada e apagada pelo teste).
+- **Dar ou tirar passe (testes):** página **Passe dos Mapas** do painel. Para testar o vencimento, dê alguns minutos, entre num mapa da lista e espere. Pela linha de comando: `MuChilaAdmin.exe --testar-passe <saida>` (conta descartável, criada e apagada pelo teste).
 - Não há mensagem na tela explicando a saída (o GameServer é fechado). A regra está na página Informações e na Loja do site.
 
 ## Evolução de classe (missões; `/change` desligado)
 
-**DW, DK, Elfa e Summoner já nascem na 2ª classe** (gatilho `TR_MuChila_ClasseInicial` no banco), porque o cliente S14 mostra a básica e a 2ª com o mesmo nome.
+**DW, DK, Elfa e Summoner já nascem na 2ª classe** (gatilho `TR_MuChila_ClasseInicial` no banco), porque o cliente S14 mostra a básica e a 2ª com o mesmo nome. Desde 01/10/2026 (issue #35) nascem também com as **missões da 2ª classe concluídas** (índices 0 e 1) e os 20 pontos que elas dão; antes a missão ficava pendente e o personagem, já "Blade Knight", tinha de fazer a evolução para seguir para a 3ª classe. Os criados antes: `ClasseInicial_MissoesDa2aClasse_existentes.sql` (uma vez, servidor desligado).
 Itens e skills marcados com `2` nas colunas de classe do `Item.txt` exigem a 2ª classe (ex.: a foice Brova/"Beuroba" exige Blade Knight).
 Desde 27/09/2026 o **`/change` está desligado** para todas as contas (`CommandChangeEnable_AL0..3 = 0` em `GameServerInfo - Command.dat`; quem tentar recebe a mensagem 81 "Você não tem permissão para usar /change").
-A 3ª e a 4ª classe saem pelas **missões** de `Data\Quest\Quest.txt` (nível mínimo 150): índices 0–2 levam à 2ª classe, 3 é a do combo (DK e GL), 4–6 à 3ª e 7–9 à 4ª. A recompensa que evolui é o tipo 4 (2ª), 16 (3ª) e 32 (4ª) em `QuestReward.txt`.
+A 3ª e a 4ª classe saem pelas **missões** de `Data\Quest\Quest.txt` (nível mínimo 150): índices 0–1 levam à 2ª classe, 2 é o "Hero Status", 3 é a do combo (DK e GL), 4–6 à 3ª e 7–9 à 4ª. Recompensas em `QuestReward.txt`: tipo 1 = pontos, 2 = 2ª classe (missão 1), 4 = "Hero Status" (missão 2), 8 = combo (missão 3), 16 = 3ª classe (missão 6) e 32 = 4ª classe (missão 9). O progresso fica em `Character.Quest`: 2 bits por missão, a 0 nos bits mais baixos do 1º byte (3 = não começada, 2 = concluída).
 Para religar: `CommandChangeEnable_AL0..3 = 1` e Reload Command (o limite é `CommandChangeLimit = 3`, ou seja, até a 4ª classe).
 
 **Código da classe no banco** (`Character.Class`): família × 16 + estágio (0 = 1ª classe, 1 = 2ª, 2 = 3ª, 3 = 4ª). Ex.: 16 Dark Knight, 17 Blade Knight, 18 Blade Master, 19 Dragon Knight.
@@ -377,7 +382,7 @@ Desde 26/09/2026 os spawns dos mapas de caça são gerados por `tools\Distribuir
 
 ## Drops de monstros
 
-Pelo painel, use a aba **Drops → Por monstro / por item**. Teste sem salvar nada, com foto da aba: `MuChilaAdmin.exe --testar-drops-visao <saida> <foto.png>`.
+Pelo painel, use a página **Drops → Por monstro / por item**.
 
 `Data\Item\ItemDrop.txt` tem uma linha por regra: `Index Level Grade Option0..6 Duration MapNumber MonsterClass MonsterLevelMin MonsterLevelMax DropRate`.
 O `DropRate` é **por milhão** (1000 = 0,1% por monstro morto). Depois de editar, use Reload Item. A visão "por monstro" do painel liga uma regra com `MapNumber` aos monstros que **nascem** naquele mapa (arquivos de spawn). Para monstros de evento ou invasão, que aparecem em mapas variados, ela mostra só as regras sem mapa. No jogo, eles também pegam as regras do mapa onde estiverem.
@@ -408,7 +413,7 @@ São duas travas, e as duas precisam permitir:
 | Goblin Point | 0 | `GoblinPoint` | 1 a cada 10 minutos online (`CashShopGoblinPointDelay` no `Common.dat`) e 3 por Blood Castle |
 
 - A aba **W Coin (P)** tem 68 pacotes, quase a mesma loja da aba (C) e com os mesmos preços (100 a 1.400). Como o (P) só vem do Blood Castle, em 29/09 todas as contas estavam com 0 e ninguém conseguia comprar nada nela. **Não é defeito:** a compra funciona com saldo. Por decisão do dono, a aba ficou como está.
-- Se um dia quiser mudar, há dois caminhos. (a) Esconder a aba inteira pelo painel (aba Loja de Cash → esconder; os pacotes ficam guardados em `Data\CashShop\muchila-cash-oculto.txt`). (b) Dar (P) em mais eventos, na mesma tabela `CustomRewardCashShopPoint.txt` (Devil Square, Chaos Castle, Illusion Temple...), e deixar na aba (P) só consumíveis.
+- Se um dia quiser mudar, há dois caminhos. (a) Esconder a aba inteira pelo painel (página Loja de Cash → desmarcar "Na loja"; os pacotes ficam guardados em `Data\CashShop\muchila-cash-oculto.txt`). (b) Dar (P) em mais eventos, na mesma tabela `CustomRewardCashShopPoint.txt` (Devil Square, Chaos Castle, Illusion Temple...), e deixar na aba (P) só consumíveis.
 - Os pacotes do passe e dos cartões em (P) já estão escondidos: passe e cartões só por W Coin (C).
 
 **Itens que saíram das lojas** (issue #32, 29/09/2026). O pedido era tirar do market e dos NPCs o que não se vende nem se equipa. Os 281 itens à venda foram cruzados com o `Item.txt` (quem equipa), o `ItemMove.txt` (`AllowSell`) e as 7 permissões do cliente (`item_*.bmd`, ver [Itens que não podem ser largados](#itens-que-não-podem-ser-largados); a 5ª é vender ao NPC).
@@ -422,9 +427,9 @@ São duas travas, e as duas precisam permitir:
 
 ### EXP dinâmica (painel)
 
-Aba **EXP dinâmica** (issue #37, 29/09/2026). Cada linha é uma faixa do `Data\Util\ExperienceTable.txt`: "para quem está entre estes níveis, a EXP é X% da taxa do plano".
+Página **EXP dinâmica** (issue #37, 29/09/2026). Cada linha é uma faixa do `Data\Util\ExperienceTable.txt`: "para quem está entre estes níveis, a EXP é X% da taxa do plano".
 
-- **A conta:** EXP final = "EXP (x)" do plano (aba Taxas e opções) × "EXP %" da faixa ÷ 100. Isso foi comprovado no teste do #24. Níveis sem faixa ficam em 100%. As colunas Free/Vip1/Vip2/Vipzão mostram a EXP efetiva de cada faixa com as taxas atuais.
+- **A conta:** EXP final = "EXP (x)" do plano (página Taxas e opções) × "EXP %" da faixa ÷ 100. Isso foi comprovado no teste do #24. Níveis sem faixa ficam em 100%. As colunas Free/Vip1/Vip2/Vipzão mostram a EXP efetiva de cada faixa com as taxas atuais.
 - **Colunas avançadas** (master de/até, resets de/até, master resets de/até): a faixa só vale para quem está dentro delas. O padrão 0–600 e 0–10000 vale para todos.
 - **Salvar e aplicar:**
   - recusa faixas que se sobrepõem (o servidor usaria só uma) e "de" maior que "até";
@@ -432,11 +437,11 @@ Aba **EXP dinâmica** (issue #37, 29/09/2026). Cada linha é uma faixa do `Data\
   - grava só o bloco "Mu Chila - EXP dinamica" do arquivo, com backup `.bak-*`;
   - dá Reload Util.
 - **Voltar à curva padrão:** carrega na tela a curva de 28/09 (100% até o nível 50, caindo até 10% nos 351–399, 100% no 400). Só grava ao salvar.
-- **Testes:** `--testar-exp-dinamica` (cópia: regravar igual não muda nada, editar e trocar faixa, formato TAB/CRLF/end, sobreposição e "de > até" recusados, níveis sem faixa, desfazer) e `--testar-exp-visao` (foto da aba).
+- **Testes:** `--testar-exp-dinamica` (cópia: regravar igual não muda nada, editar e trocar faixa, formato TAB/CRLF/end, sobreposição e "de > até" recusados, níveis sem faixa, desfazer).
 
 ### Taxas e opções (painel)
 
-Aba **Taxas e opções** (29/09/2026). Clique na célula e digite o valor novo (ela fica amarela). Depois clique em **Salvar e aplicar**, e o painel:
+Página **Taxas e opções** (29/09/2026). Digite o valor novo na caixa (ela ganha borda amarela). Depois clique em **Salvar e aplicar**, e o painel:
 
 1. grava a mesma mudança nas 5 pastas `GameServer*\DATA` (Mu Chila, Non-PvP, VIP, Castle Siege e BattleCore), com backup `.bak-*`. Troca só o valor, e o resto do arquivo fica igual;
 2. dá o Reload do arquivo (Common, ChaosMix, Custom, Command, Character, Skill ou Event; drop de joias → Reload Item);
@@ -479,7 +484,7 @@ Aba **Taxas e opções** (29/09/2026). Clique na célula e digite o valor novo (
 
 - A grade tem a coluna **Opções** (ex.: "1 dia: 100 · 7 dias: 500").
 - Pacote de **uma opção**: a coluna Preço muda a opção (o que é cobrado) e a vitrine juntas.
-- Pacote de **várias opções** (87 dos 140): duplo clique ou **"Preços das opções..."** abre uma janela com o preço de cada opção. A vitrine passa a ser o da 1ª.
+- Pacote de **várias opções** (87 dos 140): o botão **"N preços…"** abre uma janela com o preço de cada opção. A vitrine passa a ser o da 1ª.
 - **Produto compartilhado:** 108 produtos são usados pelo mesmo item nas abas W Coin (C) e (P). Ao mudar o preço de um deles, o pacote editado ganha uma **cópia própria** do produto (número novo, mesmas linhas). Assim o preço da outra aba não muda junto.
 - **Descrição:** troca o número colado a "W Coin"/"Goblin Point" na linha daquela opção. Quando há mais de uma linha, usa o prazo ou a quantidade. O "200 Point" das frutas são pontos e não é tocado. Quando a descrição não tem o preço escrito, o log avisa e ela fica como estava.
 - **Pacote de vários itens com um preço só** (ex.: "Level up Package", sem opções): continua pela coluna Preço (vitrine).
@@ -492,7 +497,7 @@ Aba **Taxas e opções** (29/09/2026). Clique na célula e digite o valor novo (
 
 ### Adicionar e remover itens da loja de cash
 
-Painel, aba **Loja de Cash** (29/09/2026).
+Painel, página **Loja de Cash** (29/09/2026).
 
 **Adicionar item...**
 

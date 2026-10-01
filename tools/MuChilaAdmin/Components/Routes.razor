@@ -1,0 +1,32 @@
+@inject Sessao Sessao
+
+<Router AppAssembly="typeof(Program).Assembly" NotFoundPage="typeof(Pages.NaoEncontrado)">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.LayoutPrincipal)">
+            <NotAuthorized>
+                @if (context.User.Identity?.IsAuthenticated != true)
+                {
+                    <IrParaLogin />
+                }
+                else
+                {
+                    <SemPermissaoAviso />
+                }
+            </NotAuthorized>
+            <Authorizing>
+                <Carregando Texto="Conferindo o acesso..." />
+            </Authorizing>
+        </AuthorizeRouteView>
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+@code {
+    /// <summary>IP do navegador, lido no pedido HTTP que abriu a tela (vai para a auditoria).</summary>
+    [Parameter] public string? Ip { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(Ip)) Sessao.Ip = Ip;
+    }
+}

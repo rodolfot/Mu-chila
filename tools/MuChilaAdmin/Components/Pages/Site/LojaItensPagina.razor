@@ -1,0 +1,403 @@
+@page "/site/loja-itens"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Loja de itens do site" Descricao="O jogador monta o item, paga com Cash (WCoinC) e recebe no baú, fora do jogo. Preço = preço do item + nível + adicional + sorte + skill + excelentes." Icone="package">
+    @if (mudou)
+    {
+        <span class="etiqueta etq-amarela">não salvo</span>
+    }
+    <button type="button" class="btn btn-secundario" @onclick="Recarregar" disabled="@ocupado">Recarregar</button>
+    <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@(ocupado || !mudou || cfg == null)"><Icone Nome="save" Classe="ico-sm" />Salvar</button>
+</CabecalhoPagina>
+
+@if (cfg == null)
+{
+    <Carregando />
+}
+else
+{
+    <div class="cartao mb-5 flex flex-wrap items-center gap-x-6 gap-y-3 p-4">
+        <label class="flex items-center gap-2 text-sm font-medium"><input type="checkbox" class="caixa" checked="@cfg.Ativo" @onchange="e => Mudar(() => cfg.Ativo = e.Value is true)" />Loja aberta no site</label>
+        <label class="flex items-center gap-2 text-sm">Nível máximo +<input type="number" min="0" max="15" class="entrada entrada-sm w-20" value="@cfg.NivelMax" @onchange="e => Mudar(() => cfg.NivelMax = Num(e, 0, 15, cfg.NivelMax))" /></label>
+        <label class="flex items-center gap-2 text-sm">Excelentes no máximo<input type="number" min="0" max="6" class="entrada entrada-sm w-20" value="@cfg.ExcMax" @onchange="e => Mudar(() => cfg.ExcMax = Num(e, 0, 6, cfg.ExcMax))" /></label>
+        <span class="text-sm text-slate-500">@cfg.Categorias.Count categorias · @cfg.Categorias.Where(c => c.Ativo).Sum(c => c.Itens.Count(i => i.Ativo)) itens à venda</span>
+    </div>
+
+    <nav class="abas mb-4">
+        <button type="button" class="aba @(aba == 0 ? "ativa" : "")" @onclick="() => aba = 0"><Icone Nome="list" Classe="ico-sm" />Catálogo</button>
+        <button type="button" class="aba @(aba == 1 ? "ativa" : "")" @onclick="() => aba = 1"><Icone Nome="tag" Classe="ico-sm" />Preços</button>
+        <button type="button" class="aba @(aba == 2 ? "ativa" : "")" @onclick="AbrirVendas"><Icone Nome="cart" Classe="ico-sm" />Vendas</button>
+    </nav>
+
+    @if (problemas.Count > 0)
+    {
+        <Nota Tipo="perigo" Classe="mb-4" Titulo="Corrija antes de salvar">
+            @foreach (var p in problemas.Take(10))
+            {
+                <span class="block">@p</span>
+            }
+        </Nota>
+    }
+
+    @if (aba == 0)
+    {
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-[19rem_minmax(0,1fr)]">
+            <div class="space-y-5">
+                <Cartao Titulo="Categorias" Icone="list" SemPadding="true">
+                    <Acoes>
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="NovaCategoria"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Nova</button>
+                    </Acoes>
+                    <ChildContent>
+                        <ul class="rolagem max-h-[40vh] divide-y divide-slate-100 dark:divide-white/5">
+                            @for (int n = 0; n < cfg.Categorias.Count; n++)
+                            {
+                                var i = n;
+                                var c = cfg.Categorias[i];
+                                <li class="flex items-center @(cat == c ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")">
+                                    <button type="button" class="flex min-w-0 flex-1 items-center gap-2 px-4 py-2 text-left text-sm" @onclick="() => cat = c">
+                                        <Icone Nome="@c.Icone" Classe="h-4 w-4 shrink-0 text-amber-500" />
+                                        <span class="min-w-0 flex-1 truncate @(c.Ativo ? "font-medium text-slate-800 dark:text-slate-200" : "text-slate-400 line-through")">@c.Nome</span>
+                                        <span class="text-xs text-slate-400">@c.Grupo · @c.Itens.Count</span>
+                                    </button>
+                                    <button type="button" class="btn btn-fantasma btn-icone" title="Subir" @onclick="() => MoverCategoria(i, -1)" disabled="@(i == 0)"><Icone Nome="chevron-down" Classe="h-4 w-4 rotate-180" /></button>
+                                    <button type="button" class="btn btn-fantasma btn-icone mr-1" title="Descer" @onclick="() => MoverCategoria(i, 1)" disabled="@(i == cfg.Categorias.Count - 1)"><Icone Nome="chevron-down" Classe="h-4 w-4" /></button>
+                                </li>
+                            }
+                        </ul>
+                    </ChildContent>
+                </Cartao>
+                @if (cat != null)
+                {
+                    <Cartao Titulo="Categoria" Icone="edit">
+                        <div class="space-y-3">
+                            <div><label class="rotulo" for="lc-nome">Nome</label><input id="lc-nome" class="entrada" value="@cat.Nome" @onchange="e => Mudar(() => cat.Nome = Texto(e))" /></div>
+                            <div><label class="rotulo" for="lc-id">Id (no endereço do site)</label><input id="lc-id" class="entrada mono" value="@cat.Id" @onchange="e => Mudar(() => cat.Id = Texto(e))" /></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="rotulo" for="lc-grupo">Grupo</label>
+                                    <input id="lc-grupo" class="entrada" list="lc-grupos" value="@cat.Grupo" @onchange="e => Mudar(() => cat.Grupo = Texto(e))" />
+                                    <datalist id="lc-grupos"><option value="Defesa"></option><option value="Ataque"></option><option value="Especiais"></option></datalist>
+                                </div>
+                                <div>
+                                    <label class="rotulo" for="lc-icone">Ícone</label>
+                                    <select id="lc-icone" class="entrada" value="@cat.Icone" @onchange="e => Mudar(() => cat.Icone = Texto(e))">
+                                        @foreach (var ic in LojaItens.Icones)
+                                        {
+                                            <option value="@ic">@ic</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="caixa" checked="@cat.Ativo" @onchange="e => Mudar(() => cat.Ativo = e.Value is true)" />Categoria visível no site</label>
+                            <button type="button" class="btn btn-fantasma btn-sm w-full text-rose-600 dark:text-rose-400" @onclick="RemoverCategoria"><Icone Nome="trash" Classe="h-3.5 w-3.5" />Remover categoria</button>
+                        </div>
+                    </Cartao>
+                }
+            </div>
+
+            <Cartao Titulo="@(cat == null ? "Itens" : $"Itens de {cat.Nome}")" Icone="item" SemPadding="true" Subtitulo="Nível máx. vazio = o da loja. Excelentes automático = o site escolhe pela seção.">
+                <Acoes>
+                    @if (marcados.Count > 0)
+                    {
+                        <span class="text-xs text-slate-500">@marcados.Count marcado(s)</span>
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="PrecoMarcados">Preço dos marcados...</button>
+                        <button type="button" class="btn btn-secundario btn-sm text-rose-600 dark:text-rose-400" @onclick="RemoverMarcados">Remover marcados</button>
+                    }
+                    <button type="button" class="btn btn-primario btn-sm" @onclick="() => escolher = true" disabled="@(cat == null)"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar itens</button>
+                </Acoes>
+                <ChildContent>
+                    @if (cat == null)
+                    {
+                        <Vazio Texto="Escolha ou crie uma categoria." Icone="list" />
+                    }
+                    else if (cat.Itens.Count == 0)
+                    {
+                        <Vazio Texto="Nenhum item nesta categoria." Icone="item" />
+                    }
+                    else
+                    {
+                        <div class="rolagem max-h-[70vh]">
+                            <table class="tabela tabela-compacta">
+                                <thead class="sticky top-0 z-10">
+                                    <tr>
+                                        <th class="w-8"><input type="checkbox" class="caixa" checked="@(marcados.Count == cat.Itens.Count)" @onchange="e => MarcarTodos(e.Value is true)" aria-label="Marcar todos" /></th>
+                                        <th>Item</th><th class="w-28">Preço (Cash)</th><th class="w-24">Nível máx.</th><th class="w-40">Excelentes</th><th class="w-20 text-center">Destaque</th><th class="w-20 text-center">À venda</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var it in cat.Itens)
+                                    {
+                                        <tr class="@(it.Ativo ? "" : "opacity-60")">
+                                            <td><input type="checkbox" class="caixa" checked="@marcados.Contains(it)" @onchange="e => { if (e.Value is true) marcados.Add(it); else marcados.Remove(it); }" aria-label="Marcar" /></td>
+                                            <td>
+                                                <div class="flex items-center gap-2.5">
+                                                    <FotoItem Secao="it.Secao" Tipo="it.Tipo" Nome="@it.Nome" Tamanho="h-8 w-8" />
+                                                    <div class="min-w-0">
+                                                        <p class="truncate font-medium text-slate-900 dark:text-white">@it.Nome</p>
+                                                        <p class="mono text-slate-400">@it.Secao,@it.Tipo</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><input type="number" min="0" max="100000" class="entrada entrada-sm font-semibold" value="@it.Preco" aria-label="Preço" @onchange="e => Mudar(() => it.Preco = Num(e, 0, 100_000, it.Preco))" /></td>
+                                            <td><input type="number" min="0" max="15" class="entrada entrada-sm" value="@it.NivelMax" placeholder="@cfg.NivelMax" aria-label="Nível máximo" @onchange="e => Mudar(() => it.NivelMax = NivelOpcional(e, it.NivelMax))" /></td>
+                                            <td>
+                                                <select class="entrada entrada-sm min-w-[8.5rem]" value="@it.Exc" aria-label="Excelentes" @onchange="e => Mudar(() => it.Exc = Texto(e))">
+                                                    @foreach (var t in LojaItens.TiposExc)
+                                                    {
+                                                        <option value="@t">@(t == "" ? "automático" : t)</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td class="text-center"><input type="checkbox" class="caixa" checked="@it.Destaque" aria-label="Destaque" @onchange="e => Mudar(() => it.Destaque = e.Value is true)" /></td>
+                                            <td class="text-center"><input type="checkbox" class="caixa" checked="@it.Ativo" aria-label="À venda" @onchange="e => Mudar(() => it.Ativo = e.Value is true)" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </ChildContent>
+            </Cartao>
+        </div>
+    }
+    else if (aba == 1)
+    {
+        <div class="space-y-5">
+            <Cartao Titulo="Nível do item" Icone="tag" Subtitulo="Cash para cada nível (não soma os anteriores).">
+                <TabelaPrecos Valores="cfg.Nivel" Rotulo="@(i => $"+{i}")" Mudou="Mudou" />
+            </Cartao>
+            <Cartao Titulo="Adicional" Icone="tag" Subtitulo="Cash por opção. Anéis e pingentes: +1% a +7% de vida.">
+                <TabelaPrecos Valores="cfg.Adicional" Rotulo="@(i => i == 0 ? "nenhum" : $"+{i * 4}")" Mudou="Mudou" />
+            </Cartao>
+            <Cartao Titulo="Excelentes" Icone="tag" Subtitulo="Preço pela QUANTIDADE de opções escolhidas (0 a 6).">
+                <TabelaPrecos Valores="cfg.Excelente" Rotulo="@(i => i == 0 ? "nenhuma" : i.ToString())" Mudou="Mudou" />
+            </Cartao>
+            <Cartao Titulo="Sorte e skill" Icone="tag" Subtitulo="Somados quando o jogador liga a opção.">
+                <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center gap-2 text-sm">Sorte<input type="number" min="0" max="100000" class="entrada entrada-sm w-28" value="@cfg.Sorte" @onchange="e => Mudar(() => cfg.Sorte = Num(e, 0, 100_000, cfg.Sorte))" /></label>
+                    <label class="flex items-center gap-2 text-sm">Skill<input type="number" min="0" max="100000" class="entrada entrada-sm w-28" value="@cfg.Skill" @onchange="e => Mudar(() => cfg.Skill = Num(e, 0, 100_000, cfg.Skill))" /></label>
+                </div>
+            </Cartao>
+            <Cartao Titulo="Exemplos" Icone="coin" Subtitulo="Item de preço base 40 (como o Dragon Helm)">
+                <ul class="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+                    <li>Sem nada: <b>@Exemplo(0, 0, false, false, 0)</b></li>
+                    <li>+9 +16 com sorte e 2 excelentes: <b>@Exemplo(9, 4, true, false, 2)</b></li>
+                    <li>+13 +24 com sorte e 4 excelentes: <b>@Exemplo(13, 6, true, false, 4)</b></li>
+                    <li>Completo (+@cfg.NivelMax +28, sorte, skill, @cfg.ExcMax excelentes): <b>@Exemplo(15, 7, true, true, 6)</b></li>
+                </ul>
+            </Cartao>
+        </div>
+    }
+    else
+    {
+        <div class="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <Indicador Rotulo="Cash gasto em 24 h" Valor="@totais.Dia.ToString("N0")" Icone="coin" />
+            <Indicador Rotulo="Em 7 dias" Valor="@totais.Semana.ToString("N0")" Icone="coin" Tom="azul" />
+            <Indicador Rotulo="Em 30 dias" Valor="@totais.Mes.ToString("N0")" Icone="coin" Tom="verde" />
+        </div>
+        <Cartao SemPadding="true">
+            @if (avisoVendas != null)
+            {
+                <Vazio Texto="@avisoVendas" Icone="database" />
+            }
+            else
+            {
+                <TabelaDados Dados="vendas" Titulo="Vendas da loja de itens" TextoVazio="Nenhuma compra ainda." />
+            }
+        </Cartao>
+    }
+}
+
+<EscolherItem @bind-Aberta="escolher" Titulo="@($"Adicionar itens em {cat?.Nome}")" Subtitulo="Pode escolher vários. Os com a etiqueta já tem estão nesta categoria." BotaoTexto="Adicionar" Multiplo="true"
+              Filtro="@(d => d.Section <= 13)" JaTem="@(d => cat?.Itens.Any(i => i.Secao == d.Section && i.Tipo == d.Type) == true)" AoEscolher="AdicionarItens">
+    <Extra>
+        <label class="flex items-center gap-2 text-sm">Preço base (Cash)<input type="number" min="0" max="100000" class="entrada entrada-sm w-28" @bind="precoNovo" /></label>
+    </Extra>
+</EscolherItem>
+
+<Janela @bind-Aberta="precoAberto" Titulo="@($"Preço base de {marcados.Count} item(ns)")" Subtitulo="Em Cash. Nível, adicional, sorte, skill e excelentes somam por cima (página Preços).">
+    <ChildContent>
+        <label class="rotulo" for="lp-preco">Preço base (Cash)</label>
+        <input id="lp-preco" type="number" min="0" max="100000" class="entrada w-40" @bind="precoMarcados" />
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => precoAberto = false">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="AplicarPreco">Aplicar</button>
+    </Rodape>
+</Janela>
+
+@code {
+    LojaItens.Config? cfg;
+    LojaItens.Categoria? cat;
+    readonly HashSet<LojaItens.Item> marcados = new();
+    int aba, precoNovo = 50, precoMarcados;
+    bool mudou, ocupado, escolher, precoAberto;
+    List<string> problemas = new();
+    string carimbo = "";
+    DataTable? vendas;
+    string? avisoVendas;
+    (int Dia, int Semana, int Mes) totais;
+    IDisposable? trava;
+
+    static int Num(ChangeEventArgs e, int min, int max, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, min, max) : atual;
+    static string Texto(ChangeEventArgs e) => (e.Value?.ToString() ?? "").Trim();
+    static int? NivelOpcional(ChangeEventArgs e, int? atual)
+    {
+        var s = (e.Value?.ToString() ?? "").Trim();
+        if (s.Length == 0) return null;   // vazio = o nível máximo da loja
+        return int.TryParse(s, out var n) ? Math.Clamp(n, 0, 15) : atual;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (mudou && !await Confirmar.Perguntar("Sair sem salvar?", "A loja de itens tem alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        try
+        {
+            (cfg, carimbo) = await Task.Run(() => (LojaItens.Carregar(), ExecutorAcoes.Carimbo(LojaItens.Arquivos.ToArray())));
+            cat = cfg.Categorias.FirstOrDefault();
+            marcados.Clear(); mudou = false; problemas.Clear();
+        }
+        catch (Exception ex) { Registro.Erro("loja-itens", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); cfg = new(); }
+    }
+
+    void Mudar(Action a)
+    {
+        a();
+        mudou = true;
+        if (problemas.Count > 0 && cfg != null) problemas = LojaItens.Validar(cfg);   // some o aviso quando corrigir
+    }
+
+    void Mudou() { mudou = true; StateHasChanged(); }
+
+    string Exemplo(int nivel, int adicional, bool sorte, bool skill, int exc) =>
+        cfg == null || cfg.Nivel.Length != 16 || cfg.Adicional.Length != 8 || cfg.Excelente.Length != 7 ? "?"
+            : $"{cfg.Preco(40, Math.Min(nivel, cfg.NivelMax), adicional, sorte, skill, Math.Min(exc, cfg.ExcMax)):N0} Cash";
+
+    void NovaCategoria()
+    {
+        if (cfg is not { } config) return;
+        int n = config.Categorias.Count + 1;
+        var c = new LojaItens.Categoria { Id = $"categoria{n}", Nome = $"Nova categoria {n}", Grupo = "Especiais", Icone = "item" };
+        Mudar(() => config.Categorias.Add(c));
+        cat = c; marcados.Clear();
+    }
+
+    void MoverCategoria(int i, int d)
+    {
+        if (cfg is not { } config) return;
+        int j = i + d;
+        if (j < 0 || j >= config.Categorias.Count) return;
+        var l = config.Categorias;
+        Mudar(() => (l[i], l[j]) = (l[j], l[i]));
+    }
+
+    async Task RemoverCategoria()
+    {
+        if (cfg is not { } config || cat is not { } c) return;
+        if (c.Itens.Count > 0 && !await Confirmar.Perguntar($"Remover a categoria \"{c.Nome}\"?", $"Ela tem {c.Itens.Count} item(ns). Só grava ao clicar em Salvar.", "Remover", perigo: true)) return;
+        Mudar(() => config.Categorias.Remove(c));
+        cat = config.Categorias.FirstOrDefault(); marcados.Clear();
+    }
+
+    void MarcarTodos(bool sim)
+    {
+        marcados.Clear();
+        if (sim && cat != null) marcados.UnionWith(cat.Itens);
+    }
+
+    void PrecoMarcados()
+    {
+        if (marcados.Count == 0) return;
+        precoMarcados = marcados.First().Preco;
+        precoAberto = true;
+    }
+
+    void AplicarPreco()
+    {
+        var lista = marcados.ToList();
+        int preco = Math.Clamp(precoMarcados, 0, 100_000);
+        Mudar(() => lista.ForEach(i => i.Preco = preco));
+        precoAberto = false;
+    }
+
+    async Task RemoverMarcados()
+    {
+        if (cat == null || marcados.Count == 0) return;
+        if (!await Confirmar.Perguntar($"Remover {marcados.Count} item(ns) de {cat.Nome}?", "Só grava ao clicar em Salvar.", "Remover", perigo: true)) return;
+        var c = cat;
+        Mudar(() => c.Itens.RemoveAll(marcados.Contains));
+        marcados.Clear();
+    }
+
+    void AdicionarItens(List<ItemDef> escolhidos)
+    {
+        if (cat == null) return;
+        var c = cat;
+        int add = 0;
+        foreach (var d in escolhidos)
+        {
+            if (c.Itens.Any(i => i.Secao == d.Section && i.Tipo == d.Type)) continue;
+            c.Itens.Add(new LojaItens.Item { Secao = d.Section, Tipo = d.Type, Preco = Math.Clamp(precoNovo, 0, 100_000), NivelMax = d.Section == 13 ? 4 : null });
+            add++;
+        }
+        if (add > 0) { mudou = true; Toast.Info($"{add} item(ns) adicionado(s) em \"{c.Nome}\". Falta salvar."); }
+    }
+
+    async Task AbrirVendas()
+    {
+        aba = 2;
+        avisoVendas = null;
+        try
+        {
+            if (!await Task.Run(() => Db.TableExists("MUCHILA_LOJAITENS_COMPRAS"))) { avisoVendas = "A loja de itens ainda não foi instalada neste banco (rode o Instalar-Modulos.ps1 do site)."; return; }
+            (vendas, totais) = await Task.Run(() => (LojaItens.Compras(500), LojaItens.Totais()));
+        }
+        catch (Exception ex) { Registro.Erro("loja-itens vendas", ex); avisoVendas = ExecutorAcoes.MensagemDe(ex); }
+    }
+
+    async Task Recarregar()
+    {
+        if (mudou && !await Confirmar.Perguntar("Descartar as alterações?", "Volta ao que está gravado no muchila.lojaitens.json.", "Descartar", perigo: true)) return;
+        await Carregar();
+    }
+
+    async Task Salvar()
+    {
+        if (cfg == null) return;
+        problemas = LojaItens.Validar(cfg);
+        if (problemas.Count > 0) { Toast.Erro("Há problemas no catálogo; veja a lista acima."); return; }
+        if (await Task.Run(() => ExecutorAcoes.Carimbo(LojaItens.Arquivos.ToArray())) != carimbo &&
+            !await Confirmar.Perguntar("O arquivo mudou", "Alguém gravou a loja de itens depois que você abriu esta página. Salvar agora sobrescreve o que foi feito.", "Salvar por cima", perigo: true)) return;
+        int itens = cfg.Categorias.Where(c => c.Ativo).Sum(c => c.Itens.Count(i => i.Ativo));
+        if (!await Confirmar.Perguntar("Gravar a loja de itens?", $"O site passa a usar na hora.\n\n{(cfg.Ativo ? "Aberta" : "FECHADA")} · {cfg.Categorias.Count} categorias · {itens} itens à venda.", "Gravar")) return;
+        var c = cfg;
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("lojaitens.salvar", null, () => LojaItens.Salvar(c), Politicas.Administrar,
+                    $"{(c.Ativo ? "aberta" : "fechada")}, {c.Categorias.Count} categorias, {itens} itens à venda"))
+            {
+                var catAtual = cat?.Id;
+                await Carregar();
+                cat = cfg?.Categorias.FirstOrDefault(x => x.Id == catAtual) ?? cfg?.Categorias.FirstOrDefault();
+            }
+        }
+        finally { ocupado = false; }
+    }
+}

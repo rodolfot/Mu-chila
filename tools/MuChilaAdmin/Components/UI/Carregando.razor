@@ -1,0 +1,12 @@
+<div class="flex items-center justify-center gap-3 py-10 text-sm text-slate-500 dark:text-slate-400 @Classe">
+    <svg class="h-5 w-5 animate-spin text-amber-500" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-opacity=".25" stroke-width="3" />
+        <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+    </svg>
+    <span>@Texto</span>
+</div>
+
+@code {
+    [Parameter] public string Texto { get; set; } = "Carregando...";
+    [Parameter] public string? Classe { get; set; }
+}

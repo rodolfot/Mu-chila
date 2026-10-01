@@ -1,0 +1,217 @@
+@page "/monstros"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+@inject RecargaMonstros Recarga
+
+<CabecalhoPagina Titulo="Monstros (respawn)" Descricao="Onde e quantos monstros nascem em cada mapa (MonsterSetBase, só os spawns de área da seção SPOT; NPCs, fixos e eventos ficam como estão)." Icone="skull" />
+
+<div class="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <Indicador Rotulo="Mapas" Valor="@mapas.Count.ToString()" Icone="map" Tom="azul" />
+    <Indicador Rotulo="Monstros no total" Valor="@mapas.Sum(m => m.Total).ToString("N0")" Detalhe="o servidor aguenta uns 9.078" Icone="skull" Tom="@(mapas.Sum(m => m.Total) > 9078 ? "vermelho" : "ouro")" />
+    <Indicador Rotulo="Pontos de spawn" Valor="@mapas.Sum(m => m.Pontos).ToString("N0")" Icone="pin" Tom="cinza" />
+</div>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-[19rem_minmax(0,1fr)]">
+    <Cartao Titulo="Mapas" Icone="map" SemPadding="true" Subtitulo="Clique para ver e editar">
+        <div class="border-b border-slate-200 p-3 dark:border-white/10">
+            <input class="entrada entrada-sm" placeholder="Filtrar mapa..." @bind="filtro" @bind:event="oninput" aria-label="Filtrar mapa" />
+        </div>
+        <ul class="rolagem max-h-[34vh] divide-y divide-slate-100 xl:max-h-[70vh] dark:divide-white/5">
+            @foreach (var m in mapas.Where(m => filtro.Length == 0 || m.Name.Contains(filtro, StringComparison.OrdinalIgnoreCase) || m.Code.ToString() == filtro.Trim()))
+            {
+                <li>
+                    <button type="button" class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm @(atual?.File == m.File ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")" @onclick="() => Abrir(m)">
+                        <span class="mono text-slate-400">@m.Code.ToString("000")</span>
+                        <span class="min-w-0 flex-1 truncate font-medium text-slate-800 dark:text-slate-200">@m.Name</span>
+                        <span class="text-xs tabular-nums text-slate-500" title="monstros / pontos de spawn">@m.Total / @m.Pontos</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </Cartao>
+
+    <div class="min-w-0 space-y-5">
+        @if (atual == null)
+        {
+            <Cartao><Vazio Texto="Escolha um mapa." Icone="map" /></Cartao>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 gap-5 2xl:grid-cols-[minmax(0,1fr)_22rem]">
+                <Cartao Titulo="@($"{atual.Code:000} · {atual.Name}")" Icone="skull" SemPadding="true" Subtitulo="@($"{spawns.Count} spawns, {spawns.Sum(s => s.Quantity)} monstros neste mapa")">
+                    <Etiqueta>
+                        @if (mudou)
+                        {
+                            <span class="etiqueta etq-amarela">não salvo</span>
+                        }
+                    </Etiqueta>
+                    <Acoes>
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="Adicionar"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar spawn</button>
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="Descartar" disabled="@(!mudou || ocupado)">Descartar</button>
+                        <button type="button" class="btn btn-primario btn-sm" @onclick="Salvar" disabled="@(!mudou || ocupado)"><Icone Nome="save" Classe="h-3.5 w-3.5" />Salvar e recarregar</button>
+                    </Acoes>
+                    <ChildContent>
+                        @if (spawns.Count == 0)
+                        {
+                            <Vazio Texto="Nenhum spawn de área neste mapa." Icone="skull" />
+                        }
+                        else
+                        {
+                            <div class="rolagem max-h-[64vh]">
+                                <table class="tabela tabela-compacta">
+                                    <thead class="sticky top-0 z-10">
+                                        <tr><th>Monstro</th><th class="w-20">Início X</th><th class="w-20">Início Y</th><th class="w-20">Fim X</th><th class="w-20">Fim Y</th><th class="w-20">Qtd.</th><th class="w-16" title="Raio de perseguição">Raio</th><th class="w-10"></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int n = 0; n < spawns.Count; n++)
+                                        {
+                                            var i = n;
+                                            var s = spawns[i];
+                                            <tr class="@(sel == i ? "selecionada" : "")" @onclick="() => sel = i">
+                                                <td>
+                                                    <div class="flex items-center gap-2">
+                                                        <input class="entrada entrada-sm w-20 shrink-0" list="dl-classes" value="@s.Class" aria-label="Classe do monstro" title="Classe do monstro (Monster.txt)" @onchange="e => MudarClasse(s, e)" />
+                                                        <span class="truncate text-sm font-medium text-slate-800 dark:text-slate-200">@s.Name</span>
+                                                    </div>
+                                                </td>
+                                                <td><input type="number" min="0" max="255" class="entrada entrada-sm" value="@s.BeginX" aria-label="Início X" @onchange="e => Mudar(() => s.BeginX = Num(e, 0, 255, s.BeginX))" /></td>
+                                                <td><input type="number" min="0" max="255" class="entrada entrada-sm" value="@s.BeginY" aria-label="Início Y" @onchange="e => Mudar(() => s.BeginY = Num(e, 0, 255, s.BeginY))" /></td>
+                                                <td><input type="number" min="0" max="255" class="entrada entrada-sm" value="@s.EndX" aria-label="Fim X" @onchange="e => Mudar(() => s.EndX = Num(e, 0, 255, s.EndX))" /></td>
+                                                <td><input type="number" min="0" max="255" class="entrada entrada-sm" value="@s.EndY" aria-label="Fim Y" @onchange="e => Mudar(() => s.EndY = Num(e, 0, 255, s.EndY))" /></td>
+                                                <td><input type="number" min="0" max="500" class="entrada entrada-sm font-semibold" value="@s.Quantity" aria-label="Quantidade" @onchange="e => Mudar(() => s.Quantity = Num(e, 0, 500, s.Quantity))" /></td>
+                                                <td><input type="number" min="0" max="50" class="entrada entrada-sm" value="@s.Range" aria-label="Raio" @onchange="e => Mudar(() => s.Range = Num(e, 0, 50, s.Range))" /></td>
+                                                <td><button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover" @onclick="() => Remover(i)" @onclick:stopPropagation="true"><Icone Nome="trash" Classe="h-4 w-4" /></button></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        <datalist id="dl-classes">
+                            @foreach (var (c, nome) in nomes.OrderBy(k => k.Key))
+                            {
+                                <option value="@c">@nome</option>
+                            }
+                        </datalist>
+                    </ChildContent>
+                </Cartao>
+
+                <Cartao Titulo="Densidade" Icone="grid" Subtitulo="Mapa 256×256. Mais spawns no mesmo lugar = azul mais forte.">
+                    <svg viewBox="-2 -2 260 260" class="mx-auto aspect-square w-full max-w-[20rem] rounded-lg bg-slate-50 dark:bg-slate-950" role="img" aria-label="Áreas de spawn no mapa">
+                        <rect x="0" y="0" width="256" height="256" fill="none" class="stroke-slate-300 dark:stroke-white/15" stroke-width="1" />
+                        @for (int n = 0; n < spawns.Count; n++)
+                        {
+                            var i = n;
+                            var s = spawns[i];
+                            int x = Math.Min(s.BeginX, s.EndX), y = Math.Min(s.BeginY, s.EndY), w = Math.Abs(s.EndX - s.BeginX) + 1, h = Math.Abs(s.EndY - s.BeginY) + 1;
+                            <rect x="@x" y="@y" width="@Math.Max(2, w)" height="@Math.Max(2, h)" class="cursor-pointer @(sel == i ? "fill-amber-400/70 stroke-amber-500" : s.Quantity >= 15 ? "fill-sky-400/75" : "fill-sky-400/45")" stroke-width="@(sel == i ? 1 : 0)" @onclick="() => sel = i">
+                                <title>@s.Name: @s.Quantity (@s.BeginX,@s.BeginY → @s.EndX,@s.EndY)</title>
+                            </rect>
+                        }
+                    </svg>
+                    <p class="ajuda text-center">Clique numa área para achar o spawn na lista.</p>
+                </Cartao>
+            </div>
+        }
+    </div>
+</div>
+
+<ResultadoAcao Linhas="resultado" Titulo="respawn" Quando="quando" />
+
+@code {
+    List<MapDensity> mapas = new();
+    Dictionary<int, string> nomes = new();
+    MapDensity? atual;
+    List<MonsterSpawn> spawns = new();
+    string filtro = "", carimbo = "";
+    int sel = -1;
+    bool mudou, ocupado;
+    List<string> resultado = new();
+    DateTime quando;
+    IDisposable? trava;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try { (mapas, nomes) = await Task.Run(() => (Monsters.Maps(), Drops.MonsterNames())); }
+        catch (Exception ex) { Registro.Erro("monstros", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (mudou && !await Confirmar.Perguntar("Sair sem salvar?", $"O respawn de {atual?.Name} tem alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    static int Num(ChangeEventArgs e, int min, int max, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, min, max) : atual;
+    void Mudar(Action a) { a(); mudou = true; }
+
+    async Task Abrir(MapDensity m, bool forcar = false)
+    {
+        if (!forcar && atual?.File == m.File) return;
+        if (!forcar && mudou && !await Confirmar.Perguntar("Descartar as alterações?", $"O respawn de {atual?.Name} tem alterações não salvas.", "Descartar", perigo: true)) return;
+        try
+        {
+            (spawns, carimbo) = await Task.Run(() => (Monsters.Load(m.File), ExecutorAcoes.Carimbo(m.File)));
+            atual = m; mudou = false; sel = -1;
+        }
+        catch (Exception ex) { Registro.Erro("monstros", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+    }
+
+    void MudarClasse(MonsterSpawn s, ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var c) || c < 0) return;
+        s.Class = c;
+        s.Name = nomes.TryGetValue(c, out var n) ? n : $"Classe {c}";
+        mudou = true;
+    }
+
+    void Adicionar()
+    {
+        spawns.Add(new MonsterSpawn { Class = 0, Name = nomes.GetValueOrDefault(0, "Classe 0"), BeginX = 100, BeginY = 100, EndX = 110, EndY = 110, Quantity = 10 });
+        sel = spawns.Count - 1; mudou = true;
+    }
+
+    void Remover(int i)
+    {
+        spawns.RemoveAt(i);
+        sel = -1; mudou = true;
+    }
+
+    async Task Descartar()
+    {
+        if (atual != null) await Abrir(atual, forcar: true);
+    }
+
+    async Task Salvar()
+    {
+        if (atual == null) return;
+        if (await Task.Run(() => ExecutorAcoes.Carimbo(atual.File)) != carimbo &&
+            !await Confirmar.Perguntar("O arquivo mudou", "Alguém gravou o respawn deste mapa depois que você abriu. Salvar agora sobrescreve o que foi feito.", "Salvar por cima", perigo: true)) return;
+        var mapa = atual;
+        var lista = spawns.Select(s => s.Clone()).ToList();
+        var linhas = new List<string>();
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("monstros.salvar", mapa.Name, () =>
+                {
+                    Monsters.Save(mapa.File, lista);
+                    linhas.Add($"Respawn de {mapa.Name} salvo ({lista.Count} spawns, {lista.Sum(s => s.Quantity)} monstros; backup .bak-* ao lado do arquivo).");
+                    linhas.AddRange(Recarga.Recarregar());
+                    return linhas;
+                }, Politicas.Administrar, $"{Path.GetFileName(mapa.File)}: {lista.Count} spawns, {lista.Sum(s => s.Quantity)} monstros"))
+            {
+                mapas = await Task.Run(Monsters.Maps);   // atualiza a densidade
+                atual = mapas.FirstOrDefault(m => m.File == mapa.File) ?? mapa;
+                await Abrir(atual, forcar: true);
+            }
+        }
+        finally { ocupado = false; }
+        resultado = linhas; quando = DateTime.Now;
+    }
+}

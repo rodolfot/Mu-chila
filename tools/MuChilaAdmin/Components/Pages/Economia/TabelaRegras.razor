@@ -1,0 +1,58 @@
+@* Lista de regras de drop com a chance em % e em "1 em N", para quem valem e quantos monstros alcançam. *@
+
+@if (Regras.Count == 0)
+{
+    <Vazio Texto="Nenhuma regra de drop." Icone="gift" />
+}
+else
+{
+    <div class="rolagem">
+        <table class="tabela tabela-compacta">
+            <thead>
+                <tr><th>Item</th><th class="text-right">Chance</th><th class="text-right">1 em</th><th>Vale para</th><th>Alcance</th><th class="w-40"></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Regras)
+                {
+                    var alcance = Visao.Alcance(r);
+                    <tr>
+                        <td>
+                            <div class="flex items-center gap-2.5">
+                                <FotoItem Secao="r.Section" Tipo="r.Type" Nome="@DropsVisao.NomeItem(r.Item)" Tamanho="h-8 w-8" />
+                                <div class="min-w-0">
+                                    <p class="truncate font-medium text-slate-900 dark:text-white">@DropsVisao.NomeItem(r.Item)</p>
+                                    <p class="mono text-slate-400">@r.Section,@r.Type@(r.Level is "0" or "*" ? "" : $" · +{r.Level}")</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="num font-medium">@DropsVisao.Pct(r.Rate)</td>
+                        <td class="num text-slate-500">@DropsVisao.UmEm(r.Rate).Replace("1 em ", "")</td>
+                        <td class="text-sm">@Visao.ParaQuem(r)</td>
+                        <td>
+                            @if (alcance > 1)
+                            {
+                                <span class="etiqueta etq-amarela" title="Mudar esta regra muda para todos eles">@alcance monstros</span>
+                            }
+                            else
+                            {
+                                <span class="etiqueta etq-cinza">@(UmMonstro ? "só este" : alcance == 1 ? "1 monstro" : "nenhum")</span>
+                            }
+                        </td>
+                        <td class="whitespace-nowrap text-right">
+                            <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Mudar.InvokeAsync(r)"><Icone Nome="percent" Classe="h-3.5 w-3.5" />Chance</button>
+                            <button type="button" class="btn btn-fantasma btn-sm text-rose-600 dark:text-rose-400" @onclick="() => Remover.InvokeAsync(r)" title="Tirar o drop"><Icone Nome="trash" Classe="h-3.5 w-3.5" /></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired] public List<DropRule> Regras { get; set; } = new();
+    [Parameter, EditorRequired] public DropsVisao Visao { get; set; } = default!;
+    [Parameter] public bool UmMonstro { get; set; }
+    [Parameter] public EventCallback<DropRule> Mudar { get; set; }
+    [Parameter] public EventCallback<DropRule> Remover { get; set; }
+}

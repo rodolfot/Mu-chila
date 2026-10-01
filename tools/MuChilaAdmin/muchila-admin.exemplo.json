@@ -1,0 +1,32 @@
+// Exemplo da configuração do Mu Chila Admin. Copie para %ProgramData%\MuChilaAdmin\muchila-admin.json e ajuste.
+// Sem o arquivo valem os padrões do PC do servidor, que são estes valores. Guia completo: docs\MU-ADMIN.md
+// As variáveis de ambiente MUCHILA_ROOT (pasta do servidor), MUCHILA_CLIENTE (pasta do cliente) e MUCHILA_BANCO (conexão)
+// passam por cima do arquivo; MUCHILA_ADMIN_CONFIG aponta para outro arquivo.
+{
+  // conexão com o banco do jogo (MuOnlineS14). No PC de desenvolvimento costuma ser "Server=." ou "Server=.\\SQLEXPRESS".
+  "Banco": "Server=.\\MUONLINE;Database=MuOnlineS14;Integrated Security=true;TrustServerCertificate=true;Encrypt=false;Connect Timeout=5",
+
+  // pasta do servidor (o painel lê e grava Data\..., GameServer*\DATA\..., Site\...)
+  "PastaServidor": "C:\\MuServer",
+
+  // pasta do cliente do repositório (a loja de cash e os itens novos também gravam no cliente)
+  "PastaCliente": "C:\\Projetos\\MuServer-Season14\\2 - Cliente Season 14 Full",
+
+  // raiz do repositório (o botão "Publicar para o launcher" roda tools\Publicar-Launcher.ps1 daqui)
+  "PastaRepositorio": "C:\\Projetos\\MuServer-Season14",
+
+  // "producao" ou "desenvolvimento": em desenvolvimento o painel mostra uma faixa roxa e não liga o vigia sozinho
+  "Ambiente": "producao",
+
+  "Web": {
+    // http://localhost:5170
+    "Porta": 5170,
+    // "localhost" = só este PC. Para abrir pelos PCs da rede do Radmin, acrescente o IP do Radmin deste PC
+    // (ex.: [ "localhost", "26.139.39.123" ]) e rode o tools\Publicar-Painel.ps1 como administrador (regra do firewall).
+    "Enderecos": [ "localhost" ],
+    // minutos sem usar o painel até pedir o login de novo
+    "MinutosSessao": 480,
+    // abre o navegador ao abrir o painel pelo atalho da área de trabalho
+    "AbrirNavegador": true
+  }
+}

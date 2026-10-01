@@ -1,0 +1,157 @@
+@page "/site/noticias"
+@attribute [Authorize(Policy = Politicas.Moderar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Notícias" Descricao="Notícias da página inicial do site. Publicar, editar e apagar valem na hora." Icone="newspaper">
+    <button type="button" class="btn btn-secundario" @onclick="Carregar" disabled="@ocupado"><Icone Nome="refresh" Classe="ico-sm" />Recarregar</button>
+    <button type="button" class="btn btn-primario" @onclick="Nova" disabled="@ocupado"><Icone Nome="plus" Classe="ico-sm" />Nova notícia</button>
+</CabecalhoPagina>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-[24rem_minmax(0,1fr)]">
+    <Cartao Titulo="Publicadas" Icone="list" SemPadding="true" Subtitulo="@(lista == null ? "" : $"{lista.Count} notícia(s) no site")">
+        @if (erro != null)
+        {
+            <Vazio Texto="@erro" Icone="alert" />
+        }
+        else if (lista == null)
+        {
+            <Carregando />
+        }
+        else if (lista.Count == 0)
+        {
+            <Vazio Texto="Nenhuma notícia publicada." Icone="newspaper" />
+        }
+        else
+        {
+            <ul class="rolagem max-h-[34vh] divide-y divide-slate-100 xl:max-h-[70vh] dark:divide-white/5">
+                @foreach (var n in lista)
+                {
+                    <li>
+                        <button type="button" class="w-full px-4 py-2.5 text-left @(atual == n.Id ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")" @onclick="() => Abrir(n.Id)">
+                            <p class="truncate text-sm font-medium text-slate-900 dark:text-white">@n.Titulo</p>
+                            <p class="text-xs text-slate-500">#@n.Id · @n.Data · @n.Autor</p>
+                        </button>
+                    </li>
+                }
+            </ul>
+        }
+    </Cartao>
+
+    <Cartao Titulo="@(atual == null ? "Notícia nova" : $"Editando a notícia #{atual}")" Icone="edit">
+        <Acoes>
+            @if (atual is int id)
+            {
+                <a class="btn btn-secundario btn-sm" href="@($"{SiteUrl}news/{id}/")" target="_blank" rel="noopener"><Icone Nome="external" Classe="h-3.5 w-3.5" />Ver no site</a>
+                <button type="button" class="btn btn-secundario btn-sm text-rose-600 dark:text-rose-400" @onclick="Apagar" disabled="@ocupado"><Icone Nome="trash" Classe="h-3.5 w-3.5" />Apagar</button>
+            }
+            <button type="button" class="btn btn-primario btn-sm" @onclick="Salvar" disabled="@ocupado"><Icone Nome="save" Classe="h-3.5 w-3.5" />@(atual == null ? "Publicar" : "Salvar")</button>
+        </Acoes>
+        <ChildContent>
+            @if (carregandoNoticia)
+            {
+                <Carregando />
+            }
+            else
+            {
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_12rem]">
+                    <div><label class="rotulo" for="nt-titulo">Título</label><input id="nt-titulo" class="entrada" maxlength="255" @bind="titulo" /></div>
+                    <div><label class="rotulo" for="nt-autor">Autor</label><input id="nt-autor" class="entrada" maxlength="50" @bind="autor" /></div>
+                    <div><label class="rotulo" for="nt-data">Data</label><input id="nt-data" type="datetime-local" class="entrada" @bind="data" /></div>
+                    <label class="flex items-end gap-2 pb-2 text-sm"><input type="checkbox" class="caixa" @bind="comentarios" />Permitir comentários</label>
+                </div>
+                <div class="mt-4">
+                    <p class="rotulo">Texto</p>
+                    <EditorHtml Id="nt-conteudo" @bind-Valor="conteudo" Linhas="18" />
+                </div>
+            }
+        </ChildContent>
+    </Cartao>
+</div>
+
+@code {
+    List<SiteConfig.Noticia>? lista;
+    string? erro;
+    int? atual;
+    string titulo = "", autor = "Administração", conteudo = "";
+    DateTime data = DateTime.Now;
+    bool comentarios, ocupado, carregandoNoticia;
+
+    /// <summary>O site roda na mesma máquina, na porta 80.</summary>
+    string SiteUrl => $"{new Uri(Nav.BaseUri).Scheme}://{new Uri(Nav.BaseUri).Host}/";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        if (lista is { Count: > 0 }) await Abrir(lista[0].Id); else Nova();
+    }
+
+    async Task Carregar()
+    {
+        erro = null;
+        try { lista = await Task.Run(SiteConfig.Noticias); }
+        catch (Exception ex) { Registro.Erro("noticias", ex); erro = ExecutorAcoes.MensagemDe(ex); lista = new(); }
+    }
+
+    async Task Abrir(int id)
+    {
+        carregandoNoticia = true;
+        try
+        {
+            var n = await Task.Run(() => SiteConfig.ObterNoticia(id));
+            atual = n.Id; titulo = n.Titulo; autor = n.Autor; comentarios = n.Comentarios; conteudo = n.Conteudo;
+            data = DateTime.TryParse(n.Data, out var d) ? d : DateTime.Now;
+        }
+        catch (Exception ex) { Registro.Erro("noticias", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+        finally { carregandoNoticia = false; }
+    }
+
+    void Nova()
+    {
+        atual = null; titulo = ""; autor = "Administração"; comentarios = false; data = DateTime.Now;
+        conteudo = "<p>Escreva aqui o texto da notícia.</p>";
+    }
+
+    async Task Salvar()
+    {
+        if (titulo.Trim().Length < 4) { Toast.Erro("O título precisa ter pelo menos 4 letras."); return; }
+        bool nova = atual == null;
+        if (!await Confirmar.Perguntar(nova ? "Publicar a notícia?" : $"Salvar a notícia #{atual}?", $"\"{titulo.Trim()}\" aparece no site na hora.", nova ? "Publicar" : "Salvar")) return;
+        int? id = atual;
+        string t = titulo, a = autor, c = conteudo;
+        var d = data; bool com = comentarios;
+        int salvo = 0;
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("site.noticia", t.Trim(), () =>
+                {
+                    salvo = SiteConfig.SalvarNoticia(id, t, a, d, com, c);
+                    return id == null ? $"Notícia #{salvo} publicada no site." : $"Notícia #{salvo} atualizada no site.";
+                }, Politicas.Moderar, id == null ? "nova" : $"#{id}"))
+            {
+                atual = salvo;
+                await Carregar();
+            }
+        }
+        finally { ocupado = false; }
+    }
+
+    async Task Apagar()
+    {
+        if (atual is not int id) return;
+        if (!await Confirmar.Perguntar($"Apagar a notícia #{id}?", $"\"{titulo}\" sai do site. Não tem volta.", "Apagar", perigo: true)) return;
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("site.noticia.apagar", titulo, () => { SiteConfig.ApagarNoticia(id); return $"Notícia #{id} apagada do site."; }, Politicas.Moderar, $"#{id}"))
+            {
+                await Carregar();
+                if (lista is { Count: > 0 }) await Abrir(lista[0].Id); else Nova();
+            }
+        }
+        finally { ocupado = false; }
+    }
+}

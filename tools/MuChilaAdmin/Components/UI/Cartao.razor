@@ -1,0 +1,38 @@
+@* Cartão com título, ações à direita e corpo. SemPadding = o conteúdo encosta nas bordas (tabelas). *@
+<section class="cartao @Classe">
+    @if (Titulo != null || Acoes != null)
+    {
+        <header class="cartao-cab">
+            <div class="min-w-0">
+                <h2 class="cartao-titulo">
+                    @if (Icone != null)
+                    {
+                        <Icone Nome="@Icone" Classe="ico-sm text-amber-500 dark:text-amber-400" />
+                    }
+                    <span class="truncate">@Titulo</span>
+                    @Etiqueta
+                </h2>
+                @if (Subtitulo != null)
+                {
+                    <p class="mt-0.5 text-xs text-slate-500">@Subtitulo</p>
+                }
+            </div>
+            @if (Acoes != null)
+            {
+                <div class="flex flex-wrap items-center gap-2">@Acoes</div>
+            }
+        </header>
+    }
+    <div class="@(SemPadding ? "" : "cartao-corpo")">@ChildContent</div>
+</section>
+
+@code {
+    [Parameter] public string? Titulo { get; set; }
+    [Parameter] public string? Subtitulo { get; set; }
+    [Parameter] public string? Icone { get; set; }
+    [Parameter] public RenderFragment? Etiqueta { get; set; }
+    [Parameter] public RenderFragment? Acoes { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool SemPadding { get; set; }
+    [Parameter] public string? Classe { get; set; }
+}

@@ -1,0 +1,271 @@
+@page "/lojas"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Lojas de NPC" Descricao="O que cada NPC vende (Data\Shop). A janela da loja tem 8×15 espaços e os itens entram na ordem da lista: o que não couber não aparece no jogo." Icone="market" />
+
+<div class="grid grid-cols-1 gap-5 lg:grid-cols-[17rem_minmax(0,1fr)] 2xl:grid-cols-[17rem_minmax(0,1fr)_auto]">
+    <Cartao Titulo="NPC" Icone="market" SemPadding="true" Subtitulo="@($"{lojas.Count} lojas")">
+        <div class="border-b border-slate-200 p-3 dark:border-white/10">
+            <label class="relative block">
+                <span class="sr-only">Filtrar lojas</span>
+                <Icone Nome="search" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input class="entrada entrada-sm pl-8" placeholder="Filtrar..." @bind="filtro" @bind:event="oninput" />
+            </label>
+        </div>
+        <ul class="rolagem max-h-[34vh] divide-y divide-slate-100 lg:max-h-[72vh] dark:divide-white/5">
+            @foreach (var s in lojas.Where(s => filtro.Length == 0 || s.Name.Contains(filtro, StringComparison.OrdinalIgnoreCase) || s.Index.ToString("000").Contains(filtro)))
+            {
+                <li>
+                    <button type="button" class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm @(atual == s ? "bg-amber-50 font-medium text-slate-900 dark:bg-amber-400/10 dark:text-white" : "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/5")" @onclick="() => Abrir(s)">
+                        <span class="mono text-slate-400">@s.Index.ToString("000")</span>
+                        <span class="min-w-0 flex-1 truncate">@s.Name</span>
+                        <span class="text-xs text-slate-400">NPC @s.MonsterClass</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </Cartao>
+
+    <div class="min-w-0">
+        @if (atual == null)
+        {
+            <Cartao><Vazio Texto="Escolha uma loja na lista." Icone="market" /></Cartao>
+        }
+        else
+        {
+            <Cartao Titulo="@atual.Name" Icone="package" SemPadding="true" Subtitulo="@($"{itens.Count} itens · {usadas} de {Shops.GridWidth * Shops.GridHeight} espaços · {Path.GetFileName(atual.File)}")">
+                <Etiqueta>
+                    @if (mudou)
+                    {
+                        <span class="etiqueta etq-amarela">não salvo</span>
+                    }
+                </Etiqueta>
+                <Acoes>
+                    <button type="button" class="btn btn-secundario btn-sm" @onclick="() => escolher = true"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar item</button>
+                    <button type="button" class="btn btn-secundario btn-sm" @onclick="Descartar" disabled="@(!mudou || ocupado)">Descartar</button>
+                    <button type="button" class="btn btn-primario btn-sm" @onclick="Salvar" disabled="@(!mudou || ocupado)"><Icone Nome="save" Classe="h-3.5 w-3.5" />Salvar e aplicar</button>
+                </Acoes>
+                <ChildContent>
+                    @if (fora.Count > 0)
+                    {
+                        <Nota Tipo="perigo" Classe="m-4" Titulo="@($"{fora.Count} item(ns) não cabem na janela e não aparecem no jogo")">
+                            @string.Join(", ", fora.Select(i => Shops.Name(itens[i].Section, itens[i].Type))). Tire itens ou mova os grandes para o começo da lista.
+                        </Nota>
+                    }
+                    @if (itens.Count == 0)
+                    {
+                        <Vazio Texto="Esta loja não vende nada." Icone="package" />
+                    }
+                    else
+                    {
+                        <div class="rolagem max-h-[66vh]">
+                            <table class="tabela tabela-compacta">
+                                <thead class="sticky top-0 z-10">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th class="w-20" title="0 a 15">Nível</th>
+                                        <th class="w-20" title="Durabilidade; nas poções, a quantidade do pacote (0-255)">Dur.</th>
+                                        <th class="w-32">Adicional</th>
+                                        <th class="w-20" title="Opções excelentes: soma dos bits (0-63)">Exc.</th>
+                                        <th class="w-14 text-center">Skill</th>
+                                        <th class="w-14 text-center">Sorte</th>
+                                        <th class="w-28"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int n = 0; n < itens.Count; n++)
+                                    {
+                                        var i = n;
+                                        var it = itens[i];
+                                        <tr class="@(destaque == i ? "selecionada" : "") @(fora.Contains(i) ? "opacity-60" : "")" @onclick="() => destaque = i">
+                                            <td>
+                                                <div class="flex items-center gap-2.5">
+                                                    <FotoItem Secao="it.Section" Tipo="it.Type" Nome="@Shops.Name(it.Section, it.Type)" Tamanho="h-8 w-8" />
+                                                    <div class="min-w-0">
+                                                        <p class="truncate font-medium @(Shops.Find(it.Section, it.Type) == null ? "text-rose-600 dark:text-rose-400" : "text-slate-900 dark:text-white")">@Shops.Name(it.Section, it.Type)</p>
+                                                        <p class="mono text-slate-400">@it.Section,@it.Type @(fora.Contains(i) ? " · não cabe" : "")</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><input type="number" min="0" max="15" class="entrada entrada-sm" value="@it.Level" @onchange="e => Mudar(() => it.Level = Num(e, 0, 15, it.Level))" aria-label="Nível" /></td>
+                                            <td><input type="number" min="0" max="255" class="entrada entrada-sm" value="@it.Dur" @onchange="e => Mudar(() => it.Dur = Num(e, 0, 255, it.Dur))" aria-label="Durabilidade" /></td>
+                                            <td>
+                                                <select class="entrada entrada-sm min-w-[6.5rem]" value="@it.Option" @onchange="e => Mudar(() => it.Option = Num(e, 0, 7, it.Option))" aria-label="Adicional">
+                                                    @for (int o = 0; o <= 7; o++)
+                                                    {
+                                                        <option value="@o">@(o == 0 ? "nenhum" : $"+{o * 4}")</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td><input type="number" min="0" max="63" class="entrada entrada-sm" value="@it.Excellent" @onchange="e => Mudar(() => it.Excellent = Num(e, 0, 63, it.Excellent))" aria-label="Excelente" /></td>
+                                            <td class="text-center"><input type="checkbox" class="caixa" checked="@(it.Skill == 1)" @onchange="e => Mudar(() => it.Skill = e.Value is true ? 1 : 0)" aria-label="Skill" /></td>
+                                            <td class="text-center"><input type="checkbox" class="caixa" checked="@(it.Luck == 1)" @onchange="e => Mudar(() => it.Luck = e.Value is true ? 1 : 0)" aria-label="Sorte" /></td>
+                                            <td>
+                                                <div class="flex justify-end gap-0.5">
+                                                    <button type="button" class="btn btn-fantasma btn-icone" title="Subir" @onclick="() => Mover(i, -1)" @onclick:stopPropagation="true" disabled="@(i == 0)"><Icone Nome="chevron-down" Classe="h-4 w-4 rotate-180" /></button>
+                                                    <button type="button" class="btn btn-fantasma btn-icone" title="Descer" @onclick="() => Mover(i, 1)" @onclick:stopPropagation="true" disabled="@(i == itens.Count - 1)"><Icone Nome="chevron-down" Classe="h-4 w-4" /></button>
+                                                    <button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover" @onclick="() => Remover(i)" @onclick:stopPropagation="true"><Icone Nome="trash" Classe="h-4 w-4" /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    <p class="border-t border-slate-200 px-5 py-2.5 text-xs text-slate-500 dark:border-white/10">
+                        Exc. = soma das opções excelentes (1, 2, 4, 8, 16, 32; todas = 63). "Salvar e aplicar" faz backup do arquivo (.bak-*) e recarrega as lojas nos GameServers, sem reiniciar.
+                    </p>
+                </ChildContent>
+            </Cartao>
+        }
+    </div>
+
+    @if (atual != null)
+    {
+        <Cartao Titulo="Janela da loja no jogo" Icone="grid" Classe="lg:col-span-2 2xl:col-span-1 2xl:w-[19rem]" Subtitulo="Clique num item para achá-lo na lista">
+            <div class="mx-auto grid w-fit gap-px rounded-lg border border-amber-900/40 bg-slate-950 p-1" style="grid-template-columns: repeat(@Shops.GridWidth, 2rem); grid-template-rows: repeat(@Shops.GridHeight, 2rem);">
+                @for (int c = 0; c < Shops.GridWidth * Shops.GridHeight; c++)
+                {
+                    <span class="rounded-sm bg-white/[0.04]" style="grid-column: @(c % Shops.GridWidth + 1); grid-row: @(c / Shops.GridWidth + 1);"></span>
+                }
+                @foreach (var s in layout)
+                {
+                    var it = itens[s.Index];
+                    var idx = s.Index;
+                    <button type="button" class="z-[1] grid place-items-center overflow-hidden rounded-sm border @(destaque == idx ? "border-amber-400 bg-amber-400/20" : "border-white/10 bg-slate-800/80 hover:border-amber-400/60")"
+                            style="grid-column: @(s.X + 1) / span @s.Width; grid-row: @(s.Y + 1) / span @s.Height;" title="@Shops.Name(it.Section, it.Type)" @onclick="() => destaque = idx">
+                        @if (semFoto.Contains((it.Section, it.Type)))
+                        {
+                            <Icone Nome="item" Classe="h-1/2 w-1/2 text-amber-500/50" />
+                        }
+                        else
+                        {
+                            <img src="api/itens/foto/@it.Section/@it.Type" alt="" class="max-h-full max-w-full object-contain" loading="lazy" @onerror="() => semFoto.Add((it.Section, it.Type))" />
+                        }
+                    </button>
+                }
+            </div>
+        </Cartao>
+    }
+</div>
+
+<EscolherItem @bind-Aberta="escolher" Titulo="Adicionar itens à loja" Subtitulo="Pode escolher vários; entram no fim da lista." BotaoTexto="Adicionar" Multiplo="true"
+              JaTem="@(d => itens.Any(i => i.Section == d.Section && i.Type == d.Type))" AoEscolher="Adicionar">
+    <Extra>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
+            <div><label class="rotulo" for="lnivel">Nível</label><input id="lnivel" type="number" min="0" max="15" class="entrada" @bind="novoNivel" /></div>
+            <div><label class="rotulo" for="ldur">Dur.</label><input id="ldur" type="number" min="0" max="255" class="entrada" @bind="novoDur" /></div>
+            <div><label class="rotulo" for="lopcao">Adicional</label>
+                <select id="lopcao" class="entrada" @bind="novaOpcao">@for (int o = 0; o <= 7; o++) { <option value="@o">@(o == 0 ? "nenhum" : $"+{o * 4}")</option> }</select>
+            </div>
+            <label class="flex items-end gap-1.5 pb-2 text-sm"><input type="checkbox" class="caixa" @bind="novoSkill" />Skill</label>
+            <label class="flex items-end gap-1.5 pb-2 text-sm"><input type="checkbox" class="caixa" @bind="novaSorte" />Sorte</label>
+        </div>
+    </Extra>
+</EscolherItem>
+
+@code {
+    List<ShopInfo> lojas = new();
+    ShopInfo? atual;
+    List<ShopItem> itens = new();
+    List<ShopSlot> layout = new();
+    HashSet<int> fora = new();
+    readonly HashSet<(int, int)> semFoto = new();
+    int usadas, destaque = -1;
+    string filtro = "";
+    bool mudou, ocupado, escolher, novoSkill, novaSorte;
+    int novoNivel, novoDur, novaOpcao;
+    IDisposable? trava;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try { lojas = await Task.Run(Shops.List); }
+        catch (Exception ex) { Registro.Erro("lojas", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+        if (lojas.Count > 0) await Abrir(lojas[0]);
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (mudou && !await Confirmar.Perguntar("Sair sem salvar?", $"A loja {atual?.Name} tem alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Abrir(ShopInfo s)
+    {
+        if (s == atual) return;
+        if (mudou && !await Confirmar.Perguntar("Descartar as alterações?", $"A loja {atual?.Name} tem alterações não salvas.", "Descartar", perigo: true)) return;
+        try
+        {
+            itens = await Task.Run(() => Shops.Load(s));
+            atual = s; mudou = false; destaque = -1;
+            Recalcular();
+        }
+        catch (Exception ex) { Registro.Erro("lojas", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+    }
+
+    void Recalcular()
+    {
+        layout = Shops.Layout(itens);
+        var dentro = layout.Select(s => s.Index).ToHashSet();
+        fora = Enumerable.Range(0, itens.Count).Where(i => !dentro.Contains(i)).ToHashSet();
+        usadas = layout.Sum(s => s.Width * s.Height);
+    }
+
+    static int Num(ChangeEventArgs e, int min, int max, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, min, max) : atual;
+
+    void Mudar(Action a) { a(); mudou = true; Recalcular(); }
+
+    void Mover(int i, int d)
+    {
+        int j = i + d;
+        if (j < 0 || j >= itens.Count) return;
+        (itens[i], itens[j]) = (itens[j], itens[i]);
+        destaque = j; mudou = true; Recalcular();
+    }
+
+    void Remover(int i)
+    {
+        itens.RemoveAt(i);
+        destaque = -1; mudou = true; Recalcular();
+    }
+
+    void Adicionar(List<ItemDef> escolhidos)
+    {
+        foreach (var d in escolhidos)
+            itens.Add(new ShopItem { Section = d.Section, Type = d.Type, Level = Math.Clamp(novoNivel, 0, 15), Dur = Math.Clamp(novoDur, 0, 255), Option = Math.Clamp(novaOpcao, 0, 7), Skill = novoSkill ? 1 : 0, Luck = novaSorte ? 1 : 0 });
+        if (escolhidos.Count > 0) { destaque = itens.Count - 1; mudou = true; Recalcular(); }
+    }
+
+    async Task Descartar()
+    {
+        if (atual == null) return;
+        var s = atual; atual = null; mudou = false;
+        await Abrir(s);
+    }
+
+    async Task Salvar()
+    {
+        if (atual == null) return;
+        if (fora.Count > 0 && !await Confirmar.Perguntar("Salvar assim mesmo?", $"{fora.Count} item(ns) não cabem na janela da loja e não vão aparecer no jogo: {string.Join(", ", fora.Select(i => Shops.Name(itens[i].Section, itens[i].Type)))}.", "Salvar assim mesmo")) return;
+        var loja = atual;
+        var lista = itens.Select(i => i.Clone()).ToList();
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("loja.salvar", loja.Name, () =>
+                {
+                    Shops.Save(loja, lista);
+                    return new[] { $"Loja {loja.Name} salva ({lista.Count} itens; backup .bak-* ao lado do arquivo)." }.Concat(ServerControl.Reload("Shop"));
+                }, Politicas.Administrar, $"{Path.GetFileName(loja.File)}: {lista.Count} itens"))
+                mudou = false;
+        }
+        finally { ocupado = false; }
+    }
+}

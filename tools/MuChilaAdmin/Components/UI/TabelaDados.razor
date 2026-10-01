@@ -1,0 +1,218 @@
+@* Tabela para qualquer DataTable: busca, ordenação por coluna, páginas, seleção de linha, ações por linha e exportação
+   (CSV/PDF do que está filtrado). Colunas que começam com "_" ficam escondidas (servem de chave). *@
+@using System.Globalization
+@inject Downloads Downloads
+
+<div class="@Classe">
+    @if (Busca || Exportar || Ferramentas != null)
+    {
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 px-4 py-3 dark:border-white/10">
+            @if (Busca)
+            {
+                <label class="relative min-w-[12rem] flex-1 sm:max-w-xs">
+                    <span class="sr-only">Buscar</span>
+                    <Icone Nome="search" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <input class="entrada pl-8" placeholder="@TextoBusca" value="@busca" @oninput="Buscar" />
+                </label>
+            }
+            @Ferramentas
+            <span class="ml-auto text-xs text-slate-500">@ResumoContagem</span>
+            @if (Exportar && Dados != null)
+            {
+                <BotaoExportar AoExportar="ExportarComo" />
+            }
+        </div>
+    }
+
+    @if (Dados == null)
+    {
+        <Carregando />
+    }
+    else if (filtradas.Count == 0)
+    {
+        <Vazio Texto="@(string.IsNullOrEmpty(busca) ? TextoVazio : "Nada encontrado com essa busca.")" Icone="@(string.IsNullOrEmpty(busca) ? "inbox" : "search")" />
+    }
+    else
+    {
+        <div class="rolagem @AlturaMaxima">
+            <table class="tabela @(Compacta ? "tabela-compacta" : "")">
+                <thead class="sticky top-0 z-10">
+                    <tr>
+                        @foreach (var c in colunas)
+                        {
+                            <th class="@(EhNumero(c) ? "text-right" : "")">
+                                <button type="button" class="inline-flex items-center gap-1 uppercase hover:text-slate-800 dark:hover:text-white" @onclick="() => Ordenar(c.ColumnName)">
+                                    @c.ColumnName
+                                    @if (ordem == c.ColumnName)
+                                    {
+                                        <Icone Nome="chevron-down" Classe="@($"h-3.5 w-3.5 transition {(decrescente ? "" : "rotate-180")}")" />
+                                    }
+                                </button>
+                            </th>
+                        }
+                        @if (AcoesLinha != null)
+                        {
+                            <th class="w-px text-right"><span class="sr-only">Ações</span></th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Pagina())
+                    {
+                        <tr class="@(Selecionavel ? "cursor-pointer" : "") @(ReferenceEquals(r, Selecionada) ? "selecionada" : "")" @onclick="() => Selecionar(r)">
+                            @foreach (var c in colunas)
+                            {
+                                <td class="@(EhNumero(c) ? "num" : "") @(c.ColumnName == ColunaDestaque ? "font-medium text-slate-900 dark:text-white" : "")">
+                                    @if (Celulas != null && Celulas.TryGetValue(c.ColumnName, out var frag))
+                                    {
+                                        @frag(r)
+                                    }
+                                    else
+                                    {
+                                        @Texto(r[c])
+                                    }
+                                </td>
+                            }
+                            @if (AcoesLinha != null)
+                            {
+                                <td class="whitespace-nowrap text-right" @onclick:stopPropagation="true">@AcoesLinha(r)</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (paginas > 1)
+        {
+            <div class="flex flex-wrap items-center justify-between gap-2 border-t border-slate-200 px-4 py-2.5 text-xs text-slate-500 dark:border-white/10">
+                <span>Página @(pagina + 1) de @paginas</span>
+                <div class="flex gap-1">
+                    <button type="button" class="btn btn-secundario btn-sm" disabled="@(pagina == 0)" @onclick="() => pagina = 0">Primeira</button>
+                    <button type="button" class="btn btn-secundario btn-sm" disabled="@(pagina == 0)" @onclick="() => pagina--"><Icone Nome="arrow-left" Classe="h-3.5 w-3.5" /></button>
+                    <button type="button" class="btn btn-secundario btn-sm" disabled="@(pagina >= paginas - 1)" @onclick="() => pagina++"><Icone Nome="arrow-right" Classe="h-3.5 w-3.5" /></button>
+                    <button type="button" class="btn btn-secundario btn-sm" disabled="@(pagina >= paginas - 1)" @onclick="() => pagina = paginas - 1">Última</button>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter] public DataTable? Dados { get; set; }
+    [Parameter] public string Titulo { get; set; } = "Relatório";
+    [Parameter] public string? SubtituloExportacao { get; set; }
+    [Parameter] public IEnumerable<string>? Ocultas { get; set; }
+    [Parameter] public bool Busca { get; set; } = true;
+    [Parameter] public string TextoBusca { get; set; } = "Buscar...";
+    [Parameter] public bool Exportar { get; set; } = true;
+    [Parameter] public int PorPagina { get; set; } = 25;
+    [Parameter] public bool Compacta { get; set; }
+    [Parameter] public bool Selecionavel { get; set; }
+    [Parameter] public DataRow? Selecionada { get; set; }
+    [Parameter] public EventCallback<DataRow?> SelecionadaChanged { get; set; }
+    [Parameter] public RenderFragment<DataRow>? AcoesLinha { get; set; }
+    [Parameter] public Dictionary<string, RenderFragment<DataRow>>? Celulas { get; set; }
+    [Parameter] public RenderFragment? Ferramentas { get; set; }
+    [Parameter] public string TextoVazio { get; set; } = "Nenhum registro.";
+    [Parameter] public string? ColunaDestaque { get; set; }
+    [Parameter] public string? AlturaMaxima { get; set; }
+    [Parameter] public string? Classe { get; set; }
+    [Parameter] public string? OrdemInicial { get; set; }
+    [Parameter] public bool OrdemInicialDecrescente { get; set; }
+
+    static readonly CultureInfo Br = CultureInfo.GetCultureInfo("pt-BR");
+    List<DataColumn> colunas = new();
+    List<DataRow> filtradas = new();
+    DataTable? anterior;
+    string busca = "";
+    string? ordem;
+    bool decrescente;
+    int pagina, paginas;
+
+    string ResumoContagem => Dados == null ? "" : filtradas.Count == Dados.Rows.Count
+        ? $"{Dados.Rows.Count.ToString("N0", Br)} registro(s)"
+        : $"{filtradas.Count.ToString("N0", Br)} de {Dados.Rows.Count.ToString("N0", Br)}";
+
+    protected override void OnParametersSet()
+    {
+        if (!ReferenceEquals(Dados, anterior))
+        {
+            anterior = Dados;
+            if (ordem == null && OrdemInicial != null) { ordem = OrdemInicial; decrescente = OrdemInicialDecrescente; }
+            Recalcular(manterPagina: true);
+        }
+    }
+
+    void Recalcular(bool manterPagina = false)
+    {
+        if (Dados == null) { colunas = new(); filtradas = new(); paginas = 0; return; }
+        var ocultas = Ocultas?.ToHashSet(StringComparer.OrdinalIgnoreCase) ?? new HashSet<string>();
+        colunas = Dados.Columns.Cast<DataColumn>().Where(c => !c.ColumnName.StartsWith('_') && !ocultas.Contains(c.ColumnName)).ToList();
+        IEnumerable<DataRow> linhas = Dados.Rows.Cast<DataRow>().Where(r => r.RowState != DataRowState.Deleted && r.RowState != DataRowState.Detached);
+        var b = busca.Trim();
+        if (b.Length > 0) linhas = linhas.Where(r => colunas.Any(c => Texto(r[c]).Contains(b, StringComparison.CurrentCultureIgnoreCase)));
+        if (ordem != null && Dados.Columns.Contains(ordem))
+        {
+            var col = Dados.Columns[ordem]!;
+            linhas = decrescente ? linhas.OrderByDescending(r => r[col], Comparador.Instancia) : linhas.OrderBy(r => r[col], Comparador.Instancia);
+        }
+        filtradas = linhas.ToList();
+        paginas = (int)Math.Ceiling(filtradas.Count / (double)Math.Max(1, PorPagina));
+        if (!manterPagina || pagina >= paginas) pagina = 0;
+    }
+
+    IEnumerable<DataRow> Pagina() => filtradas.Skip(pagina * PorPagina).Take(PorPagina);
+
+    void Buscar(ChangeEventArgs e) { busca = e.Value?.ToString() ?? ""; Recalcular(); }
+
+    void Ordenar(string coluna)
+    {
+        if (ordem == coluna) decrescente = !decrescente; else { ordem = coluna; decrescente = false; }
+        Recalcular();
+    }
+
+    async Task Selecionar(DataRow r)
+    {
+        if (!Selecionavel) return;
+        Selecionada = r;
+        await SelecionadaChanged.InvokeAsync(r);
+    }
+
+    static bool EhNumero(DataColumn c) => Relatorio.EhNumero(c.DataType);
+
+    public static string Texto(object? v) => v switch
+    {
+        null or DBNull => "",
+        DateTime d => d.TimeOfDay == TimeSpan.Zero ? d.ToString("dd/MM/yyyy") : d.ToString("dd/MM/yyyy HH:mm"),
+        decimal m => m.ToString("N2", Br),
+        double x => x.ToString("N2", Br),
+        int or long or short => Convert.ToInt64(v).ToString("N0", Br),
+        byte bt => bt.ToString(),
+        bool bo => bo ? "sim" : "não",
+        _ => v.ToString() ?? "",
+    };
+
+    async Task ExportarComo(string formato)
+    {
+        var r = new Relatorio
+        {
+            Titulo = Titulo, Subtitulo = SubtituloExportacao ?? (string.IsNullOrEmpty(busca) ? null : $"Busca: \"{busca}\""),
+            Colunas = colunas.Select(c => new ColunaRelatorio(c.ColumnName, EhNumero(c))).ToList(),
+            Linhas = filtradas.Select(r => colunas.Select(c => Texto(r[c])).ToArray()).ToList(),
+        };
+        await Downloads.Exportar(r, formato);
+    }
+
+    /// <summary>Compara valores do banco (números, datas, textos; vazio por último).</summary>
+    sealed class Comparador : IComparer<object>
+    {
+        public static readonly Comparador Instancia = new();
+        public int Compare(object? a, object? b)
+        {
+            bool va = a == null || a is DBNull, vb = b == null || b is DBNull;
+            if (va || vb) return va == vb ? 0 : va ? 1 : -1;
+            if (a is IComparable ca && a.GetType() == b!.GetType()) return ca.CompareTo(b);
+            return string.Compare(a!.ToString(), b!.ToString(), StringComparison.CurrentCultureIgnoreCase);
+        }
+    }
+}

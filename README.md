@@ -21,7 +21,7 @@ O kit foi instalado, corrigido e ajustado. O que mudou em relação ao kit origi
 | `2 - Cliente Season 14 Full/` | **Cliente liberado para teste**: IP do Radmin, nome "Mu Chila", servidor na lista |
 | `3 - MuServer Mu Chila (servidor configurado)/` | **Servidor configurado**: cópia de `C:\MuServer` sem logs |
 | `5 - PrintScreans/`, `6 - ChangeLog/` | Imagens e changelog do kit original |
-| `tools/` | Scripts de apoio (sincronizar servidor, recarregar sem reiniciar, ler o log do cliente) e o código do painel `MuChilaAdmin` |
+| `tools/` | Scripts de apoio (sincronizar servidor, recarregar sem reiniciar, ler o log do cliente) e o código do painel web `MuChilaAdmin` (`MuChilaAdmin.Core`, `MuChilaAdmin`, testes em `MuChilaAdmin.Testes`) |
 | `docs/` | Documentação |
 
 ## Início rápido
@@ -30,7 +30,7 @@ O kit foi instalado, corrigido e ajustado. O que mudou em relação ao kit origi
 1. A primeira instalação está em [docs/INSTALACAO.md](docs/INSTALACAO.md).
 2. No dia a dia: ligue o Radmin VPN, abra `C:\MuServer\Startup - Iniciar Server.lnk`, clique em iniciar e espere tudo ficar verde.
 3. Para criar contas, use `C:\MuServer\Criar Conta.bat`.
-4. Para disparar eventos, dar VIP, banir ou recarregar configurações, use `C:\MuServer\Mu Chila Admin.lnk`.
+4. Para disparar eventos, dar VIP, banir ou recarregar configurações, use o painel web **Mu Chila Admin** (http://localhost:5170 no PC do servidor; guia em [docs/MU-ADMIN.md](docs/MU-ADMIN.md)).
    Para editar personagens, inventário e baú, use o MuEditor (`C:\MuServer\1 - MuEditor\MuEditor.exe`).
 
 **Jogadores:**

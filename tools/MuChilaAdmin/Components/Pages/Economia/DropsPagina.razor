@@ -1,0 +1,109 @@
+@page "/drops"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+@inject RecargaMonstros Recarga
+
+<CabecalhoPagina Titulo="Drops" Descricao="O que cada monstro dropa e com que chance (ItemDrop.txt), e o drop comum e o zen de cada monstro (Monster.txt)." Icone="gift">
+    @if (visao?.Mudou == true)
+    {
+        <span class="etiqueta etq-amarela">alterações não salvas</span>
+    }
+    <button type="button" class="btn btn-secundario" @onclick="Descartar" disabled="@(ocupado || visao?.Mudou != true)">Descartar</button>
+    <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@(ocupado || visao?.Mudou != true)"><Icone Nome="save" Classe="ico-sm" />Salvar e aplicar</button>
+</CabecalhoPagina>
+
+<nav class="abas mb-4">
+    <button type="button" class="aba @(aba == 0 ? "ativa" : "")" @onclick="() => aba = 0"><Icone Nome="search" Classe="ico-sm" />Por monstro / por item</button>
+    <button type="button" class="aba @(aba == 1 ? "ativa" : "")" @onclick="() => aba = 1"><Icone Nome="file" Classe="ico-sm" />Regras do arquivo</button>
+    <button type="button" class="aba @(aba == 2 ? "ativa" : "")" @onclick="() => aba = 2"><Icone Nome="coin" Classe="ico-sm" />Drop comum e zen</button>
+</nav>
+
+@if (visao == null)
+{
+    @if (erro != null)
+    {
+        <Cartao><Vazio Texto="@erro" Icone="alert" /></Cartao>
+    }
+    else
+    {
+        <Carregando />
+    }
+}
+else if (aba == 0)
+{
+    <DropsPorMonstro Visao="visao" Mudou="Atualizar" />
+}
+else if (aba == 1)
+{
+    <DropsRegras Visao="visao" Mudou="Atualizar" />
+}
+else
+{
+    <DropsTaxas Visao="visao" Mudou="Atualizar" />
+}
+
+<ResultadoAcao Linhas="resultado" Titulo="drops" Quando="quando" />
+
+@code {
+    DropsVisao? visao;
+    string? erro;
+    int aba;
+    bool ocupado;
+    List<string> resultado = new();
+    DateTime quando;
+    IDisposable? trava;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (visao?.Mudou == true && !await Confirmar.Perguntar("Sair sem salvar?", "Os drops têm alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        visao = null; erro = null;
+        try { visao = await Task.Run(DropsVisao.Carregar); }
+        catch (Exception ex) { Registro.Erro("drops", ex); erro = ExecutorAcoes.MensagemDe(ex); }
+    }
+
+    void Atualizar() => StateHasChanged();
+
+    async Task Descartar()
+    {
+        if (!await Confirmar.Perguntar("Descartar as alterações nos drops?", "Volta ao que está gravado no ItemDrop.txt e no Monster.txt.", "Descartar", perigo: true)) return;
+        await Carregar();
+    }
+
+    async Task Salvar()
+    {
+        if (visao == null) return;
+        if (visao.Problema() is { } p) { Toast.Erro(p); return; }
+        var v = visao;
+        var resumo = v.Resumo();
+        var linhas = new List<string>();
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("drops.salvar", null, () =>
+            {
+                var (regras, taxas, log) = v.Salvar();
+                linhas.AddRange(log);
+                if (regras) linhas.AddRange(ServerControl.Reload("Item"));
+                if (taxas) linhas.AddRange(Recarga.Recarregar());
+                return linhas;
+            }, Politicas.Administrar, resumo);
+        }
+        finally { ocupado = false; }
+        resultado = linhas; quando = DateTime.Now;
+    }
+}

@@ -1,0 +1,220 @@
+@page "/itens"
+@attribute [Authorize(Policy = Politicas.Moderar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+
+<CabecalhoPagina Titulo="Itens e baú" Descricao="Inventário de um personagem ou baú da conta, com nível e opções; colocar item novo e remover. Presentes pendentes da Gremory Case." Icone="chest" />
+
+<div class="cartao mb-5 flex flex-wrap items-end gap-3 p-4">
+    <div>
+        <label class="rotulo" for="iconta">Conta</label>
+        <input id="iconta" class="entrada w-48" list="lista-contas" maxlength="10" @bind="conta" @bind:after="ContaMudou" placeholder="nome da conta" />
+        <datalist id="lista-contas">@foreach (var c in contas) { <option value="@c"></option> }</datalist>
+    </div>
+    <div>
+        <label class="rotulo" for="ilocal">Onde</label>
+        <select id="ilocal" class="entrada w-56" @bind="local" @bind:after="Mostrar" disabled="@(personagens.Count == 0 && conta == "")">
+            @foreach (var p in personagens) { <option value="@p">Inventário de @p</option> }
+            <option value="@Bau">Baú da conta</option>
+        </select>
+    </div>
+    <button type="button" class="btn btn-secundario" @onclick="Mostrar" disabled="@(conta == "")"><Icone Nome="refresh" Classe="ico-sm" />Atualizar</button>
+    <AuthorizeView Policy="@Politicas.Administrar">
+        <button type="button" class="btn btn-primario ml-auto" @onclick="() => escolher = true" disabled="@(conta == "" || ocupado)"><Icone Nome="plus" Classe="ico-sm" />Colocar item...</button>
+    </AuthorizeView>
+</div>
+
+<Nota Tipo="atencao" Classe="mb-5">
+    Colocar e remover deslogam a conta se ela estiver no jogo (o servidor regravaria por cima ao sair) e salvam antes o inventário/baú inteiro em
+    <span class="mono">DB\backup-itens-*.csv</span>. Não use o MuEditor para salvar inventários do S14: ele é da Season 8 e pode apagar o inventário expandido e o baú estendido.
+</Nota>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
+    <Cartao Titulo="@(local == Bau ? $"Baú de {conta}" : local == "" ? "Itens" : $"Inventário de {local}")" Icone="chest" SemPadding="true" Classe="xl:col-span-2">
+        @if (conta == "")
+        {
+            <Vazio Texto="Escolha a conta." Icone="search" />
+        }
+        else if (itens == null)
+        {
+            <Carregando />
+        }
+        else if (itens.Count == 0)
+        {
+            <Vazio Texto="Nenhum item aqui." Icone="chest" />
+        }
+        else
+        {
+            <div class="rolagem max-h-[70vh]">
+                <table class="tabela tabela-compacta">
+                    <thead class="sticky top-0"><tr><th>Item</th><th>Onde</th><th class="text-right">Nível</th><th>Opções</th><th class="text-right">Dur.</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var i in itens)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-2.5">
+                                        <FotoItem Secao="i.Section" Tipo="i.Type" Nome="@i.Name" Tamanho="h-9 w-9" />
+                                        <div class="min-w-0">
+                                            <p class="truncate font-medium text-slate-900 dark:text-white">@i.Name</p>
+                                            <p class="mono text-slate-400">@i.Section,@i.Type · posição @i.Slot</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="whitespace-nowrap text-slate-500">@i.Place</td>
+                                <td class="num">+@i.Level</td>
+                                <td>
+                                    <div class="flex flex-wrap gap-1">
+                                        @if (i.Skill) { <span class="etiqueta etq-azul">skill</span> }
+                                        @if (i.Luck) { <span class="etiqueta etq-verde">sorte</span> }
+                                        @if (i.Option > 0) { <span class="etiqueta etq-cinza">+@(i.Option * 4)</span> }
+                                        @if (i.Excellent > 0) { <span class="etiqueta etq-amarela">@System.Numerics.BitOperations.PopCount((uint)i.Excellent) exc.</span> }
+                                        @if (i.SetOption > 0) { <span class="etiqueta etq-roxa">ancient</span> }
+                                    </div>
+                                </td>
+                                <td class="num">@i.Durability</td>
+                                <td class="text-right">
+                                    <AuthorizeView Policy="@Politicas.Administrar">
+                                        <button type="button" class="btn btn-fantasma btn-sm text-rose-600 dark:text-rose-400" @onclick="() => Remover(i)" disabled="@ocupado"><Icone Nome="trash" Classe="h-3.5 w-3.5" />Remover</button>
+                                    </AuthorizeView>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </Cartao>
+
+    <Cartao Titulo="Presentes na Gremory Case" Icone="gift" SemPadding="true" Subtitulo="Pendentes de pegar">
+        <TabelaDados Dados="presentes" Titulo="Presentes pendentes" Busca="false" Exportar="false" Compacta="true" Ocultas="@(new[] { "Codigo" })" TextoVazio="Nenhum presente pendente.">
+            <AcoesLinha Context="r">
+                <AuthorizeView Policy="@Politicas.Administrar">
+                    <button type="button" class="btn btn-fantasma btn-sm" @onclick="@(() => CancelarPresente(r))">Cancelar</button>
+                </AuthorizeView>
+            </AcoesLinha>
+        </TabelaDados>
+    </Cartao>
+</div>
+
+<EscolherItem @bind-Aberta="escolher" Titulo="@($"Colocar item: {(local == Bau ? $"baú da conta {conta}" : $"inventário de {local}")}")"
+              Subtitulo="Vai para o 1º espaço livre em que o item cabe." BotaoTexto="Colocar" Selecionado="ItemEscolhido" AoEscolher="Colocar">
+    <Extra>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div><label class="rotulo" for="cnivel">Nível (+)</label><input id="cnivel" type="number" min="0" max="15" class="entrada" @bind="cNivel" /></div>
+            <div><label class="rotulo" for="copcao">Adicional</label>
+                <select id="copcao" class="entrada" @bind="cOpcao">@for (int o = 0; o <= 7; o++) { <option value="@o">@(o == 0 ? "nenhum" : $"+{o * 4}")</option> }</select>
+            </div>
+            <div><label class="rotulo" for="cqtd">Quantidade</label><input id="cqtd" type="number" min="1" max="@maxPilha" class="entrada" @bind="cQtd" disabled="@(maxPilha <= 1)" /></div>
+            <div class="flex items-end gap-3 pb-2">
+                <label class="flex items-center gap-1.5 text-sm"><input type="checkbox" class="caixa" @bind="cSkill" />Skill</label>
+                <label class="flex items-center gap-1.5 text-sm"><input type="checkbox" class="caixa" @bind="cSorte" />Sorte</label>
+            </div>
+        </div>
+        <p class="rotulo mt-3">Opções excelentes</p>
+        <div class="flex flex-wrap gap-1.5">
+            @for (int b = 0; b < 6; b++)
+            {
+                var bit = 1 << b;
+                <button type="button" class="btn btn-sm @((cExc & bit) != 0 ? "btn-primario" : "btn-secundario")" @onclick="() => cExc ^= bit">opção @(b + 1)</button>
+            }
+            <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => cExc = cExc == 63 ? 0 : 63">@(cExc == 63 ? "nenhuma" : "todas")</button>
+        </div>
+        <p class="ajuda mt-2">@infoItem</p>
+    </Extra>
+</EscolherItem>
+
+@code {
+    [SupplyParameterFromQuery(Name = "conta")] public string? ContaUrl { get; set; }
+    const string Bau = "(baú)";
+    string conta = "", local = Bau;
+    string[] contas = Array.Empty<string>();
+    List<string> personagens = new();
+    List<ItemView>? itens;
+    DataTable? presentes;
+    bool ocupado, escolher, cSkill, cSorte;
+    int cNivel, cOpcao, cExc, cQtd = 1, maxPilha = 1;
+    string infoItem = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        contas = await Task.Run(PassMaps.AccountNames);
+        if (!string.IsNullOrWhiteSpace(ContaUrl)) { conta = ContaUrl.Trim(); await ContaMudou(); }
+    }
+
+    async Task ContaMudou()
+    {
+        conta = conta.Trim();
+        itens = null; presentes = null;
+        personagens = conta == "" ? new() : (await Task.Run(() => Accounts.Characters(conta))).ToList();
+        local = personagens.FirstOrDefault() ?? Bau;
+        if (conta != "" && !contas.Contains(conta, StringComparer.OrdinalIgnoreCase)) { Toast.Atencao($"A conta \"{conta}\" não existe."); return; }
+        await Mostrar();
+    }
+
+    async Task Mostrar()
+    {
+        if (conta == "") return;
+        try
+        {
+            (itens, presentes) = await Task.Run(() => (local == Bau ? Items.Vault(conta) : Items.Inventory(local), Items.Gifts(conta)));
+        }
+        catch (Exception ex) { Registro.Erro("itens", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); itens = new(); }
+    }
+
+    void ItemEscolhido(ItemDef? d)
+    {
+        if (d == null) { infoItem = ""; maxPilha = 1; return; }
+        maxPilha = Math.Max(1, CashShop.MaxStack(d.Section, d.Type));
+        cQtd = Math.Min(cQtd, maxPilha);
+        infoItem = $"{d.Name}: {d.Width}x{d.Height}" + (maxPilha > 1 ? $", empilha até {maxPilha}" : $", durabilidade {Items.BaseDurability(d.Section, d.Type)}");
+    }
+
+    async Task Colocar(List<ItemDef> escolhidos)
+    {
+        if (escolhidos.Count == 0) return;
+        var d = escolhidos[0];
+        string c = conta, l = local;
+        int nivel = Math.Clamp(cNivel, 0, 15), qtd = Math.Clamp(cQtd, 1, maxPilha);
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("item.colocar", c, () =>
+            {
+                var log = OperacoesConta.GarantirFora(c, "colocar o item");
+                log.Add(Items.Place(c, l == Bau ? null : l, d.Section, d.Type, nivel, cSkill, cSorte, cOpcao, cExc, qtd));
+                return OperacoesConta.Juntar(log);
+            }, Politicas.Administrar, $"{d.Name} [{d.Section},{d.Type}] +{nivel} opcao={cOpcao} exc={cExc} skill={cSkill} sorte={cSorte} qtd={qtd} em {(l == Bau ? "baú" : l)}");
+        }
+        finally { ocupado = false; }
+        await Mostrar();
+    }
+
+    async Task Remover(ItemView i)
+    {
+        if (!await Confirmar.Perguntar($"Remover {i.Name} +{i.Level}?", $"{i.Place}, posição {i.Slot}, de {(local == Bau ? $"baú de {conta}" : local)}. O inventário/baú inteiro é salvo antes num arquivo de backup.", "Remover", perigo: true)) return;
+        string c = conta, l = local;
+        ocupado = true;
+        try
+        {
+            await Acoes.Executar("item.remover", c, () =>
+            {
+                var log = OperacoesConta.GarantirFora(c, "remover o item");
+                log.Add(Items.Remove(c, l == Bau ? null : l, i));
+                return OperacoesConta.Juntar(log);
+            }, Politicas.Administrar, $"{i.Name} +{i.Level} [{i.Section},{i.Type}] posição {i.Slot} serial {i.Serial} hex {i.Hex}");
+        }
+        finally { ocupado = false; }
+        await Mostrar();
+    }
+
+    async Task CancelarPresente(DataRow r)
+    {
+        if (r["Codigo"] is DBNull) return;
+        int codigo = Convert.ToInt32(r["Codigo"]);
+        if (!await Confirmar.Perguntar("Cancelar este presente?", "O jogador não vai recebê-lo.", "Cancelar o presente", perigo: true)) return;
+        await Acoes.Executar("item.presente", conta, () => { Items.CancelGift(conta, codigo); return "Presente cancelado."; }, Politicas.Administrar, $"codigo={codigo}");
+        await Mostrar();
+    }
+}

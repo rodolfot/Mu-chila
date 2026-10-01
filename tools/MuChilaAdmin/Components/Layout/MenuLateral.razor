@@ -1,0 +1,33 @@
+@inject Configuracao Cfg
+
+<div class="flex h-16 shrink-0 items-center gap-3 border-b border-white/10 px-5">
+    <img src="favicon.svg" alt="" class="h-8 w-8" />
+    <div class="min-w-0 leading-tight">
+        <p class="truncate text-sm font-semibold text-white">Mu Chila Admin</p>
+        <p class="truncate text-[11px] text-slate-500">@(Cfg.Desenvolvimento ? "desenvolvimento" : "painel do servidor")</p>
+    </div>
+</div>
+<nav class="rolagem flex-1 px-3 pb-6" aria-label="Menu do painel">
+    <AuthorizeView Context="auth">
+        @foreach (var g in Navegacao.Grupos)
+        {
+            var itens = g.Where(i => Navegacao.Pode(i, auth.User)).ToList();
+            if (itens.Count == 0) continue;
+            <p class="menu-grupo">@g.Key</p>
+            @foreach (var i in itens)
+            {
+                <NavLink href="@i.Href" class="menu-link" Match="@(i.Href == "" ? NavLinkMatch.All : NavLinkMatch.Prefix)" title="@i.Descricao" @onclick="AoNavegar">
+                    <Icone Nome="@i.Icone" Classe="ico-sm" />
+                    <span class="truncate">@i.Titulo</span>
+                </NavLink>
+            }
+        }
+    </AuthorizeView>
+</nav>
+<div class="border-t border-white/10 px-5 py-3 text-[11px] text-slate-500">
+    <p class="truncate" title="@Cfg.PastaServidor">Servidor: @Cfg.PastaServidor</p>
+</div>
+
+@code {
+    [Parameter] public EventCallback AoNavegar { get; set; }
+}

@@ -1,0 +1,168 @@
+@page "/site/paginas"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+
+<CabecalhoPagina Titulo="Páginas do site" Descricao="Termos de Serviço, Política de Privacidade, Política de Reembolso e a página Contate-nos (texto e canais). O site mostra na hora em que você salva." Icone="file">
+    @if (mudou)
+    {
+        <span class="etiqueta etq-amarela">não salvo</span>
+    }
+    <button type="button" class="btn btn-secundario" @onclick="Recarregar" disabled="@ocupado">Recarregar</button>
+    <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@(ocupado || !mudou)"><Icone Nome="save" Classe="ico-sm" />Salvar páginas</button>
+</CabecalhoPagina>
+
+@if (paginas == null || contato == null)
+{
+    <Carregando />
+}
+else
+{
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-[16rem_minmax(0,1fr)]">
+        <Cartao SemPadding="true">
+            <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                @foreach (var (id, nome) in SiteConfig.Paginas.Append(("contato", "Contate-nos")))
+                {
+                    <li>
+                        <button type="button" class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm @(atual == id ? "bg-amber-50 font-medium dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")" @onclick="() => atual = id">
+                            <Icone Nome="@(id == "contato" ? "mail" : "file")" Classe="ico-sm text-amber-500" />@nome
+                        </button>
+                    </li>
+                }
+            </ul>
+        </Cartao>
+
+        @if (atual == "contato")
+        {
+            <Cartao Titulo="Contate-nos" Icone="mail">
+                <Acoes><a class="btn btn-secundario btn-sm" href="@($"{SiteUrl}contact/")" target="_blank" rel="noopener"><Icone Nome="external" Classe="h-3.5 w-3.5" />Ver no site</a></Acoes>
+                <ChildContent>
+                    <label class="rotulo" for="pg-ctexto">Texto do topo da página</label>
+                    <textarea id="pg-ctexto" rows="3" class="entrada" value="@contato.Texto" @onchange="e => Mudar(() => contato.Texto = e.Value?.ToString() ?? string.Empty)"></textarea>
+                    <label class="mt-3 flex items-center gap-2 text-sm"><input type="checkbox" class="caixa" checked="@contato.Formulario" @onchange="e => Mudar(() => contato.Formulario = e.Value is true)" />Formulário de mensagens ligado (as mensagens chegam em Site → Mensagens)</label>
+
+                    <div class="mt-5 flex items-center justify-between gap-3">
+                        <p class="rotulo mb-0">Canais (só aparecem os preenchidos)</p>
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="NovoCanal"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Canal</button>
+                    </div>
+                    <div class="rolagem mt-2">
+                        <table class="tabela tabela-compacta">
+                            <thead><tr><th class="w-36">Tipo</th><th>Nome</th><th>Texto</th><th>Link</th><th class="w-10"></th></tr></thead>
+                            <tbody>
+                                @foreach (var c in contato.Canais)
+                                {
+                                    <tr>
+                                        <td>
+                                            <select class="entrada entrada-sm" value="@c.Tipo" aria-label="Tipo" @onchange="e => Mudar(() => c.Tipo = e.Value?.ToString() ?? c.Tipo)">
+                                                @foreach (var t in SiteConfig.TiposCanal)
+                                                {
+                                                    <option value="@t">@t</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td><input class="entrada entrada-sm" value="@c.Rotulo" placeholder="Discord" aria-label="Nome" @onchange="e => Mudar(() => c.Rotulo = Texto(e))" /></td>
+                                        <td><input class="entrada entrada-sm" value="@c.Texto" placeholder="(11) 99999-9999" aria-label="Texto" @onchange="e => Mudar(() => c.Texto = Texto(e))" /></td>
+                                        <td><input class="entrada entrada-sm" value="@c.Link" placeholder="https://..." aria-label="Link" @onchange="e => Mudar(() => c.Link = Texto(e))" /></td>
+                                        <td><button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover" @onclick="() => Mudar(() => contato.Canais.Remove(c))"><Icone Nome="trash" Classe="h-4 w-4" /></button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="ajuda">WhatsApp: link https://wa.me/55DDDNUMERO. E-mail: mailto:voce@@exemplo.com.</p>
+                </ChildContent>
+            </Cartao>
+        }
+        else
+        {
+            var p = paginas.TryGetValue(atual, out var x) ? x : paginas[atual] = new SiteConfig.Pagina();
+            <Cartao Titulo="@SiteConfig.Paginas.First(k => k.Id == atual).Nome" Icone="file">
+                <Acoes><a class="btn btn-secundario btn-sm" href="@($"{SiteUrl}{atual}/")" target="_blank" rel="noopener"><Icone Nome="external" Classe="h-3.5 w-3.5" />Ver no site</a></Acoes>
+                <ChildContent>
+                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_14rem]">
+                        <div><label class="rotulo" for="pg-titulo">Título</label><input id="pg-titulo" class="entrada" value="@p.Titulo" @onchange="e => Mudar(() => p.Titulo = Texto(e))" /></div>
+                        <div>
+                            <label class="rotulo" for="pg-data">Atualizado em</label>
+                            <div class="flex gap-2">
+                                <input id="pg-data" class="entrada" value="@p.Atualizado" placeholder="dd/mm/aaaa" @onchange="e => Mudar(() => p.Atualizado = Texto(e))" />
+                                <button type="button" class="btn btn-secundario" @onclick="@(() => Mudar(() => p.Atualizado = DateTime.Now.ToString("dd/MM/yyyy")))">Hoje</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="rotulo">Texto</p>
+                        @* @key: trocar de página recria o editor (cada página tem o seu texto) *@
+                        <EditorHtml @key="atual" Id="pg-html" Valor="@p.Html" ValorChanged="v => Mudar(() => p.Html = v)" Linhas="22" />
+                    </div>
+                </ChildContent>
+            </Cartao>
+        }
+    </div>
+}
+
+@code {
+    Dictionary<string, SiteConfig.Pagina>? paginas;
+    SiteConfig.Contato? contato;
+    string atual = SiteConfig.Paginas[0].Id, carimbo = "";
+    bool mudou, ocupado;
+    IDisposable? trava;
+
+    string SiteUrl => $"{new Uri(Nav.BaseUri).Scheme}://{new Uri(Nav.BaseUri).Host}/";
+    static string Texto(ChangeEventArgs e) => (e.Value?.ToString() ?? "").Trim();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (mudou && !await Confirmar.Perguntar("Sair sem salvar?", "As páginas do site têm alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        try
+        {
+            (paginas, contato, carimbo) = await Task.Run(() =>
+            {
+                var (p, c) = SiteConfig.CarregarPaginas();
+                return (p, c, ExecutorAcoes.Carimbo(SiteConfig.Arquivos("muchila.paginas.json").ToArray()));
+            });
+            mudou = false;
+        }
+        catch (Exception ex) { Registro.Erro("paginas", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); paginas ??= new(); contato ??= new(); }
+    }
+
+    void Mudar(Action a) { a(); mudou = true; }
+
+    void NovoCanal() => Mudar(() => contato?.Canais.Add(new SiteConfig.Canal { Tipo = "discord", Rotulo = "Discord" }));
+
+    async Task Recarregar()
+    {
+        if (mudou && !await Confirmar.Perguntar("Descartar as alterações?", "Volta ao que está gravado nos arquivos do site.", "Descartar", perigo: true)) return;
+        await Carregar();
+    }
+
+    async Task Salvar()
+    {
+        if (paginas == null || contato == null) return;
+        if (await Task.Run(() => ExecutorAcoes.Carimbo(SiteConfig.Arquivos("muchila.paginas.json").ToArray())) != carimbo &&
+            !await Confirmar.Perguntar("O arquivo mudou", "Alguém gravou as páginas depois que você abriu. Salvar agora sobrescreve o que foi feito.", "Salvar por cima", perigo: true)) return;
+        if (!await Confirmar.Perguntar("Gravar as páginas do site?", "Os textos de Termos, Privacidade, Reembolso e do Contate-nos aparecem no site na hora.", "Gravar")) return;
+        var p = paginas; var c = contato;
+        c.Canais = c.Canais.Where(x => x.Rotulo.Length > 0 || x.Texto.Length > 0 || x.Link.Length > 0).ToList();
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("site.paginas", null, () => SiteConfig.SalvarPaginas(p, c), Politicas.Administrar, $"{c.Canais.Count} canal(is) de contato"))
+                await Carregar();
+        }
+        finally { ocupado = false; }
+    }
+}

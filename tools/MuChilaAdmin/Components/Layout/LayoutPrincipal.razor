@@ -1,0 +1,54 @@
+@inherits LayoutComponentBase
+@inject Configuracao Cfg
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<div class="min-h-screen lg:pl-64">
+    @* menu lateral: fixo no computador, gaveta no celular *@
+    @if (menuAberto)
+    {
+        <div class="fixed inset-0 z-40 bg-slate-950/70 lg:hidden" @onclick="() => menuAberto = false"></div>
+    }
+    <aside class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/10 bg-slate-950 transition-transform duration-200 lg:translate-x-0 @(menuAberto ? "translate-x-0" : "-translate-x-full")">
+        <MenuLateral AoNavegar="() => menuAberto = false" />
+    </aside>
+
+    <div class="flex min-h-screen flex-col">
+        <BarraTopo AoAbrirMenu="() => menuAberto = true" />
+        @if (Cfg.Desenvolvimento)
+        {
+            <div class="border-b border-violet-500/30 bg-violet-600/15 px-4 py-1.5 text-center text-xs font-medium text-violet-200">
+                Ambiente de DESENVOLVIMENTO — banco e pasta do servidor de teste (@Cfg.PastaServidor). Nada aqui mexe no servidor de verdade.
+            </div>
+        }
+        <main class="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 sm:px-6 lg:px-8">
+            <AuthorizeView Context="auth">
+                @if (Identidade.PrecisaTrocarSenha(auth.User) && !Nav.Uri.Contains("/minha-conta/senha"))
+                {
+                    <TrocaObrigatoria />
+                }
+                else
+                {
+                    @Body
+                }
+            </AuthorizeView>
+        </main>
+        <footer class="border-t border-slate-200 px-4 py-3 text-center text-xs text-slate-400 dark:border-white/5 dark:text-slate-500">
+            Mu Chila Admin @Versao.Texto · @Cfg.UrlLocal.TrimEnd('/')
+        </footer>
+    </div>
+</div>
+
+<HostAvisos />
+<HostConfirmacao />
+
+@code {
+    bool menuAberto;
+
+    protected override void OnInitialized() => Nav.LocationChanged += (_, _) => { if (menuAberto) { menuAberto = false; InvokeAsync(StateHasChanged); } };
+
+    protected override async Task OnAfterRenderAsync(bool primeira)
+    {
+        if (primeira) { try { await JS.InvokeVoidAsync("muAdmin.registrarAtalhos"); } catch { } }
+    }
+}

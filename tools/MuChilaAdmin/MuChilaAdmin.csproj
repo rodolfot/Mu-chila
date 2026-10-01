@@ -1,20 +1,66 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <!-- Mu Chila Admin: painel web (Blazor, servidor) + vigia (opção vigia-reset) + comandos de linha de comando, num executável só.
+       Precisa do ASP.NET Core Runtime 10 e do .NET Desktop Runtime 10 (ícone na bandeja). A lógica fica no MuChilaAdmin.Core. -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- só para o ícone na bandeja (NotifyIcon); as telas são todas web -->
     <UseWindowsForms>true</UseWindowsForms>
-    <!-- WPF so para as bibliotecas de UI Automation (controle do launcher) -->
-    <UseWPF>true</UseWPF>
     <AssemblyName>MuChilaAdmin</AssemblyName>
     <RootNamespace>MuChilaAdmin</RootNamespace>
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    <!-- o ícone e o CSS gerado pelo Tailwind vão junto -->
+    <SatelliteResourceLanguages>pt-BR</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <!-- os nomes do WinForms (Button, Label, Timer...) não entram nos usings globais: o painel é web -->
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+    <Using Include="MuChilaAdmin.Core" />
+    <Using Include="MuChilaAdmin.Core.Painel" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MuChilaAdmin.Core\MuChilaAdmin.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MuChilaAdmin.Testes" />
+  </ItemGroup>
+
+  <!-- O pacote do Blazor só põe o _framework/blazor.web.js em programas "Exe" (o painel é WinExe, para não abrir janela de
+       console): o mesmo passo do pacote (Microsoft.AspNetCore.App.Internal.Assets), aqui para WinExe. -->
+  <Target Name="_MuChilaScriptBlazor" BeforeTargets="ResolveStaticWebAssetsInputs" Condition="'$(OutputType)' == 'WinExe' AND '$(BlazorFrameworkStaticWebAssetRoot)' != ''">
+    <ItemGroup>
+      <_MuChilaScriptBlazorCandidato Include="$(BlazorFrameworkStaticWebAssetRoot)\blazor.web.js" Condition="Exists('$(BlazorFrameworkStaticWebAssetRoot)\blazor.web.js')">
+        <RelativePath>_framework/blazor.web.js</RelativePath>
+      </_MuChilaScriptBlazorCandidato>
+    </ItemGroup>
+    <DefineStaticWebAssets Condition="'@(_MuChilaScriptBlazorCandidato->Count())' != '0'" CandidateAssets="@(_MuChilaScriptBlazorCandidato)"
+        ContentRoot="$(BlazorFrameworkStaticWebAssetRoot)" SourceId="$(PackageId)" SourceType="Discovered" AssetKind="All" AssetMode="CurrentProject"
+        AssetRole="Primary" FingerprintCandidates="true" BasePath="$(StaticWebAssetBasePath)">
+      <Output TaskParameter="Assets" ItemName="_MuChilaScriptBlazorAsset" />
+    </DefineStaticWebAssets>
+    <DefineStaticWebAssetEndpoints Condition="'@(_MuChilaScriptBlazorAsset)' != ''" CandidateAssets="@(_MuChilaScriptBlazorAsset)" ExistingEndpoints=""
+        ContentTypeMappings="@(StaticWebAssetContentTypeMapping)">
+      <Output TaskParameter="Endpoints" ItemName="_MuChilaScriptBlazorEndpoint" />
+    </DefineStaticWebAssetEndpoints>
+    <ItemGroup>
+      <StaticWebAsset Include="@(_MuChilaScriptBlazorAsset)" />
+      <StaticWebAssetEndpoint Include="@(_MuChilaScriptBlazorEndpoint)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- CSS do Tailwind: gerado em wwwroot\css\app.css (versionado). Quem tiver o tailwindcss.exe em .ferramentas (o
+       Preparar-Ambiente-Dev.ps1 baixa) recompila sozinho a cada build; sem ele, vale o CSS já gerado. -->
+  <Target Name="TailwindCss" BeforeTargets="BeforeBuild" Condition="Exists('$(MSBuildProjectDirectory)\.ferramentas\tailwindcss.exe')">
+    <Exec Command="&quot;$(MSBuildProjectDirectory)\.ferramentas\tailwindcss.exe&quot; -i Styles\app.css -o wwwroot\css\app.css --minify" WorkingDirectory="$(MSBuildProjectDirectory)" StandardOutputImportance="low" />
+  </Target>
 
 </Project>

@@ -1,0 +1,21 @@
+@* Aviso fixo dentro da página (explicação, atenção, perigo). Tipo: info, atencao, perigo, sucesso. *@
+<div class="nota nota-@Tipo @Classe" role="@(Tipo is "perigo" or "atencao" ? "alert" : "note")">
+    <Icone Nome="@(Icone ?? IconePadrao)" Classe="ico mt-0.5" />
+    <div class="min-w-0 space-y-1 leading-relaxed">
+        @if (Titulo != null)
+        {
+            <p class="font-semibold">@Titulo</p>
+        }
+        <div class="[&_a]:font-semibold [&_a]:underline">@ChildContent</div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Tipo { get; set; } = "info";
+    [Parameter] public string? Titulo { get; set; }
+    [Parameter] public string? Icone { get; set; }
+    [Parameter] public string? Classe { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    string IconePadrao => Tipo switch { "perigo" => "alert", "atencao" => "alert", "sucesso" => "check-circle", _ => "info" };
+}

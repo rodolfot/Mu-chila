@@ -17,6 +17,14 @@ backup-itens-*.csv
 # Saida de compilacao do painel (a versao publicada fica em C:\MuServer\MuChilaAdmin)
 tools/MuChilaAdmin/bin/
 tools/MuChilaAdmin/obj/
+tools/MuChilaAdmin.Core/bin/
+tools/MuChilaAdmin.Core/obj/
+tools/MuChilaAdmin.Testes/bin/
+tools/MuChilaAdmin.Testes/obj/
+# Tailwind CSS baixado pelo Preparar-Ambiente-Dev.ps1 (o CSS gerado, wwwroot/css/app.css, fica no repositório)
+tools/MuChilaAdmin/.ferramentas/
+# configuração local do painel (banco, pastas, porta): fica em %ProgramData%\MuChilaAdmin, nunca no repositório
+muchila-admin.json
 
 # Pacotes gerados para distribuicao (o cliente vai descompactado no repositorio)
 *.zip

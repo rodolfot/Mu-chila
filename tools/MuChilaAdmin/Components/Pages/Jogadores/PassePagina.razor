@@ -1,0 +1,127 @@
+@page "/passe"
+@attribute [Authorize(Policy = Politicas.Moderar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+
+<CabecalhoPagina Titulo="Passe dos Mapas" Descricao="Mapas acima do nível 400 só com passe ativo na conta. Sem passe, o vigia leva o personagem para a seleção e depois para Lorencia." Icone="map" />
+
+<div class="mb-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
+    <Cartao Titulo="Cobrança" Icone="lock">
+        <div class="flex items-center justify-between gap-3">
+            <div>
+                <p class="font-semibold @(cobrando ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400")">@(cobrando ? "Ligada" : "Desligada")</p>
+                <p class="text-xs text-slate-500">@(!cobrando ? "Todos entram sem passe." : vigia ? "O vigia está cobrando." : "ATENÇÃO: o vigia está parado, ninguém está sendo cobrado.")</p>
+            </div>
+            <AuthorizeView Policy="@Politicas.Administrar">
+                <button type="button" class="btn btn-sm @(cobrando ? "btn-secundario" : "btn-sucesso")" @onclick="AlternarCobranca">@(cobrando ? "Desligar" : "Ligar")</button>
+            </AuthorizeView>
+        </div>
+        <p class="ajuda mt-3">Os jogadores ganham o passe usando o Gold Channel Ticket da Cash Shop (1, 3, 7 ou 30 dias) ou comprando na Loja do site.</p>
+    </Cartao>
+
+    <Cartao Titulo="Dar ou tirar passe" Icone="key" Classe="lg:col-span-2" Subtitulo="Vale na hora, mesmo com o jogador no jogo">
+        <div class="flex flex-wrap items-end gap-3">
+            <div>
+                <label class="rotulo" for="pconta">Conta</label>
+                <input id="pconta" class="entrada w-48" list="contas-passe" maxlength="10" @bind="conta" />
+                <datalist id="contas-passe">@foreach (var c in contas) { <option value="@c"></option> }</datalist>
+            </div>
+            <div>
+                <label class="rotulo" for="pqtd">Quanto</label>
+                <div class="flex gap-2">
+                    <input id="pqtd" type="number" min="1" max="9999" class="entrada w-24" @bind="quantidade" />
+                    <select class="entrada w-32" @bind="unidade" aria-label="Unidade">@for (int u = 0; u < PassMaps.Units.Length; u++) { <option value="@u">@PassMaps.Units[u]</option> }</select>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primario" @onclick="Dar" disabled="@(ocupado || conta.Trim() == "")"><Icone Nome="plus" Classe="ico-sm" />Dar passe</button>
+            <button type="button" class="btn btn-secundario" @onclick="Tirar" disabled="@(ocupado || conta.Trim() == "")">Tirar passe</button>
+        </div>
+        <p class="ajuda mt-3">Para testar: dê alguns minutos a uma conta, entre num desses mapas e espere vencer.</p>
+    </Cartao>
+</div>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
+    <Cartao Titulo="Contas com passe" Icone="users" SemPadding="true" Classe="xl:col-span-2">
+        <TabelaDados Dados="passes" Titulo="Contas com Passe dos Mapas" ColunaDestaque="Conta" TextoVazio="Ninguém tem passe." Selecionavel="true" SelecionadaChanged="@(r => { if (r != null) conta = ((string)r["Conta"]).Trim(); })" />
+    </Cartao>
+    <Cartao Titulo="Mapas que exigem passe" Icone="map" SemPadding="true">
+        <TabelaDados Dados="mapas" Titulo="Mapas do passe" Busca="false" Compacta="true" PorPagina="50" />
+    </Cartao>
+</div>
+
+<div class="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-2">
+    <Cartao Titulo="Histórico" Icone="history" SemPadding="true" Subtitulo="Loja de cash, site e painel">
+        <TabelaDados Dados="historico" Titulo="Histórico do Passe dos Mapas" Compacta="true" />
+    </Cartao>
+    <Cartao Titulo="O que o vigia fez" Icone="shield" Subtitulo="vigia.log">
+        @if (logVigia.Length == 0)
+        {
+            <Vazio Texto="Nada registrado pelo vigia." Icone="shield" />
+        }
+        else
+        {
+            <pre class="rolagem max-h-80 whitespace-pre-wrap rounded-lg bg-slate-950 p-3 font-mono text-xs leading-relaxed text-slate-200">@string.Join("\n", logVigia)</pre>
+        }
+    </Cartao>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "conta")] public string? ContaUrl { get; set; }
+    DataTable? passes, mapas, historico;
+    string[] contas = Array.Empty<string>(), logVigia = Array.Empty<string>();
+    string conta = "";
+    int quantidade = 1, unidade = 2;
+    bool cobrando, vigia, ocupado;
+
+    protected override async Task OnInitializedAsync()
+    {
+        conta = ContaUrl?.Trim() ?? "";
+        await Carregar();
+    }
+
+    async Task Carregar()
+    {
+        try
+        {
+            await Task.Run(() =>
+            {
+                contas = PassMaps.AccountNames();
+                passes = PassMaps.Passes(); mapas = PassMaps.Maps(); historico = PassMaps.History(300);
+                logVigia = PassMaps.WatcherLog(80);
+                cobrando = PassMaps.Enforced; vigia = ResetWatcher.IsRunning();
+            });
+        }
+        catch (Exception ex) { Registro.Erro("passe", ex); }
+    }
+
+    async Task Dar()
+    {
+        var c = conta.Trim(); int q = quantidade, u = unidade;
+        ocupado = true;
+        try { await Acoes.Executar("passe.dar", c, () => PassMaps.Give(c, q, u), Politicas.Moderar, $"{q} {PassMaps.Units[u]}"); }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+
+    async Task Tirar()
+    {
+        var c = conta.Trim();
+        if (!await Confirmar.Perguntar($"Tirar o passe de {c}?", "Se estiver num mapa do passe, vai para a seleção de personagem em alguns segundos.", "Tirar", perigo: true)) return;
+        ocupado = true;
+        try { await Acoes.Executar("passe.tirar", c, () => PassMaps.Remove(c), Politicas.Moderar); }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+
+    async Task AlternarCobranca()
+    {
+        bool ligar = !cobrando;
+        if (!ligar && !await Confirmar.Perguntar("Desligar a cobrança?", "Enquanto estiver desligada, qualquer conta entra nos mapas acima do nível 400 sem passe.", "Desligar", perigo: true)) return;
+        await Acoes.Executar("passe.cobranca", ligar ? "ligada" : "desligada", () =>
+        {
+            PassMaps.Enforced = ligar;
+            return ligar ? "Passe dos Mapas: cobrança LIGADA (o vigia tira quem está sem passe)." : "Passe dos Mapas: cobrança DESLIGADA.";
+        }, Politicas.Administrar);
+        await Carregar();
+    }
+}

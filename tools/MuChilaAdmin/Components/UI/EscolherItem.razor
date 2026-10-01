@@ -1,0 +1,157 @@
+@* Janela para escolher item(ns) do Item.txt do servidor: busca pelo nome, filtro por seção, foto. Extra = campos a mais
+   (nível, opções...) mostrados embaixo da lista; Selecionado avisa a página do item escolhido (para ajustar os campos). *@
+
+<Janela Aberta="Aberta" AbertaChanged="AbertaChanged" Titulo="@Titulo" Subtitulo="@Subtitulo" Largura="sm:max-w-3xl">
+    <ChildContent>
+        <div class="flex flex-wrap gap-2">
+            <label class="relative min-w-[14rem] flex-1">
+                <span class="sr-only">Buscar item</span>
+                <Icone Nome="search" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input id="escolher-item-busca" class="entrada pl-8" placeholder="Parte do nome (ex.: Jewel, Dragon, Wings)..." value="@busca" @oninput="Buscar" autocomplete="off" />
+            </label>
+            <select class="entrada w-auto" value="@secao" @onchange="MudarSecao" aria-label="Seção">
+                <option value="-1">Todas as seções</option>
+                @foreach (var (s, n) in Secoes)
+                {
+                    <option value="@s">@s · @n</option>
+                }
+            </select>
+        </div>
+        <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-[1fr_11rem]">
+            <div class="rolagem max-h-[46vh] rounded-lg border border-slate-200 dark:border-white/10">
+                @if (lista.Count == 0)
+                {
+                    <Vazio Texto="Nenhum item com esse nome." Icone="search" />
+                }
+                else
+                {
+                    <ul class="divide-y divide-slate-100 dark:divide-white/5" role="listbox" aria-multiselectable="@Multiplo">
+                        @foreach (var d in lista)
+                        {
+                            var marcado = escolhidos.Contains(d);
+                            var ja = JaTem?.Invoke(d) == true;
+                            <li role="option" aria-selected="@marcado" class="flex cursor-pointer items-center gap-3 px-3 py-1.5 text-sm @(marcado ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")"
+                                @onclick="() => Alternar(d)" @ondblclick="() => Duplo(d)">
+                                @if (Multiplo)
+                                {
+                                    <input type="checkbox" class="caixa" checked="@marcado" tabindex="-1" />
+                                }
+                                <FotoItem Secao="d.Section" Tipo="d.Type" Nome="@d.Name" Tamanho="h-8 w-8" />
+                                <span class="min-w-0 flex-1 truncate @(ja ? "text-slate-400" : "text-slate-800 dark:text-slate-200")">@d.Name</span>
+                                @if (ja)
+                                {
+                                    <span class="etiqueta etq-cinza">já tem</span>
+                                }
+                                <span class="mono text-slate-400">@d.Section,@d.Type</span>
+                                <span class="hidden text-xs text-slate-400 sm:inline">@d.Width×@d.Height</span>
+                            </li>
+                        }
+                    </ul>
+                    @if (total > lista.Count)
+                    {
+                        <p class="px-3 py-2 text-xs text-slate-500">Mostrando @lista.Count de @total. Digite mais do nome para achar.</p>
+                    }
+                }
+            </div>
+            <div class="hidden flex-col items-center gap-2 rounded-lg border border-slate-200 p-3 text-center md:flex dark:border-white/10">
+                @if (ultimo is { } u)
+                {
+                    <FotoItem Secao="u.Section" Tipo="u.Type" Nome="@u.Name" Tamanho="h-36 w-28" />
+                    <p class="text-sm font-medium text-slate-800 dark:text-slate-200">@u.Name</p>
+                    <p class="mono text-slate-500">seção @u.Section, tipo @u.Type · @u.Width×@u.Height</p>
+                }
+                else
+                {
+                    <p class="my-auto text-xs text-slate-500">Clique num item para ver a foto.</p>
+                }
+            </div>
+        </div>
+        @if (Extra != null)
+        {
+            <div class="mt-4 border-t border-slate-200 pt-4 dark:border-white/10">@Extra</div>
+        }
+    </ChildContent>
+    <Rodape>
+        @if (Multiplo)
+        {
+            <span class="mr-auto text-xs text-slate-500">@escolhidos.Count escolhido(s)</span>
+        }
+        <button type="button" class="btn btn-secundario" @onclick="Cancelar">Cancelar</button>
+        <button type="button" class="btn btn-primario" disabled="@(escolhidos.Count == 0)" @onclick="Confirmar">@BotaoTexto</button>
+    </Rodape>
+</Janela>
+
+@code {
+    [Parameter] public bool Aberta { get; set; }
+    [Parameter] public EventCallback<bool> AbertaChanged { get; set; }
+    [Parameter] public string Titulo { get; set; } = "Escolher item";
+    [Parameter] public string? Subtitulo { get; set; }
+    [Parameter] public string BotaoTexto { get; set; } = "Escolher";
+    [Parameter] public bool Multiplo { get; set; }
+    [Parameter] public Func<ItemDef, bool>? Filtro { get; set; }
+    [Parameter] public Func<ItemDef, bool>? JaTem { get; set; }
+    [Parameter] public RenderFragment? Extra { get; set; }
+    [Parameter] public EventCallback<List<ItemDef>> AoEscolher { get; set; }
+    [Parameter] public EventCallback<ItemDef?> Selecionado { get; set; }
+
+    public static readonly (int, string)[] Secoes =
+    {
+        (0, "Espadas"), (1, "Machados"), (2, "Maças e cetros"), (3, "Lanças"), (4, "Arcos e bestas"), (5, "Cajados"), (6, "Escudos"),
+        (7, "Elmos"), (8, "Armaduras"), (9, "Calças"), (10, "Luvas"), (11, "Botas"), (12, "Asas, joias e outros"), (13, "Anéis, pingentes e outros"),
+        (14, "Poções, joias e caixas"), (15, "Pergaminhos"), (16, "Outros (S9+)"),
+    };
+
+    List<ItemDef> catalogo = new(), lista = new();
+    readonly List<ItemDef> escolhidos = new();
+    ItemDef? ultimo;
+    string busca = "";
+    int secao = -1, total;
+    bool estavaAberta;
+
+    protected override void OnParametersSet()
+    {
+        if (Aberta && !estavaAberta)
+        {
+            escolhidos.Clear(); ultimo = null; busca = "";
+            catalogo = Shops.Catalog().Where(d => Filtro?.Invoke(d) ?? true).OrderBy(d => d.Section).ThenBy(d => d.Type).ToList();
+            Filtrar();
+        }
+        estavaAberta = Aberta;
+    }
+
+    void Filtrar()
+    {
+        var q = busca.Trim();
+        var f = catalogo.Where(d => (secao < 0 || d.Section == secao) && (q.Length == 0 || d.Name.Contains(q, StringComparison.OrdinalIgnoreCase)
+                                    || $"{d.Section},{d.Type}" == q)).ToList();
+        total = f.Count;
+        lista = f.Take(300).ToList();
+    }
+
+    void Buscar(ChangeEventArgs e) { busca = e.Value?.ToString() ?? ""; Filtrar(); }
+    void MudarSecao(ChangeEventArgs e) { secao = int.TryParse(e.Value?.ToString(), out var s) ? s : -1; Filtrar(); }
+
+    async Task Alternar(ItemDef d)
+    {
+        ultimo = d;
+        if (Multiplo) { if (!escolhidos.Remove(d)) escolhidos.Add(d); }
+        else { escolhidos.Clear(); escolhidos.Add(d); }
+        await Selecionado.InvokeAsync(escolhidos.Count > 0 ? escolhidos[^1] : null);
+    }
+
+    async Task Duplo(ItemDef d)
+    {
+        if (Multiplo) return;
+        escolhidos.Clear(); escolhidos.Add(d);
+        await Confirmar();
+    }
+
+    async Task Confirmar()
+    {
+        var r = escolhidos.ToList();
+        await AbertaChanged.InvokeAsync(false);
+        await AoEscolher.InvokeAsync(r);
+    }
+
+    Task Cancelar() => AbertaChanged.InvokeAsync(false);
+}

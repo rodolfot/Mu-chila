@@ -1,0 +1,17 @@
+@* Linhas devolvidas pela última ação (ex.: "GameServer (GameServer): comando enviado"), como o log do programa antigo. *@
+@if (Linhas.Count > 0)
+{
+    <div class="cartao mt-5 p-4">
+        <div class="mb-2 flex items-center justify-between gap-2">
+            <p class="flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white"><Icone Nome="terminal" Classe="ico-sm text-amber-500" />Resultado: @Titulo</p>
+            <span class="text-xs text-slate-500">@Quando.ToString("HH:mm:ss")</span>
+        </div>
+        <pre class="rolagem max-h-64 whitespace-pre-wrap rounded-lg bg-slate-950 p-3 font-mono text-xs leading-relaxed text-slate-200">@string.Join("\n", Linhas)</pre>
+    </div>
+}
+
+@code {
+    [Parameter] public List<string> Linhas { get; set; } = new();
+    [Parameter] public string Titulo { get; set; } = "";
+    [Parameter] public DateTime Quando { get; set; } = DateTime.Now;
+}

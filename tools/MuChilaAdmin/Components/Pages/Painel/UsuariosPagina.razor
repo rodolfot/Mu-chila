@@ -1,0 +1,195 @@
+@page "/usuarios"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@inject ServicoUsuarios Usuarios
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Avisos
+@inject AuthenticationStateProvider Auth
+@inject IJSRuntime JS
+
+<CabecalhoPagina Titulo="Usuários do painel" Descricao="Quem entra neste painel (não são contas do jogo) e o que cada um pode fazer." Icone="user-plus">
+    <button type="button" class="btn btn-primario" @onclick="Novo"><Icone Nome="user-plus" Classe="ico-sm" />Novo usuário</button>
+</CabecalhoPagina>
+
+<div class="mb-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+    @foreach (var p in Papeis.Todos)
+    {
+        <div class="cartao p-4">
+            <p class="flex items-center gap-2 font-semibold text-slate-900 dark:text-white"><span class="etiqueta @Cor(p)">@Papeis.Nome(p)</span></p>
+            <p class="mt-2 text-xs text-slate-500">@Descricao(p)</p>
+        </div>
+    }
+</div>
+
+<Cartao SemPadding="true">
+    @if (lista == null)
+    {
+        <Carregando />
+    }
+    else
+    {
+        <div class="rolagem">
+            <table class="tabela">
+                <thead><tr><th>Usuário</th><th>Nome</th><th>Papel</th><th>Situação</th><th>Último login</th><th>Criado</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var u in lista)
+                    {
+                        <tr>
+                            <td class="font-medium text-slate-900 dark:text-white">@u.Login @if (u.Id == meuId) { <span class="etiqueta etq-azul ml-1">você</span> }</td>
+                            <td>@u.Nome</td>
+                            <td><span class="etiqueta @Cor(u.Papel)">@Papeis.Nome(u.Papel)</span></td>
+                            <td>
+                                @if (!u.Ativo) { <span class="etiqueta etq-cinza">desativado</span> }
+                                else if (u.BloqueadoEm(DateTime.Now)) { <span class="etiqueta etq-vermelha" title="senha errada várias vezes">bloqueado até @u.BloqueadoAte?.ToString("HH:mm")</span> }
+                                else if (u.TrocarSenha) { <span class="etiqueta etq-amarela">senha temporária</span> }
+                                else { <span class="etiqueta etq-verde">ativo</span> }
+                            </td>
+                            <td class="whitespace-nowrap text-slate-500">@(u.UltimoLogin?.ToString("dd/MM/yyyy HH:mm") ?? "nunca")@(u.UltimoIp != null ? $" · {u.UltimoIp}" : "")</td>
+                            <td class="whitespace-nowrap text-slate-500">@u.Criado.ToString("dd/MM/yyyy")@(u.CriadoPor != null ? $" por {u.CriadoPor}" : "")</td>
+                            <td class="whitespace-nowrap text-right">
+                                <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Editar(u)"><Icone Nome="edit" Classe="h-3.5 w-3.5" />Editar</button>
+                                <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Redefinir(u)"><Icone Nome="key" Classe="h-3.5 w-3.5" />Senha</button>
+                                @if (u.BloqueadoEm(DateTime.Now))
+                                {
+                                    <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Desbloquear(u)"><Icone Nome="unlock" Classe="h-3.5 w-3.5" />Desbloquear</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</Cartao>
+
+<Nota Tipo="info" Classe="mt-5" Titulo="Esqueceu a senha e não há outro administrador?">
+    No PC do servidor, rode <span class="mono">MuChilaAdmin.exe --redefinir-senha &lt;usuário&gt; C:\temp\senha.txt</span>: a senha temporária fica no arquivo.
+</Nota>
+
+<Janela @bind-Aberta="janelaEditar" Titulo="@(editando == null ? "Novo usuário" : $"Editar {editando.Login}")">
+    <ChildContent>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+                <label class="rotulo" for="ulogin">Usuário (para entrar)</label>
+                <input id="ulogin" class="entrada" maxlength="30" @bind="fLogin" disabled="@(editando != null)" placeholder="ex.: maria" />
+            </div>
+            <div>
+                <label class="rotulo" for="unome">Nome</label>
+                <input id="unome" class="entrada" maxlength="60" @bind="fNome" />
+            </div>
+            <div>
+                <label class="rotulo" for="upapel">Papel</label>
+                <select id="upapel" class="entrada" @bind="fPapel">
+                    @foreach (var p in Papeis.Todos) { <option value="@p">@Papeis.Nome(p)</option> }
+                </select>
+            </div>
+            @if (editando != null)
+            {
+                <label class="mt-6 flex items-center gap-2 text-sm"><input type="checkbox" class="caixa" @bind="fAtivo" />Ativo (pode entrar)</label>
+            }
+        </div>
+        <p class="ajuda mt-3">@Descricao(fPapel)</p>
+        @if (editando == null)
+        {
+            <p class="ajuda">O painel gera uma senha temporária; no primeiro login a pessoa escolhe a dela.</p>
+        }
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => janelaEditar = false">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="Salvar"><Icone Nome="save" Classe="ico-sm" />@(editando == null ? "Criar" : "Salvar")</button>
+    </Rodape>
+</Janela>
+
+<Janela Aberta="@(senhaMostrada != null)" AbertaChanged="@(a => { if (!a) senhaMostrada = null; })" Titulo="Senha temporária" Subtitulo="Aparece só agora. Passe para a pessoa por um canal seguro.">
+    <ChildContent>
+        <p class="text-sm">Usuário <span class="font-semibold">@senhaPara</span>, senha temporária:</p>
+        <div class="mt-3 flex items-center gap-2">
+            <span class="mono flex-1 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-center text-lg tracking-wider text-amber-700 dark:text-amber-300">@senhaMostrada</span>
+            <button type="button" class="btn btn-secundario" @onclick="Copiar" title="Copiar"><Icone Nome="copy" Classe="ico-sm" /></button>
+        </div>
+        <p class="ajuda mt-3">No primeiro login o painel pede uma senha nova. As sessões abertas desse usuário foram encerradas.</p>
+    </ChildContent>
+    <Rodape><button type="button" class="btn btn-primario" @onclick="() => senhaMostrada = null">Entendi</button></Rodape>
+</Janela>
+
+@code {
+    List<Usuario>? lista;
+    Usuario? editando;
+    bool janelaEditar, fAtivo = true;
+    string fLogin = "", fNome = "", fPapel = Papeis.Moderador;
+    string? senhaMostrada, senhaPara;
+    int meuId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        meuId = Identidade.IdDe((await Auth.GetAuthenticationStateAsync()).User) ?? 0;
+        await Carregar();
+    }
+
+    async Task Carregar() => lista = await Task.Run(() => Usuarios.Repositorio.Todos().ToList());
+
+    static string Cor(string p) => p switch { Papeis.Admin => "etq-amarela", Papeis.Moderador => "etq-azul", _ => "etq-cinza" };
+    static string Descricao(string p) => p switch
+    {
+        Papeis.Admin => "Tudo: servidor, economia (lojas, drops, taxas), site, usuários do painel e auditoria.",
+        Papeis.Moderador => "Contas (VIP, ban, pontos, senha do jogo), itens e baú, passe, avisos, notícias e mensagens do site. Não mexe na economia nem no servidor.",
+        _ => "Só olha: dashboard, contas, servidor e relatórios. Não muda nada.",
+    };
+
+    void Novo() { editando = null; fLogin = ""; fNome = ""; fPapel = Papeis.Moderador; fAtivo = true; janelaEditar = true; }
+    void Editar(Usuario u) { editando = u; fLogin = u.Login; fNome = u.Nome; fPapel = u.Papel; fAtivo = u.Ativo; janelaEditar = true; }
+
+    async Task Salvar()
+    {
+        if (editando == null)
+        {
+            string? temp = null; string login = ServicoUsuarios.Normalizar(fLogin);
+            var quem = await Acoes.Login();
+            if (await Acoes.Executar("usuario.criar", login, () =>
+                {
+                    string t;
+                    do t = SenhaHasher.SenhaTemporaria(); while (ServicoUsuarios.ValidarSenha(t, login).Count > 0);
+                    var u = Usuarios.Criar(login, fNome, fPapel, t, trocarSenha: true, criadoPor: quem);
+                    temp = t;
+                    return $"Usuário {u.Login} criado ({Papeis.Nome(u.Papel)}).";
+                }, Politicas.Administrar, $"papel={fPapel}"))
+            {
+                janelaEditar = false; senhaMostrada = temp; senhaPara = login;
+            }
+        }
+        else
+        {
+            var u = editando;
+            if (await Acoes.Executar("usuario.editar", u.Login, () =>
+                {
+                    Usuarios.Atualizar(u.Id, fNome, fPapel, fAtivo, meuId);
+                    ValidacaoSessao.Esquecer();
+                    return $"{u.Login}: {Papeis.Nome(fPapel)}{(fAtivo ? "" : ", desativado")}." + (u.Papel != fPapel || u.Ativo != fAtivo ? " As sessões abertas dele foram encerradas." : "");
+                }, Politicas.Administrar, $"papel={u.Papel}->{fPapel} ativo={u.Ativo}->{fAtivo}"))
+                janelaEditar = false;
+        }
+        await Carregar();
+    }
+
+    async Task Redefinir(Usuario u)
+    {
+        if (!await Confirmar.Perguntar($"Redefinir a senha de {u.Login}?", "O painel gera uma senha temporária (mostrada uma vez) e encerra as sessões abertas dele. No próximo login ele escolhe a senha nova.", "Redefinir", perigo: true)) return;
+        string? temp = null;
+        if (await Acoes.Executar("usuario.redefinir", u.Login, () => { temp = Usuarios.RedefinirSenha(u.Id); ValidacaoSessao.Esquecer(); return $"Senha de {u.Login} redefinida."; }, Politicas.Administrar, avisoSucesso: false))
+        {
+            senhaMostrada = temp; senhaPara = u.Login;
+        }
+        await Carregar();
+    }
+
+    async Task Desbloquear(Usuario u)
+    {
+        await Acoes.Executar("usuario.desbloquear", u.Login, () => { Usuarios.Desbloquear(u.Id); return $"{u.Login} desbloqueado."; }, Politicas.Administrar);
+        await Carregar();
+    }
+
+    async Task Copiar()
+    {
+        if (senhaMostrada != null && await JS.InvokeAsync<bool>("muAdmin.copiar", senhaMostrada)) Avisos.Info("Senha copiada.");
+    }
+}

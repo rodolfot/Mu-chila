@@ -45,9 +45,9 @@ Conta e senha: até **10 caracteres** (limite do jogo). Não há verificação d
 1. ~~Preços do cash~~: definidos pelo dono em 26/09/2026, 200 cash por R$ 37, 500 por R$ 45 e 1.000 por R$ 60 (`cash-200`, `cash-500`, `cash-1000` no `muchila.pacotes.json`).
 2. **Mercado Pago (PIX real):** pronto, mas nunca testado contra a API. Passos na seção abaixo; o dono pediu para continuar no modo de teste por enquanto.
 3. **Teste pelo navegador (`teste-site.ps1`):** precisa da senha da conta admin do site e só roda com ela. O teste do núcleo da loja (`teste-loja.php`) passou 19 de 19 em 26/09.
-4. **Notícias:** publicar pela aba **Site → Notícias** do Mu Chila Admin (01/10/2026).
+4. **Notícias:** publicar pela página **Site → Notícias** do Mu Chila Admin (01/10/2026).
 5. ~~Segundo servidor~~: a situação do servidor na página inicial soma as contas conectadas de todos os servidores (`MEMB_STAT.ConnectStat = 1`) e mostra quantas há em cada um.
-6. **Revisar os textos** de Termos, Privacidade e Reembolso (escritos em 01/10/2026): o reembolso promete devolver em até 7 dias o que não foi usado e responder em até 3 dias úteis. Preencher os canais do Contate-nos (Discord, WhatsApp...) na aba **Site → Páginas**.
+6. **Revisar os textos** de Termos, Privacidade e Reembolso (escritos em 01/10/2026): o reembolso promete devolver em até 7 dias o que não foi usado e responder em até 3 dias úteis. Preencher os canais do Contate-nos (Discord, WhatsApp...) na página **Site → Páginas** do painel.
 7. **Distribuir os pontos master pelo site:** falta conferir o formato da árvore no servidor com `MuChilaAdmin.exe --arvore-master` (ver OPERACAO.md) antes de gravar a árvore pelo site.
 
 ## Loja de VIP e cash
@@ -81,7 +81,7 @@ O aviso do Mercado Pago não é confiável por si: o endpoint confere a assinatu
 
 ### Planos (definidos pelo dono em 25/09/2026)
 
-Valores de 29/09/2026 à noite, mudados pelo dono na aba "Taxas e opções" do painel. Zen por plano: 1/3/3/4 (`MoneyAmountDropRate`). Máximo por atributo: 65.000. Joias: 0,01% por monstro. Histórico em ALTERACOES.md.
+Valores de 29/09/2026 à noite, mudados pelo dono na página "Taxas e opções" do painel. Zen por plano: 1/3/3/4 (`MoneyAmountDropRate`). Máximo por atributo: 65.000. Joias: 0,01% por monstro. Histórico em ALTERACOES.md.
 
 | Plano | Tipo de conta | Experiência | Experiência master | Drop | Zen no baú | Preço (30 dias) |
 |---|---|---|---|---|---|---|
@@ -157,7 +157,7 @@ Página **Painel do jogador → Loja de itens** (`usercp/lojaitens`, também no 
 - **Telas**:
   - **Vitrine**: categorias em cartões com ícone (Defesa/Ataque), busca pelo nome, filtro por classe e ordem por preço, nome ou nível.
   - **Montagem**: vitrine do item com brilho de raridade que muda com as excelentes (Comum → Excelente → Raro → Lendário → Mítico), inclinação 3D com o mouse e zoom no clique; contador e barra de nível; botões de adicional; chaves de sorte e skill; cartões das excelentes; resumo com o preço por item e o saldo depois da compra; janela de confirmação.
-- **Preço** = preço do item + `nivel[nível]` + `adicional[opção]` + sorte + skill + `excelente[quantidade]`. Os valores estão em `includes\config\muchila.lojaitens.json`, editado pela aba **Loja de itens** do Mu Chila Admin.
+- **Preço** = preço do item + `nivel[nível]` + `adicional[opção]` + sorte + skill + `excelente[quantidade]`. Os valores estão em `includes\config\muchila.lojaitens.json`, editado pela página **Site → Loja de itens** do Mu Chila Admin.
   - O preço é calculado de novo no servidor. Se a tabela mudou desde que a página abriu, a compra é recusada com o preço novo, em vez de cobrar outro valor.
 - **Valores iniciais** (para o dono ajustar):
   - item 20 a 100 Cash (pelo nível de drop), asas de 1ª geração 120 e de 2ª geração 300, anéis e pingentes 60;
@@ -166,7 +166,7 @@ Página **Painel do jogador → Loja de itens** (`usercp/lojaitens`, também no 
   - Exemplo: Dragon Helm +15 +28 com sorte e 6 excelentes = **730 Cash**.
 - **Catálogo inicial**: 380 itens em 14 categorias.
   - Entram os itens que caem com nível de drop até 100, sem as cópias "Bound"/"-J", mais as asas de 1ª e 2ª geração e os anéis e pingentes com excelente.
-  - Os sets S9+ (Bloodangel, Darkangel, Holyangel...) ficaram de fora de propósito; dá para incluir pela aba do painel.
+  - Os sets S9+ (Bloodangel, Darkangel, Holyangel...) ficaram de fora de propósito; dá para incluir pela página Site → Loja de itens do painel.
 - **O que cada item aceita** vem dos arquivos do servidor (`ItemOption.txt`, conferido em 30/09/2026):
   - skill só se o item tem skill no Item.txt;
   - sorte em armas, escudos, armaduras e asas;
@@ -188,15 +188,15 @@ Página **Painel do jogador → Loja de itens** (`usercp/lojaitens`, também no 
 
 ## Páginas de 01/10/2026
 
-Textos e preços destas páginas são editados na aba **Site** do Mu Chila Admin (ver OPERACAO.md). Tabelas e procedimento: `muchila\sql\MUCHILA_SITE.sql` (o `Instalar-Modulos.ps1` aplica).
+Textos e preços destas páginas são editados nas páginas do grupo **Site** do Mu Chila Admin (ver OPERACAO.md). Tabelas e procedimento: `muchila\sql\MUCHILA_SITE.sql` (o `Instalar-Modulos.ps1` aplica).
 
-- **Termos de Serviço, Política de Privacidade e Política de Reembolso** (`modules\tos.php`, `privacy.php`, `refunds.php`): o texto fica em `includes\config\muchila.paginas.json` (aba Site → Páginas). Os originais do WebEngine eram modelos vazios. **O dono precisa revisar** os textos, principalmente o reembolso.
-- **Contate-nos** (`modules\contact.php`): o PC não tem servidor de e-mail, então a mensagem fica na tabela `MUCHILA_CONTATO`. O dono lê e responde na aba **Site → Mensagens**.
+- **Termos de Serviço, Política de Privacidade e Política de Reembolso** (`modules\tos.php`, `privacy.php`, `refunds.php`): o texto fica em `includes\config\muchila.paginas.json` (página Site → Páginas). Os originais do WebEngine eram modelos vazios. **O dono precisa revisar** os textos, principalmente o reembolso.
+- **Contate-nos** (`modules\contact.php`): o PC não tem servidor de e-mail, então a mensagem fica na tabela `MUCHILA_CONTATO`. O dono lê e responde na página **Site → Mensagens**.
   - Quem manda logado vê as próprias mensagens e a resposta na página. Visitante precisa deixar um contato (e-mail, Discord ou WhatsApp).
   - Limite: 3 mensagens por hora por conta ou por IP.
   - Os canais (Discord, WhatsApp, e-mail, Instagram) só aparecem depois de preenchidos.
 - **Comprar Zen** (`modules\usercp\buyzen.php` + `includes\muchila\MuChilaZen.php`): troca o do WebEngine. Pacotes pagos com **Cash** (`WCoinC`); o Zen vai para o **baú da conta** (`warehouse.Money`).
-  - Pacotes em `includes\config\muchila.zen.json` (aba Site → Comprar Zen). Iniciais: 50 milhões por 10 Cash, 200 milhões por 35, 500 milhões por 80 e 1 bilhão por 150.
+  - Pacotes em `includes\config\muchila.zen.json` (página Site → Comprar Zen). Iniciais: 50 milhões por 10 Cash, 200 milhões por 35, 500 milhões por 80 e 1 bilhão por 150.
   - Regras:
     - a conta precisa estar fora do jogo há 30 s (o servidor regrava o baú ao sair);
     - o baú não passa de 2 bilhões (limite do jogo);
@@ -215,7 +215,7 @@ Textos e preços destas páginas são editados na aba **Site** do Mu Chila Admin
 - **Página inicial**: a situação do servidor soma os jogadores de todos os servidores e mostra quantos há em cada um; o limite de jogadores saiu.
 - **Agenda de eventos**: o `api/events.php` do WebEngine montava "amanhã" com o mês atual. No último dia do mês, o próximo evento virava o dia 1 do **mesmo** mês (no passado), e o quadro mostrava datas antigas. O servidor estava certo. O `Instalar-Modulos.ps1` corrige o arquivo (passo 3e).
 - **Downloads** (`modules\downloads.php`): só o launcher, com "Como jogar" em 4 passos, o aviso do Radmin e o botão DIAGNÓSTICO do launcher. Os textos apareciam como "jÃ¡" porque o Windows PowerShell 5.1 lia o instalador (UTF-8 sem BOM) como ANSI; agora ele é salvo com BOM.
-- **Notícias**: publicadas pela aba Site → Notícias do painel.
+- **Notícias**: publicadas pela página Site → Notícias do painel.
 - **Erros (issue #38)**: nenhuma página do Mu Chila mostra erro de SQL ou do PHP.
   - `MuChilaUI::erro()` troca o erro por uma mensagem amigável e grava o detalhe no log do PHP; só os avisos escritos para o jogador ("Cash insuficiente"...) aparecem como estão.
   - A causa do #38 (permissão de EXECUTE negada no `WZ_GetItemSerial` para o `muchila_site`) foi resolvida com GRANT no `MUCHILA_LOJAITENS.sql`.
@@ -254,7 +254,7 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\includes\muchila\MuChilaUI.php` | Componentes visuais do tema (título, aviso, carteira, estatística, ícone...) |
 | `www\modules\home.php`, `www\modules\usercp.php` | Página inicial e painel do jogador do tema (trocam os do WebEngine, guardados como `.original`) |
 | `www\includes\muchila\MuChilaLojaItens.php`, `www\modules\usercp\lojaitens.php` | Loja de itens: núcleo (regras, preço, compra) e página |
-| `www\includes\config\muchila.lojaitens.json` | Catálogo e preços da loja de itens (aba "Loja de itens" do Mu Chila Admin) |
+| `www\includes\config\muchila.lojaitens.json` | Catálogo e preços da loja de itens (página "Site → Loja de itens" do Mu Chila Admin) |
 | `www\api\muchila-item-imagem.php` | Foto de um item (as do MuEditor) |
 | `sql\MUCHILA_LOJAITENS.sql` | Tabela das compras da loja de itens |
 | `testes\teste-lojaitens.php` | Teste da loja de itens (28 casos sem banco; `--banco` faz compras de verdade com a conta `lojaitensteste`) |
@@ -262,7 +262,7 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `www\includes\muchila\MuChilaPaginas.php`, `www\includes\config\muchila.paginas.json` | Textos das páginas e canais do Contate-nos; mensagens do Contate-nos (`MuChilaContato`) |
 | `www\modules\usercp\buyzen.php`, `www\includes\muchila\MuChilaZen.php`, `www\includes\config\muchila.zen.json` | Comprar Zen (página, núcleo e pacotes) |
 | `www\modules\usercp\clearskilltree.php`, `www\includes\muchila\MuChilaMaster.php` | Resetar Skill-Tree seguro |
-| `www\includes\muchila\noticias-cli.php` | Notícias pela linha de comando (usado pela aba Site do Mu Chila Admin; só roda na linha de comando) |
+| `www\includes\muchila\noticias-cli.php` | Notícias pela linha de comando (usado pela página Site → Notícias do Mu Chila Admin; só roda na linha de comando) |
 | `sql\MUCHILA_SITE.sql` | Tabelas `MUCHILA_CONTATO` e `MUCHILA_ZEN_COMPRAS` e o procedimento `MuChila_LimparArvoreMaster` |
 | `testes\teste-paginas-site.php` | Teste das páginas de 01/10/2026 (19 casos sem banco; `--banco` com a conta `zenteste`) |
 | `testes\teste-arvore-sql.ps1` | Teste do procedimento do Resetar Skill-Tree no `tempdb` (12 casos; `-Servidor .` em outro PC) |

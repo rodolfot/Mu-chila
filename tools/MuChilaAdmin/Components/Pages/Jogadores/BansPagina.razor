@@ -1,0 +1,118 @@
+@page "/bans"
+@attribute [Authorize(Policy = Politicas.Moderar)]
+@inject Bans Bans
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+
+<CabecalhoPagina Titulo="Bans" Descricao="Banir com motivo e prazo; ban temporário vence sozinho. O jogo só deixa entrar quem não está banido." Icone="ban">
+    <button type="button" class="btn btn-perigo" @onclick="() => janela = true"><Icone Nome="ban" Classe="ico-sm" />Banir uma conta</button>
+</CabecalhoPagina>
+
+<Cartao Titulo="Banidas agora" Icone="ban" SemPadding="true" Subtitulo="Sem registro: banida antes do painel web ou direto no banco (sem motivo guardado)">
+    <TabelaDados Dados="ativos" Titulo="Contas banidas" Celulas="celulasAtivos" ColunaDestaque="Conta" TextoVazio="Nenhuma conta banida." OrdemInicial="Início" OrdemInicialDecrescente="true">
+        <AcoesLinha Context="r">
+            <a class="btn btn-fantasma btn-sm" href="@($"contas/{Uri.EscapeDataString((string)r["Conta"])}")">Abrir</a>
+            <button type="button" class="btn btn-secundario btn-sm" @onclick="@(() => Desbanir((string)r["Conta"]))"><Icone Nome="unlock" Classe="h-3.5 w-3.5" />Desbanir</button>
+        </AcoesLinha>
+    </TabelaDados>
+</Cartao>
+
+<Cartao Titulo="Histórico de bans" Icone="history" SemPadding="true" Classe="mt-5">
+    <TabelaDados Dados="historico" Titulo="Histórico de bans" ColunaDestaque="Conta" TextoVazio="Nenhum ban feito pelo painel ainda." Celulas="celulasHistorico" />
+</Cartao>
+
+<Janela @bind-Aberta="janela" Titulo="Banir uma conta" Subtitulo="A conta online é deslogada. O motivo fica no histórico.">
+    <ChildContent>
+        <label class="rotulo" for="bconta">Conta</label>
+        <input id="bconta" class="entrada" maxlength="10" @bind="conta" placeholder="nome da conta (não do personagem)" />
+        <label class="rotulo mt-3" for="bmotivo">Motivo</label>
+        <textarea id="bmotivo" class="entrada" rows="3" maxlength="300" @bind="motivo" placeholder="ex.: uso de programa de trapaça"></textarea>
+        <label class="rotulo mt-3">Prazo</label>
+        <div class="flex flex-wrap gap-2">
+            @foreach (var (id, nome) in Prazos)
+            {
+                <button type="button" class="btn btn-sm @(prazo == id ? "btn-primario" : "btn-secundario")" @onclick="() => prazo = id">@nome</button>
+            }
+        </div>
+        @if (prazo == "data")
+        {
+            <input type="datetime-local" class="entrada mt-3 w-auto" @bind="ate" />
+        }
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => janela = false">Cancelar</button>
+        <button type="button" class="btn btn-perigo" @onclick="Banir" disabled="@ocupado"><Icone Nome="ban" Classe="ico-sm" />Banir</button>
+    </Rodape>
+</Janela>
+
+@code {
+    static readonly (string, string)[] Prazos = { ("1h", "1 hora"), ("1d", "1 dia"), ("3d", "3 dias"), ("7d", "7 dias"), ("30d", "30 dias"), ("perm", "Permanente"), ("data", "Até a data...") };
+    DataTable? ativos, historico;
+    bool janela, ocupado;
+    string conta = "", motivo = "", prazo = "7d";
+    DateTime ate = DateTime.Now.AddDays(7);
+    Dictionary<string, RenderFragment<DataRow>> celulasAtivos = new(), celulasHistorico = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        celulasAtivos = new()
+        {
+            ["Motivo"] = r => r["SemRegistro"] is int s && s == 1 ? @<span class="etiqueta etq-cinza">sem registro</span> : @<span>@r["Motivo"]</span>,
+            ["Fim"] = r => r["Fim"] is DateTime f ? @<span>@f.ToString("dd/MM/yyyy HH:mm")</span> : r["SemRegistro"] is int s && s == 1 ? @<span class="text-slate-400">—</span> : @<span class="etiqueta etq-vermelha">permanente</span>,
+            ["Online"] = r => r["Online"] is int o && o == 1 ? @<span class="etiqueta etq-verde">online</span> : @<span class="text-slate-400">—</span>,
+        };
+        celulasHistorico = new()
+        {
+            ["Situação"] = r => (string)r["Situação"] == "ativo" ? @<span class="etiqueta etq-vermelha">ativo</span> : @<span class="etiqueta etq-cinza">encerrado</span>,
+        };
+        await Carregar();
+    }
+
+    async Task Carregar()
+    {
+        await Task.Run(() =>
+        {
+            var a = Bans.Ativos();
+            a.Columns.Remove("Id");
+            ativos = a;
+            var h = new DataTable();
+            foreach (var c in new[] { "Conta", "Motivo", "Início", "Prazo", "Banido por", "Situação", "Encerrado em", "Encerrado por", "Motivo do fim" }) h.Columns.Add(c, c is "Início" or "Encerrado em" ? typeof(DateTime) : typeof(string));
+            foreach (var b in Bans.Historico(max: 1000))
+                h.Rows.Add(b.Conta, b.Motivo, b.Inicio, b.Prazo, b.Por, b.Ativo ? "ativo" : "encerrado", (object?)b.EncerradoEm ?? DBNull.Value, b.EncerradoPor ?? "", b.MotivoEncerramento ?? "");
+            historico = h;
+        });
+    }
+
+    async Task Banir()
+    {
+        var c = conta.Trim();
+        DateTime? fim = prazo switch
+        {
+            "1h" => DateTime.Now.AddHours(1), "1d" => DateTime.Now.AddDays(1), "3d" => DateTime.Now.AddDays(3), "7d" => DateTime.Now.AddDays(7),
+            "30d" => DateTime.Now.AddDays(30), "data" => ate, _ => null,
+        };
+        var quem = await Acoes.Login();
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("conta.ban", c, () =>
+                {
+                    var b = Bans.Banir(c, motivo, fim, quem);
+                    return OperacoesConta.Juntar(new[] { $"{c} banida ({b.Prazo}). Motivo: {b.Motivo}", OperacoesConta.DeslogarSeOnline(c, "o ban impede o próximo login") });
+                }, Politicas.Moderar, $"prazo={(fim?.ToString("yyyy-MM-dd HH:mm") ?? "permanente")} motivo={motivo}"))
+            {
+                janela = false; conta = ""; motivo = "";
+            }
+        }
+        finally { ocupado = false; }
+        await Carregar();
+    }
+
+    async Task Desbanir(string c)
+    {
+        if (!await Confirmar.Perguntar($"Desbanir {c}?", "A conta volta a poder entrar no jogo na hora.", "Desbanir")) return;
+        var quem = await Acoes.Login();
+        await Acoes.Executar("conta.desban", c, () => { Bans.Desbanir(c, "desbanida pela tela Bans", quem); return $"{c} desbanida."; }, Politicas.Moderar);
+        await Carregar();
+    }
+}

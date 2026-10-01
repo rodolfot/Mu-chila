@@ -1,0 +1,20 @@
+@inherits LayoutComponentBase
+@inject Configuracao Cfg
+
+@* Tela de login e de primeiro acesso: fundo com o brilho dourado do Mu Chila, cartão no centro. *@
+<div class="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-4 py-10">
+    <div class="pointer-events-none absolute -top-40 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-48 -right-24 h-[26rem] w-[26rem] rounded-full bg-rose-600/10 blur-3xl"></div>
+    <div class="relative w-full max-w-sm">
+        <div class="mb-6 flex flex-col items-center text-center">
+            <img src="favicon.svg" alt="" class="h-14 w-14 drop-shadow-[0_8px_24px_rgba(245,158,11,.45)]" />
+            <h1 class="mt-3 text-xl font-semibold text-white">Mu Chila Admin</h1>
+            <p class="text-sm text-slate-400">Painel de administração do servidor</p>
+        </div>
+        @Body
+        @if (Cfg.Desenvolvimento)
+        {
+            <p class="mt-4 text-center text-xs font-medium text-violet-300">Ambiente de desenvolvimento</p>
+        }
+    </div>
+</div>

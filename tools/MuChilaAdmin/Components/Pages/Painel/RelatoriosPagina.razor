@@ -1,0 +1,72 @@
+@page "/relatorios"
+@inject AuthenticationStateProvider Auth
+
+<CabecalhoPagina Titulo="Relatórios" Descricao="Baixe em CSV (abre no Excel, com acentos e ; como separador) ou PDF (pronto para imprimir). Cada download fica na auditoria." Icone="chart" />
+
+<div class="cartao mb-5 flex flex-wrap items-end gap-3 p-4">
+    <div>
+        <label class="rotulo" for="rde">De</label>
+        <input id="rde" type="date" class="entrada" @bind="de" />
+    </div>
+    <div>
+        <label class="rotulo" for="rate">Até</label>
+        <input id="rate" type="date" class="entrada" @bind="ate" />
+    </div>
+    <div class="flex flex-wrap gap-1.5">
+        @foreach (var (nome, dias) in Atalhos)
+        {
+            <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Periodo(dias)">@nome</button>
+        }
+    </div>
+    <p class="ajuda basis-full">O período vale para os relatórios marcados com <Icone Nome="calendar" Classe="inline h-3.5 w-3.5" />; os outros mostram a situação de agora.</p>
+</div>
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    @foreach (var r in Catalogo.Todos)
+    {
+        var pode = user != null && Endpoints.PodeVer(user, r.PapelMinimo);
+        <div class="cartao flex flex-col p-5 @(pode ? "" : "opacity-50")">
+            <div class="flex items-start gap-3">
+                <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400"><Icone Nome="@IconeDe(r.Id)" Classe="ico" /></span>
+                <div class="min-w-0">
+                    <h2 class="flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">@r.Nome @if (r.UsaPeriodo) { <Icone Nome="calendar" Classe="h-3.5 w-3.5 text-slate-400" /> }</h2>
+                    <p class="mt-1 text-sm text-slate-500">@r.Descricao</p>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center gap-2 pt-1 md:mt-auto">
+                @if (pode)
+                {
+                    <a class="btn btn-secundario btn-sm" href="@Link(r, "csv")" download><Icone Nome="file" Classe="h-3.5 w-3.5 text-emerald-500" />CSV</a>
+                    <a class="btn btn-secundario btn-sm" href="@Link(r, "pdf")" download><Icone Nome="file" Classe="h-3.5 w-3.5 text-rose-500" />PDF</a>
+                }
+                else
+                {
+                    <span class="text-xs text-slate-500">Só para @Papeis.Nome(r.PapelMinimo).ToLowerInvariant()</span>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    static readonly (string, int)[] Atalhos = { ("7 dias", 7), ("30 dias", 30), ("90 dias", 90), ("Este ano", -1) };
+    DateTime? de = DateTime.Today.AddDays(-30), ate = DateTime.Today;
+    System.Security.Claims.ClaimsPrincipal? user;
+
+    protected override async Task OnInitializedAsync() => user = (await Auth.GetAuthenticationStateAsync()).User;
+
+    void Periodo(int dias)
+    {
+        ate = DateTime.Today;
+        de = dias < 0 ? new DateTime(DateTime.Today.Year, 1, 1) : DateTime.Today.AddDays(-dias);
+    }
+
+    string Link(DefinicaoRelatorio r, string formato) =>
+        $"api/relatorios/{r.Id}.{formato}" + (r.UsaPeriodo ? $"?de={de:yyyy-MM-dd}&ate={ate:yyyy-MM-dd}" : "");
+
+    static string IconeDe(string id) => id switch
+    {
+        "contas" => "users", "personagens" => "sword", "bans" => "ban", "pedidos" => "cart", "lojaitens" => "package", "zen" => "coin",
+        "mercado" => "market", "online" => "activity", "mensagens" => "inbox", "auditoria" => "shield-check", _ => "file",
+    };
+}

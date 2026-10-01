@@ -78,7 +78,7 @@ No fim, as pendências que ainda estão abertas.
   - Não é a 4ª classe abaixo do 400 nem o Master Level: a mamaeupo está assim e acerta normalmente, com 10 pontos nas mesmas habilidades.
   - **Não se reproduz jogando normalmente.** Testado no YolaxD (24/09/2026): 1 e 2 pontos em "Add Attack Success Rate" dão o bônus certo (+511 com 2 pontos), e `/reset` feito com habilidades aprendidas mantém tudo normal.
   - O Quest1 é um personagem que veio pronto no kit (13 milhões de experiência master e 1 reset de fábrica). Antes da correção, a memória mostrava o Master Level dele valendo **-3**. O estado inválido provavelmente veio desses dados de fábrica junto com o reset.
-- **Solução:** no **Mu Chila Admin**, aba "VIP e contas", selecione a conta e use **"Zerar habilidades master"**. A conta precisa estar offline. As habilidades são apagadas, os pontos master voltam a ficar livres (1 por Master Level) e o estado anterior fica em `C:\MuServer\DB\backup-caixas-master-habilidades.csv`.
+- **Solução:** no **Mu Chila Admin**, página **Contas**, abra a conta e use **"Zerar habilidades master"**. A conta precisa estar offline. As habilidades são apagadas, os pontos master voltam a ficar livres (1 por Master Level) e o estado anterior fica em `C:\MuServer\DB\backup-caixas-master-habilidades.csv`.
   - Sem abrir a janela: `C:\MuServer\MuChilaAdmin\MuChilaAdmin.exe --zerar-master <conta> <personagem> <arquivo-de-resultado>`.
   - Feito no Quest1: acerto 3.923, acerto PvP 8.484, defesa PvP 1.006.
 
@@ -102,6 +102,20 @@ No fim, as pendências que ainda estão abertas.
 ### Caixas (Chicken Box, Earring Box...) não sobem do chão nem descem para o chão
 - **Causa:** as caixas de evento ficam no **Inventário de Evento**. No `GameServerInfo - Common.dat`, `EventInventoryExpireYear/Month/Day` vinha como **31/12/2015**; com a data vencida, o servidor trata esse inventário como fechado e recusa, sem mensagem, pegar ou mover esses itens.
 - **Solução:** validade em **31/12/2037** nos três GameServers, aplicada com Reload Common. Talvez seja preciso sair e entrar no personagem para o cliente mostrar o inventário de evento. O ano 2037 é o limite seguro para executáveis 32 bits antigos, por causa do problema de 2038.
+
+### Árvore master mostra "10/20", mas não passa do 10; Defense Increase com "+445%" (issue #36)
+- **Causa:** erros da tradução em português do cliente (`Data\Local\Por\masterskilltooltip_por.bmd`).
+  - 11 habilidades vão só até o nível 10: o servidor (`Data\Skill\MasterSkillTree.txt`) e o próprio cliente (`Data\Local\masterskilltreedata.bmd`) concordam, e a dica em inglês diz "/10". A em português dizia "/20". As habilidades: 353, 400, 418, 425, 426, 427, 430, 432, 438, 468 e 695 (ex.: One-handed Sword Mastery). O "Você não pode aumentar mais níveis" vem do cliente, que para no 10.
+  - Dicas que **somam pontos** apareciam como porcentagem. A Defense Increase (309) dá **+445 de defesa** no nível 20, não 445%: em inglês é "Defense increases by %d". O mesmo nas habilidades 322, 375, 412, 447, 478, 549 e 550.
+  - Descrições quebradas ou com um número a mais, que mostrariam lixo (392 a 395, 529, 574 e 577). Duas sem o "%" (415, 517). A 662 dizia "/10" com máximo 20.
+  - A habilidade 470 ia até 20 no cliente e até 10 no servidor.
+- **Solução (01/10/2026):** `tools\Corrigir-DicasArvoreMaster.ps1`.
+  - Troca só os textos (os marcadores `%d`/`%0.2f` continuam iguais) e põe o máximo da 470 em 10 no cliente.
+  - Recalcula a soma de verificação (chave 0x2BC1) e faz backup.
+  - `-SoConferir` mostra o que mudaria. Rodar de novo não muda nada.
+  - Os jogadores recebem pelo launcher (`Publicar-Launcher.ps1`).
+  - **Falta conferir no jogo.**
+- **Ficou como está:** 563 e 753 vão até 20 no servidor, mas o cliente para no 10 e a dica diz "/10" (o jogador vê 10/10, coerente).
 
 ## Pendências
 
@@ -135,6 +149,7 @@ No fim, as pendências que ainda estão abertas.
   - Gatilho `TR_MuChila_ClasseInicial` na tabela `Character`: DW, DK, Elfa e Summoner já nascem na 2ª classe, com +1, igual ao `/change`. O script é `DB\1 - Querys\Correcoes (Gremory e RestoreItem)\ClasseInicial_2aClasse.sql`.
   - Os personagens que ainda estavam na básica (MalocoBR, Yololo, asas, Quest4) subiram +1.
   - MG, DL e RF não precisam. Grow Lancer e Rune Wizard não foram alterados, por falta de confirmação. Desde 27/09/2026 o `/change` está desligado: a evolução é pelas missões (ver OPERACAO.md).
+- **Complemento (issue #35, 01/10/2026):** só a classe +1 deixava as missões da 2ª classe (índices 0 e 1 do `Quest.txt`) por fazer. O jogo mostrava Blade Knight/Soul Master, mas o personagem tinha de fazer a evolução da 2ª classe para seguir a corrente de missões (2ª → 3ª → 4ª). O gatilho agora também marca as duas missões como concluídas em `Character.Quest` (1º byte `0xFA`, igual aos personagens de 2ª classe do kit) e dá os 20 pontos que elas dão. Os personagens já criados se corrigem com `ClasseInicial_MissoesDa2aClasse_existentes.sql` (rodar uma vez, com o servidor desligado; pula contas online). Testado no banco de desenvolvimento; **falta conferir no jogo** que o NPC das missões oferece direto a missão seguinte.
 
 ### Item comprado não pode ser usado / habilidades não funcionam em algumas contas (provável causa única)
 - **Caso da mamaeupo:**

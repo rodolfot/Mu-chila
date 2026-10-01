@@ -1,0 +1,274 @@
+@implements IAsyncDisposable
+@inject Alertas Alertas
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<header class="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 bg-white/85 px-4 backdrop-blur sm:px-6 dark:border-white/10 dark:bg-slate-950/80">
+    <button type="button" class="btn btn-fantasma btn-icone lg:hidden" @onclick="AoAbrirMenu" aria-label="Abrir o menu"><Icone Nome="menu" /></button>
+
+    @* busca rápida: contas, personagens e telas *@
+    <div class="relative max-w-md flex-1" id="busca-caixa">
+        <label class="relative block">
+            <span class="sr-only">Buscar conta, personagem ou tela</span>
+            <Icone Nome="search" Classe="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input id="busca-global" class="entrada pl-9 pr-10" placeholder="Buscar conta, personagem ou tela..." autocomplete="off"
+                   value="@busca" @oninput="Buscar" @onkeydown="TeclaBusca" @onfocus="() => mostrarBusca = busca.Length > 0" />
+            <span class="kbd pointer-events-none absolute right-2.5 top-1/2 hidden -translate-y-1/2 sm:inline">/</span>
+        </label>
+        @if (mostrarBusca && busca.Length > 0)
+        {
+            <div class="animar-entrada absolute inset-x-0 top-full z-40 mt-1.5 max-h-[70vh] overflow-auto rounded-xl border border-slate-200 bg-white py-1.5 shadow-xl dark:border-white/10 dark:bg-slate-900">
+                @if (resultados.Count == 0)
+                {
+                    <p class="px-4 py-3 text-sm text-slate-500">@(buscando ? "Buscando..." : "Nada encontrado.")</p>
+                }
+                @foreach (var (r, i) in resultados.Select((r, i) => (r, i)))
+                {
+                    <a href="@r.Href" class="flex items-center gap-3 px-3 py-2 text-sm @(i == marcado ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")" @onclick="Limpar">
+                        <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400"><Icone Nome="@r.Icone" Classe="ico-sm" /></span>
+                        <span class="min-w-0">
+                            <span class="block truncate font-medium text-slate-800 dark:text-slate-100">@r.Titulo</span>
+                            <span class="block truncate text-xs text-slate-500">@r.Detalhe</span>
+                        </span>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="ml-auto flex items-center gap-1">
+        @* alertas *@
+        <div class="relative" id="sino">
+            <button type="button" class="btn btn-fantasma btn-icone relative" @onclick="AlternarAlertas" aria-label="Alertas (@naoLidos não lido(s))">
+                <Icone Nome="bell" />
+                @if (naoLidos > 0)
+                {
+                    <span class="absolute -right-0.5 -top-0.5 grid min-w-[1.15rem] place-items-center rounded-full px-1 text-[10px] font-bold leading-[1.15rem] text-white @(criticos > 0 ? "bg-rose-600 pulsar" : "bg-amber-600")">@(naoLidos > 99 ? "99+" : naoLidos)</span>
+                }
+            </button>
+            @if (alertasAbertos)
+            {
+                <div class="animar-entrada absolute right-0 z-40 mt-2 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-white/10 dark:bg-slate-900">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 dark:border-white/10">
+                        <p class="text-sm font-semibold text-slate-900 dark:text-white">Alertas</p>
+                        @if (naoLidos > 0)
+                        {
+                            <button type="button" class="text-xs link" @onclick="MarcarTodos">Marcar todos como lidos</button>
+                        }
+                    </div>
+                    <div class="max-h-96 overflow-auto">
+                        @if (recentes.Count == 0)
+                        {
+                            <Vazio Texto="Nenhum alerta aberto." Icone="check-circle" />
+                        }
+                        @foreach (var a in recentes)
+                        {
+                            <a href="@(a.Link ?? "alertas")" class="flex gap-3 border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-slate-50 dark:border-white/5 dark:hover:bg-white/5"
+                               @onclick="() => alertasAbertos = false">
+                                <span class="mt-1 h-2 w-2 shrink-0 rounded-full @(a.Severidade == Severidade.Critico ? "bg-rose-500" : a.Severidade == Severidade.Aviso ? "bg-amber-500" : "bg-sky-500") @(a.Lido ? "opacity-30" : "")"></span>
+                                <span class="min-w-0">
+                                    <span class="block text-sm font-medium text-slate-800 dark:text-slate-100">@a.Titulo</span>
+                                    <span class="mt-0.5 line-clamp-2 block text-xs text-slate-500">@a.Texto</span>
+                                    <span class="mt-1 block text-[11px] text-slate-400">@Tempo(a.Atualizado)</span>
+                                </span>
+                            </a>
+                        }
+                    </div>
+                    <a href="alertas" class="block border-t border-slate-200 px-4 py-2.5 text-center text-xs link dark:border-white/10" @onclick="() => alertasAbertos = false">Ver todos os alertas</a>
+                </div>
+            }
+        </div>
+
+        <button type="button" class="btn btn-fantasma btn-icone" @onclick="AlternarTema" aria-label="Trocar tema claro/escuro" title="Tema claro/escuro">
+            <Icone Nome="@(escuro ? "sun" : "moon")" />
+        </button>
+
+        @* usuário *@
+        <AuthorizeView Context="auth">
+            <div class="relative" id="usuario-menu">
+                <button type="button" class="ml-1 flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-slate-100 dark:hover:bg-white/5" @onclick="() => usuarioAberto = !usuarioAberto">
+                    <span class="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-xs font-bold text-slate-950">@Iniciais(Identidade.NomeDe(auth.User))</span>
+                    <span class="hidden text-left leading-tight md:block">
+                        <span class="block text-sm font-medium text-slate-800 dark:text-slate-100">@Identidade.NomeDe(auth.User)</span>
+                        <span class="block text-[11px] text-slate-500">@Papeis.Nome(Identidade.PapelDe(auth.User))</span>
+                    </span>
+                    <Icone Nome="chevron-down" Classe="hidden h-4 w-4 text-slate-400 md:block" />
+                </button>
+                @if (usuarioAberto)
+                {
+                    <div class="animar-entrada absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-white/10 dark:bg-slate-900">
+                        <div class="border-b border-slate-200 px-4 py-2.5 dark:border-white/10">
+                            <p class="truncate text-sm font-medium text-slate-900 dark:text-white">@auth.User.Identity?.Name</p>
+                            <p class="text-xs text-slate-500">@Papeis.Nome(Identidade.PapelDe(auth.User))</p>
+                        </div>
+                        <a href="minha-conta" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-white/5" @onclick="() => usuarioAberto = false"><Icone Nome="key" Classe="ico-sm" />Minha conta e senha</a>
+                        <button type="button" class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-slate-50 dark:hover:bg-white/5" @onclick="PedirNotificacoes"><Icone Nome="bell" Classe="ico-sm" />Notificações no Windows</button>
+                        <form method="post" action="sair" class="border-t border-slate-200 dark:border-white/10">
+                            <AntiforgeryToken />
+                            <button type="submit" class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-500/10"><Icone Nome="logout" Classe="ico-sm" />Sair do painel</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </AuthorizeView>
+    </div>
+</header>
+
+@code {
+    [Parameter] public EventCallback AoAbrirMenu { get; set; }
+    [CascadingParameter] Task<AuthenticationState> EstadoAuth { get; set; } = default!;
+
+    sealed record Resultado(string Titulo, string Detalhe, string Href, string Icone);
+
+    string busca = "";
+    bool mostrarBusca, buscando, alertasAbertos, usuarioAberto, escuro = true;
+    int marcado = -1, naoLidos, criticos;
+    List<Resultado> resultados = new();
+    List<Alerta> recentes = new();
+    HashSet<int> jaNotificados = new();
+    CancellationTokenSource? cancelaBusca;
+    Timer? relogio;
+    IJSObjectReference? foraBusca, foraSino, foraUsuario;
+    DotNetObjectReference<Fechador>? refBusca, refSino, refUsuario;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Alertas.Mudou += AlertasMudaram;
+        await AtualizarAlertas(notificar: false);
+        relogio = new Timer(_ => AlertasMudaram(), null, TimeSpan.FromSeconds(45), TimeSpan.FromSeconds(45));
+    }
+
+    protected override async Task OnAfterRenderAsync(bool primeira)
+    {
+        if (!primeira) return;
+        try
+        {
+            escuro = await JS.InvokeAsync<bool>("muAdmin.temaEscuro");
+            refBusca = DotNetObjectReference.Create(new Fechador(() => { mostrarBusca = false; StateHasChanged(); }));
+            refSino = DotNetObjectReference.Create(new Fechador(() => { alertasAbertos = false; StateHasChanged(); }));
+            refUsuario = DotNetObjectReference.Create(new Fechador(() => { usuarioAberto = false; StateHasChanged(); }));
+            foraBusca = await JS.InvokeAsync<IJSObjectReference>("muAdmin.aoClicarFora", "busca-caixa", refBusca);
+            foraSino = await JS.InvokeAsync<IJSObjectReference>("muAdmin.aoClicarFora", "sino", refSino);
+            foraUsuario = await JS.InvokeAsync<IJSObjectReference>("muAdmin.aoClicarFora", "usuario-menu", refUsuario);
+            StateHasChanged();
+        }
+        catch (JSDisconnectedException) { }
+    }
+
+    void AlertasMudaram() => _ = InvokeAsync(async () => { await AtualizarAlertas(notificar: true); StateHasChanged(); });
+
+    async Task AtualizarAlertas(bool notificar)
+    {
+        try
+        {
+            var (_, nl, cr) = await Task.Run(Alertas.Contagem);
+            naoLidos = nl; criticos = cr;
+            recentes = await Task.Run(() => Alertas.Lista(incluirResolvidos: false, max: 12));
+            if (notificar)
+                foreach (var a in recentes.Where(a => !a.Lido && a.Severidade == Severidade.Critico && jaNotificados.Add(a.Id)))
+                    await JS.InvokeVoidAsync("muAdmin.notificar", "Mu Chila Admin: " + a.Titulo, a.Texto ?? "");
+            else foreach (var a in recentes) jaNotificados.Add(a.Id);
+        }
+        catch { /* banco fora do ar: o sino fica como estava */ }
+    }
+
+    async Task AlternarAlertas()
+    {
+        alertasAbertos = !alertasAbertos;
+        if (alertasAbertos) await AtualizarAlertas(notificar: false);
+    }
+
+    async Task MarcarTodos()
+    {
+        var u = (await EstadoAuth).User.Identity?.Name ?? "?";
+        await Task.Run(() => Alertas.MarcarTodosLidos(u));
+        await AtualizarAlertas(notificar: false);
+    }
+
+    async Task AlternarTema() => escuro = await JS.InvokeAsync<bool>("muAdmin.alternarTema");
+
+    async Task PedirNotificacoes()
+    {
+        usuarioAberto = false;
+        var r = await JS.InvokeAsync<string>("muAdmin.pedirNotificacoes");
+        await JS.InvokeVoidAsync("muAdmin.notificar", "Mu Chila Admin", r == "granted" ? "Notificações ligadas: alertas críticos aparecem aqui." : "");
+    }
+
+    async Task Buscar(ChangeEventArgs e)
+    {
+        busca = e.Value?.ToString() ?? "";
+        mostrarBusca = busca.Trim().Length > 0;
+        marcado = -1;
+        cancelaBusca?.Cancel();
+        if (!mostrarBusca) { resultados = new(); return; }
+        var cts = cancelaBusca = new CancellationTokenSource();
+        buscando = true;
+        try { await Task.Delay(250, cts.Token); } catch (TaskCanceledException) { return; }
+        var q = busca.Trim();
+        var user = (await EstadoAuth).User;
+        var lista = Navegacao.Itens.Where(i => Navegacao.Pode(i, user) && (i.Titulo.Contains(q, StringComparison.OrdinalIgnoreCase) || i.Descricao.Contains(q, StringComparison.OrdinalIgnoreCase)))
+            .Take(4).Select(i => new Resultado(i.Titulo, i.Descricao, i.Href == "" ? "./" : i.Href, i.Icone)).ToList();
+        try
+        {
+            var achados = await Task.Run(() => Db.Query(@"
+                SELECT TOP 6 'conta' AS t, m.memb___id AS n, m.memb___id AS c, CASE WHEN s.ConnectStat = 1 THEN 'online' ELSE '' END AS x
+                  FROM MEMB_INFO m LEFT JOIN MEMB_STAT s ON s.memb___id = m.memb___id WHERE m.memb___id LIKE @q
+                UNION ALL
+                SELECT TOP 6 'personagem', Name, AccountID, 'nível ' + CAST(cLevel AS varchar) FROM Character WHERE Name LIKE @q",
+                ("@q", AuditoriaSql.Like(q) + "%")), cts.Token);
+            foreach (DataRow r in achados.Rows)
+            {
+                var conta = (string)r["c"];
+                lista.Add((string)r["t"] == "conta"
+                    ? new Resultado(conta, "Conta" + ((string)r["x"] == "" ? "" : " · online agora"), $"contas/{Uri.EscapeDataString(conta)}", "user")
+                    : new Resultado((string)r["n"], $"Personagem da conta {conta} · {r["x"]}", $"contas/{Uri.EscapeDataString(conta)}?personagem={Uri.EscapeDataString((string)r["n"])}", "sword"));
+            }
+        }
+        catch (TaskCanceledException) { return; }
+        catch { /* sem banco: só as telas */ }
+        if (cts.IsCancellationRequested) return;
+        resultados = lista;
+        buscando = false;
+    }
+
+    void TeclaBusca(KeyboardEventArgs e)
+    {
+        if (e.Key == "ArrowDown") marcado = Math.Min(resultados.Count - 1, marcado + 1);
+        else if (e.Key == "ArrowUp") marcado = Math.Max(0, marcado - 1);
+        else if (e.Key == "Enter" && resultados.Count > 0) { var r = resultados[Math.Max(0, marcado)]; Limpar(); Nav.NavigateTo(r.Href); }
+        else if (e.Key == "Escape") Limpar();
+    }
+
+    void Limpar() { busca = ""; mostrarBusca = false; resultados = new(); marcado = -1; }
+
+    static string Iniciais(string nome)
+    {
+        var p = nome.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return p.Length == 0 ? "?" : p.Length == 1 ? p[0][..Math.Min(2, p[0].Length)].ToUpperInvariant() : $"{p[0][0]}{p[^1][0]}".ToUpperInvariant();
+    }
+
+    public static string Tempo(DateTime t)
+    {
+        var d = DateTime.Now - t;
+        if (d.TotalMinutes < 1) return "agora";
+        if (d.TotalMinutes < 60) return $"há {(int)d.TotalMinutes} min";
+        if (d.TotalHours < 24) return $"há {(int)d.TotalHours} h";
+        return t.ToString("dd/MM HH:mm");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Alertas.Mudou -= AlertasMudaram;
+        relogio?.Dispose();
+        cancelaBusca?.Cancel();
+        foreach (var r in new[] { foraBusca, foraSino, foraUsuario })
+            if (r != null) { try { await r.InvokeVoidAsync("dispose"); await r.DisposeAsync(); } catch { } }
+        refBusca?.Dispose(); refSino?.Dispose(); refUsuario?.Dispose();
+    }
+
+    /// <summary>Fecha um menu quando o usuário clica fora dele (chamado pelo JavaScript).</summary>
+    public sealed class Fechador(Action fechar)
+    {
+        [JSInvokable] public void Fechar() => fechar();
+    }
+}

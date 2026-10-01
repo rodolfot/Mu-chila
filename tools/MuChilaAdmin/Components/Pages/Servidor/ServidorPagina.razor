@@ -1,0 +1,227 @@
+@page "/servidor"
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject RecargaMonstros Monstros
+@inject Configuracao Cfg
+@inject Avisos Avisos
+
+<CabecalhoPagina Titulo="Processos e jogadores" Descricao="Os 8 processos do servidor, quem está jogando e os comandos do menu dos GameServers. Atualiza a cada 5 segundos." Icone="server">
+    <AuthorizeView Policy="@Politicas.Administrar">
+        <button type="button" class="btn btn-sucesso" @onclick="Iniciar" disabled="@ocupado"><Icone Nome="play" Classe="ico-sm" />Iniciar todos</button>
+        <button type="button" class="btn btn-perigo" @onclick="Parar" disabled="@ocupado"><Icone Nome="stop" Classe="ico-sm" />Parar todos</button>
+    </AuthorizeView>
+</CabecalhoPagina>
+
+@if (Cfg.Desenvolvimento)
+{
+    <Nota Tipo="atencao" Classe="mb-5">Ambiente de desenvolvimento: os botões mandam comandos só para processos de dentro de <span class="mono">@Cfg.PastaServidor</span> (o servidor de verdade não é tocado).</Nota>
+}
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
+    <Cartao Titulo="Processos" Icone="monitor" SemPadding="true" Classe="xl:col-span-2">
+        <Acoes>
+            <span class="flex items-center gap-2 text-xs @(vigia ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400")">
+                <span class="h-2 w-2 rounded-full @(vigia ? "bg-emerald-500" : "bg-rose-500 pulsar")"></span>Vigia @(vigia ? "ligado" : "PARADO")
+            </span>
+            @if (!vigia)
+            {
+                <AuthorizeView Policy="@Politicas.Administrar"><button type="button" class="btn btn-secundario btn-sm" @onclick="LigarVigia">Ligar o vigia</button></AuthorizeView>
+            }
+        </Acoes>
+        <ChildContent>
+            <div class="rolagem">
+                <table class="tabela">
+                    <thead><tr><th>Processo</th><th>Situação</th><th>Ligado há</th><th class="text-right">Memória</th><th class="text-right">PID</th></tr></thead>
+                    <tbody>
+                        @foreach (var p in processos)
+                        {
+                            <tr>
+                                <td class="font-medium text-slate-900 dark:text-white">@p.Nome</td>
+                                <td>@if (p.Rodando) { <span class="etiqueta etq-verde"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>rodando</span> } else { <span class="etiqueta etq-cinza">parado</span> }</td>
+                                <td class="whitespace-nowrap text-slate-500">@Ligado(p.Desde)</td>
+                                <td class="num">@(p.MemoriaMb is double m ? $"{m:N0} MB" : "—")</td>
+                                <td class="num text-slate-500">@p.Pid</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (gameServers.Count > 0)
+            {
+                <div class="grid grid-cols-1 gap-3 border-t border-slate-200 p-4 sm:grid-cols-3 dark:border-white/10">
+                    @foreach (var g in gameServers)
+                    {
+                        <div class="rounded-lg bg-slate-50 p-3 dark:bg-white/[0.03]">
+                            <p class="text-xs font-medium uppercase tracking-wide text-slate-500">GameServer @g.Nome</p>
+                            <p class="mt-1 text-lg font-semibold tabular-nums text-slate-900 dark:text-white">@(g.Jogadores == "" ? "-" : g.Jogadores) <span class="text-xs font-normal text-slate-500">jogadores</span></p>
+                            <p class="text-xs text-slate-500">@(g.Monstros?.ToString("N0") ?? "-") monstros</p>
+                        </div>
+                    }
+                </div>
+            }
+        </ChildContent>
+    </Cartao>
+
+    <Cartao Titulo="Recarregar sem reiniciar" Icone="refresh" Subtitulo="Manda o Reload para os GameServers e o Castle Siege">
+        <AuthorizeView Policy="@Politicas.Administrar">
+            <Authorized>
+                <label class="rotulo" for="reload">O que recarregar</label>
+                <select id="reload" class="entrada" @bind="reload">
+                    @foreach (var k in ServerControl.ReloadIds.Keys) { <option value="@k">@k</option> }
+                </select>
+                <button type="button" class="btn btn-primario mt-3 w-full" @onclick="Recarregar" disabled="@ocupado"><Icone Nome="refresh" Classe="ico-sm" />Recarregar</button>
+                <p class="ajuda mt-3">Monster só recarrega fora da invasão (com uma no ar, o painel agenda para quando ela acabar). Event no Castle Siege reinicia o ciclo do cerco: o painel pergunta.</p>
+                @if (Monstros.AgendadoPara is DateTime ag)
+                {
+                    <Nota Tipo="info" Classe="mt-3">Recarga de monstros agendada para @ag.ToString("HH:mm:ss") (depois da invasão).</Nota>
+                }
+                <div class="mt-4 space-y-2 border-t border-slate-200 pt-4 dark:border-white/10">
+                    <button type="button" class="btn btn-secundario w-full" @onclick="DesconectarTodos" disabled="@ocupado"><Icone Nome="users" Classe="ico-sm" />Desconectar todos os jogadores</button>
+                    <button type="button" class="btn btn-secundario w-full" @onclick="Publicar" disabled="@ocupado"><Icone Nome="upload" Classe="ico-sm" />Publicar atualização do cliente</button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" class="btn btn-fantasma" @onclick="@(() => Abrir("MuEditor", ServerControl.MuEditorPath))"><Icone Nome="external" Classe="ico-sm" />MuEditor</button>
+                        <button type="button" class="btn btn-fantasma" @onclick="@(() => Abrir("launcher", ServerControl.LauncherPath))"><Icone Nome="external" Classe="ico-sm" />Launcher</button>
+                    </div>
+                    <p class="ajuda">MuEditor e launcher abrem na tela do PC do servidor.</p>
+                </div>
+            </Authorized>
+            <NotAuthorized><p class="text-sm text-slate-500">Só administradores mandam comandos para o servidor.</p></NotAuthorized>
+        </AuthorizeView>
+    </Cartao>
+</div>
+
+<Cartao Titulo="@($"Jogando agora ({online?.Rows.Count ?? 0})")" Icone="users" SemPadding="true" Classe="mt-5">
+    <TabelaDados Dados="online" Titulo="Jogadores online" ColunaDestaque="Personagem" TextoVazio="Ninguém jogando agora." Celulas="celulas" PorPagina="50">
+        <AcoesLinha Context="r">
+            <AuthorizeView Policy="@Politicas.Moderar">
+                <button type="button" class="btn btn-fantasma btn-sm" title="Leva à seleção de personagem, sem desconectar" @onclick="@(() => Selecao(r["Personagem"] as string))" disabled="@ocupado"><Icone Nome="reset" Classe="h-3.5 w-3.5" />Seleção</button>
+                <button type="button" class="btn btn-fantasma btn-sm" title="Desloga a conta (o personagem é salvo)" @onclick="@(() => Deslogar((string)r["Conta"]))" disabled="@ocupado"><Icone Nome="logout" Classe="h-3.5 w-3.5" />Deslogar</button>
+            </AuthorizeView>
+        </AcoesLinha>
+    </TabelaDados>
+</Cartao>
+
+<ResultadoAcao Linhas="resultado" Titulo="@tituloResultado" Quando="quandoResultado" />
+
+@code {
+    List<ServerControl.ProcessoInfo> processos = new();
+    List<ServerControl.GameServerInfo> gameServers = new();
+    DataTable? online;
+    bool vigia, ocupado;
+    string reload = "Shop";
+    List<string> resultado = new();
+    string tituloResultado = "";
+    DateTime quandoResultado;
+    Timer? timer;
+    Dictionary<string, RenderFragment<DataRow>> celulas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        celulas = new()
+        {
+            ["Conta"] = r => @<a class="link" href="@($"contas/{Uri.EscapeDataString((string)r["Conta"])}")">@r["Conta"]</a>,
+        };
+        await Atualizar();
+        timer = new Timer(_ => InvokeAsync(async () => { await Atualizar(); StateHasChanged(); }), null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+    }
+
+    async Task Atualizar()
+    {
+        try
+        {
+            await Task.Run(() =>
+            {
+                processos = ServerControl.Processos();
+                gameServers = ServerControl.GameServers();
+                vigia = ResetWatcher.IsRunning();
+                online = Accounts.Online();
+            });
+        }
+        catch (Exception ex) { Registro.Erro("servidor", ex); }
+    }
+
+    static string Ligado(DateTime? d)
+    {
+        if (d is not DateTime t || t == DateTime.MinValue) return "—";
+        var s = DateTime.Now - t;
+        return s.TotalDays >= 1 ? $"{(int)s.TotalDays} d {s.Hours} h" : s.TotalHours >= 1 ? $"{(int)s.TotalHours} h {s.Minutes} min" : $"{(int)s.TotalMinutes} min";
+    }
+
+    async Task Rodar(string acao, string? alvo, Func<IEnumerable<string>> trabalho, string politica = Politicas.Administrar, string? titulo = null)
+    {
+        ocupado = true;
+        List<string> linhas = new();
+        try
+        {
+            await Acoes.Executar(acao, alvo, () => { linhas = trabalho().ToList(); return OperacoesConta.Juntar(linhas); }, politica, avisoSucesso: true);
+        }
+        finally { ocupado = false; }
+        if (linhas.Count > 0) { resultado = linhas; tituloResultado = titulo ?? Acoes_Nome(acao); quandoResultado = DateTime.Now; }
+        await Atualizar();
+    }
+
+    static string Acoes_Nome(string a) => MuChilaAdmin.Core.Painel.Acoes.Nome(a);
+
+    async Task Iniciar()
+    {
+        if (!await Confirmar.Perguntar("Iniciar todos os servidores?", "Aciona \"Start all\" no launcher (abre o launcher se estiver fechado).", "Iniciar")) return;
+        await Rodar("servidor.iniciar", null, () => new[] { ServerControl.LauncherToggle(start: true) });
+    }
+
+    async Task Parar()
+    {
+        if (!await Confirmar.Perguntar("Parar todos os servidores?", "Quem estiver jogando será desconectado (os personagens são salvos).", "Parar tudo", perigo: true)) return;
+        await Rodar("servidor.parar", null, () => new[] { ServerControl.LauncherToggle(start: false) });
+    }
+
+    async Task DesconectarTodos()
+    {
+        if (!await Confirmar.Perguntar("Desconectar todos os jogadores?", "Os personagens são salvos. Os servidores continuam ligados.", "Desconectar todos", perigo: true)) return;
+        await Rodar("servidor.desconectar", "todos", ServerControl.DisconnectAll);
+    }
+
+    async Task Recarregar()
+    {
+        var item = reload;
+        if (item == "Monster") { await Rodar("servidor.recarregar", item, Monstros.Recarregar); return; }
+        if (item == "Event")
+        {
+            var escolha = await Confirmar.Escolher("Recarregar os eventos também no Castle Siege?",
+                "No Castle Siege o Reload Event reinicia o ciclo do cerco: os jogadores veem \"começou o período de preparação do Castle Siege\" e o cerco é adiado ~15 minutos. " +
+                "Só é preciso depois de mexer no Castle Siege, Crywolf ou Castle Deep.", "GameServers + Castle Siege", "Só os GameServers");
+            if (escolha < 0) return;
+            bool cs = escolha == 0;
+            await Rodar("servidor.recarregar", cs ? "Event (com Castle Siege)" : "Event (só GameServers)", () => cs ? ServerControl.Reload(item) : ServerControl.ReloadGameServersOnly(item));
+            return;
+        }
+        await Rodar("servidor.recarregar", item, () => ServerControl.Reload(item));
+    }
+
+    async Task LigarVigia() => await Rodar("servidor.vigia", null, () => new[] { Vigia.LigarSeParado() ? "Vigia ligado: corrige a checagem de ataques do GameServer (issue #12) sempre que ele liga; registro em vigia.log." : "O vigia já estava ligado." });
+
+    async Task Selecao(string? personagem)
+    {
+        if (string.IsNullOrEmpty(personagem)) { Avisos.Erro("Este jogador ainda está na seleção de personagem."); return; }
+        if (!await Confirmar.Perguntar($"Levar {personagem} para a seleção de personagem?", "É o mesmo que o jogador escolher \"Trocar personagem\", mas na hora: o personagem é salvo e o jogo volta para a seleção, sem desconectar.", "Levar")) return;
+        await Rodar("servidor.selecao", personagem, () => new[] { ResetWatcher.SendToCharacterSelect(personagem) }, Politicas.Moderar);
+    }
+
+    async Task Deslogar(string conta)
+    {
+        if (!await Confirmar.Perguntar($"Deslogar {conta}?", "O jogo dele volta à seleção de servidor e o personagem é salvo.", "Deslogar")) return;
+        await Rodar("conta.logout", conta, () => new[] { ServerControl.ForceLogout(conta) }, Politicas.Moderar);
+    }
+
+    async Task Publicar()
+    {
+        if (!System.IO.File.Exists(ServerControl.PublishScript)) { Avisos.Erro($"Script não encontrado: {ServerControl.PublishScript}. Confira \"PastaRepositorio\" na configuração."); return; }
+        if (!await Confirmar.Perguntar("Publicar a atualização do cliente?", "Copia as mudanças da pasta do cliente do repositório (loja de cash, item.bmd, serverlist...) e gera a lista nova do launcher. Abre uma janela do PowerShell no PC do servidor. Quem abrir o jogo pelo MuChilaLauncher.exe recebe na hora.", "Publicar")) return;
+        await Rodar("servidor.publicar", null, () => new[] { ServerControl.PublishClient() });
+    }
+
+    async Task Abrir(string nome, string caminho) =>
+        await Rodar("servidor.abrir", nome, () => { ServerControl.Open(caminho); return new[] { $"{nome} aberto na tela do PC do servidor." }; });
+
+    public void Dispose() => timer?.Dispose();
+}

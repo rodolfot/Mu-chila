@@ -1,0 +1,159 @@
+@page "/site/mensagens"
+@attribute [Authorize(Policy = Politicas.Moderar)]
+@inject ExecutorAcoes Acoes
+@inject Avisos Toast
+
+<CabecalhoPagina Titulo="Mensagens" Descricao="O que os jogadores mandam pelo Contate-nos do site. A resposta aparece para o jogador na página Contate-nos (se ele estava logado)." Icone="inbox">
+    <select class="entrada w-auto" value="@filtro" @onchange="MudarFiltro" aria-label="Filtro">
+        @foreach (var (id, nome) in SiteConfig.FiltrosMensagem)
+        {
+            <option value="@id">@nome</option>
+        }
+    </select>
+    <button type="button" class="btn btn-secundario" @onclick="Carregar"><Icone Nome="refresh" Classe="ico-sm" />Atualizar</button>
+</CabecalhoPagina>
+
+@if (aviso != null)
+{
+    <Cartao><Vazio Texto="@aviso" Icone="database" /></Cartao>
+}
+else
+{
+    <div class="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_28rem]">
+        <Cartao SemPadding="true" Titulo="Mensagens" Icone="inbox" Subtitulo="@(dados == null ? "" : $"{dados.Rows.Count} mensagem(ns)")">
+            <TabelaDados Dados="dados" Titulo="Mensagens do Contate-nos" Ocultas="@(new[] { "Mensagem", "Resposta" })" Selecionavel="true" Selecionada="sel" SelecionadaChanged="Escolher"
+                         Celulas="celulas" TextoVazio="Nenhuma mensagem." ColunaDestaque="Assunto" />
+        </Cartao>
+
+        <Cartao Titulo="@(sel == null ? "Mensagem" : $"#{sel["Id"]} · {sel["Assunto"]}")" Icone="mail">
+            @if (sel == null)
+            {
+                <Vazio Texto="Escolha uma mensagem na lista." Icone="mail" />
+            }
+            else
+            {
+                <dl class="grid grid-cols-[6rem_1fr] gap-y-1 text-sm">
+                    <dt class="text-slate-500">Data</dt><dd>@(sel["Data"] is DateTime d ? d.ToString("dd/MM/yyyy HH:mm") : "")</dd>
+                    <dt class="text-slate-500">Conta</dt>
+                    <dd>
+                        @if (sel["Conta"] as string is { } conta && conta != "(visitante)")
+                        {
+                            <a class="link" href="@($"contas/{Uri.EscapeDataString(conta.Trim())}")">@conta</a>
+                        }
+                        else
+                        {
+                            <span>@sel["Conta"]</span>
+                        }
+                    </dd>
+                    @if (sel["Contato"] as string is { Length: > 0 } ct)
+                    {
+                        <dt class="text-slate-500">Contato</dt><dd class="break-all">@ct</dd>
+                    }
+                    <dt class="text-slate-500">Situação</dt><dd>@sel["Situação"]</dd>
+                </dl>
+                <div class="mt-3 whitespace-pre-wrap rounded-lg bg-slate-50 p-3 text-sm leading-relaxed text-slate-700 dark:bg-white/5 dark:text-slate-200">@sel["Mensagem"]</div>
+
+                <label class="rotulo mt-4" for="msg-resposta">Resposta</label>
+                <textarea id="msg-resposta" rows="6" maxlength="2000" class="entrada" @bind="resposta" @bind:event="oninput"></textarea>
+                <p class="ajuda">@resposta.Length/2000</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-primario" @onclick="Responder" disabled="@(ocupado || string.IsNullOrWhiteSpace(resposta))"><Icone Nome="mail" Classe="ico-sm" />Enviar resposta</button>
+                    <button type="button" class="btn btn-secundario" @onclick="@(() => Marcar("lida"))" disabled="@ocupado">Marcar como lida</button>
+                    <button type="button" class="btn btn-secundario" @onclick="@(() => Marcar("arquivada"))" disabled="@ocupado">Arquivar</button>
+                </div>
+            }
+        </Cartao>
+    </div>
+}
+
+@code {
+    string filtro = "abertas", resposta = "";
+    string? aviso;
+    DataTable? dados;
+    DataRow? sel;
+    bool ocupado;
+    Dictionary<string, RenderFragment<DataRow>> celulas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        celulas = new()
+        {
+            ["Situação"] = r => (r["Situação"] as string) switch
+            {
+                "nova" => @<span class="etiqueta etq-amarela">nova</span>,
+                "lida" => @<span class="etiqueta etq-azul">lida</span>,
+                "respondida" => @<span class="etiqueta etq-verde">respondida</span>,
+                var s => @<span class="etiqueta etq-cinza">@s</span>,
+            },
+        };
+        await Carregar();
+    }
+
+    async Task MudarFiltro(ChangeEventArgs e)
+    {
+        filtro = e.Value?.ToString() ?? "abertas";
+        await Carregar();
+    }
+
+    async Task Carregar()
+    {
+        aviso = null;
+        var idSel = sel?["Id"];
+        try
+        {
+            if (!await Task.Run(() => Db.TableExists("MUCHILA_CONTATO"))) { aviso = "O Contate-nos ainda não foi instalado neste banco (rode o Instalar-Modulos.ps1 do site)."; return; }
+            var f = filtro;
+            dados = await Task.Run(() => SiteConfig.Mensagens(f));
+            sel = idSel == null ? null : dados.Rows.Cast<DataRow>().FirstOrDefault(r => Equals(r["Id"], idSel));
+            resposta = sel?["Resposta"] as string ?? "";
+        }
+        catch (Exception ex) { Registro.Erro("mensagens", ex); aviso = ExecutorAcoes.MensagemDe(ex); }
+    }
+
+    async Task Escolher(DataRow? r)
+    {
+        sel = r;
+        resposta = r?["Resposta"] as string ?? "";
+        // abrir uma mensagem nova marca como lida (como abrir um e-mail)
+        if (r != null && r["Situação"] as string == "nova")
+        {
+            int id = Convert.ToInt32(r["Id"]);
+            try
+            {
+                await Task.Run(() => SiteConfig.MarcarMensagem(id, "lida"));
+                r["Situação"] = "lida";
+            }
+            catch (Exception ex) { Registro.Erro("mensagens", ex); }
+        }
+    }
+
+    async Task Responder()
+    {
+        if (sel == null) return;
+        int id = Convert.ToInt32(sel["Id"]);
+        var texto = resposta;
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("site.mensagem", $"#{id}", () => { SiteConfig.ResponderMensagem(id, texto); return $"Mensagem #{id} respondida (o jogador vê na página Contate-nos)."; }, Politicas.Moderar, "resposta"))
+                await Carregar();
+        }
+        finally { ocupado = false; }
+    }
+
+    async Task Marcar(string status)
+    {
+        if (sel == null) return;
+        int id = Convert.ToInt32(sel["Id"]);
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("site.mensagem", $"#{id}", () => { SiteConfig.MarcarMensagem(id, status); return $"Mensagem #{id}: {status}."; }, Politicas.Moderar, status))
+            {
+                if (status == "arquivada") sel = null;
+                await Carregar();
+            }
+        }
+        finally { ocupado = false; }
+    }
+}

@@ -1,0 +1,12 @@
+@inject NavigationManager Nav
+
+<Carregando Texto="Sua sessão terminou. Abrindo o login..." />
+
+@code {
+    protected override void OnAfterRender(bool primeira)
+    {
+        if (!primeira) return;
+        var voltar = "/" + Nav.ToBaseRelativePath(Nav.Uri);
+        Nav.NavigateTo($"entrar?voltar={Uri.EscapeDataString(voltar)}", forceLoad: true);
+    }
+}

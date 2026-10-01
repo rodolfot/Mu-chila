@@ -1,0 +1,7 @@
+@* Ícone do sprite wwwroot/img/icones.svg (24x24, traço na cor do texto). Ex.: <Icone Nome="server" Classe="ico text-amber-400" /> *@
+<svg class="i @Classe" aria-hidden="true" focusable="false"><use href="img/icones.svg#@Nome"></use></svg>
+
+@code {
+    [Parameter, EditorRequired] public string Nome { get; set; } = "";
+    [Parameter] public string Classe { get; set; } = "ico";
+}

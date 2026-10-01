@@ -1,0 +1,26 @@
+@* Foto do item (as do MuEditor); sem foto, mostra o ícone. *@
+<span class="relative grid shrink-0 place-items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-900 dark:border-white/10 @Tamanho" title="@Nome">
+    @if (Secao is int s && Tipo is int t && !semFoto)
+    {
+        <img src="api/itens/foto/@s/@t" alt="" class="max-h-full max-w-full object-contain" loading="lazy" @onerror="() => semFoto = true" />
+    }
+    else
+    {
+        <Icone Nome="item" Classe="h-1/2 w-1/2 text-amber-500/50" />
+    }
+</span>
+
+@code {
+    [Parameter] public int? Secao { get; set; }
+    [Parameter] public int? Tipo { get; set; }
+    [Parameter] public string? Nome { get; set; }
+    [Parameter] public string Tamanho { get; set; } = "h-10 w-10";
+    bool semFoto;
+    int? ultimo;
+
+    protected override void OnParametersSet()
+    {
+        var chave = Secao * 1000 + Tipo;
+        if (chave != ultimo) { semFoto = false; ultimo = chave; }
+    }
+}

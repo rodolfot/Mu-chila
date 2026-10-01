@@ -1,0 +1,93 @@
+@* Gráfico de linha/área em SVG (sem biblioteca): série de (momento, valor). Passe o mouse num ponto para ver o valor. *@
+@using System.Globalization
+
+@if (Pontos == null || Pontos.Count == 0)
+{
+    <Vazio Texto="@TextoVazio" Icone="activity" />
+}
+else
+{
+    <svg viewBox="0 0 @L @A" class="h-auto w-full" role="img" aria-label="@Titulo">
+        <defs>
+            <linearGradient id="@gid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f59e0b" stop-opacity=".35" />
+                <stop offset="1" stop-color="#f59e0b" stop-opacity="0" />
+            </linearGradient>
+        </defs>
+        @foreach (var (y, rot) in GradeY())
+        {
+            <line x1="@N(Esq)" x2="@N(L - Dir)" y1="@N(y)" y2="@N(y)" class="stroke-slate-200 dark:stroke-white/10" stroke-width="1" />
+            @Rotulo(Esq - 6, y + 3.5, "end", rot)
+        }
+        @foreach (var (x, rot) in RotulosX())
+        {
+            @Rotulo(x, A - 4, "middle", rot)
+        }
+        <path d="@Area()" fill="url(#@gid)" />
+        <path d="@Linha()" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+        @foreach (var p in Pontos)
+        {
+            <circle cx="@N(X(p.Quando))" cy="@N(Y(p.Valor))" r="@(Pontos.Count > 60 ? "1.6" : "2.6")" class="fill-amber-500">
+                <title>@p.Quando.ToString(FormatoDica) — @p.Valor.ToString("N0", Br) @Unidade</title>
+            </circle>
+        }
+    </svg>
+}
+
+@code {
+    public sealed record Ponto(DateTime Quando, double Valor);
+
+    [Parameter] public List<Ponto>? Pontos { get; set; }
+    [Parameter] public string Titulo { get; set; } = "";
+    [Parameter] public string Unidade { get; set; } = "";
+    [Parameter] public string FormatoX { get; set; } = "HH:mm";
+    [Parameter] public string FormatoDica { get; set; } = "dd/MM HH:mm";
+    [Parameter] public string TextoVazio { get; set; } = "Ainda sem dados.";
+
+    static readonly CultureInfo Br = CultureInfo.GetCultureInfo("pt-BR");
+    const double L = 640, A = 190, Esq = 38, Dir = 10, Topo = 10, Base = 22;
+    readonly string gid = "g" + Guid.NewGuid().ToString("N")[..6];
+
+    double Min => 0;
+    // escala de inteiros (jogadores): pelo menos 0 a 4, em passos redondos, para os rótulos não repetirem
+    double Max { get { var m = Pontos!.Max(p => p.Valor); return Math.Max(4, Arredondar(Math.Max(1, m * 1.15))); } }
+    DateTime T0 => Pontos![0].Quando;
+    DateTime T1 => Pontos![^1].Quando == T0 ? T0.AddMinutes(1) : Pontos![^1].Quando;
+
+    static double Arredondar(double v)
+    {
+        var p = Math.Pow(10, Math.Floor(Math.Log10(v)));
+        foreach (var f in new[] { 1, 2, 2.5, 5, 10 }) if (f * p >= v) return f * p;
+        return v;
+    }
+
+    double X(DateTime t) => Esq + (t - T0).TotalSeconds / Math.Max(1, (T1 - T0).TotalSeconds) * (L - Esq - Dir);
+    double Y(double v) => Topo + (1 - (v - Min) / (Max - Min)) * (A - Topo - Base);
+    static string N(double v) => v.ToString("0.#", CultureInfo.InvariantCulture);
+
+    // <text> é palavra reservada do Razor: o rótulo do SVG sai pronto como marcação
+    static MarkupString Rotulo(double x, double y, string ancora, string texto) =>
+        new($"<text x=\"{N(x)}\" y=\"{N(y)}\" text-anchor=\"{ancora}\" class=\"fill-slate-400\" font-size=\"10\">{System.Net.WebUtility.HtmlEncode(texto)}</text>");
+
+    string Linha() => "M" + string.Join(" L", Pontos!.Select(p => $"{N(X(p.Quando))},{N(Y(p.Valor))}"));
+    string Area() => Linha() + $" L{N(X(T1))},{N(A - Base)} L{N(X(T0))},{N(A - Base)} Z";
+
+    IEnumerable<(double, string)> GradeY()
+    {
+        for (int i = 0; i <= 4; i++)
+        {
+            var v = Min + (Max - Min) * i / 4;
+            yield return (Y(v), v.ToString("N0", Br));
+        }
+    }
+
+    IEnumerable<(double, string)> RotulosX()
+    {
+        int n = Math.Min(6, Pontos!.Count);
+        for (int i = 0; i < n; i++)
+        {
+            var t = T0 + TimeSpan.FromSeconds((T1 - T0).TotalSeconds * i / Math.Max(1, n - 1));
+            yield return (X(t), t.ToString(FormatoX));
+        }
+    }
+}

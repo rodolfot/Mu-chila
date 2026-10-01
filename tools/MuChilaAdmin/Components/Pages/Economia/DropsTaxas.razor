@@ -1,0 +1,83 @@
+@* Grade avançada do Monster.txt: drop comum, zen e nível máximo do item comum de cada monstro. Mexe só na memória. *@
+
+<Cartao SemPadding="true" Titulo="Drop comum e zen por monstro" Icone="coin" Subtitulo="@($"{Visao.Monstros.Count} monstros (Monster.txt)")">
+    <div class="border-b border-slate-200 p-3 dark:border-white/10">
+        <div class="flex flex-wrap items-center gap-3">
+            <label class="relative block min-w-[14rem] max-w-md flex-1">
+                <span class="sr-only">Buscar monstro</span>
+                <Icone Nome="search" Classe="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input class="entrada entrada-sm pl-8" placeholder="Monstro, mapa ou índice..." value="@busca" @oninput="e => { busca = e.Value?.ToString() ?? string.Empty; pagina = 0; }" />
+            </label>
+            <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="caixa" @bind="soMudados" @bind:after="() => pagina = 0" />Só os alterados</label>
+        </div>
+    </div>
+    <p class="border-b border-slate-200 px-5 py-2.5 text-xs text-slate-500 dark:border-white/10">
+        Drop comum = chance de o monstro soltar um item comum sorteado, até o "item até +"; Zen = chance de soltar zen (o valor segue a taxa de zen de cada plano).
+        Números do kit: maior = mais vezes. Ao salvar, os monstros recarregam nos GameServers assim que não houver invasão no ar.
+    </p>
+    @{
+        var lista = Filtrados().ToList();
+        var paginas = Math.Max(1, (lista.Count + PorPagina - 1) / PorPagina);
+        if (pagina >= paginas) pagina = paginas - 1;
+    }
+    @if (lista.Count == 0)
+    {
+        <Vazio Texto="Nenhum monstro." Icone="search" />
+    }
+    else
+    {
+        <div class="rolagem">
+            <table class="tabela tabela-compacta">
+                <thead>
+                    <tr><th>Monstro</th><th class="text-right">Nível</th><th>Onde nasce</th><th class="w-32">Drop comum</th><th class="w-32">Zen</th><th class="w-24">Item até +</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in lista.Skip(pagina * PorPagina).Take(PorPagina))
+                    {
+                        <tr class="@(Visao.TaxaMudou(m) ? "bg-amber-50/60 dark:bg-amber-400/5" : "")">
+                            <td><span class="font-medium text-slate-900 dark:text-white">@m.Name</span> <span class="mono text-slate-400">#@m.Index</span></td>
+                            <td class="num">@m.Level</td>
+                            <td class="max-w-[16rem] truncate text-xs text-slate-500" title="@Visao.Onde(m.Index)">@Visao.Onde(m.Index, 3)</td>
+                            <td><input type="number" min="0" max="1000000" class="entrada entrada-sm" value="@m.ItemRate" aria-label="Drop comum" @onchange="e => Mudar(m, e, 0)" /></td>
+                            <td><input type="number" min="0" max="1000000" class="entrada entrada-sm" value="@m.MoneyRate" aria-label="Zen" @onchange="e => Mudar(m, e, 1)" /></td>
+                            <td><input type="number" min="0" max="15" class="entrada entrada-sm" value="@m.MaxItemLevel" aria-label="Nível máximo do item comum" @onchange="e => Mudar(m, e, 2)" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="flex items-center justify-between gap-3 border-t border-slate-200 px-4 py-2.5 text-xs text-slate-500 dark:border-white/10">
+            <span>@(pagina * PorPagina + 1)–@Math.Min(lista.Count, (pagina + 1) * PorPagina) de @lista.Count · linhas em amarelo mudaram</span>
+            <div class="flex gap-1">
+                <button type="button" class="btn btn-secundario btn-sm" @onclick="() => pagina--" disabled="@(pagina == 0)">Anterior</button>
+                <button type="button" class="btn btn-secundario btn-sm" @onclick="() => pagina++" disabled="@(pagina >= paginas - 1)">Próxima</button>
+            </div>
+        </div>
+    }
+</Cartao>
+
+@code {
+    [Parameter, EditorRequired] public DropsVisao Visao { get; set; } = default!;
+    [Parameter] public EventCallback Mudou { get; set; }
+
+    const int PorPagina = 40;
+    string busca = "";
+    int pagina;
+    bool soMudados;
+
+    IEnumerable<MonsterRate> Filtrados()
+    {
+        var q = busca.Trim();
+        return Visao.MonstrosOrdenados().Where(m => (!soMudados || Visao.TaxaMudou(m)) &&
+            (q.Length == 0 || m.Name.Contains(q, StringComparison.OrdinalIgnoreCase) || m.Index.ToString() == q || Visao.Onde(m.Index).Contains(q, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    async Task Mudar(MonsterRate m, ChangeEventArgs e, int campo)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var v)) return;
+        v = campo == 2 ? Math.Clamp(v, 0, 15) : Math.Clamp(v, 0, 1_000_000);
+        var atual = Visao.Monstro(m.Index) ?? m;
+        Visao.MudarTaxas(m.Index, campo == 0 ? v : atual.ItemRate, campo == 1 ? v : atual.MoneyRate, campo == 2 ? v : atual.MaxItemLevel);
+        await Mudou.InvokeAsync();
+    }
+}

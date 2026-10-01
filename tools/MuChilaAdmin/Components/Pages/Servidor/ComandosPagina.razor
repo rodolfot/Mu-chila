@@ -1,0 +1,27 @@
+@page "/comandos"
+
+<CabecalhoPagina Titulo="Comandos do jogo" Descricao="O que cada comando faz. A sintaxe fica no executável (o kit só liga e desliga); comandos de GM exigem conta nível 32." Icone="terminal" />
+
+<Nota Tipo="info" Classe="mb-5">Os de atributo viram <span class="mono">/f /a /v /e /c</span> quando os comandos curtos do vigia estão ligados.</Nota>
+
+<Cartao SemPadding="true">
+    <TabelaDados Dados="dados" Titulo="Comandos do jogo" TextoBusca="Comando ou descrição..." ColunaDestaque="Comando" PorPagina="100" Celulas="celulas" />
+</Cartao>
+
+@code {
+    DataTable? dados;
+    Dictionary<string, RenderFragment<DataRow>> celulas = new();
+
+    protected override void OnInitialized()
+    {
+        var t = new DataTable();
+        t.Columns.Add("Comando"); t.Columns.Add("Grupo"); t.Columns.Add("O que faz");
+        foreach (var c in Commands.All) t.Rows.Add(c.Cmd, c.Grupo, c.Descricao);
+        dados = t;
+        celulas = new()
+        {
+            ["Comando"] = r => @<span class="mono rounded bg-slate-100 px-1.5 py-0.5 text-slate-800 dark:bg-white/10 dark:text-slate-100">@r["Comando"]</span>,
+            ["Grupo"] = r => @<span class="etiqueta etq-cinza">@r["Grupo"]</span>,
+        };
+    }
+}

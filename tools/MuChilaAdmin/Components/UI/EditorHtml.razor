@@ -1,0 +1,76 @@
+@* Editor do HTML das notícias e páginas do site: barra que envolve o trecho selecionado (negrito, título, lista, link...)
+   e prévia numa moldura isolada (sandbox: sem scripts; imagens de outros sites não aparecem na prévia). *@
+@inject IJSRuntime JS
+
+<div class="overflow-hidden rounded-lg border border-slate-300 dark:border-white/15">
+    <div class="flex flex-wrap items-center gap-1 border-b border-slate-200 bg-slate-50 px-2 py-1.5 dark:border-white/10 dark:bg-white/[0.03]">
+        @foreach (var (rotulo, abre, fecha, dica) in Botoes)
+        {
+            <button type="button" class="btn btn-fantasma btn-sm" title="@dica" disabled="@previa" @onclick="() => Envolver(abre, fecha)">@rotulo</button>
+        }
+        <button type="button" class="btn btn-fantasma btn-sm" disabled="@previa" @onclick="() => AbrirLink(false)">Link</button>
+        <button type="button" class="btn btn-fantasma btn-sm" disabled="@previa" @onclick="() => AbrirLink(true)">Imagem</button>
+        <span class="ml-auto"></span>
+        <button type="button" class="btn btn-sm @(previa ? "btn-primario" : "btn-secundario")" @onclick="() => previa = !previa"><Icone Nome="eye" Classe="h-3.5 w-3.5" />@(previa ? "Voltar a editar" : "Prévia")</button>
+    </div>
+    @if (previa)
+    {
+        <iframe class="block w-full bg-white" style="height: @(Linhas * 1.6)rem" sandbox="" title="Prévia" srcdoc="@Documento"></iframe>
+    }
+    else
+    {
+        <textarea id="@Id" class="block w-full resize-y border-0 bg-white p-3 font-mono text-[13px] leading-relaxed text-slate-800 focus:ring-0 dark:bg-slate-950 dark:text-slate-200" rows="@Linhas"
+                  spellcheck="false" value="@Valor" @oninput="Digitou"></textarea>
+    }
+</div>
+<p class="ajuda">Selecione um trecho e use os botões. Parágrafos entre &lt;p&gt; e &lt;/p&gt;.</p>
+
+<Janela @bind-Aberta="linkAberto" Titulo="@(imagem ? "Inserir imagem" : "Inserir link")" Subtitulo="@(imagem ? "Endereço da imagem (https://...)." : "O trecho selecionado vira o texto do link.")">
+    <ChildContent>
+        <label class="rotulo" for="@($"{Id}-url")">Endereço</label>
+        <input id="@($"{Id}-url")" class="entrada" placeholder="https://" @bind="url" @bind:event="oninput" />
+    </ChildContent>
+    <Rodape>
+        <button type="button" class="btn btn-secundario" @onclick="() => linkAberto = false">Cancelar</button>
+        <button type="button" class="btn btn-primario" @onclick="InserirLink" disabled="@(!UrlValida)">Inserir</button>
+    </Rodape>
+</Janela>
+
+@code {
+    [Parameter, EditorRequired] public string Id { get; set; } = "editor";
+    [Parameter] public string Valor { get; set; } = "";
+    [Parameter] public EventCallback<string> ValorChanged { get; set; }
+    [Parameter] public int Linhas { get; set; } = 16;
+
+    static readonly (string, string, string, string)[] Botoes =
+    {
+        ("Negrito", "<strong>", "</strong>", "Negrito"), ("Itálico", "<em>", "</em>", "Itálico"), ("Título", "<h2>", "</h2>", "Título de seção"),
+        ("Parágrafo", "<p>", "</p>", "Parágrafo"), ("Lista", "<ul>\n", "\n</ul>", "Lista (dentro, use Item)"), ("Item", "<li>", "</li>", "Item de lista"),
+    };
+    bool previa, linkAberto, imagem;
+    string url = "https://";
+
+    bool UrlValida => Uri.TryCreate(url.Trim(), UriKind.Absolute, out var u) && (u.Scheme == Uri.UriSchemeHttps || u.Scheme == Uri.UriSchemeHttp || (!imagem && u.Scheme == "mailto"));
+
+    string Documento =>
+        "<!doctype html><meta charset=\"utf-8\"><style>body{font:15px/1.6 system-ui,Segoe UI,sans-serif;color:#1e293b;margin:16px;}img{max-width:100%}a{color:#b45309}h2{font-size:1.25rem}</style>" + Valor;
+
+    async Task Digitou(ChangeEventArgs e)
+    {
+        Valor = e.Value?.ToString() ?? "";
+        await ValorChanged.InvokeAsync(Valor);
+    }
+
+    async Task Envolver(string abre, string fecha) => await JS.InvokeVoidAsync("muAdmin.envolver", Id, abre, fecha);
+
+    void AbrirLink(bool img) { imagem = img; url = "https://"; linkAberto = true; }
+
+    async Task InserirLink()
+    {
+        if (!UrlValida) return;
+        var endereco = System.Net.WebUtility.HtmlEncode(url.Trim());
+        linkAberto = false;
+        if (imagem) await Envolver($"<img src=\"{endereco}\" alt=\"\" style=\"max-width:100%\">", "");
+        else await Envolver($"<a href=\"{endereco}\">", "</a>");
+    }
+}

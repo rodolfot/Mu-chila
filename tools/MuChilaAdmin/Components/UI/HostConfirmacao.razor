@@ -1,0 +1,37 @@
+@implements IDisposable
+@inject Confirmacao Confirmacao
+
+@if (Confirmacao.Atual is { } p)
+{
+    <Janela Aberta="true" Titulo="@p.Titulo" Largura="sm:max-w-lg" AoFechar="() => Confirmacao.Responder(-1)">
+        <ChildContent>
+            <div class="flex gap-3">
+                <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full @(p.Perigo ? "bg-rose-500/10 text-rose-500" : "bg-amber-500/10 text-amber-500")">
+                    <Icone Nome="@(p.Perigo ? "alert" : "question")" Classe="ico" />
+                </span>
+                <p class="whitespace-pre-line pt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">@p.Texto</p>
+            </div>
+        </ChildContent>
+        <Rodape>
+            <button type="button" class="btn btn-secundario" @onclick="() => Confirmacao.Responder(-1)">Cancelar</button>
+            @if (p.Opcoes != null)
+            {
+                @for (int i = 0; i < p.Opcoes.Length; i++)
+                {
+                    var n = i;
+                    <button type="button" class="btn @(n == p.Opcoes.Length - 1 ? "btn-primario" : "btn-secundario")" @onclick="() => Confirmacao.Responder(n)">@p.Opcoes[n]</button>
+                }
+            }
+            else
+            {
+                <button type="button" class="btn @(p.Perigo ? "btn-perigo" : "btn-primario")" @onclick="() => Confirmacao.Responder(0)" autofocus>@p.Botao</button>
+            }
+        </Rodape>
+    </Janela>
+}
+
+@code {
+    protected override void OnInitialized() => Confirmacao.Mudou += Atualizar;
+    void Atualizar() => _ = InvokeAsync(StateHasChanged);
+    public void Dispose() => Confirmacao.Mudou -= Atualizar;
+}
