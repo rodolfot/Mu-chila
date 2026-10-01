@@ -118,6 +118,25 @@ static class Program
         if (args.Length == 2 && args[0] == "--testar-passe")
             return TestPass(args[1]);
 
+        // "--testar-lojaitens <saida>": loja de itens do site numa CÓPIA (MUCHILA_ROOT): grava sem mudar nada e confere que tudo
+        // volta igual, muda preços e confere, recusa item inexistente e preço negativo, e devolve o arquivo original (byte a byte)
+        if (args.Length == 2 && args[0] == "--testar-lojaitens")
+            return TestLojaItens(args[1]);
+
+        // "--testar-lojaitens-visao <saida> <foto.png>": aba "Loja de itens" com o arquivo real; só simula na tela e tira fotos
+        if (args.Length == 3 && args[0] == "--testar-lojaitens-visao")
+        {
+            try
+            {
+                Application.EnableVisualStyles();
+                using var f = new MainForm();
+                var r = f.TestLojaItensView(args[2]);
+                File.WriteAllText(args[1], r);
+                return r.Contains("FALHA") ? 1 : 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[1], "FALHA: " + ex); return 1; }
+        }
+
         // "--testar-lojas <arquivo>": lê todas as lojas, simula o encaixe 8×15 e regrava cada uma sem mudar nada, conferindo
         // que os itens voltam iguais. Só roda contra uma cópia (MUCHILA_ROOT), nunca contra C:\MuServer.
         if (args.Length == 2 && args[0] == "--testar-lojas")
@@ -760,6 +779,62 @@ static class Program
         sb.AppendLine($"{failures} falha(s)");
         File.WriteAllText(output, sb.ToString());
         return failures;
+    }
+
+    static int TestLojaItens(string output)
+    {
+        var sb = new StringBuilder();
+        int failures = 0;
+        void Check(string name, bool ok, string extra = "") { if (!ok) failures++; sb.AppendLine($"{(ok ? "OK   " : "FALHA")} {name} {extra}"); }
+        if (Environment.GetEnvironmentVariable("MUCHILA_ROOT") == null) { File.WriteAllText(output, "ERRO: use MUCHILA_ROOT apontando para uma cópia de testes"); return 1; }
+        var arquivo = LojaItens.Arquivo;
+        var originais = LojaItens.Arquivos.ToDictionary(f => f, File.ReadAllBytes);
+        string Resumo(LojaItens.Config c) => System.Text.Json.JsonSerializer.Serialize(new
+        {
+            c.Ativo, c.NivelMax, c.ExcMax, c.Sorte, c.Skill, c.Nivel, c.Adicional, c.Excelente,
+            Cats = c.Categorias.Select(x => new { x.Id, x.Nome, x.Grupo, x.Icone, x.Ativo, Itens = x.Itens.Select(i => new { i.Secao, i.Tipo, i.Preco, i.NivelMax, i.Exc, i.Ativo, i.Destaque }) }),
+        });
+        try
+        {
+            var antes = LojaItens.Carregar();
+            Check("leu o catálogo", antes.Categorias.Count > 0 && antes.Categorias.Sum(c => c.Itens.Count) > 0, $"({antes.Categorias.Count} categorias, {antes.Categorias.Sum(c => c.Itens.Count)} itens)");
+            Check("o arquivo de hoje passa na validação", LojaItens.Validar(antes).Count == 0, string.Join(" | ", LojaItens.Validar(antes)));
+            sb.AppendLine("     " + LojaItens.Salvar(antes));
+            var relido = LojaItens.Carregar();
+            Check("gravar sem mudar nada mantém catálogo e preços", Resumo(relido) == Resumo(antes));
+            var json = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(arquivo))!.AsObject();
+            Check("mantém o que o painel não conhece (_comentario)", json["_comentario"] != null);
+
+            relido.Excelente[6] = 777; relido.Sorte = 33; relido.Categorias[0].Itens[0].Preco = 99; relido.Categorias[0].Itens[0].Destaque = true; relido.Categorias[0].Itens[0].Exc = "nenhuma";
+            LojaItens.Salvar(relido);
+            var mudou = LojaItens.Carregar();
+            Check("preços e item alterados voltam como gravados", mudou.Excelente[6] == 777 && mudou.Sorte == 33 && mudou.Categorias[0].Itens[0].Preco == 99
+                && mudou.Categorias[0].Itens[0].Destaque && mudou.Categorias[0].Itens[0].Exc == "nenhuma");
+            Check("conta do preço igual à do site (40 + nível 15 + adicional 7 + sorte + 6 exc)",
+                mudou.Preco(40, 15, 7, true, false, 6) == 40 + mudou.Nivel[15] + mudou.Adicional[7] + 33 + 777);
+
+            var ruim = LojaItens.Carregar();
+            ruim.Categorias[0].Itens.Add(new LojaItens.Item { Secao = 7, Tipo = 499, Preco = 10 });
+            ruim.Sorte = -1;
+            var erros = LojaItens.Validar(ruim);
+            Check("recusa item que não existe e preço negativo", erros.Any(e => e.Contains("7,499")) && erros.Any(e => e.Contains("negativ")), string.Join(" | ", erros));
+            bool recusou = false;
+            try { LojaItens.Salvar(ruim); } catch (InvalidOperationException) { recusou = true; }
+            Check("Salvar não grava nada inválido", recusou && LojaItens.Carregar().Sorte == 33);
+        }
+        catch (Exception ex) { failures++; sb.AppendLine("FALHA " + ex); }
+        finally
+        {
+            foreach (var (f, bytes) in originais)
+            {
+                File.WriteAllBytes(f, bytes);
+                foreach (var bak in Directory.GetFiles(Path.GetDirectoryName(f)!, Path.GetFileName(f) + ".bak-*")) File.Delete(bak);
+            }
+        }
+        Check($"arquivo(s) original(is) devolvido(s) byte a byte ({originais.Count})", originais.All(o => File.ReadAllBytes(o.Key).SequenceEqual(o.Value)));
+        sb.AppendLine($"resultado: {failures} falha(s)");
+        File.WriteAllText(output, sb.ToString());
+        return failures == 0 ? 0 : 1;
     }
 
     static int TestPass(string output)

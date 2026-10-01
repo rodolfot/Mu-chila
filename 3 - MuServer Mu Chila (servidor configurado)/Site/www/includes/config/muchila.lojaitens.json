@@ -1,0 +1,2462 @@
+{
+    "_comentario": "Loja de itens do site (usercp/lojaitens), paga com Cash (WCoinC). Editável pela aba \"Loja de itens\" do Mu Chila Admin. Preço em Cash = preco do item + precos.nivel[nível 0-15] + precos.adicional[opção 0-7, ou seja +0 a +28] + sorte + skill + precos.excelente[quantidade 0-6]. Por item: \"nivel_max\" limita o nível; \"exc\" = \"arma\", \"defesa\" ou \"nenhuma\" troca as opções excelentes; \"ativo\": false esconde; \"destaque\": true mostra em destaque. O \"nome\" é só para leitura: o site usa o nome do Item.txt. Catálogo inicial (30/09/2026): itens que caem com nível de drop até 100, asas de 1ª e 2ª geração, anéis e pingentes.",
+    "ativo": true,
+    "nivel_max": 15,
+    "exc_max": 6,
+    "precos": {
+        "nivel": [
+            0,
+            0,
+            0,
+            0,
+            5,
+            10,
+            15,
+            20,
+            30,
+            40,
+            55,
+            70,
+            90,
+            115,
+            145,
+            180
+        ],
+        "adicional": [
+            0,
+            5,
+            10,
+            20,
+            30,
+            45,
+            60,
+            80
+        ],
+        "sorte": 30,
+        "skill": 20,
+        "excelente": [
+            0,
+            40,
+            90,
+            150,
+            220,
+            300,
+            400
+        ]
+    },
+    "categorias": [
+        {
+            "id": "elmos",
+            "nome": "Elmos",
+            "grupo": "Defesa",
+            "icone": "helm",
+            "itens": [
+                {
+                    "secao": 7,
+                    "tipo": 116,
+                    "nome": "Rune Padded Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 2,
+                    "nome": "Pad Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 5,
+                    "nome": "Leather Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 10,
+                    "nome": "Vine Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 0,
+                    "nome": "Bronze Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 11,
+                    "nome": "Silk Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 4,
+                    "nome": "Bone Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 91,
+                    "nome": "Robust Helmet",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 6,
+                    "nome": "Scale Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 12,
+                    "nome": "Wind Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 39,
+                    "nome": "Violent Wind Helm",
+                    "preco": 20
+                },
+                {
+                    "secao": 7,
+                    "tipo": 117,
+                    "nome": "Rune Sphinx Mask",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 7,
+                    "nome": "Sphinx Mask",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 8,
+                    "nome": "Brass Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 13,
+                    "nome": "Spirit Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 9,
+                    "nome": "Plate Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 25,
+                    "nome": "Light Plate Mask",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 118,
+                    "nome": "Legendary Rune Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 3,
+                    "nome": "Legendary Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 40,
+                    "nome": "Red Wing Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 92,
+                    "nome": "Gru hill Helmet",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 14,
+                    "nome": "Guardian Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 59,
+                    "nome": "Sacred Fire Helm",
+                    "preco": 40
+                },
+                {
+                    "secao": 7,
+                    "tipo": 1,
+                    "nome": "Dragon Helm",
+                    "preco": 40,
+                    "destaque": true
+                },
+                {
+                    "secao": 7,
+                    "tipo": 26,
+                    "nome": "Adamantine Mask",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 34,
+                    "nome": "Ashcrow Helm",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 35,
+                    "nome": "Eclipse Helm",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 36,
+                    "nome": "Iris Helm",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 41,
+                    "nome": "Ancient Helm",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 60,
+                    "nome": "Storm Jahad Helm",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 93,
+                    "nome": "Princie Helmet",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 119,
+                    "nome": "Kenaz Bandana",
+                    "preco": 70
+                },
+                {
+                    "secao": 7,
+                    "tipo": 18,
+                    "nome": "Grand Soul Helm",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 42,
+                    "nome": "Demonic Helm",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 16,
+                    "nome": "Black Dragon Helm",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 19,
+                    "nome": "Holy Spirit Helm",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 27,
+                    "nome": "Dark Steel Mask",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 61,
+                    "nome": "Piercing Groove Helm",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 94,
+                    "nome": "Hirat Helmet",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 95,
+                    "nome": "Sate Helmet",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 17,
+                    "nome": "Dark Phoenix Helm",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 24,
+                    "nome": "Red Spirit Helm",
+                    "preco": 100
+                },
+                {
+                    "secao": 7,
+                    "tipo": 38,
+                    "nome": "Glorious Mask",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "armaduras",
+            "nome": "Armaduras",
+            "grupo": "Defesa",
+            "icone": "armor",
+            "itens": [
+                {
+                    "secao": 8,
+                    "tipo": 116,
+                    "nome": "Rune Padded Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 2,
+                    "nome": "Pad Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 5,
+                    "nome": "Leather Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 10,
+                    "nome": "Vine Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 0,
+                    "nome": "Bronze Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 11,
+                    "nome": "Silk Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 4,
+                    "nome": "Bone Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 6,
+                    "nome": "Scale Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 91,
+                    "nome": "Robust Armor",
+                    "preco": 20
+                },
+                {
+                    "secao": 8,
+                    "tipo": 12,
+                    "nome": "Wind Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 39,
+                    "nome": "Violent Wind Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 117,
+                    "nome": "Rune Sphinx Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 7,
+                    "nome": "Sphinx Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 8,
+                    "nome": "Brass Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 13,
+                    "nome": "Spirit Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 9,
+                    "nome": "Plate Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 118,
+                    "nome": "Legendary Rune Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 3,
+                    "nome": "Legendary Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 40,
+                    "nome": "Red Wing Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 14,
+                    "nome": "Guardian Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 1,
+                    "nome": "Dragon Armor",
+                    "preco": 40,
+                    "destaque": true
+                },
+                {
+                    "secao": 8,
+                    "tipo": 92,
+                    "nome": "Gru Hill Armor",
+                    "preco": 40
+                },
+                {
+                    "secao": 8,
+                    "tipo": 25,
+                    "nome": "Light Plate Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 59,
+                    "nome": "Sacred Fire Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 34,
+                    "nome": "Ashcrow Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 35,
+                    "nome": "Eclipse Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 36,
+                    "nome": "Iris Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 41,
+                    "nome": "Ancient Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 26,
+                    "nome": "Adamantine Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 15,
+                    "nome": "Storm Crow Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 93,
+                    "nome": "Princie Armor",
+                    "preco": 70
+                },
+                {
+                    "secao": 8,
+                    "tipo": 60,
+                    "nome": "Storm Jahad Armor",
+                    "preco": 100
+                },
+                {
+                    "secao": 8,
+                    "tipo": 16,
+                    "nome": "Black Dragon Armor",
+                    "preco": 100
+                },
+                {
+                    "secao": 8,
+                    "tipo": 119,
+                    "nome": "Kenaz Armor",
+                    "preco": 100
+                },
+                {
+                    "secao": 8,
+                    "tipo": 18,
+                    "nome": "Grand Soul Armor",
+                    "preco": 100
+                },
+                {
+                    "secao": 8,
+                    "tipo": 42,
+                    "nome": "Demonic Armor",
+                    "preco": 100
+                },
+                {
+                    "secao": 8,
+                    "tipo": 19,
+                    "nome": "Holy Spirit Armor",
+                    "preco": 100
+                },
+                {
+                    "secao": 8,
+                    "tipo": 27,
+                    "nome": "Dark Steel Armor",
+                    "preco": 100
+                },
+                {
+                    "secao": 8,
+                    "tipo": 17,
+                    "nome": "Dark Phoenix Armor",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "calcas",
+            "nome": "Calças",
+            "grupo": "Defesa",
+            "icone": "pants",
+            "itens": [
+                {
+                    "secao": 9,
+                    "tipo": 116,
+                    "nome": "Rune Padded Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 2,
+                    "nome": "Pad Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 5,
+                    "nome": "Leather Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 10,
+                    "nome": "Vine Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 0,
+                    "nome": "Bronze Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 11,
+                    "nome": "Silk Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 4,
+                    "nome": "Bone Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 91,
+                    "nome": "Robust Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 6,
+                    "nome": "Scale Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 12,
+                    "nome": "Wind Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 39,
+                    "nome": "Violent Wind Pants",
+                    "preco": 20
+                },
+                {
+                    "secao": 9,
+                    "tipo": 117,
+                    "nome": "Rune Sphinx Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 7,
+                    "nome": "Sphinx Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 8,
+                    "nome": "Brass Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 13,
+                    "nome": "Spirit Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 9,
+                    "nome": "Plate Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 25,
+                    "nome": "Light Plate Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 118,
+                    "nome": "Legendary Rune Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 3,
+                    "nome": "Legendary Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 40,
+                    "nome": "Red Wing Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 14,
+                    "nome": "Guardian Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 92,
+                    "nome": "Gru Hill Pants",
+                    "preco": 40
+                },
+                {
+                    "secao": 9,
+                    "tipo": 1,
+                    "nome": "Dragon Pants",
+                    "preco": 40,
+                    "destaque": true
+                },
+                {
+                    "secao": 9,
+                    "tipo": 59,
+                    "nome": "Sacred Fire Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 34,
+                    "nome": "Ashcrow Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 35,
+                    "nome": "Eclipse Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 36,
+                    "nome": "Iris Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 26,
+                    "nome": "Adamantine Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 41,
+                    "nome": "Ancient Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 15,
+                    "nome": "Storm Crow Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 93,
+                    "nome": "Princie Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 60,
+                    "nome": "Storm Jahad Pants",
+                    "preco": 70
+                },
+                {
+                    "secao": 9,
+                    "tipo": 16,
+                    "nome": "Black Dragon Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 119,
+                    "nome": "Kenaz Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 18,
+                    "nome": "Grand Soul Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 42,
+                    "nome": "Demonic Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 19,
+                    "nome": "Holy Spirit Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 27,
+                    "nome": "Dark Steel Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 61,
+                    "nome": "Piercing Groove Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 94,
+                    "nome": "Hirat Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 95,
+                    "nome": "Sate Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 17,
+                    "nome": "Dark Phoenix Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 20,
+                    "nome": "Thunder Hawk Pants",
+                    "preco": 100
+                },
+                {
+                    "secao": 9,
+                    "tipo": 24,
+                    "nome": "Red Spirit Pants",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "luvas",
+            "nome": "Luvas",
+            "grupo": "Defesa",
+            "icone": "gloves",
+            "itens": [
+                {
+                    "secao": 10,
+                    "tipo": 116,
+                    "nome": "Rune Padded Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 2,
+                    "nome": "Pad Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 5,
+                    "nome": "Leather Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 10,
+                    "nome": "Vine Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 91,
+                    "nome": "Robust Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 0,
+                    "nome": "Bronze Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 4,
+                    "nome": "Bone Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 11,
+                    "nome": "Silk Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 6,
+                    "nome": "Scale Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 39,
+                    "nome": "Violent Wind Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 12,
+                    "nome": "Wind Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 117,
+                    "nome": "Rune Sphinx Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 7,
+                    "nome": "Sphinx Gloves",
+                    "preco": 20
+                },
+                {
+                    "secao": 10,
+                    "tipo": 8,
+                    "nome": "Brass Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 13,
+                    "nome": "Spirit Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 92,
+                    "nome": "Gru Hill Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 9,
+                    "nome": "Plate Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 25,
+                    "nome": "Light Plate Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 118,
+                    "nome": "Legendary Rune Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 3,
+                    "nome": "Legendary Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 40,
+                    "nome": "Red Wing Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 14,
+                    "nome": "Guardian Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 1,
+                    "nome": "Dragon Gloves",
+                    "preco": 40,
+                    "destaque": true
+                },
+                {
+                    "secao": 10,
+                    "tipo": 26,
+                    "nome": "Adamantine Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 93,
+                    "nome": "Princie Gloves",
+                    "preco": 40
+                },
+                {
+                    "secao": 10,
+                    "tipo": 34,
+                    "nome": "Ashcrow Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 35,
+                    "nome": "Eclipse Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 36,
+                    "nome": "Iris Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 41,
+                    "nome": "Ancient Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 119,
+                    "nome": "Kenaz Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 15,
+                    "nome": "Storm Crow Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 18,
+                    "nome": "Grand Soul Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 42,
+                    "nome": "Demonic Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 19,
+                    "nome": "Holy Spirit Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 27,
+                    "nome": "Dark Steel Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 16,
+                    "nome": "Black Dragon Gloves",
+                    "preco": 70
+                },
+                {
+                    "secao": 10,
+                    "tipo": 94,
+                    "nome": "Hirat Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 95,
+                    "nome": "Sate Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 24,
+                    "nome": "Red Spirit Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 17,
+                    "nome": "Dark Phoenix Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 22,
+                    "nome": "Dark Soul Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 43,
+                    "nome": "Storm Blitz Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 20,
+                    "nome": "Thunder Hawk Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 28,
+                    "nome": "Dark Master Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 37,
+                    "nome": "Valiant Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 38,
+                    "nome": "Glorious Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 21,
+                    "nome": "Great Dragon Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 50,
+                    "nome": "Divine Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 46,
+                    "nome": "Brave Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 48,
+                    "nome": "Destroy Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 120,
+                    "nome": "Divine Rune Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 45,
+                    "nome": "Titan  Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 49,
+                    "nome": "Seraphim Gloves",
+                    "preco": 100
+                },
+                {
+                    "secao": 10,
+                    "tipo": 52,
+                    "nome": "Hades Gloves",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "botas",
+            "nome": "Botas",
+            "grupo": "Defesa",
+            "icone": "boots",
+            "itens": [
+                {
+                    "secao": 11,
+                    "tipo": 116,
+                    "nome": "Rune Padded Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 2,
+                    "nome": "Pad Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 5,
+                    "nome": "Leather Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 10,
+                    "nome": "Vine Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 0,
+                    "nome": "Bronze Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 91,
+                    "nome": "Robust Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 11,
+                    "nome": "Silk Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 4,
+                    "nome": "Bone Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 6,
+                    "nome": "Scale Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 39,
+                    "nome": "Violent Wind Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 12,
+                    "nome": "Wind Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 117,
+                    "nome": "Rune Sphinx Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 7,
+                    "nome": "Sphinx Boots",
+                    "preco": 20
+                },
+                {
+                    "secao": 11,
+                    "tipo": 8,
+                    "nome": "Brass Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 13,
+                    "nome": "Spirit Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 9,
+                    "nome": "Plate Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 92,
+                    "nome": "Gru Hill Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 25,
+                    "nome": "Light Plate Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 118,
+                    "nome": "Legendary Rune Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 3,
+                    "nome": "Legendary Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 40,
+                    "nome": "Red Wing Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 59,
+                    "nome": "Sacred Fire Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 14,
+                    "nome": "Guardian Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 1,
+                    "nome": "Dragon Boots",
+                    "preco": 40,
+                    "destaque": true
+                },
+                {
+                    "secao": 11,
+                    "tipo": 26,
+                    "nome": "Adamantine Boots",
+                    "preco": 40
+                },
+                {
+                    "secao": 11,
+                    "tipo": 60,
+                    "nome": "Storm Jahad Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 93,
+                    "nome": "Princie Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 41,
+                    "nome": "Ancient Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 34,
+                    "nome": "Ashcrow Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 35,
+                    "nome": "Eclipse Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 36,
+                    "nome": "Iris Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 15,
+                    "nome": "Storm Crow Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 119,
+                    "nome": "Kenaz Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 18,
+                    "nome": "Grand Soul Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 42,
+                    "nome": "Demonic Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 16,
+                    "nome": "Black Dragon Boots",
+                    "preco": 70
+                },
+                {
+                    "secao": 11,
+                    "tipo": 19,
+                    "nome": "Holy Spirit Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 61,
+                    "nome": "Piercing Groove Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 27,
+                    "nome": "Dark Steel Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 94,
+                    "nome": "Hirat Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 95,
+                    "nome": "Sate Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 24,
+                    "nome": "Red Spirit Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 20,
+                    "nome": "Thunder Hawk Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 50,
+                    "nome": "Divine Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 17,
+                    "nome": "Dark Phoenix Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 46,
+                    "nome": "Brave Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 120,
+                    "nome": "Divine Rune Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 48,
+                    "nome": "Destroy Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 52,
+                    "nome": "Hades Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 22,
+                    "nome": "Dark Soul Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 28,
+                    "nome": "Dark Master Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 43,
+                    "nome": "Storm Blitz Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 45,
+                    "nome": "Titan Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 47,
+                    "nome": "Phantom Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 49,
+                    "nome": "Seraphim Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 21,
+                    "nome": "Great Dragon Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 37,
+                    "nome": "Valiant Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 38,
+                    "nome": "Glorious Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 51,
+                    "nome": "Royal Boots",
+                    "preco": 100
+                },
+                {
+                    "secao": 11,
+                    "tipo": 44,
+                    "nome": "Eternal Wing Boots",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "escudos",
+            "nome": "Escudos",
+            "grupo": "Defesa",
+            "icone": "shield",
+            "itens": [
+                {
+                    "secao": 6,
+                    "tipo": 0,
+                    "nome": "Small Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 4,
+                    "nome": "Buckler",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 1,
+                    "nome": "Horn Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 2,
+                    "nome": "Kite Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 29,
+                    "nome": "Lapid Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 6,
+                    "nome": "Skull Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 10,
+                    "nome": "Large Round Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 3,
+                    "nome": "Elven Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 9,
+                    "nome": "Plate Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 7,
+                    "nome": "Spiked Shield",
+                    "preco": 20
+                },
+                {
+                    "secao": 6,
+                    "tipo": 5,
+                    "nome": "Dragon Slayer Shield",
+                    "preco": 40
+                },
+                {
+                    "secao": 6,
+                    "tipo": 8,
+                    "nome": "Tower Shield",
+                    "preco": 40
+                },
+                {
+                    "secao": 6,
+                    "tipo": 31,
+                    "nome": "Alacran Shield",
+                    "preco": 40
+                },
+                {
+                    "secao": 6,
+                    "tipo": 11,
+                    "nome": "Serpent Shield",
+                    "preco": 40
+                },
+                {
+                    "secao": 6,
+                    "tipo": 14,
+                    "nome": "Legendary Shield",
+                    "preco": 40
+                },
+                {
+                    "secao": 6,
+                    "tipo": 12,
+                    "nome": "Bronze Shield",
+                    "preco": 40
+                },
+                {
+                    "secao": 6,
+                    "tipo": 13,
+                    "nome": "Dragon Shield",
+                    "preco": 40
+                },
+                {
+                    "secao": 6,
+                    "tipo": 16,
+                    "nome": "Elemental Shield",
+                    "preco": 70
+                },
+                {
+                    "secao": 6,
+                    "tipo": 21,
+                    "nome": "Cross Shield",
+                    "preco": 70
+                },
+                {
+                    "secao": 6,
+                    "tipo": 30,
+                    "nome": "Pluma Shield",
+                    "preco": 70
+                },
+                {
+                    "secao": 6,
+                    "tipo": 42,
+                    "nome": "El Haz Shield",
+                    "preco": 70
+                },
+                {
+                    "secao": 6,
+                    "tipo": 15,
+                    "nome": "Grand Soul Shield",
+                    "preco": 70
+                },
+                {
+                    "secao": 6,
+                    "tipo": 32,
+                    "nome": "Vis Shield",
+                    "preco": 70
+                },
+                {
+                    "secao": 6,
+                    "tipo": 19,
+                    "nome": "Frost Barrier",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "aneis",
+            "nome": "Anéis e pingentes",
+            "grupo": "Defesa",
+            "icone": "ring",
+            "itens": [
+                {
+                    "secao": 13,
+                    "tipo": 8,
+                    "nome": "Ring of Ice",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 9,
+                    "nome": "Ring of Poison",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 21,
+                    "nome": "Ring of Fire",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 22,
+                    "nome": "Ring of Earth",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 23,
+                    "nome": "Ring of Wind",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 24,
+                    "nome": "Ring of Magic",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 12,
+                    "nome": "Pendant of Lighting",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 13,
+                    "nome": "Pendant of Fire",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 25,
+                    "nome": "Pendant of Ice",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 26,
+                    "nome": "Pendant of Wind",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 27,
+                    "nome": "Pendant of Water",
+                    "preco": 60,
+                    "nivel_max": 4
+                },
+                {
+                    "secao": 13,
+                    "tipo": 28,
+                    "nome": "Pendant of Ability",
+                    "preco": 60,
+                    "nivel_max": 4
+                }
+            ]
+        },
+        {
+            "id": "espadas",
+            "nome": "Espadas",
+            "grupo": "Ataque",
+            "icone": "sword",
+            "itens": [
+                {
+                    "secao": 0,
+                    "tipo": 1,
+                    "nome": "Short Sword",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 0,
+                    "nome": "Kris",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 2,
+                    "nome": "Rapier",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 4,
+                    "nome": "Sword of Assassin",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 3,
+                    "nome": "Katana",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 6,
+                    "nome": "Gladius",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 7,
+                    "nome": "Falchion",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 8,
+                    "nome": "Serpent Sword",
+                    "preco": 20
+                },
+                {
+                    "secao": 0,
+                    "tipo": 9,
+                    "nome": "Sword of Salamander",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 5,
+                    "nome": "Blade",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 10,
+                    "nome": "Light Saber",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 11,
+                    "nome": "Legendary Sword",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 13,
+                    "nome": "Double Blade",
+                    "preco": 40,
+                    "destaque": true
+                },
+                {
+                    "secao": 0,
+                    "tipo": 15,
+                    "nome": "Giant Sword",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 32,
+                    "nome": "Sacred Glove",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 12,
+                    "nome": "Heliacal Sword",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 14,
+                    "nome": "Lighting Sword",
+                    "preco": 40
+                },
+                {
+                    "secao": 0,
+                    "tipo": 16,
+                    "nome": "Sword of Destruction",
+                    "preco": 100
+                },
+                {
+                    "secao": 0,
+                    "tipo": 33,
+                    "nome": "Holy Storm Claws",
+                    "preco": 100
+                },
+                {
+                    "secao": 0,
+                    "tipo": 19,
+                    "nome": "Divine Sword of the Archangel",
+                    "preco": 100
+                },
+                {
+                    "secao": 0,
+                    "tipo": 31,
+                    "nome": "Rune Blade",
+                    "preco": 100
+                },
+                {
+                    "secao": 0,
+                    "tipo": 60,
+                    "nome": "Divine Claws of the Archangel",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "machados",
+            "nome": "Machados",
+            "grupo": "Ataque",
+            "icone": "axe",
+            "itens": [
+                {
+                    "secao": 1,
+                    "tipo": 0,
+                    "nome": "Small Axe",
+                    "preco": 20
+                },
+                {
+                    "secao": 1,
+                    "tipo": 1,
+                    "nome": "Hand Axe",
+                    "preco": 20
+                },
+                {
+                    "secao": 1,
+                    "tipo": 2,
+                    "nome": "Double Axe",
+                    "preco": 20
+                },
+                {
+                    "secao": 1,
+                    "tipo": 3,
+                    "nome": "Tomahawk",
+                    "preco": 20
+                },
+                {
+                    "secao": 1,
+                    "tipo": 4,
+                    "nome": "Elven Axe",
+                    "preco": 20
+                },
+                {
+                    "secao": 1,
+                    "tipo": 5,
+                    "nome": "Battle Axe",
+                    "preco": 20
+                },
+                {
+                    "secao": 1,
+                    "tipo": 6,
+                    "nome": "Nikea Axe",
+                    "preco": 40
+                },
+                {
+                    "secao": 1,
+                    "tipo": 7,
+                    "nome": "Larkan Axe",
+                    "preco": 40
+                },
+                {
+                    "secao": 1,
+                    "tipo": 8,
+                    "nome": "Crescent Axe",
+                    "preco": 40
+                }
+            ]
+        },
+        {
+            "id": "macas",
+            "nome": "Maças e cetros",
+            "grupo": "Ataque",
+            "icone": "mace",
+            "itens": [
+                {
+                    "secao": 2,
+                    "tipo": 0,
+                    "nome": "Mace",
+                    "preco": 20
+                },
+                {
+                    "secao": 2,
+                    "tipo": 1,
+                    "nome": "Morning Star",
+                    "preco": 20
+                },
+                {
+                    "secao": 2,
+                    "tipo": 2,
+                    "nome": "Flail",
+                    "preco": 20
+                },
+                {
+                    "secao": 2,
+                    "tipo": 3,
+                    "nome": "Great Hammer",
+                    "preco": 40
+                },
+                {
+                    "secao": 2,
+                    "tipo": 28,
+                    "nome": "Elemental Rune Mace",
+                    "preco": 40
+                },
+                {
+                    "secao": 2,
+                    "tipo": 8,
+                    "nome": "Battle Scepter",
+                    "preco": 40
+                },
+                {
+                    "secao": 2,
+                    "tipo": 4,
+                    "nome": "Crystal Morning Star",
+                    "preco": 70
+                },
+                {
+                    "secao": 2,
+                    "tipo": 5,
+                    "nome": "Crystal Sword",
+                    "preco": 70
+                },
+                {
+                    "secao": 2,
+                    "tipo": 9,
+                    "nome": "Master Scepter",
+                    "preco": 70
+                },
+                {
+                    "secao": 2,
+                    "tipo": 10,
+                    "nome": "Great Scepter",
+                    "preco": 100
+                },
+                {
+                    "secao": 2,
+                    "tipo": 7,
+                    "nome": "Elemental Mace",
+                    "preco": 100
+                },
+                {
+                    "secao": 2,
+                    "tipo": 29,
+                    "nome": "El Haz Rune Mace",
+                    "preco": 100
+                },
+                {
+                    "secao": 2,
+                    "tipo": 11,
+                    "nome": "Lord Scepter",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "lancas",
+            "nome": "Lanças",
+            "grupo": "Ataque",
+            "icone": "spear",
+            "itens": [
+                {
+                    "secao": 3,
+                    "tipo": 5,
+                    "nome": "Double Poleaxe",
+                    "preco": 20
+                },
+                {
+                    "secao": 3,
+                    "tipo": 2,
+                    "nome": "Dragon Lance",
+                    "preco": 20
+                },
+                {
+                    "secao": 3,
+                    "tipo": 13,
+                    "nome": "Lapid Lance",
+                    "preco": 20
+                },
+                {
+                    "secao": 3,
+                    "tipo": 6,
+                    "nome": "Halberd",
+                    "preco": 20
+                },
+                {
+                    "secao": 3,
+                    "tipo": 17,
+                    "nome": "Prickle Lance",
+                    "preco": 20
+                },
+                {
+                    "secao": 3,
+                    "tipo": 1,
+                    "nome": "Spear",
+                    "preco": 20
+                },
+                {
+                    "secao": 3,
+                    "tipo": 3,
+                    "nome": "Giant Trident",
+                    "preco": 20
+                },
+                {
+                    "secao": 3,
+                    "tipo": 7,
+                    "nome": "Berdysh",
+                    "preco": 40
+                },
+                {
+                    "secao": 3,
+                    "tipo": 0,
+                    "nome": "Light Spear",
+                    "preco": 40
+                },
+                {
+                    "secao": 3,
+                    "tipo": 4,
+                    "nome": "Serpent Spear",
+                    "preco": 40
+                },
+                {
+                    "secao": 3,
+                    "tipo": 8,
+                    "nome": "Great Scythe",
+                    "preco": 40
+                },
+                {
+                    "secao": 3,
+                    "tipo": 9,
+                    "nome": "Bill of Balrog",
+                    "preco": 70
+                },
+                {
+                    "secao": 3,
+                    "tipo": 14,
+                    "nome": "Conmocion Lance",
+                    "preco": 70
+                },
+                {
+                    "secao": 3,
+                    "tipo": 18,
+                    "nome": "Alacran Lance",
+                    "preco": 70
+                },
+                {
+                    "secao": 3,
+                    "tipo": 15,
+                    "nome": "Pluma Lance",
+                    "preco": 100
+                },
+                {
+                    "secao": 3,
+                    "tipo": 16,
+                    "nome": "Vis Lance",
+                    "preco": 100
+                },
+                {
+                    "secao": 3,
+                    "tipo": 10,
+                    "nome": "Dragon Spear",
+                    "preco": 100
+                },
+                {
+                    "secao": 3,
+                    "tipo": 26,
+                    "nome": "Divine Lance of the Archangel",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "arcos",
+            "nome": "Arcos e bestas",
+            "grupo": "Ataque",
+            "icone": "bow",
+            "itens": [
+                {
+                    "secao": 4,
+                    "tipo": 0,
+                    "nome": "Short Bow",
+                    "preco": 20
+                },
+                {
+                    "secao": 4,
+                    "tipo": 8,
+                    "nome": "Crossbow",
+                    "preco": 20
+                },
+                {
+                    "secao": 4,
+                    "tipo": 1,
+                    "nome": "Bow",
+                    "preco": 20
+                },
+                {
+                    "secao": 4,
+                    "tipo": 9,
+                    "nome": "Golden Crossbow",
+                    "preco": 20
+                },
+                {
+                    "secao": 4,
+                    "tipo": 2,
+                    "nome": "Elven Bow",
+                    "preco": 20
+                },
+                {
+                    "secao": 4,
+                    "tipo": 10,
+                    "nome": "Arquebus",
+                    "preco": 20
+                },
+                {
+                    "secao": 4,
+                    "tipo": 3,
+                    "nome": "Battle Bow",
+                    "preco": 20
+                },
+                {
+                    "secao": 4,
+                    "tipo": 11,
+                    "nome": "Light Crossbow",
+                    "preco": 40
+                },
+                {
+                    "secao": 4,
+                    "tipo": 4,
+                    "nome": "Tiger Bow",
+                    "preco": 40
+                },
+                {
+                    "secao": 4,
+                    "tipo": 12,
+                    "nome": "Serpent Crossbow",
+                    "preco": 40
+                },
+                {
+                    "secao": 4,
+                    "tipo": 32,
+                    "nome": "War Quiver",
+                    "preco": 40
+                },
+                {
+                    "secao": 4,
+                    "tipo": 5,
+                    "nome": "Silver Bow",
+                    "preco": 40
+                },
+                {
+                    "secao": 4,
+                    "tipo": 13,
+                    "nome": "Bluewing Crossbow",
+                    "preco": 70
+                },
+                {
+                    "secao": 4,
+                    "tipo": 14,
+                    "nome": "Aquagold Crossbow",
+                    "preco": 70
+                },
+                {
+                    "secao": 4,
+                    "tipo": 16,
+                    "nome": "Saint Crossbow",
+                    "preco": 100
+                },
+                {
+                    "secao": 4,
+                    "tipo": 17,
+                    "nome": "Celestial Bow",
+                    "preco": 100
+                },
+                {
+                    "secao": 4,
+                    "tipo": 18,
+                    "nome": "Divine Crossbow of the Archangel",
+                    "preco": 100
+                },
+                {
+                    "secao": 4,
+                    "tipo": 19,
+                    "nome": "Great Reign Crossbow",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "cajados",
+            "nome": "Cajados e livros",
+            "grupo": "Ataque",
+            "icone": "staff",
+            "itens": [
+                {
+                    "secao": 5,
+                    "tipo": 0,
+                    "nome": "Skull Staff",
+                    "preco": 20
+                },
+                {
+                    "secao": 5,
+                    "tipo": 1,
+                    "nome": "Angelic Staff",
+                    "preco": 20
+                },
+                {
+                    "secao": 5,
+                    "tipo": 14,
+                    "nome": "Mystery Stick",
+                    "preco": 20
+                },
+                {
+                    "secao": 5,
+                    "tipo": 2,
+                    "nome": "Serpent Staff",
+                    "preco": 20
+                },
+                {
+                    "secao": 5,
+                    "tipo": 3,
+                    "nome": "Thunder Staff",
+                    "preco": 40
+                },
+                {
+                    "secao": 5,
+                    "tipo": 15,
+                    "nome": "Violent Wind Stick",
+                    "preco": 40
+                },
+                {
+                    "secao": 5,
+                    "tipo": 4,
+                    "nome": "Gorgon Staff",
+                    "preco": 40
+                },
+                {
+                    "secao": 5,
+                    "tipo": 21,
+                    "nome": "Book of Samut",
+                    "preco": 40
+                },
+                {
+                    "secao": 5,
+                    "tipo": 5,
+                    "nome": "Legendary Staff",
+                    "preco": 40
+                },
+                {
+                    "secao": 5,
+                    "tipo": 16,
+                    "nome": "Red Wing Stick",
+                    "preco": 40
+                },
+                {
+                    "secao": 5,
+                    "tipo": 22,
+                    "nome": "Book of Neil",
+                    "preco": 40
+                },
+                {
+                    "secao": 5,
+                    "tipo": 23,
+                    "nome": "Book of Lagle",
+                    "preco": 70
+                },
+                {
+                    "secao": 5,
+                    "tipo": 6,
+                    "nome": "Staff of Resurrection",
+                    "preco": 70
+                },
+                {
+                    "secao": 5,
+                    "tipo": 17,
+                    "nome": "Ancient Stick",
+                    "preco": 70
+                },
+                {
+                    "secao": 5,
+                    "tipo": 8,
+                    "nome": "Staff of Destruction",
+                    "preco": 100
+                },
+                {
+                    "secao": 5,
+                    "tipo": 9,
+                    "nome": "Dragon Soul Staff",
+                    "preco": 100
+                },
+                {
+                    "secao": 5,
+                    "tipo": 18,
+                    "nome": "Demonic Stick",
+                    "preco": 100
+                }
+            ]
+        },
+        {
+            "id": "asas",
+            "nome": "Asas",
+            "grupo": "Defesa",
+            "icone": "wings",
+            "itens": [
+                {
+                    "secao": 12,
+                    "tipo": 0,
+                    "nome": "Wings of Elf",
+                    "preco": 120
+                },
+                {
+                    "secao": 12,
+                    "tipo": 1,
+                    "nome": "Wings of Heaven",
+                    "preco": 120,
+                    "destaque": true
+                },
+                {
+                    "secao": 12,
+                    "tipo": 2,
+                    "nome": "Wings of Satan",
+                    "preco": 120,
+                    "destaque": true
+                },
+                {
+                    "secao": 12,
+                    "tipo": 3,
+                    "nome": "Wings of Spirits",
+                    "preco": 300
+                },
+                {
+                    "secao": 12,
+                    "tipo": 4,
+                    "nome": "Wings of Soul",
+                    "preco": 300
+                },
+                {
+                    "secao": 12,
+                    "tipo": 5,
+                    "nome": "Wings of Dragon",
+                    "preco": 300,
+                    "destaque": true
+                },
+                {
+                    "secao": 12,
+                    "tipo": 6,
+                    "nome": "Wings of Darkness",
+                    "preco": 300
+                }
+            ]
+        }
+    ]
+}

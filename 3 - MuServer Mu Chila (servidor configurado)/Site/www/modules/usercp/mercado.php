@@ -58,7 +58,8 @@ try {
 	$erro = $ex->getMessage();
 }
 
-echo '<div class="page-title"><span>Mercado entre jogadores</span></div>';
+require_once(__PATH_INCLUDES__ . 'muchila/MuChilaUI.php');
+echo MuChilaUI::titulo('Mercado entre jogadores', 'Compre e venda itens do baú e personagens com outros jogadores, por PIX.', 'market');
 if($erro) message('error', $h($erro));
 if(!isset($m)) return;
 if(!$m->ativa()) { message('warning', 'O mercado está fechado no momento.'); return; }
@@ -93,22 +94,23 @@ if(isset($_GET['pedido'])) {
 }
 
 // ------------------------------------------------------------------ abas
-echo '<ul class="nav nav-tabs" style="margin-bottom:12px">';
-foreach($abas as $k => $t) echo '<li'.($k === $aba ? ' class="active"' : '').'><a href="'.$url(['aba' => $k]).'">'.$t.'</a></li>';
-echo '</ul>';
+$iconesAba = ['comprar' => 'cart', 'vender' => 'coin', 'meus' => 'scroll', 'compras' => 'history', 'conta' => 'user'];
+echo '<nav class="mc-tabs" aria-label="Seções do mercado">';
+foreach($abas as $k => $t) echo '<a class="'.($k === $aba ? 'is-active' : '').'" href="'.$url(['aba' => $k]).'"'.($k === $aba ? ' aria-current="page"' : '').'>'.MuChilaUI::icone($iconesAba[$k]).$t.'</a>';
+echo '</nav>';
 $form = function($extra) use ($h, $csrf) { return '<form method="post" style="display:inline"><input type="hidden" name="csrf" value="'.$h($csrf).'">'.$extra; };
 $taxa = rtrim(rtrim(number_format($m->taxaPct(), 2, ',', ''), '0'), ',');
 
 if($aba === 'comprar') {
 	$tipo = (string)($_GET['tipo'] ?? '');
 	$busca = trim((string)($_GET['busca'] ?? ''));
-	echo '<form method="get" class="form-inline" style="margin-bottom:10px" action="'.$url().'">'
+	echo '<form method="get" class="mc-toolbar" action="'.$url().'">'
 		.'<select name="tipo" class="form-control"><option value="">Tudo</option><option value="item"'.($tipo === 'item' ? ' selected' : '').'>Itens</option>'
 		.'<option value="personagem"'.($tipo === 'personagem' ? ' selected' : '').'>Personagens</option></select> '
 		.'<input name="busca" class="form-control" placeholder="Buscar..." value="'.$h($busca).'"> <button class="btn btn-default">Filtrar</button></form>';
 	$lista = $m->anunciosAtivos($tipo, $busca);
 	if(!$lista) { message('info', 'Nenhum anúncio à venda no momento.'); return; }
-	echo '<table class="table table-condensed"><thead><tr><th>Tipo</th><th>Anúncio</th><th>Vendedor</th><th>Preço</th><th></th></tr></thead><tbody>';
+	echo '<div class="mc-table"><table class="table table-condensed"><thead><tr><th>Tipo</th><th>Anúncio</th><th>Vendedor</th><th>Preço</th><th></th></tr></thead><tbody>';
 	foreach($lista as $a) {
 		echo '<tr><td>'.($a['tipo'] === 'item' ? 'Item' : 'Personagem').'</td><td><strong>'.$h($a['titulo']).'</strong><br><small>'.$h($a['detalhes']).'</small></td>'
 			.'<td>'.$h($a['vendedor']).'</td><td>'.MuChilaLoja::real($a['valor']).'</td><td>';
@@ -117,7 +119,7 @@ if($aba === 'comprar') {
 		else echo '<small>seu anúncio</small>';
 		echo '</td></tr>';
 	}
-	echo '</tbody></table>';
+	echo '</tbody></table></div>';
 	echo '<p><small>Itens chegam no seu <strong>baú</strong> e personagens na sua lista, com você <strong>fora do jogo</strong>. O pagamento vai direto para o vendedor pelo Mercado Pago.</small></p>';
 }
 
@@ -129,7 +131,7 @@ if($aba === 'vender') {
 	$itens = $m->itensDoBau($conta);
 	if(!$itens) echo '<p>Seu baú está vazio (coloque o item no baú dentro do jogo e volte aqui).</p>';
 	else {
-		echo '<table class="table table-condensed"><thead><tr><th>Item</th><th>Preço (R$)</th><th></th></tr></thead><tbody>';
+		echo '<div class="mc-table"><table class="table table-condensed"><thead><tr><th>Item</th><th>Preço (R$)</th><th></th></tr></thead><tbody>';
 		foreach($itens as $it) {
 			echo '<tr><td>'.$h($it['descricao']).'</td><td colspan="2">';
 			if($it['bloqueio']) echo '<small class="text-muted">'.$h($it['bloqueio']).'</small>';
@@ -138,13 +140,13 @@ if($aba === 'vender') {
 				.'<button name="anunciar_item" value="1" class="btn btn-xs btn-primary" onclick="return confirm(\'Anunciar '.$h($it['nome']).'? Ele sai do seu baú agora.\')">Anunciar</button></form>');
 			echo '</td></tr>';
 		}
-		echo '</tbody></table>';
+		echo '</tbody></table></div>';
 	}
 	echo '<h4>Seus personagens</h4>';
 	$chars = $m->personagensDaConta($conta);
 	if(!$chars) echo '<p>Nenhum personagem.</p>';
 	else {
-		echo '<table class="table table-condensed"><thead><tr><th>Personagem</th><th>Preço (R$)</th></tr></thead><tbody>';
+		echo '<div class="mc-table"><table class="table table-condensed"><thead><tr><th>Personagem</th><th>Preço (R$)</th></tr></thead><tbody>';
 		foreach($chars as $c) {
 			echo '<tr><td><strong>'.$h($c['Name']).'</strong><br><small>'.$h($c['descricao']).'</small></td><td>';
 			if($c['bloqueio']) echo '<small class="text-muted">'.$h($c['bloqueio']).'</small>';
@@ -153,14 +155,14 @@ if($aba === 'vender') {
 				.'<button name="anunciar_personagem" value="1" class="btn btn-xs btn-primary" onclick="return confirm(\'Anunciar o personagem '.$h($c['Name']).'? Ele sai da sua conta agora (com o inventário dele).\')">Anunciar</button></form>');
 			echo '</td></tr>';
 		}
-		echo '</tbody></table>';
+		echo '</tbody></table></div>';
 	}
 }
 
 if($aba === 'meus') {
 	$lista = $m->anunciosDoVendedor($conta);
 	if(!$lista) { message('info', 'Você ainda não anunciou nada.'); return; }
-	echo '<table class="table table-condensed"><thead><tr><th>#</th><th>Anúncio</th><th>Preço</th><th>Situação</th><th></th></tr></thead><tbody>';
+	echo '<div class="mc-table"><table class="table table-condensed"><thead><tr><th>#</th><th>Anúncio</th><th>Preço</th><th>Situação</th><th></th></tr></thead><tbody>';
 	foreach($lista as $a) {
 		echo '<tr><td>'.(int)$a['id'].'</td><td><strong>'.$h($a['titulo']).'</strong><br><small>'.$h($a['detalhes']).'</small></td><td>'.MuChilaLoja::real($a['valor']).'</td>'
 			.'<td>'.$h(MuChilaMercado::statusAnuncio($a['status'])).($a['comprador'] ? '<br><small>para '.$h($a['comprador']).'</small>' : '').'</td><td>';
@@ -168,17 +170,17 @@ if($aba === 'meus') {
 			echo $form('<button name="cancelar" value="'.(int)$a['id'].'" class="btn btn-xs btn-default" onclick="return confirm(\'Cancelar o anúncio? O '.($a['tipo'] === 'item' ? 'item volta para o seu baú' : 'personagem volta para a sua conta').' (esteja fora do jogo).\')">Cancelar</button></form>');
 		echo '</td></tr>';
 	}
-	echo '</tbody></table>';
+	echo '</tbody></table></div>';
 }
 
 if($aba === 'compras') {
 	$lista = $m->pedidosDoComprador($conta);
 	if(!$lista) { message('info', 'Você ainda não comprou nada.'); return; }
-	echo '<table class="table table-condensed"><thead><tr><th>#</th><th>Data</th><th>Compra</th><th>Valor</th><th>Situação</th><th></th></tr></thead><tbody>';
+	echo '<div class="mc-table"><table class="table table-condensed"><thead><tr><th>#</th><th>Data</th><th>Compra</th><th>Valor</th><th>Situação</th><th></th></tr></thead><tbody>';
 	foreach($lista as $p)
 		echo '<tr><td>'.(int)$p['id'].'</td><td>'.MuChilaLoja::data($p['criado']).'</td><td>'.$h($p['descricao']).'</td><td>'.MuChilaLoja::real($p['valor']).'</td>'
 			.'<td>'.$h(MuChilaMercado::statusPedido($p['status'])).'</td><td><a href="'.$url(['pedido' => (int)$p['id']]).'">ver</a></td></tr>';
-	echo '</tbody></table>';
+	echo '</tbody></table></div>';
 }
 
 if($aba === 'conta') {

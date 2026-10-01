@@ -7,7 +7,11 @@
 #   5. painel admin: grupo "Mu Chila" com "Pedidos da loja"
 #   6. desliga módulos que não funcionam aqui (reset do site, comprar zen, votar, esqueci a senha) e troca o link de senha no login
 #   7. downloads: cliente, patch e LEIA-ME de C:\MuServer\Cliente para amigos (Apache /arquivos/) e cache da página
-param([string]$Site = 'C:\MuServer\Site')
+#   8. tema "muchila" (30/09/2026): liga a template nova no webengine.json e copia as imagens que os módulos do WebEngine usam;
+#      loja de itens (usercp/lojaitens): menus, textos e a tabela MUCHILA_LOJAITENS_COMPRAS.
+#      Voltar ao tema padrão do WebEngine: .\Instalar-Modulos.ps1 -TemaPadrao (a página inicial e o painel do jogador
+#      originais voltam sozinhos: o passo 1 guarda o arquivo do WebEngine como .original antes de trocar).
+param([string]$Site = 'C:\MuServer\Site', [switch]$TemaPadrao)
 $ErrorActionPreference = 'Stop'
 $www = Join-Path $Site 'www'
 $utf8 = New-Object Text.UTF8Encoding($false)
@@ -29,6 +33,12 @@ $origem = Join-Path $PSScriptRoot 'www'
 Get-ChildItem $origem -Recurse -File | ForEach-Object {
     $destino = Join-Path $www $_.FullName.Substring($origem.Length + 1)
     New-Item -ItemType Directory (Split-Path $destino) -Force | Out-Null
+    # módulo do próprio WebEngine trocado pelo do Mu Chila (modules\home.php, modules\usercp.php): guarda o original uma vez
+    # (a pasta modules tem "deny from all"; o .original serve para o tema padrão, ver -TemaPadrao)
+    if ($_.FullName.Substring($origem.Length + 1) -like 'modules\*' -and (Test-Path $destino) -and -not (Test-Path "$destino.original") -and
+        -not ([IO.File]::ReadAllText($destino, $utf8)).Contains('Mu Chila')) {
+        Copy-Item $destino "$destino.original"
+    }
     Copy-Item $_.FullName $destino -Force
 }
 "copiado: arquivos de $origem"
@@ -58,6 +68,11 @@ if (-not ($itens | Where-Object link -eq 'usercp/resets')) {
                                         icon = 'reset.png'; visibility = 'user'; newtab = $false; order = 6 })
     "aplicado: item Resets no menu do jogador"
 } else { "ja feito: item Resets no menu do jogador" }
+if (-not ($itens | Where-Object link -eq 'usercp/lojaitens')) {
+    $itens.Insert(0, [pscustomobject]@{ active = $true; type = 'internal'; phrase = 'usercp_menu_txt_muchila_lojaitens'; link = 'usercp/lojaitens'
+                                        icon = 'donate.png'; visibility = 'user'; newtab = $false; order = 4 })
+    "aplicado: item Loja de itens no menu do jogador"
+} else { "ja feito: item Loja de itens no menu do jogador" }
 if (-not ($itens | Where-Object link -eq 'usercp/mercado')) {
     $itens.Insert(1, [pscustomobject]@{ active = $true; type = 'internal'; phrase = 'usercp_menu_txt_muchila_mercado'; link = 'usercp/mercado'
                                         icon = 'donate.png'; visibility = 'user'; newtab = $false; order = 5 })
@@ -70,6 +85,14 @@ foreach ($i in $itens | Where-Object link -eq 'donation') { $i.active = $false }
 $topo = Join-Path $www 'includes\config\navbar.json'
 $itensTopo = Get-Content $topo -Raw | ConvertFrom-Json
 foreach ($i in $itensTopo | Where-Object link -eq 'donation') { $i.link = 'usercp/loja'; $i.phrase = 'menu_txt_muchila_loja'; "aplicado: Doação -> Loja no menu do topo" }
+if (-not ($itensTopo | Where-Object link -eq 'usercp/lojaitens')) {
+    $lista = [Collections.Generic.List[object]]$itensTopo
+    $pos = [Math]::Max(0, $lista.FindIndex([Predicate[object]]{ param($x) $x.link -eq 'usercp/loja' }))
+    $lista.Insert($pos, [pscustomobject]@{ active = $true; type = 'internal'; phrase = 'menu_txt_muchila_lojaitens'; link = 'usercp/lojaitens'
+                                           visibility = 'always'; newtab = $false; order = 35 })
+    $itensTopo = $lista
+    "aplicado: Loja de itens no menu do topo"
+} else { "ja feito: Loja de itens no menu do topo" }
 [IO.File]::WriteAllText($topo, ($itensTopo | ConvertTo-Json -Depth 4), $utf8)
 
 # 3c. fuso horário do site (o WebEngine vem em UTC; o servidor do jogo usa o horário de Brasília)
@@ -87,10 +110,20 @@ Ajustar 'api\events.php' 'muchila/eventos.php' {
 } 'agenda real no quadro de eventos'
 
 # 4. idioma
-$frases = [ordered]@{ usercp_menu_txt_muchila_loja = 'Loja: VIP e Cash'; menu_txt_muchila_loja = 'Loja'; usercp_menu_txt_muchila_resets = 'Resets'; usercp_menu_txt_muchila_mercado = 'Mercado entre jogadores' }
+$frases = [ordered]@{ usercp_menu_txt_muchila_loja = 'Loja: VIP e Cash'; menu_txt_muchila_loja = 'VIP e Cash'; usercp_menu_txt_muchila_resets = 'Resets'; usercp_menu_txt_muchila_mercado = 'Mercado entre jogadores'
+                     usercp_menu_txt_muchila_lojaitens = 'Loja de itens'; menu_txt_muchila_lojaitens = 'Loja de itens' }
 foreach ($idioma in 'pt', 'en') {
+    $arqIdioma = Join-Path $www "includes\languages\$idioma\language.php"
     foreach ($chave in $frases.Keys) {
         $linha = "`$lang['$chave'] = '$($frases[$chave])'; // Mu Chila"
+        # texto que o Mu Chila já tinha posto com outro valor (ex.: "Loja" -> "VIP e Cash" no menu do topo, 30/09/2026): atualiza
+        $atual = [IO.File]::ReadAllText($arqIdioma, $utf8)
+        $velha = [regex]::Match($atual, "(?m)^\`$lang\['$([regex]::Escape($chave))'\] = '[^']*'; // Mu Chila\r?$")
+        if ($velha.Success -and $velha.Value.TrimEnd("`r") -ne $linha) {
+            [IO.File]::WriteAllText($arqIdioma, $atual.Replace($velha.Value.TrimEnd("`r"), $linha), $utf8)
+            "aplicado: texto $chave ($idioma) atualizado"
+            continue
+        }
         Ajustar "includes\languages\$idioma\language.php" "`$lang['$chave']" { param($t) $t.TrimEnd() + "`n$linha`n" }.GetNewClosure() "texto $chave ($idioma)"
     }
 }
@@ -137,6 +170,12 @@ ELSE BEGIN INSERT INTO WEBENGINE_CRON (cron_name, cron_description, cron_file_ru
 "@
 if ($LASTEXITCODE -ne 0) { throw 'Falha ao registrar a tarefa do Mercado' }
 $rc
+
+# 4e. loja de itens: tabela das compras (reaplicável); catálogo e preços ficam no includes\config\muchila.lojaitens.json (copiado no passo 1
+#     e editado pela aba "Loja de itens" do Mu Chila Admin)
+sqlcmd -S .\MUONLINE -d MuOnlineS14 -E -C -I -b -f 65001 -i (Join-Path $PSScriptRoot 'sql\MUCHILA_LOJAITENS.sql') | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Falha ao aplicar sql\MUCHILA_LOJAITENS.sql' }
+"aplicado: tabela MUCHILA_LOJAITENS_COMPRAS"
 
 # 5. painel admin
 Ajustar 'admincp\index.php' 'muchila_pedidos' {
@@ -198,3 +237,23 @@ if ($LASTEXITCODE -ne 0) { throw 'Falha ao cadastrar os downloads' }
 Remove-Item $tmpSql
 [IO.File]::WriteAllText((Join-Path $www 'includes\cache\downloads.cache'), $(if ($json) { $json } else { '[]' }), $utf8)
 "aplicado: downloads ($((($json | ConvertFrom-Json) | Measure-Object).Count) arquivos) e cache da página"
+
+# 8. tema "muchila" (templates\muchila, copiado no passo 1). Os módulos do WebEngine usam imagens da template ativa
+#    (avatares das classes no "Minha conta" e nos rankings, gens): copia da template padrão o que faltar.
+$imgPadrao = Join-Path $www 'templates\default\img'
+$imgTema = Join-Path $www 'templates\muchila\img'
+foreach ($item in 'character-avatars', 'gens_1.png', 'gens_2.png', 'donation') {
+    $de = Join-Path $imgPadrao $item; $para = Join-Path $imgTema $item
+    if (-not (Test-Path $de) -or (Test-Path $para)) { continue }
+    Copy-Item $de $para -Recurse
+    "aplicado: imagem $item no tema muchila"
+}
+$cfgSite = Join-Path $www 'includes\config\webengine.json'
+$tema = if ($TemaPadrao) { 'default' } else { 'muchila' }
+$jsonSite = [IO.File]::ReadAllText($cfgSite, $utf8)
+if ($jsonSite -match "`"website_template`"\s*:\s*`"$tema`"") { "ja feito: tema $tema" }
+elseif ($jsonSite -match '"website_template"\s*:\s*"[^"]*"') {
+    if (-not (Test-Path "$cfgSite.original")) { Copy-Item $cfgSite "$cfgSite.original" }
+    [IO.File]::WriteAllText($cfgSite, ($jsonSite -replace '("website_template"\s*:\s*)"[^"]*"', "`$1`"$tema`""), $utf8)
+    "aplicado: tema $tema" + $(if ($TemaPadrao) { ' (o do WebEngine; volta com .\Instalar-Modulos.ps1 sem -TemaPadrao)' } else { ' (voltar ao do WebEngine: .\Instalar-Modulos.ps1 -TemaPadrao)' })
+} else { throw 'Não achei "website_template" no includes\config\webengine.json' }

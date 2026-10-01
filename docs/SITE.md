@@ -121,6 +121,68 @@ Página **Painel do jogador → Mercado entre jogadores** (`usercp/mercado`): jo
 4. Em `usercp.mercado.xml`: `<mp_redirect_uri>` e `<mp_notification_url>` com as URLs do passo 1, `<email_padrao>` e `<provedor>mercadopago</provedor>`. O `curl.cainfo` do `php.ini` precisa estar configurado (igual à loja).
 5. Testar com contas de teste do próprio Mercado Pago (um vendedor e um comprador) antes de abrir para os jogadores; conferir `Site\logs\mercado.log`.
 
+## Tema do site "muchila" (30/09/2026)
+
+O site inteiro usa a template **`templates\muchila`**: dark fantasy (preto, chumbo e metal, com ouro e rubi de destaque), responsiva (celular, tablet e desktop), feita para vestir também as páginas do próprio WebEngine (rankings, minha conta, notícias, downloads...), que continuam com o HTML delas.
+
+- **Ligar ou desligar o tema**: o `Instalar-Modulos.ps1` grava `"website_template": "muchila"` no `includes\config\webengine.json`. Para voltar ao tema do WebEngine, rode `.\Instalar-Modulos.ps1 -TemaPadrao`.
+  - A página inicial e o painel do jogador originais voltam sozinhos: o instalador guarda o `modules\home.php` e o `modules\usercp.php` do WebEngine como `.original`, e os do Mu Chila usam esse arquivo quando o tema ativo não é o "muchila".
+- **Barra do topo**: menu do `navbar.json` com ícones. O jogador logado vê a **carteira de Cash** (com botão de recarga) e o menu da conta. No celular, tudo vai para um menu que abre por cima da tela.
+- **Página inicial** (`muchila\www\modules\home.php`):
+  - destaque com o nome do servidor, a situação ao vivo (jogadores, horário do servidor, contas e personagens) e os botões "Começar a jogar" e "Criar conta";
+  - atalhos (Loja de itens, VIP/Cash/Passe, Mercado, Rankings), notícias, agenda de eventos e tops de nível e guild.
+- **Painel do jogador**: carteira, plano VIP, Passe dos Mapas e as páginas do `usercp.json` em cartões com ícone. As páginas do jogador têm a carteira e o menu na coluna ao lado (a loja de itens ocupa a largura toda).
+- **Loja (VIP, Cash e Passe)**, **Mercado** e **Resets**: mesma lógica de antes, com visual novo.
+  - Loja: cartões de pacote, PIX com QR e botão de copiar, e etapas do pedido.
+  - Mercado: abas em pílula e tabelas em cartão.
+  - Resets: um cartão por personagem.
+- **Arquivos**:
+  - `templates\muchila\index.php` é o esqueleto da página.
+  - `inc\template.functions.php` tem as funções que os módulos do WebEngine chamam.
+  - `inc\modules\sidebar.php` e `footer.php`.
+  - `css\muchila.css` tem o design system: cores e fontes em variáveis no `:root`, componentes `mc-*` e os ajustes por cima do Bootstrap 3.
+  - `js\muchila.js` cuida do menu, relógio, eventos, avisos flutuantes e janelas; `js\lojaitens.js`, da loja de itens.
+  - `img\icones.svg` tem os ícones.
+  - **Componentes PHP** reutilizáveis ficam em `includes\muchila\MuChilaUI.php`: título da página, aviso, carteira, estatística, etiqueta, estado vazio e ícone.
+- As imagens que os módulos do WebEngine pedem à template ativa (avatares das classes, gens) são copiadas da template padrão pelo instalador.
+- Fontes: Cinzel (títulos) e Inter (texto), do Google Fonts. O Bootstrap 3 continua carregado, porque os módulos do WebEngine dependem dele.
+
+## Loja de itens (30/09/2026)
+
+Página **Painel do jogador → Loja de itens** (`usercp/lojaitens`, também no menu do topo).
+- **Como funciona**: o jogador escolhe o item e monta nível (+0 a +15), adicional (+0 a +28), sorte, skill e opções excelentes (até 6). Ele paga com **Cash** (`CashShopData.WCoinC`, o mesmo da Cash Shop do jogo) e o item cai no **baú** da conta.
+- **Telas**:
+  - **Vitrine**: categorias em cartões com ícone (Defesa/Ataque), busca pelo nome, filtro por classe e ordem por preço, nome ou nível.
+  - **Montagem**: vitrine do item com brilho de raridade que muda com as excelentes (Comum → Excelente → Raro → Lendário → Mítico), inclinação 3D com o mouse e zoom no clique; contador e barra de nível; botões de adicional; chaves de sorte e skill; cartões das excelentes; resumo com o preço por item e o saldo depois da compra; janela de confirmação.
+- **Preço** = preço do item + `nivel[nível]` + `adicional[opção]` + sorte + skill + `excelente[quantidade]`. Os valores estão em `includes\config\muchila.lojaitens.json`, editado pela aba **Loja de itens** do Mu Chila Admin.
+  - O preço é calculado de novo no servidor. Se a tabela mudou desde que a página abriu, a compra é recusada com o preço novo, em vez de cobrar outro valor.
+- **Valores iniciais** (para o dono ajustar):
+  - item 20 a 100 Cash (pelo nível de drop), asas de 1ª geração 120 e de 2ª geração 300, anéis e pingentes 60;
+  - nível até 180 (+15), adicional até 80 (+28), sorte 30, skill 20;
+  - excelentes 40/90/150/220/300/400 (de 1 a 6).
+  - Exemplo: Dragon Helm +15 +28 com sorte e 6 excelentes = **730 Cash**.
+- **Catálogo inicial**: 380 itens em 14 categorias.
+  - Entram os itens que caem com nível de drop até 100, sem as cópias "Bound"/"-J", mais as asas de 1ª e 2ª geração e os anéis e pingentes com excelente.
+  - Os sets S9+ (Bloodangel, Darkangel, Holyangel...) ficaram de fora de propósito; dá para incluir pela aba do painel.
+- **O que cada item aceita** vem dos arquivos do servidor (`ItemOption.txt`, conferido em 30/09/2026):
+  - skill só se o item tem skill no Item.txt;
+  - sorte em armas, escudos, armaduras e asas;
+  - adicional de +4 a +28 (anéis e pingentes: +1% a +7% de vida);
+  - excelentes de ataque em armas, cajados e pingentes, e de defesa em escudos, armaduras e anéis; asas não têm.
+  - A ordem das excelentes é a dos bits do servidor (armadura: Zen, defesa, reflete, reduz dano, mana, vida).
+  - Por item, o JSON aceita `nivel_max`, `exc` (`arma`, `defesa`, `nenhuma`), `destaque` e `ativo`.
+- **Compra**: exige a conta **fora do jogo** há pelo menos 30 s (o servidor regrava o baú ao sair), Cash suficiente e espaço no baú (o estendido vale se estiver liberado). Numa transação só:
+  - lê o saldo e o baú travados;
+  - gera a série do item (`WZ_GetItemSerial`, o mesmo contador do servidor);
+  - grava o baú se ele não mudou e a conta continua fora do jogo;
+  - debita o Cash e registra em `MUCHILA_LOJAITENS_COMPRAS`.
+  - Se qualquer passo falhar, nada acontece. O item tem os mesmos 16 bytes do "Colocar item..." do painel (durabilidade do Item.txt, sem sockets).
+- **Fotos**: as do MuEditor (`api/muchila-item-imagem.php?s=<seção>&t=<tipo>`, lidas de `C:\MuServer\1 - MuEditor\Item`, 60×60). Item sem foto mostra o ícone da categoria.
+- **Testes**: `muchila\testes\teste-lojaitens.php`.
+  - Sem argumento: 28 casos de regras, preços e montagem dos 16 bytes, conferida com o decodificador do Mercado. Roda em qualquer PC com o repositório.
+  - Com `--banco`, no servidor: compra de verdade com a conta descartável `lojaitensteste`. Confere cobrança, item no baú, registro, preço mudado, Cash insuficiente, conta no jogo, baú cheio e loja fechada.
+  - Comando: `C:\MuServer\Site\php\php.exe muchila\testes\teste-lojaitens.php --banco`.
+
 ## Segurança
 
 - Usuário próprio do banco para o site: `muchila_site` (lê e grava dados do `MuOnlineS14` e cria tabelas; não é `sa`). Senha em `Site\config-local\banco.txt` e no `webengine.json`, **nunca no repositório** (o sincronismo e o `.gitignore` excluem `config-local`, `webengine.json`, `tmp`, cache e logs).
@@ -146,8 +208,16 @@ O código do Mu Chila fica separado em `C:\MuServer\Site\muchila` e é copiado p
 | `testes\teste-loja.php` | Teste do núcleo (19 cenários, conta descartável `lojateste`) |
 | `testes\teste-site.ps1` | Teste pelo navegador (10 cenários, conta descartável `sitetest1`): `.\teste-site.ps1 -Admin yolaxd -AdminSenha <senha>` |
 | `www\modules\info.php` | Página Informações com os valores reais do servidor |
+| `www\templates\muchila\` | Tema do site (template, CSS, JS e ícones); ver [Tema do site](#tema-do-site-muchila-30092026) |
+| `www\includes\muchila\MuChilaUI.php` | Componentes visuais do tema (título, aviso, carteira, estatística, ícone...) |
+| `www\modules\home.php`, `www\modules\usercp.php` | Página inicial e painel do jogador do tema (trocam os do WebEngine, guardados como `.original`) |
+| `www\includes\muchila\MuChilaLojaItens.php`, `www\modules\usercp\lojaitens.php` | Loja de itens: núcleo (regras, preço, compra) e página |
+| `www\includes\config\muchila.lojaitens.json` | Catálogo e preços da loja de itens (aba "Loja de itens" do Mu Chila Admin) |
+| `www\api\muchila-item-imagem.php` | Foto de um item (as do MuEditor) |
+| `sql\MUCHILA_LOJAITENS.sql` | Tabela das compras da loja de itens |
+| `testes\teste-lojaitens.php` | Teste da loja de itens (28 casos sem banco; `--banco` faz compras de verdade com a conta `lojaitensteste`) |
 
-Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "Loja" no menu do topo e item "Loja: VIP e Cash" no menu do jogador; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin; módulos sem suporte desligados e link de senha do login; downloads da pasta "Cliente para amigos" e cache da página.
+Ajustes que o script faz no WebEngine: conexão com a instância `.\MUONLINE` sem porta (`class.database.php`, `webengine.php`); fuso de São Paulo (`timezone.php`, `api/events.php`); agenda real no quadro de eventos (`api/events.php`); "Doação" (PayPal) → "VIP e Cash" e "Loja de itens" no menu do topo, itens "Loja de itens" e "Loja: VIP e Cash" no menu do jogador; tema "muchila" ligado (imagens copiadas da template padrão); tabela da loja de itens; textos em `languages\pt|en`; grupo "Mu Chila" no menu do painel admin; módulos sem suporte desligados e link de senha do login; downloads da pasta "Cliente para amigos" e cache da página.
 Configurações feitas pelo painel/arquivos: nome, título, idioma `pt`, taxas ("100x dinâmico (VIP até +80%)", antes "100x (VIP até 2000x)", drop "1% (VIP até 3%)", antes "5% (VIP até 14%)" e "50% (VIP até 150%)"; EXP "200x dinâmico (VIP até +80%)"), máximo 100 online, limites de conta/senha (`webengine.json`); ranking de resets ligado e padrão, ranking de tempo online ligado, bandeiras desligadas (`rankings.xml`).
 
 **Atualizar o WebEngine**: baixar a versão nova, conferir, copiar por cima de `www` (sem `install`), rodar `Instalar-Modulos.ps1` e os dois testes.

@@ -160,6 +160,7 @@ public sealed partial class MainForm : Form
         tabs.TabPages.Add(NewItemsTab());
         tabs.TabPages.Add(AccountsTab());
         tabs.TabPages.Add(PassTab());
+        tabs.TabPages.Add(LojaItensTab());
         Controls.Add(tabs);
         Controls.Add(log);
 

@@ -2,6 +2,16 @@
   {
     "active": true,
     "type": "internal",
+    "phrase": "usercp_menu_txt_muchila_lojaitens",
+    "link": "usercp/lojaitens",
+    "icon": "donate.png",
+    "visibility": "user",
+    "newtab": false,
+    "order": 4
+  },
+  {
+    "active": true,
+    "type": "internal",
     "phrase": "usercp_menu_txt_muchila_loja",
     "link": "usercp/loja",
     "icon": "donate.png",

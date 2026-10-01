@@ -29,6 +29,15 @@
   {
     "active": true,
     "type": "internal",
+    "phrase": "menu_txt_muchila_lojaitens",
+    "link": "usercp/lojaitens",
+    "visibility": "always",
+    "newtab": false,
+    "order": 35
+  },
+  {
+    "active": true,
+    "type": "internal",
     "phrase": "menu_txt_muchila_loja",
     "link": "usercp/loja",
     "visibility": "always",
