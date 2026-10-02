@@ -7,7 +7,7 @@
 @inject NavigationManager Nav
 @inject RecargaMonstros Recarga
 
-<CabecalhoPagina Titulo="Atributos dos monstros" Descricao="Vida, dano, defesa, velocidade, visão, tempo para renascer e resistências de cada monstro (Data\Monster\Monster.txt). Os poderes especiais aparecem só para consulta." Icone="skull" />
+<CabecalhoPagina Titulo="Atributos dos monstros" Descricao="Vida, dano, defesa, velocidade, visão, tempo para renascer, resistências e os poderes (o que o monstro solta) de cada monstro (Data\Monster)." Icone="skull" />
 
 <Nota Tipo="info" Classe="mb-5">
     Vale para todos os monstros daquele tipo, em todos os mapas, depois do Reload Monster (se houver uma invasão no ar, o painel espera ela acabar).
@@ -40,7 +40,7 @@
         }
         else
         {
-            <Cartao Titulo="@($"{atual.Index} · {atual.Nome}")" Icone="skull" Subtitulo="@(poderes.ContainsKey(atual.Index) ? $"{poderes[atual.Index].Count} poder(es) especial(is)" : "sem poderes especiais")">
+            <Cartao Titulo="@($"{atual.Index} · {atual.Nome}")" Icone="skull" Subtitulo="@($"nível {atual.Valores[3]} · {poderesEdit.Count} poder(es)")">
                 <Etiqueta>
                     @if (Mudou)
                     {
@@ -76,20 +76,85 @@
                 </ChildContent>
             </Cartao>
 
-            <Cartao Titulo="Poderes especiais" Icone="zap" Subtitulo="Só consulta (Data\Monster\Skill: MonsterSkill, MonsterSkillUnit e MonsterSkillElement)">
-                @if (poderes.TryGetValue(atual.Index, out var lista))
-                {
-                    <ul class="list-disc space-y-1 pl-5 text-sm">
-                        @foreach (var p in lista)
+            <Cartao Titulo="Poderes especiais" Icone="zap" Subtitulo="O que o monstro solta (Data\Monster\Skill). Uma unidade/efeito usado por vários monstros muda em todos.">
+                <ChildContent>
+                    @if (poderesEdit.Count == 0)
+                    {
+                        <p class="mb-3 text-sm text-slate-500">Este monstro só tem o ataque normal (nenhum poder). Adicione um abaixo.</p>
+                    }
+                    <div class="space-y-4">
+                        @for (int pi = 0; pi < poderesEdit.Count; pi++)
                         {
-                            <li>@p</li>
+                            var i = pi;
+                            var poder = poderesEdit[i];
+                            var u = UnidadeEdit(poder.Unidade);
+                            <div class="rounded-lg border border-slate-200 p-3 dark:border-white/10">
+                                <div class="mb-2 flex items-center justify-between gap-2">
+                                    <span class="text-sm font-medium text-slate-800 dark:text-slate-200">Poder @(i + 1) — unidade @poder.Unidade@(UsoUnidade(poder.Unidade) > 1 ? $" · usada por {UsoUnidade(poder.Unidade)} monstros" : "")</span>
+                                    <button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover poder" @onclick="() => RemoverPoder(i)"><Icone Nome="trash" Classe="h-4 w-4" /></button>
+                                </div>
+                                @if (u == null)
+                                {
+                                    <p class="text-xs text-rose-500">Unidade @poder.Unidade não está no MonsterSkillUnit.txt.</p>
+                                }
+                                else
+                                {
+                                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                                        <label class="block"><span class="rotulo">Intervalo (ms)</span><input type="number" min="0" max="60000" class="entrada entrada-sm @(MudouUnidade(u) ? "ring-2 ring-amber-400/60" : "")" value="@u.Delay" @onchange="e => u.Delay = Clamp(e, 0, 60000, u.Delay)" aria-label="Intervalo" /></label>
+                                        <label class="block"><span class="rotulo">Área</span><input type="number" min="0" max="255" class="entrada entrada-sm @(MudouUnidade(u) ? "ring-2 ring-amber-400/60" : "")" value="@u.Area" @onchange="e => u.Area = Clamp(e, 0, 255, u.Area)" aria-label="Área" /></label>
+                                        <label class="block"><span class="rotulo">Comportamento</span><input type="number" min="0" max="255" class="entrada entrada-sm" value="@poder.Tipo" @onchange="e => TrocarTipoPoder(i, e)" title="Type do MonsterSkill.txt (0 = o mais comum)" aria-label="Comportamento" /></label>
+                                    </div>
+                                    @if (u.Efeitos.Count > 0)
+                                    {
+                                        <p class="mb-1 mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Efeitos</p>
+                                        <div class="space-y-2">
+                                            @foreach (var eid in u.Efeitos)
+                                            {
+                                                var ef = EfeitoEdit(eid);
+                                                <div class="grid grid-cols-2 items-end gap-2 sm:grid-cols-4">
+                                                    @if (ef == null)
+                                                    {
+                                                        <span class="col-span-2 text-xs text-rose-500">Efeito @eid não está no MonsterSkillElement.txt.</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="col-span-2 block"><span class="rotulo">Efeito@(UsoEfeito(eid) > 1 ? $" · em {UsoEfeito(eid)} unidades" : "")</span>
+                                                            <select class="entrada entrada-sm @(MudouEfeito(ef) ? "ring-2 ring-amber-400/60" : "")" @onchange="e => ef.Tipo = IntOr(e, ef.Tipo)">
+                                                                @foreach (var t in MonsterSkills.TiposEfeito)
+                                                                {
+                                                                    <option value="@t.Tipo" selected="@(t.Tipo == ef.Tipo)">@t.Tipo — @t.Nome</option>
+                                                                }
+                                                                @if (!MonsterSkills.TiposEfeito.Any(t => t.Tipo == ef.Tipo))
+                                                                {
+                                                                    <option value="@ef.Tipo" selected>@ef.Tipo — (outro)</option>
+                                                                }
+                                                            </select>
+                                                        </label>
+                                                        <label class="block"><span class="rotulo">Chance (%)</span><input type="number" min="0" max="100" class="entrada entrada-sm @(MudouEfeito(ef) ? "ring-2 ring-amber-400/60" : "")" value="@ef.Chance" @onchange="e => ef.Chance = Clamp(e, 0, 100, ef.Chance)" aria-label="Chance" /></label>
+                                                        <label class="block"><span class="rotulo">Duração (s)</span><input type="number" min="0" max="60000" class="entrada entrada-sm @(MudouEfeito(ef) ? "ring-2 ring-amber-400/60" : "")" value="@ef.Duracao" @onchange="e => ef.Duracao = Clamp(e, 0, 60000, ef.Duracao)" aria-label="Duração" /></label>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                }
+                            </div>
                         }
-                    </ul>
-                }
-                else
-                {
-                    <p class="text-sm text-slate-500">Este monstro só tem o ataque normal (não está no MonsterSkill.txt).</p>
-                }
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-end gap-2 border-t border-slate-200 pt-4 dark:border-white/10">
+                        <label class="block"><span class="rotulo">Adicionar poder (escolha uma unidade)</span>
+                            <select class="entrada entrada-sm w-80 max-w-full" @bind="unidadeNova">
+                                <option value="-1">— escolher —</option>
+                                @foreach (var un in skills.Unidades.Values.OrderBy(x => x.Index))
+                                {
+                                    <option value="@un.Index">@MonsterSkills.Descrever(un.Index, skills)</option>
+                                }
+                            </select>
+                        </label>
+                        <button type="button" class="btn btn-secundario btn-sm" @onclick="AdicionarPoder" disabled="@(unidadeNova < 0)"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar</button>
+                    </div>
+                    <p class="ajuda mt-3">Os poderes valem com o Reload Monster; se o jogo não pegar na hora, reinicie os GameServers.</p>
+                </ChildContent>
             </Cartao>
         }
     </div>
@@ -99,15 +164,25 @@
 
 @code {
     List<MonsterStats.Monstro> monstros = new();
-    Dictionary<int, List<string>> poderes = new();
+    MonsterSkills.Dados skills = new();
     MonsterStats.Monstro? atual, editado;
+    // edição dos poderes do monstro aberto (cópias, para comparar com o original em skills)
+    List<MonsterSkills.Poder> poderesEdit = new();
+    Dictionary<int, MonsterSkills.Unidade> unidadesEdit = new();
+    Dictionary<int, MonsterSkills.Efeito> efeitosEdit = new();
+    int unidadeNova = -1;
     string filtro = "", carimbo = "";
     bool ocupado;
     List<string> resultado = new();
     DateTime quando;
     IDisposable? trava;
 
-    bool Mudou => atual != null && editado != null && !atual.Valores.SequenceEqual(editado.Valores);
+    bool MudouStats => atual != null && editado != null && !atual.Valores.SequenceEqual(editado.Valores);
+    bool MudouListaPoderes => atual != null && !poderesEdit.SequenceEqual(skills.PoderesDoMonstro.GetValueOrDefault(atual.Index, new()));
+    bool MudouPoderes => MudouListaPoderes
+        || unidadesEdit.Values.Any(u => skills.Unidades.TryGetValue(u.Index, out var o) && (o.Delay != u.Delay || o.Area != u.Area))
+        || efeitosEdit.Values.Any(e => skills.Efeitos.TryGetValue(e.Index, out var o) && (o.Tipo != e.Tipo || o.Chance != e.Chance || o.Duracao != e.Duracao));
+    bool Mudou => MudouStats || MudouPoderes;
 
     protected override async Task OnInitializedAsync()
     {
@@ -125,8 +200,8 @@
     {
         try
         {
-            (monstros, poderes, carimbo) = await Task.Run(() => (MonsterStats.Carregar(), MonsterSkills.Todos(), ExecutorAcoes.Carimbo(Drops.MonsterFile)));
-            if (atual != null) { atual = monstros.FirstOrDefault(m => m.Index == atual.Index); editado = atual?.Copia(); }
+            (monstros, skills, carimbo) = await Task.Run(() => (MonsterStats.Carregar(), MonsterSkills.Carregar(), ExecutorAcoes.Carimbo(Drops.MonsterFile)));
+            if (atual != null) { atual = monstros.FirstOrDefault(m => m.Index == atual.Index); editado = atual?.Copia(); if (atual != null) MontarPoderes(atual.Index); }
         }
         catch (Exception ex) { Registro.Erro("monstros.atributos", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
     }
@@ -142,7 +217,7 @@
     {
         if (atual?.Index == m.Index) return;
         if (Mudou && !await Confirmar.Perguntar("Descartar as alterações?", $"{atual?.Nome} tem alterações não salvas.", "Descartar", perigo: true)) return;
-        atual = m; editado = m.Copia();
+        atual = m; editado = m.Copia(); MontarPoderes(m.Index);
     }
 
     void Mudar(MonsterStats.Campo c, ChangeEventArgs e)
@@ -151,27 +226,73 @@
         editado.Valores[c.Coluna] = Math.Clamp(v, c.Min, c.Max);
     }
 
-    void Descartar() { if (atual != null) editado = atual.Copia(); }
+    void Descartar() { if (atual != null) { editado = atual.Copia(); MontarPoderes(atual.Index); } }
+
+    // ---------- poderes ----------
+    void MontarPoderes(int monstro)
+    {
+        poderesEdit = new(skills.PoderesDoMonstro.GetValueOrDefault(monstro, new()));
+        unidadesEdit = new(); efeitosEdit = new(); unidadeNova = -1;
+        foreach (var p in poderesEdit) GarantirUnidade(p.Unidade);
+    }
+
+    void GarantirUnidade(int u)
+    {
+        if (unidadesEdit.ContainsKey(u) || !skills.Unidades.TryGetValue(u, out var o)) return;
+        var c = o.Copia(); unidadesEdit[u] = c;
+        foreach (var e in c.Efeitos) if (!efeitosEdit.ContainsKey(e) && skills.Efeitos.TryGetValue(e, out var oe)) efeitosEdit[e] = oe.Copia();
+    }
+
+    MonsterSkills.Unidade? UnidadeEdit(int u) => unidadesEdit.GetValueOrDefault(u);
+    MonsterSkills.Efeito? EfeitoEdit(int e) => efeitosEdit.GetValueOrDefault(e);
+    int UsoUnidade(int u) => skills.UnidadeUsadaPor.GetValueOrDefault(u);
+    int UsoEfeito(int e) => skills.EfeitoUsadoPor.GetValueOrDefault(e);
+    bool MudouUnidade(MonsterSkills.Unidade u) => skills.Unidades.TryGetValue(u.Index, out var o) && (o.Delay != u.Delay || o.Area != u.Area);
+    bool MudouEfeito(MonsterSkills.Efeito e) => skills.Efeitos.TryGetValue(e.Index, out var o) && (o.Tipo != e.Tipo || o.Chance != e.Chance || o.Duracao != e.Duracao);
+
+    static int Clamp(ChangeEventArgs e, int min, int max, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, min, max) : atual;
+    static int IntOr(ChangeEventArgs e, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? v : atual;
+
+    void TrocarTipoPoder(int i, ChangeEventArgs e) { if (int.TryParse(e.Value?.ToString(), out var v)) poderesEdit[i] = poderesEdit[i] with { Tipo = Math.Clamp(v, 0, 255) }; }
+    void RemoverPoder(int i) => poderesEdit.RemoveAt(i);
+    void AdicionarPoder()
+    {
+        if (unidadeNova < 0) return;
+        if (poderesEdit.Count >= 10) { Toast.Erro("Máximo de 10 poderes por monstro."); return; }
+        GarantirUnidade(unidadeNova);
+        poderesEdit.Add(new MonsterSkills.Poder(0, unidadeNova));
+        unidadeNova = -1;
+    }
 
     async Task Salvar()
     {
         if (atual == null || editado == null) return;
         if (MonsterStats.Problema(editado) is { } p) { Toast.Erro(p); return; }
-        if (await Task.Run(() => ExecutorAcoes.Carimbo(Drops.MonsterFile)) != carimbo &&
-            !await Confirmar.Perguntar("O arquivo mudou", "Alguém gravou o Monster.txt depois que você abriu (aqui ou na página Drops). Salvar agora grava só este monstro, por cima do que estiver no arquivo para ele.", "Salvar mesmo assim", perigo: true)) return;
-        var antes = atual; var novo = editado.Copia();
-        var mudancas = MonsterStats.Campos.Where(c => novo.Valor(c) != antes.Valor(c)).Select(c => $"{c.Nome} {antes.Valor(c):N0} → {novo.Valor(c):N0}").ToList();
+
+        var alt = new MonsterSkills.Alteracoes();
+        foreach (var e in efeitosEdit.Values) if (skills.Efeitos.TryGetValue(e.Index, out var o) && (o.Tipo != e.Tipo || o.Chance != e.Chance || o.Duracao != e.Duracao)) alt.Efeitos[e.Index] = (e.Tipo, e.Chance, e.Duracao);
+        foreach (var u in unidadesEdit.Values) if (skills.Unidades.TryGetValue(u.Index, out var o) && (o.Delay != u.Delay || o.Area != u.Area)) alt.Unidades[u.Index] = (u.Delay, u.Area);
+        if (MudouListaPoderes) alt.Poderes = (atual.Index, atual.Nome, poderesEdit.ToList());
+        bool temPoderes = alt.Efeitos.Count > 0 || alt.Unidades.Count > 0 || alt.Poderes != null;
+
+        if ((alt.Efeitos.Keys.Any(k => UsoEfeito(k) > 1) || alt.Unidades.Keys.Any(k => UsoUnidade(k) > 1)) &&
+            !await Confirmar.Perguntar("Efeito/unidade compartilhado", "Uma unidade ou efeito que você mudou é usado por outros monstros — a mudança vale para todos eles.", "Salvar assim", perigo: true)) return;
+        if (MudouStats && await Task.Run(() => ExecutorAcoes.Carimbo(Drops.MonsterFile)) != carimbo &&
+            !await Confirmar.Perguntar("O arquivo mudou", "Alguém gravou o Monster.txt depois que você abriu. Salvar agora grava por cima.", "Salvar mesmo assim", perigo: true)) return;
+
+        var novo = editado.Copia(); bool salvarStats = MudouStats;
+        var mudStats = MonsterStats.Campos.Where(c => novo.Valor(c) != atual.Valor(c)).Select(c => $"{c.Nome} {atual.Valor(c):N0} → {novo.Valor(c):N0}").ToList();
         var linhas = new List<string>();
         ocupado = true;
         try
         {
             if (await Acoes.Executar("monstros.atributos", $"{novo.Index} {novo.Nome}", () =>
                 {
-                    var (n, backup) = MonsterStats.Salvar(new[] { novo });
-                    linhas.Add(n == 0 ? "Nada mudou no arquivo." : $"{novo.Nome}: {string.Join("; ", mudancas)} (backup {Path.GetFileName(backup)}).");
-                    if (n > 0) linhas.AddRange(Recarga.Recarregar());
+                    if (salvarStats) { var (n, bk) = MonsterStats.Salvar(new[] { novo }); linhas.Add(n == 0 ? "Atributos: nada mudou." : $"Atributos: {string.Join("; ", mudStats)} (backup {Path.GetFileName(bk)})."); }
+                    if (temPoderes) linhas.AddRange(MonsterSkills.Salvar(alt));
+                    if (linhas.Count > 0) linhas.AddRange(Recarga.Recarregar());
                     return linhas;
-                }, Politicas.Administrar, string.Join("; ", mudancas)))
+                }, Politicas.Administrar, $"{string.Join("; ", mudStats)}{(temPoderes ? " [poderes]" : "")}"))
                 await Carregar();
         }
         finally { ocupado = false; }

@@ -124,60 +124,186 @@ public static class MonsterStats
 }
 
 /// <summary>
-/// Poderes dos monstros (só leitura, issue #49), em Data\Monster\Skill: MonsterSkill.txt (monstro → até 10 pares tipo/unidade),
-/// MonsterSkillUnit.txt (alvo, área, intervalo e até 5 efeitos) e MonsterSkillElement.txt (o efeito: tipo, chance, duração).
-/// Os nomes dos tipos de efeito seguem a lista do MuEmu (MonsterSkillElement); mudar poderes é mexer nos três arquivos à mão.
+/// Poderes dos monstros (issue #49), em Data\Monster\Skill, três arquivos encadeados:
+///   MonsterSkill.txt    : monstro → até 10 pares (TipoComportamento, Unidade).
+///   MonsterSkillUnit.txt : a unidade (um "golpe"): alvo, área (ScopeValue), intervalo (Delay, ms) e até 5 efeitos (Slot1..5).
+///   MonsterSkillElement.txt: o efeito: Type (o que faz), SuccessRate (%), ContinuanceTime (s), e mais colunas preservadas.
+/// Grava só o que mudou, coluna a coluna, sem desalinhar (como Drops/MonsterStats); backup .bak-* de cada arquivo tocado.
+/// ATENÇÃO: uma unidade pode ser usada por vários monstros, e um efeito por várias unidades — mudar aqui muda em todos que
+/// compartilham (o painel avisa). Vale com Reload Monster (o painel deixa para depois da invasão, se houver uma no ar).
 /// </summary>
 public static class MonsterSkills
 {
-    static readonly string[] Efeitos =
+    /// <summary>Nomes dos tipos de efeito (coluna Type do MonsterSkillElement), pela lista do MuEmu.</summary>
+    public static readonly (int Tipo, string Nome)[] TiposEfeito =
     {
-        "atordoa", "prende (não anda)", "mexe na vida", "mexe na mana", "mexe no AG", "mexe na defesa", "mexe no ataque", "gasta a durabilidade",
-        "invoca monstros", "empurra", "mexe na energia", "mexe na força", "mexe na agilidade", "mexe na vitalidade", "tira buffs",
-        "resiste a skill", "imune a skill", "teleporta", "dobra a vida", "envenena", "ataque normal", "fúria",
+        (0, "atordoa"), (1, "prende (não anda)"), (2, "mexe na vida"), (3, "mexe na mana"), (4, "mexe no AG"), (5, "mexe na defesa"),
+        (6, "mexe no ataque"), (7, "gasta a durabilidade"), (8, "invoca monstros"), (9, "empurra"), (10, "mexe na energia"),
+        (11, "mexe na força"), (12, "mexe na agilidade"), (13, "mexe na vitalidade"), (14, "tira buffs"), (15, "resiste a skill"),
+        (16, "imune a skill"), (17, "teleporta"), (18, "dobra a vida"), (19, "envenena"), (20, "ataque normal"), (21, "fúria"),
     };
 
-    static string Dir => Path.Combine(ServerControl.ServerRoot, @"Data\Monster\Skill");
-    static readonly Regex Token = new(@"""[^""]*""|\S+");
+    public static string NomeEfeito(int tipo) => TiposEfeito.FirstOrDefault(x => x.Tipo == tipo).Nome is { Length: > 0 } n ? n : $"tipo {tipo}";
 
-    static Dictionary<int, string[]> Ler(string arquivo)
+    // colunas (índice do token na linha): Element 2=Type 3=SuccessRate 4=ContinuanceTime; Unit 5=ScopeValue(área) 6=Delay(ms), efeitos de 7 em diante
+    const int ElType = 2, ElChance = 3, ElDur = 4, UnArea = 5, UnDelay = 6, UnEfeito0 = 7;
+
+    public sealed class Efeito { public int Index, Tipo, Chance, Duracao; public Efeito Copia() => (Efeito)MemberwiseClone(); }
+    public sealed class Unidade { public int Index, Delay, Area; public List<int> Efeitos = new(); public Unidade Copia() => new() { Index = Index, Delay = Delay, Area = Area, Efeitos = new(Efeitos) }; }
+    public sealed record Poder(int Tipo, int Unidade);
+
+    /// <summary>Tudo pronto para a tela: efeitos, unidades, poderes por monstro e quantos compartilham cada um.</summary>
+    public sealed class Dados
     {
-        var d = new Dictionary<int, string[]>();
-        var f = Path.Combine(Dir, arquivo);
-        if (!File.Exists(f)) return d;
-        foreach (var line in File.ReadLines(f, Encoding.Latin1))
+        public Dictionary<int, Efeito> Efeitos = new();
+        public Dictionary<int, Unidade> Unidades = new();
+        public Dictionary<int, List<Poder>> PoderesDoMonstro = new();
+        public Dictionary<int, int> UnidadeUsadaPor = new();   // unidade → nº de monstros
+        public Dictionary<int, int> EfeitoUsadoPor = new();     // efeito → nº de unidades
+    }
+
+    static string Dir => Path.Combine(ServerControl.ServerRoot, @"Data\Monster\Skill");
+    static string Arq(string nome) => Path.Combine(Dir, nome);
+    static readonly Regex Token = new(@"""[^""]*""|\S+");
+    static readonly Encoding Enc = Encoding.Latin1;
+
+    static List<string[]> LinhasDado(string arquivo)
+    {
+        var r = new List<string[]>();
+        var f = Arq(arquivo);
+        if (!File.Exists(f)) return r;
+        foreach (var line in File.ReadLines(f, Enc))
         {
-            int c = line.IndexOf("//", StringComparison.Ordinal);
-            var t = Token.Matches(c >= 0 ? line[..c] : line).Select(m => m.Value).ToArray();
-            if (t.Length > 2 && int.TryParse(t[0], out var i) && t[1].StartsWith('"')) d.TryAdd(i, t);
+            var t = Token.Matches(line).Select(m => m.Value).ToArray();
+            if (t.Length > 2 && int.TryParse(t[0], out _) && t[1].StartsWith('"')) r.Add(t);
         }
+        return r;
+    }
+
+    public static Dados Carregar()
+    {
+        var d = new Dados();
+        foreach (var t in LinhasDado("MonsterSkillElement.txt"))
+            if (t.Length > ElDur && int.TryParse(t[0], out var i))
+                d.Efeitos.TryAdd(i, new Efeito { Index = i, Tipo = N(t[ElType]), Chance = N(t[ElChance]), Duracao = N(t[ElDur]) });
+        foreach (var t in LinhasDado("MonsterSkillUnit.txt"))
+            if (t.Length > UnDelay && int.TryParse(t[0], out var i))
+            {
+                var u = new Unidade { Index = i, Area = N(t[UnArea]), Delay = N(t[UnDelay]) };
+                for (int s = UnEfeito0; s < t.Length; s++) if (int.TryParse(t[s], out var e)) u.Efeitos.Add(e);
+                d.Unidades.TryAdd(i, u);
+            }
+        foreach (var t in LinhasDado("MonsterSkill.txt"))
+            if (int.TryParse(t[0], out var m))
+            {
+                var poderes = new List<Poder>();
+                for (int k = 2; k + 1 < t.Length; k++) if (int.TryParse(t[k], out var tipo) && int.TryParse(t[k + 1], out var u)) { poderes.Add(new Poder(tipo, u)); k++; }
+                d.PoderesDoMonstro[m] = poderes;
+            }
+        foreach (var poderes in d.PoderesDoMonstro.Values) foreach (var p in poderes.Select(p => p.Unidade).Distinct()) d.UnidadeUsadaPor[p] = d.UnidadeUsadaPor.GetValueOrDefault(p) + 1;
+        foreach (var u in d.Unidades.Values) foreach (var e in u.Efeitos.Distinct()) d.EfeitoUsadoPor[e] = d.EfeitoUsadoPor.GetValueOrDefault(e) + 1;
         return d;
     }
 
-    /// <summary>Monstro → descrição de cada poder ("unidade 4: alvo 1, área 6, a cada 300 ms; atordoa 50% por 3 s").</summary>
+    static int N(string s) => int.TryParse(s, out var v) ? v : 0;
+
+    /// <summary>Monstro → descrição de cada poder (para a lista de consulta).</summary>
     public static Dictionary<int, List<string>> Todos()
     {
-        var skills = Ler("MonsterSkill.txt"); var unidades = Ler("MonsterSkillUnit.txt"); var elementos = Ler("MonsterSkillElement.txt");
+        var d = Carregar();
         var r = new Dictionary<int, List<string>>();
-        foreach (var (monstro, t) in skills)
+        foreach (var (monstro, poderes) in d.PoderesDoMonstro)
         {
-            var lista = new List<string>();
-            for (int k = 2; k + 1 < t.Length; k += 2)
-            {
-                if (!int.TryParse(t[k + 1], out var u)) continue;   // "*" = vazio
-                if (!unidades.TryGetValue(u, out var un) || un.Length < 7) { lista.Add($"unidade {u} (não está no MonsterSkillUnit.txt)"); continue; }
-                var efeitos = new List<string>();
-                for (int s = 7; s < un.Length; s++)
-                {
-                    if (!int.TryParse(un[s], out var e)) continue;
-                    if (!elementos.TryGetValue(e, out var el) || el.Length < 5 || !int.TryParse(el[2], out var tipo)) { efeitos.Add($"efeito {e}"); continue; }
-                    var nome = tipo >= 0 && tipo < Efeitos.Length ? Efeitos[tipo] : $"efeito tipo {tipo}";
-                    efeitos.Add($"{nome} ({el[3]}% de chance{(el[4] is "0" or "*" ? "" : $", {el[4]} s")})");
-                }
-                lista.Add($"unidade {u}: alcance {un[5]}, a cada {un[6]} ms" + (efeitos.Count > 0 ? "; " + string.Join(", ", efeitos) : ""));
-            }
+            var lista = poderes.Select(p => Descrever(p.Unidade, d)).ToList();
             if (lista.Count > 0) r[monstro] = lista;
         }
         return r;
+    }
+
+    /// <summary>"unidade 4: alcance 6, a cada 300 ms; atordoa (50%, 3 s)".</summary>
+    public static string Descrever(int unidade, Dados d)
+    {
+        if (!d.Unidades.TryGetValue(unidade, out var u)) return $"unidade {unidade} (não está no MonsterSkillUnit.txt)";
+        var efeitos = u.Efeitos.Select(e => d.Efeitos.TryGetValue(e, out var el)
+            ? $"{NomeEfeito(el.Tipo)} ({el.Chance}%{(el.Duracao > 0 ? $", {el.Duracao} s" : "")})" : $"efeito {e}");
+        return $"unidade {unidade}: alcance {u.Area}, a cada {u.Delay} ms" + (u.Efeitos.Count > 0 ? "; " + string.Join(", ", efeitos) : "");
+    }
+
+    /// <summary>O que o painel manda gravar de UM monstro: efeitos e unidades mudados, e (opcional) a nova lista de poderes do monstro.</summary>
+    public sealed class Alteracoes
+    {
+        public Dictionary<int, (int Tipo, int Chance, int Duracao)> Efeitos = new();
+        public Dictionary<int, (int Delay, int Area)> Unidades = new();
+        public (int Monstro, string Nome, List<Poder> Poderes)? Poderes;
+    }
+
+    /// <summary>Grava as alterações nos três arquivos (só o que mudou, coluna a coluna, backup por arquivo). Devolve o log.</summary>
+    public static List<string> Salvar(Alteracoes a)
+    {
+        var log = new List<string>();
+        if (a.Efeitos.Count > 0 && GravarColunas("MonsterSkillElement.txt", a.Efeitos.Keys,
+            (t, idx) => a.Efeitos.TryGetValue(idx, out var v) ? new[] { (ElDur, v.Duracao.ToString()), (ElChance, v.Chance.ToString()), (ElType, v.Tipo.ToString()) } : null) is { } b1)
+            log.Add($"{a.Efeitos.Count} efeito(s) alterado(s) (backup {Path.GetFileName(b1)}).");
+        if (a.Unidades.Count > 0 && GravarColunas("MonsterSkillUnit.txt", a.Unidades.Keys,
+            (t, idx) => a.Unidades.TryGetValue(idx, out var v) ? new[] { (UnDelay, v.Delay.ToString()), (UnArea, v.Area.ToString()) } : null) is { } b2)
+            log.Add($"{a.Unidades.Count} unidade(s) alterada(s) (backup {Path.GetFileName(b2)}).");
+        if (a.Poderes is { } p && GravarPoderes(p.Monstro, p.Nome, p.Poderes) is { } b3)
+            log.Add($"poderes de {p.Nome} atualizados (backup {Path.GetFileName(b3)}).");
+        if (log.Count == 0) log.Add("Nada mudou nos poderes.");
+        return log;
+    }
+
+    /// <summary>Edita colunas de linhas (por índice na 1ª coluna) de um arquivo, direita→esquerda para não desalinhar. null = nada mudou.</summary>
+    static string? GravarColunas(string arquivo, IEnumerable<int> indices, Func<string[], int, (int Col, string Valor)[]?> campos)
+    {
+        var alvo = indices.ToHashSet();
+        var lines = File.ReadAllText(Arq(arquivo), Enc).Split("\r\n");
+        int mudou = 0;
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var toks = Token.Matches(lines[i]).ToList();
+            if (toks.Count < 3 || !int.TryParse(toks[0].Value, out var idx) || !alvo.Contains(idx) || !toks[1].Value.StartsWith('"')) continue;
+            var cols = campos(toks.Select(x => x.Value).ToArray(), idx);
+            if (cols == null) continue;
+            var line = lines[i];
+            foreach (var (col, valor) in cols.OrderByDescending(c => c.Col)) if (col < toks.Count) line = Drops.Replace(line, toks[col], valor);
+            if (line != lines[i]) { lines[i] = line; mudou++; }
+        }
+        if (mudou == 0) return null;
+        var backup = Arq(arquivo) + ".bak-" + DateTime.Now.ToString("yyyyMMdd-HHmmss");
+        File.Copy(Arq(arquivo), backup, overwrite: true);
+        File.WriteAllText(Arq(arquivo), string.Join("\r\n", lines), Enc);
+        return backup;
+    }
+
+    /// <summary>Reescreve (ou cria) a linha do monstro no MonsterSkill.txt com os pares novos (10 pares, resto "*"). null = igual.</summary>
+    static string? GravarPoderes(int monstro, string nome, List<Poder> poderes)
+    {
+        var f = Arq("MonsterSkill.txt");
+        var lines = File.ReadAllText(f, Enc).Split("\r\n").ToList();
+        var pares = new List<string>();
+        foreach (var p in poderes.Take(10)) { pares.Add(p.Tipo.ToString()); pares.Add(p.Unidade.ToString()); }
+        while (pares.Count < 20) pares.Add("*");
+        int at = lines.FindIndex(l => Token.Matches(l) is { Count: > 2 } t && int.TryParse(t[0].Value, out var m) && m == monstro && t[1].Value.StartsWith('"'));
+        string nova;
+        if (at >= 0)
+        {
+            var toks = Token.Matches(lines[at]).ToList();
+            var prefixo = lines[at].Substring(0, toks[2].Index);   // índice + nome + espaços até o 1º par
+            nova = prefixo + string.Join("\t", pares);
+            if (nova == lines[at]) return null;
+            lines[at] = nova;
+        }
+        else
+        {
+            if (poderes.Count == 0) return null;
+            int end = lines.FindIndex(l => l.Trim().Equals("end", StringComparison.OrdinalIgnoreCase));
+            nova = $"{monstro,-10}\"{nome}\"{new string(' ', Math.Max(1, 37 - nome.Length))}{string.Join("\t", pares)}";
+            lines.Insert(end < 0 ? lines.Count : end, nova);
+        }
+        var backup = f + ".bak-" + DateTime.Now.ToString("yyyyMMdd-HHmmss");
+        File.Copy(f, backup, overwrite: true);
+        File.WriteAllText(f, string.Join("\r\n", lines), Enc);
+        return backup;
     }
 }

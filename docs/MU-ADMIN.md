@@ -72,7 +72,7 @@ Página **Painel → Usuários do painel** (só administrador). Cada pessoa tem 
 | | **EXP dinâmica** | % da EXP por faixa de nível, com o gráfico da curva e a EXP efetiva de cada plano |
 | | **Resets** | Créditos do Master e do Supreme Reset e o atributo máximo |
 | Conteúdo | **Monstros (respawn)** | Onde e quantos monstros nascem, desenhados sobre o mapa do jogo (tecla Tab) |
-| | **Atributos dos monstros** | Vida, dano, defesa, velocidade, visão, tempo para renascer e resistências de cada monstro (`Monster.txt`), com Reload Monster; os poderes especiais só para consulta |
+| | **Atributos dos monstros** | Vida, dano, defesa, velocidade, visão, tempo para renascer e resistências de cada monstro (`Monster.txt`); e os **poderes** (o que ele solta: efeito, chance, duração, intervalo; adicionar/remover), em `Data\Monster\Skill`. Com Reload Monster |
 | | **Itens novos** | Item novo com o visual de outro |
 | Site | **Loja de itens** | Catálogo, preços e vendas da loja paga com Cash |
 | | **Notícias** | Publicar, editar e apagar, com editor de HTML e prévia |

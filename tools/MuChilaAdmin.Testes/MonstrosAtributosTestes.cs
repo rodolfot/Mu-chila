@@ -78,10 +78,47 @@ public class MonstrosAtributosTestes : IDisposable
     }
 
     [Fact]
-    public void Poderes_descritos_pelas_unidades_e_efeitos()
+    public void Poderes_lidos_com_unidades_efeitos_e_uso()
     {
-        var p = MonsterSkills.Todos();
-        Assert.Single(p);
-        Assert.Equal(new[] { "unidade 4: alcance 4, a cada 500 ms; envenena (30% de chance, 5 s)", "unidade 1: alcance 6, a cada 300 ms; atordoa (50% de chance, 3 s)" }, p[304]);
+        var d = MonsterSkills.Carregar();
+        Assert.Equal(new[] { new MonsterSkills.Poder(0, 4), new MonsterSkills.Poder(0, 1) }, d.PoderesDoMonstro[304]);
+        Assert.Equal(500, d.Unidades[4].Delay); Assert.Equal(4, d.Unidades[4].Area); Assert.Equal(new[] { 19 }, d.Unidades[4].Efeitos);
+        Assert.Equal((19, 30, 5), (d.Efeitos[19].Tipo, d.Efeitos[19].Chance, d.Efeitos[19].Duracao));
+        Assert.Equal(1, d.UnidadeUsadaPor[4]); Assert.Equal(1, d.EfeitoUsadoPor[19]);
+        Assert.Equal("unidade 4: alcance 4, a cada 500 ms; envenena (30%, 5 s)", MonsterSkills.Descrever(4, d));
+    }
+
+    [Fact]
+    public void Salvar_efeito_muda_so_as_colunas_certas()
+    {
+        MonsterSkills.Salvar(new MonsterSkills.Alteracoes { Efeitos = { [19] = (19, 75, 8) } });   // chance 30→75, duração 5→8
+        var d = MonsterSkills.Carregar();
+        Assert.Equal((19, 75, 8), (d.Efeitos[19].Tipo, d.Efeitos[19].Chance, d.Efeitos[19].Duracao));
+        Assert.Equal((0, 50, 3), (d.Efeitos[1].Tipo, d.Efeitos[1].Chance, d.Efeitos[1].Duracao));   // o outro efeito intacto
+    }
+
+    [Fact]
+    public void Salvar_unidade_muda_delay_e_area_sem_mexer_nos_efeitos()
+    {
+        MonsterSkills.Salvar(new MonsterSkills.Alteracoes { Unidades = { [1] = (1000, 10) } });
+        var d = MonsterSkills.Carregar();
+        Assert.Equal(1000, d.Unidades[1].Delay); Assert.Equal(10, d.Unidades[1].Area); Assert.Equal(new[] { 1 }, d.Unidades[1].Efeitos);
+        Assert.Equal(500, d.Unidades[4].Delay);   // outra unidade intacta
+    }
+
+    [Fact]
+    public void Salvar_poderes_reduz_a_lista_do_monstro()
+    {
+        MonsterSkills.Salvar(new MonsterSkills.Alteracoes { Poderes = (304, "Witch Queen", new List<MonsterSkills.Poder> { new(0, 1) }) });
+        Assert.Equal(new[] { new MonsterSkills.Poder(0, 1) }, MonsterSkills.Carregar().PoderesDoMonstro[304]);
+    }
+
+    [Fact]
+    public void Salvar_poderes_cria_linha_para_monstro_sem_poder()
+    {
+        MonsterSkills.Salvar(new MonsterSkills.Alteracoes { Poderes = (2, "Budge Dragon", new List<MonsterSkills.Poder> { new(0, 4) }) });
+        var d = MonsterSkills.Carregar();
+        Assert.Equal(new[] { new MonsterSkills.Poder(0, 4) }, d.PoderesDoMonstro[2]);
+        Assert.Equal(new[] { new MonsterSkills.Poder(0, 4), new MonsterSkills.Poder(0, 1) }, d.PoderesDoMonstro[304]);   // 304 intacto
     }
 }
