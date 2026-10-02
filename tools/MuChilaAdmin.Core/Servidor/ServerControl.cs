@@ -185,6 +185,47 @@ public static class ServerControl
         return lista;
     }
 
+    /// <summary>
+    /// Botão "Launcher" do painel (issue #39). O "Ligar Servidor" aceita uma instância só (Mutex) e pode ficar escondido na
+    /// bandeja ("Minimize/Close to tray"): abrir o .exe de novo não mostra nada. Se já estiver aberto, traz a janela dele.
+    /// </summary>
+    public static string OpenLauncher()
+    {
+        var launcher = Find("Ligar Servidor");
+        if (launcher == null) { Open(LauncherPath); return "Launcher aberto na tela do PC do servidor."; }
+        return ShowLauncherWindow(launcher) != IntPtr.Zero
+            ? "O launcher já estava aberto (na bandeja ou minimizado): a janela dele foi trazida para a frente na tela do PC do servidor."
+            : "O launcher já está aberto, mas a janela dele não foi encontrada. Abra pelo ícone na bandeja do PC do servidor.";
+    }
+
+    /// <summary>
+    /// Mostra e restaura a janela principal do "Ligar Servidor", mesmo escondida na bandeja (aí o MainWindowHandle do processo
+    /// vem zerado). É o formulário (classe WindowsForms10.Window...) com título e botão de minimizar; o processo tem outro
+    /// formulário escondido ("ServerStartUp © ...") que não minimiza. Sem dono de preferência: tirado da barra de tarefas, o
+    /// WinForms dá à janela um dono invisível.
+    /// </summary>
+    static IntPtr ShowLauncherWindow(Process launcher)
+    {
+        IntPtr found = IntPtr.Zero, owned = IntPtr.Zero;
+        EnumWindows((h, _) =>
+        {
+            GetWindowThreadProcessId(h, out uint pid);
+            if (pid != launcher.Id || (GetWindowLong(h, GWL_STYLE) & WS_MINIMIZEBOX) == 0) return true;
+            var cls = new StringBuilder(256); GetClassName(h, cls, cls.Capacity);
+            var title = new StringBuilder(256); GetWindowText(h, title, title.Capacity);
+            if (!cls.ToString().StartsWith("WindowsForms10.Window", StringComparison.Ordinal) || title.Length == 0) return true;
+            if (GetWindow(h, GW_OWNER) != IntPtr.Zero) { if (owned == IntPtr.Zero) owned = h; return true; }
+            found = h;
+            return false;
+        }, IntPtr.Zero);
+        if (found == IntPtr.Zero) found = owned;
+        if (found == IntPtr.Zero) return found;
+        ShowWindow(found, 5);   // SW_SHOW: tira da bandeja
+        ShowWindow(found, 9);   // SW_RESTORE: desfaz o minimizado
+        SetForegroundWindow(found);
+        return found;
+    }
+
     /// <summary>Aciona "Start all" ou "Stop all" na barra do launcher (o botao alterna entre os dois).</summary>
     public static string LauncherToggle(bool start)
     {
@@ -196,7 +237,7 @@ public static class ServerControl
             Thread.Sleep(3000);
             launcher.Refresh();
         }
-        ShowWindow(launcher.MainWindowHandle, 9);   // restaura: minimizado, a barra nao aparece para o UI Automation
+        ShowLauncherWindow(launcher);   // minimizado ou na bandeja, a barra nao aparece para o UI Automation
         Thread.Sleep(800);
 
         var window = AutomationElement.RootElement.FindFirst(TreeScope.Children,
@@ -336,6 +377,12 @@ public static class ServerControl
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetWindowText(IntPtr hwnd, StringBuilder text, int max);
     [DllImport("user32.dll")] static extern bool PostMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
     [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hwnd, int cmd);
+    [DllImport("user32.dll")] static extern bool SetForegroundWindow(IntPtr hwnd);
+    [DllImport("user32.dll")] static extern IntPtr GetWindow(IntPtr hwnd, uint cmd);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetClassName(IntPtr hwnd, StringBuilder name, int max);
+    [DllImport("user32.dll")] static extern int GetWindowLong(IntPtr hwnd, int index);
+    const uint GW_OWNER = 4;
+    const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x00020000;
 
     /// <summary>A janela aberta pelo launcher nao e a "janela principal" do processo; procura a que tem menu.</summary>
     static IntPtr FindMenuWindow(int pid)

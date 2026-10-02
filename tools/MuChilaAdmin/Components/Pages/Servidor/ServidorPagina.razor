@@ -81,7 +81,7 @@
                     <button type="button" class="btn btn-secundario w-full" @onclick="Publicar" disabled="@ocupado"><Icone Nome="upload" Classe="ico-sm" />Publicar atualização do cliente</button>
                     <div class="grid grid-cols-2 gap-2">
                         <button type="button" class="btn btn-fantasma" @onclick="@(() => Abrir("MuEditor", ServerControl.MuEditorPath))"><Icone Nome="external" Classe="ico-sm" />MuEditor</button>
-                        <button type="button" class="btn btn-fantasma" @onclick="@(() => Abrir("launcher", ServerControl.LauncherPath))"><Icone Nome="external" Classe="ico-sm" />Launcher</button>
+                        <button type="button" class="btn btn-fantasma" @onclick="AbrirLauncher"><Icone Nome="external" Classe="ico-sm" />Launcher</button>
                     </div>
                     <p class="ajuda">MuEditor e launcher abrem na tela do PC do servidor.</p>
                 </div>
@@ -222,6 +222,9 @@
 
     async Task Abrir(string nome, string caminho) =>
         await Rodar("servidor.abrir", nome, () => { ServerControl.Open(caminho); return new[] { $"{nome} aberto na tela do PC do servidor." }; });
+
+    // o "Ligar Servidor" aceita uma instância só e costuma estar na bandeja: traz a janela em vez de abrir outro (#39)
+    async Task AbrirLauncher() => await Rodar("servidor.abrir", "launcher", () => new[] { ServerControl.OpenLauncher() });
 
     public void Dispose() => timer?.Dispose();
 }
