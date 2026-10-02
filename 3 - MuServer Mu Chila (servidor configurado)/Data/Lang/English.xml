@@ -21,11 +21,11 @@
 		<Msg ID="20" Text="Chaos Castle ended" />
 		<Msg ID="32" Text="/move" />
 		<Msg ID="33" Text="/post" />
-		<Msg ID="34" Text="/addstr" />
-		<Msg ID="35" Text="/addagi" />
-		<Msg ID="36" Text="/addvit" />
-		<Msg ID="37" Text="/addene" />
-		<Msg ID="38" Text="/addcmd" />
+		<Msg ID="34" Text="/f" />
+		<Msg ID="35" Text="/a" />
+		<Msg ID="36" Text="/v" />
+		<Msg ID="37" Text="/e" />
+		<Msg ID="38" Text="/c" />
 		<Msg ID="39" Text="/pkclear" />
 		<Msg ID="40" Text="/money" />
 		<Msg ID="41" Text="/change" />

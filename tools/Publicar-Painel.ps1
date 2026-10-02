@@ -5,9 +5,10 @@
 #   4. atalhos na pasta Inicializar do Windows: "Mu Chila - Painel" (--web) e "Mu Chila - Vigia" (--vigia-reset);
 #   5. se a configuração abre o painel para a rede do Radmin, cria a regra do firewall (porta do painel, só da rede 26.x);
 #   6. liga o painel e o vigia e confere (http://localhost:5170/api/saude e a sonda do vigia).
-# Chaves do vigia (arquivos .ligado na pasta do painel): reset → seleção (#7), comandos curtos (/f /a /v /e /c),
-# Passe dos Mapas, Magic Backpack e classe inicial (#35: a 1ª classe aparece com o nome certo no jogo). Para desligar uma:
-# apague o arquivo (o vigia confere a cada volta; comandos curtos e classe inicial só voltam ao original reiniciando o GameServer).
+# Chaves do vigia (arquivos .ligado na pasta do painel): reset → seleção (#7), Passe dos Mapas, Magic Backpack e classe
+# inicial (#35: a 1ª classe aparece com o nome certo no jogo). Para desligar uma: apague o arquivo (o vigia confere a cada
+# volta; a classe inicial só volta ao original reiniciando o GameServer). Os comandos curtos /f /a /v /e /c não são mais do
+# vigia (#40): ficam no Data\Lang\Portuguese.xml do servidor; a chave antiga vigia-comandos-curtos.ligado é apagada.
 # A configuração (banco, pastas, porta, endereços) fica em %ProgramData%\MuChilaAdmin\muchila-admin.json; sem o arquivo
 # valem os padrões deste PC. Exemplo comentado: tools\MuChilaAdmin\muchila-admin.exemplo.json. Guia: docs\MU-ADMIN.md.
 # Uso: .\Publicar-Painel.ps1          (a regra do firewall precisa do PowerShell como administrador)
@@ -42,10 +43,12 @@ Passo "3. Publicando em $dest"
 dotnet publish $proj -c Release -r win-x64 --self-contained false -o $dest -nologo -v q
 if ($LASTEXITCODE -ne 0) { throw 'dotnet publish falhou' }
 "publicado: $exe ($((Get-Item $exe).LastWriteTime))"
-foreach ($chave in 'vigia-reset-selecao.ligado', 'vigia-comandos-curtos.ligado', 'vigia-passe-mapas.ligado', 'vigia-mochila.ligado', 'vigia-classe-inicial.ligado') {
+foreach ($chave in 'vigia-reset-selecao.ligado', 'vigia-passe-mapas.ligado', 'vigia-mochila.ligado', 'vigia-classe-inicial.ligado') {
     $f = Join-Path $dest $chave
     if (-not (Test-Path $f)) { Set-Content -Path $f -Value "ligado em $(Get-Date -f 'dd/MM/yyyy HH:mm')"; "chave criada: $chave" }
 }
+$antiga = Join-Path $dest 'vigia-comandos-curtos.ligado'
+if (Test-Path $antiga) { Remove-Item $antiga; "chave antiga apagada: vigia-comandos-curtos.ligado (os comandos curtos ficam no Data\Lang\Portuguese.xml)" }
 
 # ---------------------------------------------------------------- 4. atalhos de inicialização
 Passo '4. Atalhos (ligam junto com o Windows)'

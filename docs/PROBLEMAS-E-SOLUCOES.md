@@ -143,6 +143,17 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Comandos curtos `/f /a /v /e /c` não funcionavam (issue #40)
+- **Sintoma:** `/f 100` etc. não faziam nada e não mostravam erro. Desde 27/09 o vigia "renomeava" `/addstr` → `/f` na memória do GameServer. Isso nunca foi testado no jogo.
+- **Causa:** o nome de cada comando vem do `Data\Lang\Portuguese.xml` (mensagens 34–38), lido quando o GameServer liga.
+  - O vigia trocava o texto na tabela de mensagens já carregada, mas a busca do comando não passa a reconhecer o nome novo.
+  - Um "Reload Common" relê as mensagens e desfaz a troca.
+- **Solução:**
+  - Mensagens 34–38 trocadas no `Portuguese.xml` (e no `English.xml`): `/f /a /v /e /c`. O GameServer compara a palavra inteira; `/re` e `/reset` já convivem no kit.
+  - A troca na memória saiu do vigia. O `Publicar-Painel` apaga a chave antiga `vigia-comandos-curtos.ligado`.
+  - A página Informações do site e a aba Comandos do painel mostram os nomes que estão no XML.
+- **Falta conferir no jogo**, depois de copiar o XML para `C:\MuServer\Data\Lang` e reiniciar os GameServers: `/f 10` soma 10 de força. Os pontos livres da janela C só atualizam ao trocar de personagem; ver acima.
+
 ### Personagem novo aparece como "Blade Knight" no cliente, mas é Dark Knight no servidor
 - **Causa:** o cliente S14 mostra a classe básica e a 2ª classe com o mesmo nome (16 e 17 aparecem ambos como "Blade Knight"). O servidor, porém, cria o personagem na básica (+0). Com isso, o cliente oferecia itens e skills de 2ª classe que o servidor recusava ("Não pode vestir o item").
 - **Primeira tentativa (24/09/2026, desfeita em 01/10/2026):**

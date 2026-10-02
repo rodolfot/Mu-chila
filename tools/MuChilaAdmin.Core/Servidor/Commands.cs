@@ -4,19 +4,20 @@ namespace MuChilaAdmin.Core;
 public record CommandInfo(string Cmd, string Grupo, string Descricao);
 
 /// <summary>
-/// Lista de comandos do chat do GameServer (achados nas tabelas do binário). É referência para consulta no painel;
-/// a sintaxe fica no executável (o kit só liga/desliga). Comandos de GM exigem nível de conta 32.
+/// Lista de comandos do chat do GameServer. É referência para consulta no painel. O nome de cada comando é uma mensagem do
+/// Data\Lang\Portuguese.xml (IDs 32–58 e outros), que o GameServer lê ao ligar; Command.dat só liga/desliga e define custos.
+/// Comandos de GM exigem nível de conta 32.
 /// </summary>
 public static class Commands
 {
     public static readonly IReadOnlyList<CommandInfo> All = new List<CommandInfo>
     {
-        // ---- jogador: atributos (podem virar /f /a /v /e /c com os comandos curtos do vigia) ----
-        new("/addstr", "Jogador", "Adiciona pontos em Força. Ex.: /addstr 100. (curto: /f)"),
-        new("/addagi", "Jogador", "Adiciona pontos em Agilidade. Ex.: /addagi 100. (curto: /a)"),
-        new("/addvit", "Jogador", "Adiciona pontos em Vitalidade. Ex.: /addvit 100. (curto: /v)"),
-        new("/addene", "Jogador", "Adiciona pontos em Energia. Ex.: /addene 100. (curto: /e)"),
-        new("/addcmd", "Jogador", "Adiciona pontos em Comando/Liderança (só Dark Lord). (curto: /c)"),
+        // ---- jogador: atributos (mensagens 34–38 do Portuguese.xml; eram /addstr /addagi /addvit /addene /addcmd, issue #40) ----
+        new("/f", "Jogador", "Adiciona pontos em Força. Ex.: /f 100."),
+        new("/a", "Jogador", "Adiciona pontos em Agilidade. Ex.: /a 100."),
+        new("/v", "Jogador", "Adiciona pontos em Vitalidade. Ex.: /v 100."),
+        new("/e", "Jogador", "Adiciona pontos em Energia. Ex.: /e 100."),
+        new("/c", "Jogador", "Adiciona pontos em Comando/Liderança (só Dark Lord). Ex.: /c 100."),
         // ---- jogador: geral ----
         new("/reset", "Jogador", "Reseta o personagem (nível 400 → 1) pelas regras do Command.dat."),
         new("/mreset", "Jogador", "Master Reset embutido do kit (grand-reset por contagem de resets; está desligado — o Master Reset oficial é pelo site)."),

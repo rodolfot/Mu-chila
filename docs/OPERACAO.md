@@ -173,8 +173,11 @@ Mudanças de IP no `MapServerInfo.dat` e nas portas exigem reiniciar.
 - **Contas do kit:** `yolaxd`, `yolaxd1`, `yolaxd2`, `yolaxd4`, `yolaxd5`. A senha fica na tabela `MEMB_INFO` do banco e não é publicada aqui. Troque as senhas antes de liberar o servidor.
 - **Tornar GM:** crie o personagem e adicione `conta  Personagem  32` em `Data\Util\GameMaster.txt`, antes do `end`. Depois, Reload Util.
 - **Comandos de GM:** `/gmmove`, `/make`, `/notice`, `/hide`, `/setlvl`, `/disconnect`, `/banuser`, entre outros. A lista completa está nos `Msg ID` com `/` em `Data\Lang\English.xml`.
-- **Comandos de jogador:** `/addstr`, `/addagi`, `/addvit`, `/addene` e `/addcmd` com a quantidade de pontos; `/reset`, `/pkclear`, `/post`.
-  O modo automático (`/addstr auto 1`) segue a sintaxe do MuEmu e ainda não foi testado.
+- **Comandos de jogador:** `/f`, `/a`, `/v`, `/e` e `/c` (força, agilidade, vitalidade, energia e comando) com a quantidade de pontos, ex.: `/f 100`; `/reset`, `/pkclear`, `/post`.
+  - O nome de cada comando é uma mensagem do `Data\Lang\Portuguese.xml`: IDs 32–58 e outros, por exemplo `<Msg ID="34" Text="/f" />`. É o arquivo que o `Data\LangManager.xml` liga.
+  - O GameServer lê os nomes ao ligar. Depois de mudar, **reinicie os GameServers e o Castle Siege**.
+  - Os de pontos eram `/addstr /addagi /addvit /addene /addcmd` e mudaram em 01/10/2026 (issue #40). O `English.xml` foi trocado igual.
+  - O modo automático (`/f auto 1`) segue a sintaxe do MuEmu e ainda não foi testado.
 
 ## Eventos
 

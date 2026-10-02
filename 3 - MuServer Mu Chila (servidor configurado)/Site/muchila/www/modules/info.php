@@ -19,10 +19,10 @@ $mcH = fn($mcT) => htmlspecialchars((string)$mcT, ENT_QUOTES, 'UTF-8');
 $mcNum = fn($n) => number_format((float)$n, 0, ',', '.');
 
 // Nomes dos comandos no arquivo de idioma do servidor (o jogo aceita o texto que estiver lá)
-$mcNomesComando = [];
+$mcNomesComando = []; $mcComandoPorId = [];
 $mcLang = @file_get_contents($muchilaRaiz . '/Data/Lang/Portuguese.xml') ?: '';
 if(preg_match_all('#<Msg ID="(\d+)" Text="(/[a-z]+)" />#', $mcLang, $mcMm, PREG_SET_ORDER))
-	foreach($mcMm as $mcM) $mcNomesComando[$mcM[2]] = true;
+	foreach($mcMm as $mcM) { $mcNomesComando[$mcM[2]] = true; $mcComandoPorId[(int)$mcM[1]] = $mcM[2]; }
 $mcTem = fn($mcNome) => isset($mcNomesComando[$mcNome]);
 // Comando ligado: chave geral ("Command<X>Switch") e, se o arquivo tiver, liberado para pelo menos um tipo de conta
 $mcLigado = function(string $mcSwitch) use ($mcCommand): bool {
@@ -31,8 +31,8 @@ $mcLigado = function(string $mcSwitch) use ($mcCommand): bool {
 	foreach([0, 1, 2, 3] as $mcN) if(($mcCommand['Command'.$mcSwitch.'Enable_AL'.$mcN] ?? '0') === '1') return true;
 	return false;
 };
-// O vigia do Mu Chila Admin renomeia /addstr /addagi /addvit /addene /addcmd para /f /a /v /e /c quando este arquivo existe
-$mcCurtos = is_file($muchilaRaiz . '/MuChilaAdmin/vigia-comandos-curtos.ligado');
+// Distribuir pontos: mensagens 34–38 do arquivo de idioma (/f /a /v /e /c no Mu Chila desde 01/10/2026; eram /addstr /addagi...)
+$mcPontos = array_values(array_filter(array_map(fn($mcId) => $mcComandoPorId[$mcId] ?? null, [34, 35, 36, 37, 38])));
 
 // Planos: taxas por tipo de conta (AL0..AL3) + preço e Zen dos pacotes VIP da loja
 $mcPlanos = [0 => ['nome' => 'Free', 'valor' => null, 'zen' => null]];
@@ -149,7 +149,7 @@ if($mcMapasPasse) { ?>
 	<?php
 	$mcComandos = [
 		['/reset', 'Reset', 'Reseta o personagem (volta ao nível 1).'],
-		[$mcCurtos ? '/f /a /v /e /c [pontos]' : '/addstr /addagi /addvit /addene /addcmd [pontos]', 'AddPoint', 'Distribui pontos em força, agilidade, vitalidade, energia ou comando.', '/addstr'],
+		[implode(' ', $mcPontos).' [pontos]', 'AddPoint', 'Distribui pontos em força, agilidade, vitalidade, energia ou comando.', $mcPontos[0] ?? '/f'],
 		['/change', 'Change', 'Evolui a classe do personagem.'],
 		['/pkclear', 'PKClear', 'Limpa o status de assassino (PK).'],
 		['/post [mensagem]', 'Post', 'Mensagem para o servidor inteiro (a partir do nível '.(int)($mcCommand['CommandPostLevel_AL0'] ?? 0).').'],
