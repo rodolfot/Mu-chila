@@ -1,0 +1,181 @@
+@page "/mini-bosses"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+
+<CabecalhoPagina Titulo="Mini-bosses" Descricao="Monstros fortes que nascem sozinhos todo dia num horário fixo, no mapa que você escolher." Icone="skull" />
+
+<Nota Tipo="atencao" Classe="mb-5">
+    <b>Depois de salvar, reinicie os GameServers.</b> Cada mini-boss é uma invasão própria no InvasionManager.dat, e o servidor
+    só lê isso quando liga. Em <b>Processos e jogadores → Parar todos → Iniciar todos</b>. Enquanto não reiniciar, nada muda em jogo.
+</Nota>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
+    <Cartao Titulo="Mini-bosses" Icone="skull" Subtitulo="@($"{lista.Count} de {MiniBoss.SlotMax - MiniBoss.SlotMin + 1} vagas usadas")" Classe="xl:col-span-2" SemPadding="true">
+        <Acoes>
+            <button type="button" class="btn btn-primario btn-sm" @onclick="Novo" disabled="@ocupado"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Novo mini-boss</button>
+        </Acoes>
+        <ChildContent>
+            @if (lista.Count == 0)
+            {
+                <Vazio Texto="Nenhum mini-boss ainda. Clique em “Novo mini-boss”." Icone="skull" />
+            }
+            else
+            {
+                <ul class="divide-y divide-slate-100 dark:divide-white/5">
+                    @foreach (var b in lista)
+                    {
+                        <li class="flex flex-wrap items-center gap-3 px-5 py-3">
+                            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-rose-500/10 text-rose-500"><Icone Nome="skull" Classe="ico-sm" /></span>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-medium text-slate-900 dark:text-white">@b.Nome @if (b.Anuncia) { <span class="ml-1 align-middle text-xs text-amber-600 dark:text-amber-400">• anuncia</span>}</p>
+                                <p class="text-xs text-slate-500">@NomeMonstro(b.Monstro) · @NomeMapa(b.Mapa) · todo dia @Horarios(b) · dura @b.DuracaoMinutos min</p>
+                            </div>
+                            <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Editar(b)" disabled="@ocupado"><Icone Nome="edit" Classe="h-3.5 w-3.5" />Editar</button>
+                            <button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover" @onclick="() => Remover(b)" disabled="@ocupado"><Icone Nome="trash" Classe="h-4 w-4" /></button>
+                        </li>
+                    }
+                </ul>
+            }
+        </ChildContent>
+    </Cartao>
+
+    @if (mostrandoForm)
+    {
+        <Cartao Titulo="@(slotEdit == null ? "Novo mini-boss" : $"Editar “{nome}”")" Icone="edit">
+            <div class="space-y-4">
+                <label class="block"><span class="rotulo">Nome</span>
+                    <input type="text" maxlength="40" class="entrada" placeholder="Ex.: Aranha Gigante" @bind="nome" @bind:event="oninput" />
+                </label>
+                <label class="block"><span class="rotulo">Monstro (o visual e a força base)</span>
+                    <select class="entrada" @bind="monstro">
+                        @foreach (var m in monstros.OrderBy(x => x.Nome, StringComparer.CurrentCultureIgnoreCase))
+                        {
+                            <option value="@m.Index">@m.Nome — nível @m.Valores[3], vida @m.Valores[4].ToString("N0")</option>
+                        }
+                    </select>
+                </label>
+                <label class="block"><span class="rotulo">Mapa onde nasce</span>
+                    <select class="entrada" @bind="mapa">
+                        @foreach (var mp in mapas.OrderBy(x => x.Value, StringComparer.CurrentCultureIgnoreCase))
+                        {
+                            <option value="@mp.Key">@mp.Value</option>
+                        }
+                    </select>
+                </label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="block"><span class="rotulo">Horário</span>
+                        <input type="time" class="entrada" @bind="horario" />
+                    </label>
+                    <label class="block"><span class="rotulo">Dura (min)</span>
+                        <input type="number" min="1" max="1440" class="entrada" @bind="duracao" />
+                    </label>
+                </div>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox" class="caixa" @bind="duasVezes" /> Nascer 2× ao dia (de 12 em 12 horas)
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox" class="caixa" @bind="anuncia" /> Anunciar no chat quando nascer e quando for derrotado
+                </label>
+                <div class="flex gap-2 pt-1">
+                    <button type="button" class="btn btn-primario" @onclick="Salvar" disabled="@ocupado"><Icone Nome="check" Classe="h-4 w-4" />Salvar</button>
+                    <button type="button" class="btn btn-secundario" @onclick="Cancelar" disabled="@ocupado">Cancelar</button>
+                </div>
+                <p class="ajuda">A força vem do monstro escolhido. Para uma <b>aranha gigante</b>, use a <b>Sapi-Tres</b> (58 mil de vida) ou outra Sapi.
+                    Para calibrar vida/dano, use <a class="link" href="/monstros/atributos">Atributos dos monstros</a> — lembrando que isso muda o monstro em todo lugar onde ele aparece.</p>
+            </div>
+        </Cartao>
+    }
+</div>
+
+<ResultadoAcao Linhas="resultado" Titulo="@titulo" Quando="quando" />
+
+@code {
+    List<MiniBoss> lista = new();
+    Dictionary<int, string> mapas = new();
+    List<MonsterStats.Monstro> monstros = new();
+    List<string> resultado = new();
+    string titulo = "";
+    DateTime quando;
+    bool ocupado;
+
+    // formulário
+    int? slotEdit;            // null = criando novo
+    string nome = "";
+    int mapa;
+    int monstro = 443;        // Sapi-Tres (aranha gigante) como padrão
+    TimeOnly horario = new(20, 0);
+    bool duasVezes;
+    int duracao = 30;
+    bool anuncia = true;
+    bool mostrandoForm;
+
+    protected override void OnInitialized() => Carregar();
+
+    void Carregar()
+    {
+        try
+        {
+            lista = MiniBosses.Listar();
+            mapas = Monsters.NomesDosMapas();
+            monstros = MonsterStats.Carregar();
+        }
+        catch (Exception ex) { Registro.Erro("mini-bosses", ex); Toast.Erro("Não consegui ler os arquivos do servidor: " + ex.Message); }
+    }
+
+    string NomeMapa(int m) => mapas.GetValueOrDefault(m, $"mapa {m}");
+    string NomeMonstro(int idx) => monstros.FirstOrDefault(x => x.Index == idx)?.Nome ?? $"monstro {idx}";
+    string Horarios(MiniBoss b) => b.DuasVezesAoDia ? $"{b.Hora:00}:{b.Minuto:00} e {(b.Hora + 12) % 24:00}:{b.Minuto:00}" : $"{b.Hora:00}:{b.Minuto:00}";
+
+    void Novo()
+    {
+        if (MiniBosses.ProximoSlotLivre() == null) { Toast.Erro($"Já há o máximo de {MiniBoss.SlotMax - MiniBoss.SlotMin + 1} mini-bosses."); return; }
+        slotEdit = null; nome = ""; monstro = monstros.Any(x => x.Index == 443) ? 443 : monstros.FirstOrDefault()?.Index ?? 0;
+        mapa = mapas.Keys.OrderBy(x => x).FirstOrDefault();
+        horario = new(20, 0); duasVezes = false; duracao = 30; anuncia = true; mostrandoForm = true;
+    }
+
+    void Editar(MiniBoss b)
+    {
+        slotEdit = b.Slot; nome = b.Nome; mapa = b.Mapa; monstro = b.Monstro;
+        horario = new(b.Hora, b.Minuto); duasVezes = b.DuasVezesAoDia; duracao = b.DuracaoMinutos; anuncia = b.Anuncia;
+        mostrandoForm = true;
+    }
+
+    void Cancelar() => mostrandoForm = false;
+
+    async Task Salvar()
+    {
+        if (string.IsNullOrWhiteSpace(nome)) { Toast.Erro("Dê um nome ao mini-boss."); return; }
+        int slot = slotEdit ?? MiniBosses.ProximoSlotLivre() ?? -1;
+        if (slot < 0) { Toast.Erro("Sem vaga livre para mini-boss."); return; }
+        var mb = new MiniBoss(slot, nome.Trim(), mapa, monstro, horario.Hour, horario.Minute, duasVezes, anuncia, Math.Clamp(duracao, 1, 1440));
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            await Acoes.Executar("mini-boss.salvar", nome, () => { linhas.Add(MiniBosses.Salvar(mb)); return linhas; },
+                Politicas.Administrar, $"slot={slot} mapa={mapa} monstro={monstro}");
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = $"Mini-boss “{nome}”"; quando = DateTime.Now;
+        mostrandoForm = false;
+        Carregar();
+    }
+
+    async Task Remover(MiniBoss b)
+    {
+        if (!await Confirmar.Perguntar($"Remover “{b.Nome}”?", "Ele deixa de nascer. As invasões originais do servidor não são tocadas.", "Remover", perigo: true)) return;
+        ocupado = true;
+        var linhas = new List<string>();
+        try
+        {
+            await Acoes.Executar("mini-boss.remover", b.Nome, () => { linhas.Add(MiniBosses.Remover(b.Slot)); return linhas; },
+                Politicas.Administrar, $"slot={b.Slot}");
+        }
+        finally { ocupado = false; }
+        resultado = linhas; titulo = $"Mini-boss “{b.Nome}” removido"; quando = DateTime.Now;
+        Carregar();
+    }
+}

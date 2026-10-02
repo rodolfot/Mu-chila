@@ -35,6 +35,7 @@ public static class Navegacao
 
         new("Conteúdo", "Monstros (respawn)", "monstros", "skull", Politicas.Administrar, "Onde e quantos monstros nascem"),
         new("Conteúdo", "Atributos dos monstros", "monstros/atributos", "skull", Politicas.Administrar, "Vida, dano, defesa, velocidade e resistências"),
+        new("Conteúdo", "Mini-bosses", "mini-bosses", "skull", Politicas.Administrar, "Monstros fortes que nascem todo dia num horário fixo, por mapa"),
         new("Conteúdo", "Itens novos", "itens-novos", "sparkle", Politicas.Administrar, "Criar item com o visual de outro"),
 
         new("Site", "Loja de itens", "site/loja-itens", "package", Politicas.Administrar, "Catálogo e preços da loja paga com Cash"),
