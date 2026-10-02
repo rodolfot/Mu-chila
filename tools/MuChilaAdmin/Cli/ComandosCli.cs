@@ -120,6 +120,25 @@ public static class ComandosCli
             catch (Exception ex) { File.WriteAllText(args[^1], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "--lang-extrair <Lang.mpr> <pasta> <saida>": tira os textos do cliente (por\, eng\, spn\...) para editar (#41).
+        // "--lang-montar <Lang.mpr original> <pasta> <Lang.mpr novo> <saida>": monta o pacote com os textos da pasta (o que não
+        // estiver na pasta fica como no original) e confere abrindo o resultado.
+        if (args.Length == 4 && args[0] == "--lang-extrair")
+        {
+            try { File.WriteAllText(args[3], $"{LangPack.Extract(args[1], args[2])} arquivo(s) extraído(s) em {args[2]}"); return 0; }
+            catch (Exception ex) { File.WriteAllText(args[3], "FALHA: " + ex.Message); return 1; }
+        }
+        if (args.Length == 5 && args[0] == "--lang-montar")
+        {
+            try
+            {
+                var trocados = LangPack.Pack(args[1], args[2], args[3]);
+                File.WriteAllLines(args[4], new[] { $"{args[3]} montado; {trocados.Count} arquivo(s) diferente(s) do original:" }.Concat(trocados.Select(t => "  " + t)));
+                return 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[4], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "--moss <segundos> <saida>": o Moss Merchant aparece daqui a N segundos em todos os GameServers (só a parte da memória
         // do "Disparar evento", #43). "--moss-ler <saida>": só lê o estado (0 desligado, 1 esperando, 2 em Elbeland).
         if ((args.Length == 3 && args[0] == "--moss") || (args.Length == 2 && args[0] == "--moss-ler"))

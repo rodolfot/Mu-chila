@@ -68,6 +68,10 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 | `MuChilaAdmin\` (26/09/2026) | Abas novas: **Bônus** (EXP/EXP master/drop por tempo, pelo `BonusManager.dat`), **Lojas** (editor das lojas dos NPCs) e **Itens e baú** (ver e remover itens; presentes pela Gremory Case após calibração). Painel e scripts só mexem em processos de `C:\MuServer` | Pedido do dono: dobro de XP por uma hora, controlar o que cada NPC vende e administrar itens |
 | `MuChilaAdmin\` (01/10/2026) | O painel virou **web** (http://localhost:5170, ícone na bandeja, liga com o Windows pelo atalho "Mu Chila - Painel"): login com usuário e senha, papéis (administrador, moderador, somente leitura), auditoria, alertas, dashboard, bans com motivo e prazo, relatórios CSV/PDF. Tabelas novas `MUCHILA_ADMIN_*` no banco (criadas sozinhas). Ver [MU-ADMIN.md](MU-ADMIN.md) | Pedido do dono: painel mais moderno, seguro e com login |
 
+## Cliente: textos (`Data\Lang.mpr`)
+
+- 02/10/2026 (issue #41): `por\MUQuest(por).txt` com os 356 títulos de missão em português e `por\Text(por).txt` com 84 frases da interface traduzidas. Os arquivos editados ficam em `tools\Lang\por\`; o pacote é montado com `tools\Montar-Lang.ps1`. Ver OPERACAO, "Textos do jogo".
+
 ## Banco de dados (`.\MUONLINE`)
 
 - `MuOnlineS14` e `BattleCore` restaurados dos `.bak` do kit.

@@ -214,6 +214,33 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
   - Na agenda, ela roda às 1:25, 5:25, 9:25, 13:25, 17:25 e 18:32.
   - Para outros monstros ou mapas, mude os blocos 2 e 3 do `InvasionManager.dat` (Value do bloco 2 = Value do bloco 3) e dê Reload Event.
 
+### Textos do jogo (Lang.mpr) e tradução (issue #41)
+
+- Os textos do cliente ficam em `Data\Lang.mpr`, separados por idioma: `por\`, `eng\` e `spn\`, com os arquivos `Text`, `MUQuest`, `MUQuestString`, `Dialog`, `skill`, `Npcname` e outros.
+  - O jogo usa o idioma do registro (`HKCU\Software\Webzen\Mu\Config\LangSelection`: `Por`, `Eng` ou `Spn`), que o MuChilaLauncher grava.
+  - Nomes e dicas de itens ficam em `Data\Local\<idioma>\item_*.bmd` e `itemtooltip*.bmd`.
+- **O que está traduzido (02/10/2026):**
+  - todos os títulos de missão (`MUQuest`, 356; antes em inglês, com a descrição em português), usando os títulos que o próprio jogo já tinha no `MUQuestString`;
+  - 84 frases da interface do `Text(por)` que tinham ficado em inglês.
+  - Os arquivos editados ficam em `tools\Lang\por\`.
+- **O que continua em inglês no português** (igual ao inglês no kit):
+  - nomes e dicas dos itens (`item_por.bmd`, `itemtooltip_por.bmd`);
+  - nomes das skills (`skill`, 679);
+  - nomes de NPCs e monstros (`Npcname`, 757);
+  - nomes de mapas e eventos, e as classes.
+  - É o costume do MU no Brasil, mas dá para traduzir com a mesma ferramenta.
+- **Avisos do servidor** (`Data\Lang\Portuguese.xml`) saem em português para todos. O cliente não manda o idioma ao servidor: "Eng"/"Por" só escolhe a pasta de textos, e o GameServer usa o idioma 0 para todo mundo. Quem escolhe inglês no launcher vê a interface em inglês e os avisos do servidor em português.
+- **Editar e montar:**
+  - `.\tools\Montar-Lang.ps1` põe os arquivos de `tools\Lang` dentro do `Lang.mpr` do cliente do repositório e confere abrindo o resultado.
+  - Para mexer num arquivo que ainda não está lá, extraia antes com `MuChilaAdmin.exe --lang-extrair <Lang.mpr> <pasta> <saída>`.
+  - Teste pela pasta do cliente e mande aos jogadores com o `Publicar-Launcher.ps1`.
+  - Formato de cada linha: `índice<TAB>"texto"`. Mantenha os `%d`/`%s` na mesma ordem e não escreva `%` seguido de espaço e letra.
+- **Como o pacote é feito** (`LangPack.cs`): é um ZIP, com três camadas de proteção que o jogo confere:
+  1. as entradas são cifradas com ZipCrypto, com a senha que o `main.exe` usa;
+  2. cada byte do arquivo passa por XOR com `20 13 77`;
+  3. nos 4 bytes finais vai a soma do MU (`GenerateCheckSum2`, chave `0x12DC`).
+  - Sem a soma certa, o jogo não carrega texto nenhum.
+
 ### Moss Merchant (mercador de apostas)
 
 - **O que é:** o Moss é um NPC que aparece em **Elbeland** (mapa 51, perto de 22, 225) só durante o evento. Ele vende **armas com opções sorteadas** (uma aposta):

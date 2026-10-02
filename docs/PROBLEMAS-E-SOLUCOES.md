@@ -143,6 +143,31 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Jogo metade em inglês, metade em português (issue #41)
+- **Medição (02/10/2026)**, comparando cada arquivo português do cliente com o inglês:
+  - **100% em inglês:**
+    - títulos das missões (`MUQuest`), enquanto as descrições estão em português;
+    - nomes e dicas dos itens (`item_por.bmd` e `itemtooltip_por.bmd` idênticos aos `_eng`);
+    - skills (`skill`);
+    - NPCs e monstros (`Npcname`);
+    - níveis de item (`ItemLevelTooltip`);
+    - `MBoxShop`, `movereq` e `HuntingRecord`.
+  - **Parcial:** `Text`, 93% traduzido (148 frases em inglês, mais nomes próprios).
+  - **Quase todo traduzido:** `Dialog`, `MUQuestString`, `GuideQuest`, `BuffEffect` e `Slide`.
+- **Por que não dava para mexer:** o `Lang.mpr` tem senha e uma soma de conferência.
+  - A senha estava no `main.exe`, que só fica legível na memória; foi achada no texto passado à rotina do ZIP.
+  - A soma é o `GenerateCheckSum2` com a chave `0x12DC`, achada testando as 65.536 chaves.
+  - Testes no jogo:
+    - o original sem os 4 bytes finais não carrega texto nenhum;
+    - o pacote remontado sem a soma também não carrega;
+    - com a soma, carrega.
+- **Feito:**
+  - Ferramenta para extrair e montar o pacote (`LangPack.cs`, `--lang-extrair`/`--lang-montar`, `tools\Montar-Lang.ps1`).
+  - 356 títulos de missão traduzidos, com os títulos que o jogo já tinha no `MUQuestString`, e 84 frases da interface.
+  - Conferido no jogo: os textos novos aparecem na memória do cliente, e o título "Reach Lv. 5..." não aparece mais.
+- **Falta (decisão do dono):** traduzir nomes de itens, skills e monstros (milhares de nomes; o costume no Brasil é deixar em inglês), e os pequenos `ItemLevelTooltip`/`MBoxShop`.
+- Os avisos do servidor saem sempre em português: o cliente não manda o idioma ao servidor. Ver OPERACAO, "Textos do jogo".
+
 ### Moss Merchant disparado pelo painel não aparecia (issue #43)
 - **Sintoma:** ao disparar o Moss pela página Eventos, nada acontecia, nem o aviso.
 - **Causa:** é o mesmo caso das invasões. O painel gravava uma linha no `MossMerchant.dat` e dava Reload Event, mas o GameServer só calcula o próximo horário do Moss ao ligar e quando ele vai embora.
