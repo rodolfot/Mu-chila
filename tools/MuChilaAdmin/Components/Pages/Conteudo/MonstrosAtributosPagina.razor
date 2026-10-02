@@ -173,7 +173,10 @@
                         </label>
                         <button type="button" class="btn btn-secundario btn-sm" @onclick="AdicionarPoder" disabled="@(unidadeNova < 0)"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar</button>
                     </div>
-                    <p class="ajuda mt-3">O servidor só faz os monstros soltarem as skills da lista (as que o kit usa: ataque básico, Poison, Meteorite, Hell Fire, Lunge, Uppercut e os Summons). <b>Outras skills (Evil Spirit, Twisting Slash…) não são soltadas por monstros</b> sem mexer no GameServer. Cada poder é uma skill + uma configuração (área, intervalo, efeitos). Vale com o Reload Monster; se não pegar na hora, reinicie os GameServers.</p>
+                    <Nota Tipo="atencao" Classe="mt-3">
+                        <b>Mudança de poder só vale depois de REINICIAR os GameServers.</b> O "Salvar e recarregar" grava e dá Reload Monster, mas o Reload <b>não relê os poderes</b> — eles são lidos quando o GameServer liga. Então: Salvar aqui → Processos e jogadores → Parar todos → Iniciar todos.
+                    </Nota>
+                    <p class="ajuda mt-2">O servidor só faz os monstros soltarem as skills da lista (as que o kit usa: ataque básico, Poison, Meteorite, Hell Fire, Lunge, Uppercut e os Summons). <b>Outras skills (Evil Spirit, Twisting Slash…) não são soltadas por monstros</b> sem mexer no GameServer. Cada poder é uma skill + uma configuração (área, intervalo, efeitos).</p>
                 </ChildContent>
             </Cartao>
         }
