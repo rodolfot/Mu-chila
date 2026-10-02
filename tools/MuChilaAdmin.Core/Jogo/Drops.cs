@@ -211,7 +211,7 @@ public static class Drops
     }
 
     /// <summary>Troca o texto de um token; se o novo for maior, come espaços à direita (deixa ao menos um) para não empurrar as colunas.</summary>
-    static string Replace(string line, Match tok, string value)
+    internal static string Replace(string line, Match tok, string value)
     {
         if (tok.Value == value) return line;
         int start = tok.Index, end = tok.Index + tok.Length;

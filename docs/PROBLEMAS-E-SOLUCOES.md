@@ -143,6 +143,16 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Editor dos atributos dos monstros (issue #49)
+- Página **Atributos dos monstros** do painel (`MonsterStats.cs`).
+  - Muda as colunas do `Data\Monster\Monster.txt` que não mexem na estrutura do monstro: nível, vida, mana, dano, taxas de ataque e defesa, defesa, alcance, visão, velocidades, tempo para renascer, as 7 resistências (gelo, veneno, raio, fogo, terra, vento, água) e o elemental.
+  - Grava só a linha do monstro, sem desalinhar as colunas, com backup, e dá Reload Monster (depois da invasão, se houver uma no ar).
+  - Ficam de fora o tipo, o tipo de ataque, o atributo e a skill (que definem o que o monstro é) e as taxas de drop (página Drops).
+- **Poderes** ("o que eles soltam"): aparecem só para consulta, lidos de `Data\Monster\Skill`. O `MonsterSkill` liga o monstro às unidades; o `MonsterSkillUnit` dá o alcance, o intervalo e os efeitos; o `MonsterSkillElement` dá o efeito (atordoar, envenenar, empurrar...) com chance e duração. Mudar poderes é mexer nesses três arquivos.
+- **Faixas aceitas:** medidas nos 604 monstros do kit (por exemplo, raio de movimento até 50 no Chaos Castle e velocidade 0 em armadilhas e portões).
+  - O "Chaos Castle 1" do kit tem dano mínimo maior que o máximo. O painel pede para corrigir antes de salvar esse monstro.
+- Testado numa cópia do `Monster.txt` real: mudar a vida do Bull Fighter muda só aquela linha, sem desalinhar.
+
 ### Monstros: o mapa aparece junto com os spawns (issue #46)
 - O quadro "Densidade" da página Monstros agora desenha os spawns sobre o **mapa da tecla Tab** do jogo.
   - A imagem fica no cliente, em `Data\Interface\GFx\NaviMap\NavimapNN.OZP` (NN = número do mapa + 1).

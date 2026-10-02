@@ -34,6 +34,7 @@ public static class Navegacao
         new("Economia", "Resets", "resets", "reset", Politicas.Administrar, "Valores dos resets feitos pelo site"),
 
         new("Conteúdo", "Monstros (respawn)", "monstros", "skull", Politicas.Administrar, "Onde e quantos monstros nascem"),
+        new("Conteúdo", "Atributos dos monstros", "monstros/atributos", "skull", Politicas.Administrar, "Vida, dano, defesa, velocidade e resistências"),
         new("Conteúdo", "Itens novos", "itens-novos", "sparkle", Politicas.Administrar, "Criar item com o visual de outro"),
 
         new("Site", "Loja de itens", "site/loja-itens", "package", Politicas.Administrar, "Catálogo e preços da loja paga com Cash"),

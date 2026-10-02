@@ -1,0 +1,180 @@
+@page "/monstros/atributos"
+@attribute [Authorize(Policy = Politicas.Administrar)]
+@implements IDisposable
+@inject ExecutorAcoes Acoes
+@inject Confirmacao Confirmar
+@inject Avisos Toast
+@inject NavigationManager Nav
+@inject RecargaMonstros Recarga
+
+<CabecalhoPagina Titulo="Atributos dos monstros" Descricao="Vida, dano, defesa, velocidade, visão, tempo para renascer e resistências de cada monstro (Data\Monster\Monster.txt). Os poderes especiais aparecem só para consulta." Icone="skull" />
+
+<Nota Tipo="info" Classe="mb-5">
+    Vale para todos os monstros daquele tipo, em todos os mapas, depois do Reload Monster (se houver uma invasão no ar, o painel espera ela acabar).
+    As taxas de drop ficam na página <a class="link" href="drops">Drops</a>.
+</Nota>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-[19rem_minmax(0,1fr)]">
+    <Cartao Titulo="Monstros" Icone="skull" SemPadding="true" Subtitulo="@($"{monstros.Count} no Monster.txt")">
+        <div class="border-b border-slate-200 p-3 dark:border-white/10">
+            <input class="entrada entrada-sm" placeholder="Filtrar por nome, número ou nível..." @bind="filtro" @bind:event="oninput" aria-label="Filtrar monstro" />
+        </div>
+        <ul class="rolagem max-h-[34vh] divide-y divide-slate-100 xl:max-h-[70vh] dark:divide-white/5">
+            @foreach (var m in Filtrados())
+            {
+                <li>
+                    <button type="button" class="flex w-full items-center gap-3 px-4 py-2 text-left text-sm @(atual?.Index == m.Index ? "bg-amber-50 dark:bg-amber-400/10" : "hover:bg-slate-50 dark:hover:bg-white/5")" @onclick="() => Abrir(m)">
+                        <span class="mono text-slate-400">@m.Index</span>
+                        <span class="min-w-0 flex-1 truncate font-medium text-slate-800 dark:text-slate-200">@m.Nome</span>
+                        <span class="text-xs tabular-nums text-slate-500" title="nível">nv @m.Valores[3]</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </Cartao>
+
+    <div class="min-w-0 space-y-5">
+        @if (atual == null || editado == null)
+        {
+            <Cartao><Vazio Texto="Escolha um monstro." Icone="skull" /></Cartao>
+        }
+        else
+        {
+            <Cartao Titulo="@($"{atual.Index} · {atual.Nome}")" Icone="skull" Subtitulo="@(poderes.ContainsKey(atual.Index) ? $"{poderes[atual.Index].Count} poder(es) especial(is)" : "sem poderes especiais")">
+                <Etiqueta>
+                    @if (Mudou)
+                    {
+                        <span class="etiqueta etq-amarela">não salvo</span>
+                    }
+                </Etiqueta>
+                <Acoes>
+                    <button type="button" class="btn btn-secundario btn-sm" @onclick="Descartar" disabled="@(!Mudou || ocupado)">Descartar</button>
+                    <button type="button" class="btn btn-primario btn-sm" @onclick="Salvar" disabled="@(!Mudou || ocupado)"><Icone Nome="save" Classe="h-3.5 w-3.5" />Salvar e recarregar</button>
+                </Acoes>
+                <ChildContent>
+                    <div class="space-y-6">
+                        @foreach (var g in MonsterStats.Campos.GroupBy(c => c.Grupo))
+                        {
+                            <section>
+                                <h3 class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">@g.Key</h3>
+                                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                                    @foreach (var c in g)
+                                    {
+                                        var campo = c;
+                                        bool diferente = editado.Valor(campo) != atual.Valor(campo);
+                                        <label class="block">
+                                            <span class="rotulo">@campo.Nome</span>
+                                            <input type="number" min="@campo.Min" max="@campo.Max" class="entrada entrada-sm @(diferente ? "ring-2 ring-amber-400/60" : "")" value="@editado.Valor(campo)"
+                                                   @onchange="e => Mudar(campo, e)" aria-label="@campo.Nome" />
+                                            <span class="ajuda">@(diferente ? $"era {atual.Valor(campo):N0}" : campo.Ajuda)</span>
+                                        </label>
+                                    }
+                                </div>
+                            </section>
+                        }
+                    </div>
+                </ChildContent>
+            </Cartao>
+
+            <Cartao Titulo="Poderes especiais" Icone="zap" Subtitulo="Só consulta (Data\Monster\Skill: MonsterSkill, MonsterSkillUnit e MonsterSkillElement)">
+                @if (poderes.TryGetValue(atual.Index, out var lista))
+                {
+                    <ul class="list-disc space-y-1 pl-5 text-sm">
+                        @foreach (var p in lista)
+                        {
+                            <li>@p</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-sm text-slate-500">Este monstro só tem o ataque normal (não está no MonsterSkill.txt).</p>
+                }
+            </Cartao>
+        }
+    </div>
+</div>
+
+<ResultadoAcao Linhas="resultado" Titulo="atributos dos monstros" Quando="quando" />
+
+@code {
+    List<MonsterStats.Monstro> monstros = new();
+    Dictionary<int, List<string>> poderes = new();
+    MonsterStats.Monstro? atual, editado;
+    string filtro = "", carimbo = "";
+    bool ocupado;
+    List<string> resultado = new();
+    DateTime quando;
+    IDisposable? trava;
+
+    bool Mudou => atual != null && editado != null && !atual.Valores.SequenceEqual(editado.Valores);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Carregar();
+        trava = Nav.RegisterLocationChangingHandler(async ctx =>
+        {
+            if (Mudou && !await Confirmar.Perguntar("Sair sem salvar?", $"{atual?.Nome} tem alterações não salvas.", "Sair sem salvar", perigo: true))
+                ctx.PreventNavigation();
+        });
+    }
+
+    public void Dispose() => trava?.Dispose();
+
+    async Task Carregar()
+    {
+        try
+        {
+            (monstros, poderes, carimbo) = await Task.Run(() => (MonsterStats.Carregar(), MonsterSkills.Todos(), ExecutorAcoes.Carimbo(Drops.MonsterFile)));
+            if (atual != null) { atual = monstros.FirstOrDefault(m => m.Index == atual.Index); editado = atual?.Copia(); }
+        }
+        catch (Exception ex) { Registro.Erro("monstros.atributos", ex); Toast.Erro(ExecutorAcoes.MensagemDe(ex)); }
+    }
+
+    IEnumerable<MonsterStats.Monstro> Filtrados()
+    {
+        var f = filtro.Trim();
+        if (f.Length == 0) return monstros;
+        return monstros.Where(m => m.Nome.Contains(f, StringComparison.OrdinalIgnoreCase) || m.Index.ToString() == f || $"nv {m.Valores[3]}" == f || m.Valores[3].ToString() == f);
+    }
+
+    async Task Abrir(MonsterStats.Monstro m)
+    {
+        if (atual?.Index == m.Index) return;
+        if (Mudou && !await Confirmar.Perguntar("Descartar as alterações?", $"{atual?.Nome} tem alterações não salvas.", "Descartar", perigo: true)) return;
+        atual = m; editado = m.Copia();
+    }
+
+    void Mudar(MonsterStats.Campo c, ChangeEventArgs e)
+    {
+        if (editado == null || !int.TryParse(e.Value?.ToString(), out var v)) return;
+        editado.Valores[c.Coluna] = Math.Clamp(v, c.Min, c.Max);
+    }
+
+    void Descartar() { if (atual != null) editado = atual.Copia(); }
+
+    async Task Salvar()
+    {
+        if (atual == null || editado == null) return;
+        if (MonsterStats.Problema(editado) is { } p) { Toast.Erro(p); return; }
+        if (await Task.Run(() => ExecutorAcoes.Carimbo(Drops.MonsterFile)) != carimbo &&
+            !await Confirmar.Perguntar("O arquivo mudou", "Alguém gravou o Monster.txt depois que você abriu (aqui ou na página Drops). Salvar agora grava só este monstro, por cima do que estiver no arquivo para ele.", "Salvar mesmo assim", perigo: true)) return;
+        var antes = atual; var novo = editado.Copia();
+        var mudancas = MonsterStats.Campos.Where(c => novo.Valor(c) != antes.Valor(c)).Select(c => $"{c.Nome} {antes.Valor(c):N0} → {novo.Valor(c):N0}").ToList();
+        var linhas = new List<string>();
+        ocupado = true;
+        try
+        {
+            if (await Acoes.Executar("monstros.atributos", $"{novo.Index} {novo.Nome}", () =>
+                {
+                    var (n, backup) = MonsterStats.Salvar(new[] { novo });
+                    linhas.Add(n == 0 ? "Nada mudou no arquivo." : $"{novo.Nome}: {string.Join("; ", mudancas)} (backup {Path.GetFileName(backup)}).");
+                    if (n > 0) linhas.AddRange(Recarga.Recarregar());
+                    return linhas;
+                }, Politicas.Administrar, string.Join("; ", mudancas)))
+                await Carregar();
+        }
+        finally { ocupado = false; }
+        resultado = linhas; quando = DateTime.Now;
+    }
+}

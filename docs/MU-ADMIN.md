@@ -71,7 +71,8 @@ Página **Painel → Usuários do painel** (só administrador). Cada pessoa tem 
 | | **Taxas e opções** | EXP, drop, zen, joias, Chaos Machine e todas as opções dos 7 `GameServerInfo - X.dat`, por plano; grava nos 5 GameServers e confere na memória se valeu na hora |
 | | **EXP dinâmica** | % da EXP por faixa de nível, com o gráfico da curva e a EXP efetiva de cada plano |
 | | **Resets** | Créditos do Master e do Supreme Reset e o atributo máximo |
-| Conteúdo | **Monstros (respawn)** | Onde e quantos monstros nascem, com o mapa de densidade |
+| Conteúdo | **Monstros (respawn)** | Onde e quantos monstros nascem, desenhados sobre o mapa do jogo (tecla Tab) |
+| | **Atributos dos monstros** | Vida, dano, defesa, velocidade, visão, tempo para renascer e resistências de cada monstro (`Monster.txt`), com Reload Monster; os poderes especiais só para consulta |
 | | **Itens novos** | Item novo com o visual de outro |
 | Site | **Loja de itens** | Catálogo, preços e vendas da loja paga com Cash |
 | | **Notícias** | Publicar, editar e apagar, com editor de HTML e prévia |
