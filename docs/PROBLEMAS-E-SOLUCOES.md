@@ -169,13 +169,32 @@ No fim, as pendências que ainda estão abertas.
       - conta online pulada, segunda e terceira rodadas;
       - a missão 0 feita sozinha (`FE`) volta como estava;
       - quem passou para a 3ª classe e quem fez a missão de verdade não mudam.
-- **Pendente: o nome no cliente.**
-  - O cliente em português mostra "Blade Knight" para a classe 16. O dono confirmou no jogo em 01/10, com o personagem `fggg` voltado para 16 no banco.
-  - Os textos do cliente estão em `Data\Lang.mpr`: um ZIP com cada byte em XOR com `20 13 77` (pela posição, de 3 em 3). Dentro estão `por\Text(por).txt`, `eng\Text(eng).txt` e outros, mas as entradas têm senha (ZipCrypto), que não aparece no `main.exe` nem no `Main.dll` (compactados).
-  - Teste que separa as causas: rodar `Idioma - Ingles.reg` no cliente e abrir a janela C de um personagem na classe 16.
-    - Se aparecer "Dark Knight", o erro está só no texto em português.
-    - Se aparecer "Blade Knight", a causa está no cliente/GameServer e não no texto.
-  - MG, DL e RF não têm essa diferença. Desde 27/09/2026 o `/change` está desligado: a evolução é pelas missões (ver OPERACAO.md).
+- **O nome no jogo: causa no GameServer (achada em 01/10/2026).**
+  - O "Blade Knight" aparece para a classe 16 em português e em inglês. Isso mostra que o texto não é o problema.
+  - O cliente funciona certo. Ele recebe um byte de classe: família nos bits 4–7, e 08 = 2ª classe, 0C = 3ª e 0E = 4ª.
+    - Esse byte é traduzido em `0x9CBE62` do `main.exe`. O nome sai de `0x9CC288`, que usa os textos 20–27 (Dark Wizard, Dark Knight, Fairy Elf, Magic Gladiator, Dark Lord, Soul Master, Blade Knight, Muse Elf) e 1668+.
+    - O cliente tem os nomes da 1ª classe.
+  - **O erro é do GameServer.** Ao montar esse byte, ele faz: estágio 1 → 08, 2 → 0C, 3 → 0E e **qualquer outro → 08**. O estágio 0 (1ª classe) cai no "qualquer outro" e vai como 2ª classe.
+  - Por isso o jogo mostra "Blade Knight" e deixa tentar vestir itens de 2ª classe, que o servidor recusa.
+  - São 4 pontos no `Game Server S14.exe`:
+    - `0x45DBB1`: lista de personagens (`F3 00`);
+    - `0x45E429`: criação (`F3 01`);
+    - `0x4C83D2`: aparência vista pelos outros jogadores;
+    - `0x4E6C72`: entrada no jogo.
+  - Em todos aparece a mesma sequência: `cmp r8,2 / jne / mov r32,0Ch / jmp / cmp r8,3 / mov r32,08h / mov r32,0Eh / cmove`.
+  - **Correção:**
+    - O vigia troca o `08h` desse `mov` por `00h`, sempre que acha um GameServer ou Castle Siege. O código está em `ResetWatcher.Classe.cs`, e a chave é `vigia-classe-inicial.ligado`.
+    - Ele procura a sequência inteira (28 bytes). Se não achar, não mexe e registra no `vigia.log`. No GameServer desembrulhado, a busca acha exatamente os 4 pontos.
+    - Para desfazer: apagar a chave e reiniciar o GameServer.
+  - MG, DL, RF e GL não mudam na prática: o nome deles não depende desse bit, e no `Item.txt` os itens deles só pedem 0, 1, 3 ou 4, nunca 2.
+  - **Falta conferir no jogo:** o `fggg` (classe 16) deve aparecer como Dark Knight, e a Brova deve aparecer como item que ele não pode usar.
+  - O Castle Siege Server é outro executável. Não deu para conferir aqui, porque o Windows Defender bloqueia a cópia, mas o vigia procura a mesma sequência nele (`--vigia-sondar` mostra o que achou).
+  - O BattleCore Server não é vigiado.
+  - Como o código foi lido:
+    - o `main.exe` e o GameServer são protegidos (embaralhados no arquivo, entropia 8,0) e se decifram na memória ao abrir;
+    - o código foi copiado da memória com o programa aberto por alguns segundos (cliente com `__COMPAT_LAYER=RunAsInvoker`, sem pedir administrador) e lido com o desmontador Iced.
+  - Os textos do cliente ficam em `Data\Lang.mpr`: um ZIP com cada byte em XOR com `20 13 77` (pela posição, de 3 em 3), com senha (ZipCrypto) nas entradas.
+  - Desde 27/09/2026 o `/change` está desligado: a evolução é pelas missões (ver OPERACAO.md).
 
 ### Item comprado não pode ser usado / habilidades não funcionam em algumas contas (provável causa única)
 - **Caso da mamaeupo:**

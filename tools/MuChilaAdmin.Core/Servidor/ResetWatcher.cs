@@ -23,7 +23,7 @@ namespace MuChilaAdmin.Core;
 /// outra versão (bytes não encontrados), não grava nada.
 ///
 /// Também: resets pedidos pelo site com a conta online, bônus por tempo, avisos, Passe dos Mapas e Magic Backpack
-/// (os dois últimos em ResetWatcher.Passe.cs).
+/// (os dois últimos em ResetWatcher.Passe.cs) e a 1ª classe com o nome certo no jogo (issue #35, ResetWatcher.Classe.cs).
 /// </summary>
 public static partial class ResetWatcher
 {
@@ -78,6 +78,7 @@ public static partial class ResetWatcher
         public bool ApplyAttackFix;          // só o laço do vigia aplica; sondagem e botão do painel só leem
         public string AttackFixState = "checagem de ataques ainda não verificada";
         public string CommandFixState = "comandos curtos: não verificado";
+        public string ClassFixState = "classe inicial: não verificado";
         public readonly Dictionary<int, (string Name, int Level, int ExtInventory)> Seen = new();
     }
 
@@ -195,6 +196,7 @@ public static partial class ResetWatcher
                     sb.AppendLine(t.Table == 0 ? $"{name} (pid {p.Id}): versão não reconhecida" : $"{name} (pid {p.Id}): tabela 0x{t.Table:X}");
                     sb.AppendLine($"   {t.AttackFixState}");
                     sb.AppendLine($"   {t.CommandFixState}");
+                    sb.AppendLine($"   {t.ClassFixState}");
                     sb.AppendLine($"   /reset leva à seleção de personagem: {(ResetToSelectEnabled ? "ligado" : "desligado (falta testar a #7)")}");
                     sb.AppendLine($"   Passe dos Mapas: {(PassEnabled ? "ligado" : "desligado")}; Magic Backpack leva à seleção: {(BackpackEnabled ? "ligado" : "desligado")}");
                     if (t.Table == 0) continue;
@@ -229,6 +231,10 @@ public static partial class ResetWatcher
         var (cmdState, cmdChanged) = CommandNameFix(t, image, apply: t.ApplyAttackFix);
         t.CommandFixState = cmdState;
         if (cmdChanged) Log($"{t.Process.ProcessName} (pid {t.Process.Id}): {cmdState}");
+
+        var (clsState, clsChanged) = InitialClassFix(t, image, apply: t.ApplyAttackFix);
+        t.ClassFixState = clsState;
+        if (clsChanged) Log($"{t.Process.ProcessName} (pid {t.Process.Id}): {clsState}");
 
         var hits = new List<int>();
         for (int i = image.AsSpan().IndexOf(CloseSetBytes); i >= 0; )

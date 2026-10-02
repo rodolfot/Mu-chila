@@ -6,7 +6,8 @@
 #   5. se a configuração abre o painel para a rede do Radmin, cria a regra do firewall (porta do painel, só da rede 26.x);
 #   6. liga o painel e o vigia e confere (http://localhost:5170/api/saude e a sonda do vigia).
 # Chaves do vigia (arquivos .ligado na pasta do painel): reset → seleção (#7), comandos curtos (/f /a /v /e /c),
-# Passe dos Mapas e Magic Backpack. Para desligar uma: apague o arquivo (o vigia confere a cada volta).
+# Passe dos Mapas, Magic Backpack e classe inicial (#35: a 1ª classe aparece com o nome certo no jogo). Para desligar uma:
+# apague o arquivo (o vigia confere a cada volta; comandos curtos e classe inicial só voltam ao original reiniciando o GameServer).
 # A configuração (banco, pastas, porta, endereços) fica em %ProgramData%\MuChilaAdmin\muchila-admin.json; sem o arquivo
 # valem os padrões deste PC. Exemplo comentado: tools\MuChilaAdmin\muchila-admin.exemplo.json. Guia: docs\MU-ADMIN.md.
 # Uso: .\Publicar-Painel.ps1          (a regra do firewall precisa do PowerShell como administrador)
@@ -41,7 +42,7 @@ Passo "3. Publicando em $dest"
 dotnet publish $proj -c Release -r win-x64 --self-contained false -o $dest -nologo -v q
 if ($LASTEXITCODE -ne 0) { throw 'dotnet publish falhou' }
 "publicado: $exe ($((Get-Item $exe).LastWriteTime))"
-foreach ($chave in 'vigia-reset-selecao.ligado', 'vigia-comandos-curtos.ligado', 'vigia-passe-mapas.ligado', 'vigia-mochila.ligado') {
+foreach ($chave in 'vigia-reset-selecao.ligado', 'vigia-comandos-curtos.ligado', 'vigia-passe-mapas.ligado', 'vigia-mochila.ligado', 'vigia-classe-inicial.ligado') {
     $f = Join-Path $dest $chave
     if (-not (Test-Path $f)) { Set-Content -Path $f -Value "ligado em $(Get-Date -f 'dd/MM/yyyy HH:mm')"; "chave criada: $chave" }
 }
