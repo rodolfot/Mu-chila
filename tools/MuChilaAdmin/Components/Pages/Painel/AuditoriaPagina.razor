@@ -68,7 +68,7 @@
                             <td>@MuChilaAdmin.Core.Painel.Acoes.Nome(e.Acao)<span class="mono ml-1 text-slate-400">@e.Acao</span></td>
                             <td class="max-w-[14rem] truncate" title="@e.Alvo">@e.Alvo</td>
                             <td>@if (e.Ok) { <span class="etiqueta etq-verde">ok</span> } else { <span class="etiqueta etq-vermelha">erro</span> }</td>
-                            <td class="mono text-slate-500">@e.Ip</td>
+                            <td class="mono text-slate-500">@MuChilaAdmin.Core.Painel.Ip.Legivel(e.Ip)</td>
                             <td class="text-right"><Icone Nome="chevron-down" Classe="@($"h-4 w-4 text-slate-400 transition {(aberto == e.Id ? "rotate-180" : "")}")" /></td>
                         </tr>
                         @if (aberto == e.Id)
@@ -152,7 +152,7 @@
             Titulo = "Auditoria do painel",
             Subtitulo = $"{de:dd/MM/yyyy} a {ate:dd/MM/yyyy}{(usuario != "" ? $" · usuário {usuario}" : "")}{(acao != "" ? $" · ação {acao}" : "")}{(texto != "" ? $" · \"{texto}\"" : "")}{(n > todos.Count ? $" · {todos.Count} de {n}" : "")}",
             Colunas = new() { new("Quando"), new("Usuário"), new("IP"), new("Ação"), new("Alvo"), new("Resultado"), new("Mensagem") },
-            Linhas = todos.Select(e => new[] { e.Quando.ToString("dd/MM/yyyy HH:mm:ss"), e.Usuario, e.Ip ?? "", MuChilaAdmin.Core.Painel.Acoes.Nome(e.Acao), e.Alvo ?? "", e.Ok ? "ok" : "erro", e.Mensagem ?? "" }).ToList(),
+            Linhas = todos.Select(e => new[] { e.Quando.ToString("dd/MM/yyyy HH:mm:ss"), e.Usuario, MuChilaAdmin.Core.Painel.Ip.Legivel(e.Ip),MuChilaAdmin.Core.Painel.Acoes.Nome(e.Acao), e.Alvo ?? "", e.Ok ? "ok" : "erro", e.Mensagem ?? "" }).ToList(),
         };
         await Downloads.Exportar(r, formato);
     }

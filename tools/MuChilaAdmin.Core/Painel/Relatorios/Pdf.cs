@@ -22,7 +22,8 @@ public static class Pdf
         {
             float w = Largura(c < r.Colunas.Count ? r.Colunas[c].Titulo : "", FonteTabela, negrito: true);
             foreach (var l in r.Linhas.Take(2000)) if (c < l.Length) w = Math.Max(w, Largura(l[c], FonteTabela, false));
-            if (r.Rodape != null && c < r.Rodape.Length) w = Math.Max(w, Largura(r.Rodape[c], FonteTabela, true));
+            // o rodapé de total só preenche algumas colunas (as outras vêm nulas: issue #48, PDF de pedidos dava erro 500)
+            if (r.Rodape != null && c < r.Rodape.Length) w = Math.Max(w, Largura(r.Rodape[c] ?? "", FonteTabela, true));
             naturais[c] = w + 2 * Folga;
         }
         bool paisagem = n > 5 || naturais.Sum() > 595 - 2 * Margem;
@@ -144,8 +145,9 @@ public static class Pdf
         return lo <= 0 ? "…" : t[..lo].TrimEnd() + "…";
     }
 
-    public static float Largura(string t, float tam, bool negrito)
+    public static float Largura(string? t, float tam, bool negrito)
     {
+        t ??= "";
         var tabela = negrito ? Negrito : Regular;
         int soma = 0;
         foreach (var b in WinAnsi(t)) soma += b >= 32 ? tabela[b - 32] : 556;

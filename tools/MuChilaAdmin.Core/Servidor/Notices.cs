@@ -131,10 +131,15 @@ public static class Notices
         try { return f(); } finally { m.ReleaseMutex(); }
     }
 
-    /// <summary>Acrescenta um aviso "enviar agora" no topo (RepeatTime 1); depois é preciso dar Reload Util. O vigia tira do arquivo.</summary>
+    /// <summary>
+    /// Acrescenta um aviso "enviar agora" no topo (RepeatTime 1); depois é preciso dar Reload Util. O vigia tira do arquivo.
+    /// Os "enviar agora" anteriores saem antes (issue #44): eles já foram mandados na hora deles, mas ficam no arquivo até o
+    /// vigia limpar (até ~50 s); com RepeatTime 1, o rodízio reiniciado no topo mandava o novo e, um por segundo, os velhos
+    /// de novo ("Oi amores", "Delicia", "Deliciosos"...).
+    /// </summary>
     public static void AddOneShot(string message)
     {
-        var list = Load();
+        var list = Load().Where(n => !n.IsOneShot).ToList();
         list.Add(new Notice { Message = Clean(message), RepeatTime = 1, Comment = $"{OneShotMarker} {DateTime.Now:yyyy-MM-dd HH:mm:ss}" });
         Save(list);
     }

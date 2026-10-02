@@ -44,7 +44,7 @@
                                 else if (u.TrocarSenha) { <span class="etiqueta etq-amarela">senha temporária</span> }
                                 else { <span class="etiqueta etq-verde">ativo</span> }
                             </td>
-                            <td class="whitespace-nowrap text-slate-500">@(u.UltimoLogin?.ToString("dd/MM/yyyy HH:mm") ?? "nunca")@(u.UltimoIp != null ? $" · {u.UltimoIp}" : "")</td>
+                            <td class="whitespace-nowrap text-slate-500">@(u.UltimoLogin?.ToString("dd/MM/yyyy HH:mm") ?? "nunca")@(u.UltimoIp != null ? $" · {MuChilaAdmin.Core.Painel.Ip.Legivel(u.UltimoIp)}" : "")</td>
                             <td class="whitespace-nowrap text-slate-500">@u.Criado.ToString("dd/MM/yyyy")@(u.CriadoPor != null ? $" por {u.CriadoPor}" : "")</td>
                             <td class="whitespace-nowrap text-right">
                                 <button type="button" class="btn btn-fantasma btn-sm" @onclick="() => Editar(u)"><Icone Nome="edit" Classe="h-3.5 w-3.5" />Editar</button>

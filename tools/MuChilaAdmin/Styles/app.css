@@ -78,6 +78,12 @@
     .tabela tr.selecionada td { @apply bg-amber-50 dark:bg-amber-400/10; }
     .tabela .num { @apply text-right tabular-nums; }
     .tabela-compacta td { @apply py-1.5; }
+    /* cabeçalho fixo (thead.sticky): fundo opaco e linha de baixo desenhada no próprio th; com o fundo translúcido do tema
+       escuro, as linhas apareciam por baixo dos títulos ao rolar (issue #45) */
+    .tabela thead.sticky th {
+        @apply border-b-0 bg-slate-50 shadow-[inset_0_-1px_0_rgb(226_232_240)]
+               dark:bg-slate-900 dark:shadow-[inset_0_-1px_0_rgb(255_255_255/0.1)];
+    }
 
     /* ---------------- etiquetas ---------------- */
     .etiqueta { @apply inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset; }

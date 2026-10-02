@@ -43,17 +43,23 @@ public static class Endpoints
             if (!PodeVer(ctx.User, def.PapelMinimo)) return Results.Forbid();
             var p = new ParametrosRelatorio { De = de, Ate = ate?.Date.AddDays(1), Texto = texto };
             Relatorio r;
-            try { r = await Task.Run(() => def.Gerar(p)); }
+            byte[] arquivo;
+            try
+            {
+                r = await Task.Run(() => def.Gerar(p));
+                r.GeradoPor = ctx.User.Identity?.Name;
+                // o arquivo também dentro do try: um erro aqui virava página de erro HTML ("pedidos.htm", issue #48)
+                arquivo = formato == "pdf" ? Pdf.Gerar(r) : Csv.Gerar(r);
+            }
             catch (Exception ex)
             {
                 Registro.Erro($"relatório {id}", ex);
                 return Results.Problem(ExecutorAcoes.MensagemDe(ex), statusCode: 500);
             }
-            r.GeradoPor = ctx.User.Identity?.Name;
             auditoria.Registrar(new EventoAuditoria(DateTime.Now, ctx.User.Identity?.Name ?? "?", ctx.Connection.RemoteIpAddress?.ToString(),
                 "relatorio.exportar", def.Nome, $"de={de:yyyy-MM-dd} ate={ate:yyyy-MM-dd} texto={texto}", true, $"{formato.ToUpperInvariant()}, {r.Linhas.Count} linha(s)"));
             var nome = $"{Downloads.NomeArquivo(def.Nome)}-{DateTime.Now:yyyyMMdd-HHmm}.{formato}";
-            return formato == "pdf" ? Results.File(Pdf.Gerar(r), "application/pdf", nome) : Results.File(Csv.Gerar(r), "text/csv; charset=utf-8", nome);
+            return Results.File(arquivo, formato == "pdf" ? "application/pdf" : "text/csv; charset=utf-8", nome);
         });
 
         // para conferir de fora se o painel está no ar (sem dados)

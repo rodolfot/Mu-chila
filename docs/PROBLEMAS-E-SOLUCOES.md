@@ -143,6 +143,16 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Painel: avisos repetidos, cabeçalho de tabela, IP e PDF (issues #44, #45, #47, #48; 02/10/2026)
+- **#44: "Enviar agora" repetia mensagens antigas no jogo.**
+  - **Causa:** o aviso vai para o topo do `Notice.txt` com intervalo de 1 s, e o vigia só o tira depois de 20 a 50 s. Um segundo "Enviar agora" nesse meio-tempo deixava os dois no topo. O painel reinicia o rodízio na 1ª linha, e o servidor mandava o novo e, um por segundo, os anteriores.
+  - **Solução:** o `Notices.AddOneShot` tira os "enviar agora" anteriores (já mandados) ao gravar o novo. Os lembretes de bônus e os avisos normais ficam.
+- **#45: o título das colunas não acompanhava a tabela** (Monstros, Lojas, Opções, Loja de itens). O cabeçalho fixo (`thead.sticky`) tinha fundo translúcido no tema escuro, e as linhas apareciam por baixo dos títulos ao rolar. Agora tem fundo opaco e a linha de baixo no próprio título (`Styles\app.css`).
+- **#47: IP do login "::1".** É o "este PC" em IPv6 (login feito no próprio servidor). O painel mostra "este PC (localhost)", e mostra o IPv4 quando vem como `::ffff:26.x.x.x` (`Painel\Ip.cs`), em Minha conta, Usuários e Auditoria.
+- **#48: PDF de pedidos e da loja de itens dava erro** (o navegador baixava "pedidos.htm").
+  - **Causa:** o rodapé de total só preenche algumas colunas, e o PDF media a largura das colunas vazias (nulas) com `NullReferenceException`. O de Zen funcionava porque não tinha compras (sem linhas, não há rodapé).
+  - **Solução:** o PDF trata colunas vazias. A geração do arquivo também passou para dentro do `try` do endpoint: um erro vira mensagem, não página HTML.
+
 ### Jogo metade em inglês, metade em português (issue #41)
 - **Medição (02/10/2026)**, comparando cada arquivo português do cliente com o inglês:
   - **100% em inglês:**

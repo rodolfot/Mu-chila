@@ -24,6 +24,22 @@ public class RelatoriosTestes
         Assert.Equal("conta1;1.000;\"ação; com \"\"aspas\"\"\"", linhas[1]);
     }
 
+    [Fact]
+    public void Pdf_e_Csv_com_rodape_de_total_parcial()
+    {
+        // issue #48: o total de pedidos/loja de itens só preenche a 1ª e a última coluna; o PDF dava NullReferenceException
+        var r = new Relatorio
+        {
+            Titulo = "Vendas: loja de itens", Colunas = { new("Compra", true), new("Conta"), new("Cash", true) },
+            Linhas = { new[] { "1", "tartarotti", "300" }, new[] { "2", "dodo", "150" } },
+            Rodape = new string[] { "Total", null!, "450" },
+        };
+        var pdf = Pdf.Gerar(r);
+        Assert.StartsWith("%PDF-1.4", Encoding.ASCII.GetString(pdf, 0, 8));
+        Assert.Contains("(Total)", Encoding.Latin1.GetString(pdf));
+        Assert.EndsWith("Total;;450\r\n", Encoding.UTF8.GetString(Csv.Gerar(r)));
+    }
+
     [Theory]
     [InlineData("=HYPERLINK(\"x\")", "'=HYPERLINK(\"x\")")]
     [InlineData("+cmd", "'+cmd")]

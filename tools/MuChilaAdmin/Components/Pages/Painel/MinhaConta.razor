@@ -18,7 +18,7 @@
                 <dt class="text-slate-500">Nome</dt><dd>@u.Nome</dd>
                 <dt class="text-slate-500">Papel</dt><dd>@Papeis.Nome(u.Papel)</dd>
                 <dt class="text-slate-500">Criado</dt><dd>@u.Criado.ToString("dd/MM/yyyy HH:mm")@(u.CriadoPor != null ? $" por {u.CriadoPor}" : "")</dd>
-                <dt class="text-slate-500">Último login</dt><dd>@(u.UltimoLogin?.ToString("dd/MM/yyyy HH:mm") ?? "—")@(u.UltimoIp != null ? $" · IP {u.UltimoIp}" : "")</dd>
+                <dt class="text-slate-500">Último login</dt><dd>@(u.UltimoLogin?.ToString("dd/MM/yyyy HH:mm") ?? "—")@(u.UltimoIp != null ? $" · IP {MuChilaAdmin.Core.Painel.Ip.Legivel(u.UltimoIp)}" : "")</dd>
             </dl>
         </Cartao>
         <Cartao Titulo="Segurança" Icone="lock">
