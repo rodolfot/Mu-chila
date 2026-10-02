@@ -97,9 +97,9 @@
                                             {
                                                 <option value="@s.Key" selected="@(s.Key == poder.Tipo)">@s.Value</option>
                                             }
-                                            @if (!skills.Skills.ContainsKey(poder.Tipo))
+                                            @if (!skills.SkillsDeMonstro.Contains(poder.Tipo))
                                             {
-                                                <option value="@poder.Tipo" selected>skill @poder.Tipo</option>
+                                                <option value="@poder.Tipo" selected>@MonsterSkills.NomeSkill(poder.Tipo, skills) — ⚠ não soltada por monstros</option>
                                             }
                                         </select>
                                     </label>
@@ -173,7 +173,7 @@
                         </label>
                         <button type="button" class="btn btn-secundario btn-sm" @onclick="AdicionarPoder" disabled="@(unidadeNova < 0)"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar</button>
                     </div>
-                    <p class="ajuda mt-3">Cada poder é uma <b>skill</b> (ex.: Evil Spirit, Twisting Slash) + uma configuração de como o monstro a usa (área, intervalo e efeitos). Vale com o Reload Monster; se o jogo não pegar na hora, reinicie os GameServers.</p>
+                    <p class="ajuda mt-3">O servidor só faz os monstros soltarem as skills da lista (as que o kit usa: ataque básico, Poison, Meteorite, Hell Fire, Lunge, Uppercut e os Summons). <b>Outras skills (Evil Spirit, Twisting Slash…) não são soltadas por monstros</b> sem mexer no GameServer. Cada poder é uma skill + uma configuração (área, intervalo, efeitos). Vale com o Reload Monster; se não pegar na hora, reinicie os GameServers.</p>
                 </ChildContent>
             </Cartao>
         }
@@ -192,7 +192,8 @@
     Dictionary<int, MonsterSkills.Efeito> efeitosEdit = new();
     int unidadeNova = -1, skillNova = 0;
 
-    IEnumerable<KeyValuePair<int, string>> SkillsOrdenadas => skills.Skills.OrderBy(x => x.Value, StringComparer.CurrentCultureIgnoreCase);
+    // só as skills que o servidor realmente faz os monstros soltarem (as que o kit usa); outras não são soltadas sem mexer no GameServer
+    IEnumerable<KeyValuePair<int, string>> SkillsOrdenadas => skills.Skills.Where(x => skills.SkillsDeMonstro.Contains(x.Key)).OrderBy(x => x.Value, StringComparer.CurrentCultureIgnoreCase);
     string filtro = "", carimbo = "";
     bool ocupado;
     List<string> resultado = new();

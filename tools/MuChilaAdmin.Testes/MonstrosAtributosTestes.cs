@@ -97,7 +97,10 @@ public class MonstrosAtributosTestes : IDisposable
         Assert.Equal("Evil Spirit", MonsterSkills.NomeSkill(9, d));
         Assert.Equal("Twisting Slash", MonsterSkills.NomeSkill(41, d));
         Assert.StartsWith("ataque básico", MonsterSkills.NomeSkill(0, d));
-        // dá Evil Spirit (9) ao Budge Dragon, usando a configuração 1
+        // só as skills que algum monstro solta ficam disponíveis: aqui só a 0 (os pares do fixture são (0,4),(0,1))
+        Assert.Contains(0, d.SkillsDeMonstro);
+        Assert.DoesNotContain(9, d.SkillsDeMonstro);   // nenhum monstro do kit solta Evil Spirit
+        // gravar outra skill ainda é possível no dado (a restrição é no dropdown da tela)
         MonsterSkills.Salvar(new MonsterSkills.Alteracoes { Poderes = (2, "Budge Dragon", new List<MonsterSkills.Poder> { new(9, 1) }) });
         Assert.Equal(new[] { new MonsterSkills.Poder(9, 1) }, MonsterSkills.Carregar().PoderesDoMonstro[2]);
     }
