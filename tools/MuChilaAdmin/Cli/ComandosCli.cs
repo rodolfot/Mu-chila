@@ -120,6 +120,21 @@ public static class ComandosCli
             catch (Exception ex) { File.WriteAllText(args[^1], "FALHA: " + ex.Message); return 1; }
         }
 
+        // "--moss <segundos> <saida>": o Moss Merchant aparece daqui a N segundos em todos os GameServers (só a parte da memória
+        // do "Disparar evento", #43). "--moss-ler <saida>": só lê o estado (0 desligado, 1 esperando, 2 em Elbeland).
+        if ((args.Length == 3 && args[0] == "--moss") || (args.Length == 2 && args[0] == "--moss-ler"))
+        {
+            try
+            {
+                var linhas = args[0] == "--moss"
+                    ? ResetWatcher.MossStartAt(DateTime.Now.AddSeconds(int.Parse(args[1])))
+                    : ResetWatcher.MossRead().Select(s => s == null ? "(não achado)" : $"{s.Server}: estado {s.State}, alvo {s.Target:dd/MM HH:mm:ss}").ToList();
+                File.WriteAllLines(args[^1], linhas);
+                return 0;
+            }
+            catch (Exception ex) { File.WriteAllText(args[^1], "FALHA: " + ex.Message); return 1; }
+        }
+
         // "--avisos-reiniciar <saida>": reinicia o rodízio de avisos (Notice.txt) em todos os GameServers e no Castle Siege,
         // sem mandar nada na hora (o 1º aviso sai depois do intervalo dele). Serve para conferir a rotina achada (#31).
         if ((args.Length == 2 || args.Length == 3) && args[0] == "--avisos-reiniciar")

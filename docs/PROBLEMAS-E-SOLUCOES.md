@@ -143,6 +143,26 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Moss Merchant disparado pelo painel não aparecia (issue #43)
+- **Sintoma:** ao disparar o Moss pela página Eventos, nada acontecia, nem o aviso.
+- **Causa:** é o mesmo caso das invasões. O painel gravava uma linha no `MossMerchant.dat` e dava Reload Event, mas o GameServer só calcula o próximo horário do Moss ao ligar e quando ele vai embora.
+  - No código (0x4B9F00 em diante), o objeto do evento é `0x2E59700`: +04 estado (1 esperando, 2 aberto), +08 segundos que faltam, +0C horário-alvo, +14 NPC.
+  - Com o estado 1 e o horário passado, o servidor manda a mensagem 208, cria o Moss em Elbeland e abre a loja.
+- **Solução:**
+  - O painel grava o horário-alvo na memória dos GameServers (`ResetWatcher.Moss.cs`), como já faz com as invasões. O endereço sai do código pelos bytes, sem número fixo.
+  - Testado nos bytes reais do GameServer: acha `0x2E59700`.
+  - **Falta conferir no jogo:** disparar com 1 minuto e ver o aviso e o NPC em Elbeland.
+- Como o Moss funciona: OPERACAO, "Moss Merchant".
+
+### Invasão "Demônios invocados" pelo painel (issue #42)
+- **O que a invasão faz:** a invasão 9 do kit não tem demônios. Ela põe 10 **Golden Goblins nível 100** (5 nos Karutans) em **um** mapa sorteado entre Tarkan, Aida, Kanturu 1, Karutan 1, Karutan 2 e Acheron 1. O aviso ("A invasão dos Demônios invocados começou!") não diz qual mapa.
+- **O disparo:** é igual ao da Páscoa (horário na memória), que foi conferido em 29/09 com 10 coelhos. A configuração da invasão 9 tem a mesma forma da Páscoa.
+- **O que mudou:**
+  - a página Eventos mostra o estado real de cada invasão (acontecendo até / próximo / desligado);
+  - o resultado do disparo lista o aviso, os monstros e os mapas possíveis.
+  - Se o resultado disser "invasões desligadas neste servidor" ou "não conferiu na memória", é outro problema: mandar o print.
+- **Falta conferir no jogo:** disparar, esperar o aviso e procurar os Golden Goblins nos 6 mapas. O `MonsterCount` do título da janela do GameServer sobe 10 (ou 5).
+
 ### Comandos curtos `/f /a /v /e /c` não funcionavam (issue #40)
 - **Sintoma:** `/f 100` etc. não faziam nada e não mostravam erro. Desde 27/09 o vigia "renomeava" `/addstr` → `/f` na memória do GameServer. Isso nunca foi testado no jogo.
 - **Causa:** o nome de cada comando vem do `Data\Lang\Portuguese.xml` (mensagens 34–38), lido quando o GameServer liga.

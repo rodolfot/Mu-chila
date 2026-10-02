@@ -7,7 +7,8 @@
 
 <Nota Tipo="info" Classe="mb-5">
     O servidor não tem comando para iniciar evento na hora. Eventos com sala (Blood Castle, Devil Square, Chaos Castle, Illusion Temple) avisam
-    5 minutos antes para os jogadores entrarem, por isso o padrão é 6 minutos. Invasões começam no minuto marcado (direto na memória do GameServer).
+    5 minutos antes para os jogadores entrarem, por isso o padrão é 6 minutos. Invasões e o Moss Merchant começam no minuto marcado (direto na memória
+    do GameServer); ao lado do nome aparece o estado lido agora dos GameServers.
 </Nota>
 
 <div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
@@ -21,7 +22,12 @@
                     </span>
                     <div class="min-w-0 flex-1">
                         <p class="font-medium text-slate-900 dark:text-white">@ev.Name</p>
-                        <p class="text-xs text-slate-500">@ev.File@(ev.OnCastleSiege ? " · roda no Castle Siege" : "")</p>
+                        <p class="text-xs text-slate-500">@ev.File@(ev.OnCastleSiege ? " · roda no Castle Siege" : "")
+                            @if (estado.TryGetValue(i, out var est))
+                            {
+                                <span class="@(est.StartsWith("acontecendo") ? "text-emerald-600 dark:text-emerald-400" : est == "desligado" ? "text-rose-500" : "")"> · @est</span>
+                            }
+                        </p>
                     </div>
                     <label class="flex items-center gap-2 text-xs text-slate-500">
                         daqui a
@@ -63,6 +69,8 @@
 @code {
     readonly Dictionary<int, int> minutos = new();
     List<(DateTime When, string Name, string File)> pendentes = new();
+    Dictionary<int, string> estado = new();   // índice do evento → "acontecendo até 21:55" / "próximo: 02/10 01:25" / "desligado"
+    static readonly object travaEstado = new();
     List<string> resultado = new();
     string titulo = "";
     DateTime quando;
@@ -76,6 +84,29 @@
     {
         try { pendentes = await Task.Run(EventScheduler.Pending); }
         catch (Exception ex) { Registro.Erro("eventos", ex); }
+        try { estado = await Task.Run(LerEstado); }
+        catch (Exception ex) { Registro.Erro("eventos.estado", ex); }
+    }
+
+    /// <summary>Estado na memória dos GameServers das invasões e do Moss (o arquivo .dat não diz se começou, #42/#43).</summary>
+    static Dictionary<int, string> LerEstado()
+    {
+        lock (travaEstado)
+        {
+            var r = new Dictionary<int, string>();
+            for (int i = 0; i < EventScheduler.Events.Length; i++)
+            {
+                var ev = EventScheduler.Events[i];
+                var l = ev.IsInvasion ? ResetWatcher.InvasionRead(ev.Index!.Value).Where(x => x != null).Select(x => (x!.State, x.Target)).ToList()
+                      : ev.IsMoss ? ResetWatcher.MossRead().Where(x => x != null).Select(x => (x!.State, x.Target)).ToList()
+                      : new List<(int State, DateTime Target)>();
+                if (l.Count == 0) continue;
+                r[i] = l.Any(x => x.State == 2) ? $"acontecendo até {l.Where(x => x.State == 2).Max(x => x.Target):HH:mm}"
+                     : l.Any(x => x.State == 1) ? $"próximo: {l.Where(x => x.State == 1).Min(x => x.Target):dd/MM HH:mm}"
+                     : "desligado";
+            }
+            return r;
+        }
     }
 
     async Task Disparar(EventDef ev, int i)
@@ -94,7 +125,12 @@
             {
                 linhas.Add(EventScheduler.Schedule(ev, when));   // a linha no arquivo vale se o GameServer reiniciar antes da hora
                 linhas.AddRange(ev.IsInvasion ? ResetWatcher.InvasionStartAt(ev.Index!.Value, when)
-                                              : ev.OnCastleSiege ? ServerControl.ReloadCastleSiegeOnly("Event") : ServerControl.ReloadGameServersOnly("Event"));
+                                : ev.IsMoss ? ResetWatcher.MossStartAt(when)   // o Reload Event não recalcula o horário dele (#43)
+                                : ev.OnCastleSiege ? ServerControl.ReloadCastleSiegeOnly("Event") : ServerControl.ReloadGameServersOnly("Event"));
+                // o que esperar: aviso, monstros e mapas (#42: a invasão sorteia um mapa e o aviso não diz qual)
+                if (ev.IsInvasion) linhas.AddRange(EventScheduler.InvasionDescription(ev.Index!.Value));
+                if (ev.IsMoss) linhas.Add("O Moss aparece em Elbeland (perto de 22, 225) com o aviso \"O mercador Moss apareceu!\" e fica " +
+                                          "pelo MossMerchantEventTime do GameServerInfo - Event.dat; ao sair, \"O mercador Moss foi embora!\".");
                 return OperacoesConta.Juntar(linhas);
             }, Politicas.Administrar, $"quando={when:yyyy-MM-dd HH:mm}");
         }

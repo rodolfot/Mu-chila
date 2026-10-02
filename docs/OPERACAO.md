@@ -190,7 +190,12 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
 - **Disparar uma vez:** página **Eventos** do painel. Ela grava uma linha com data exata no `.dat` do evento, marcada com `//MuChilaAdmin` (vale se o GameServer reiniciar antes da hora), e então:
   - **Invasões** (29/09/2026): marca o horário direto na **memória** dos GameServers (`ResetWatcher.Invasoes.cs`). O **Reload Event NÃO recalcula** o horário das invasões: o GameServer só calcula o próximo horário quando liga e quando a rodada anterior termina. Por isso, até 29/09, disparar invasão pelo painel nunca funcionava (a Páscoa das 20:41 continuava marcada para as 02:15).
   - Estado de cada invasão na memória: 1 = esperando (com o horário-alvo), 2 = acontecendo (com o horário do fim). Se já estiver acontecendo, o painel avisa e não mexe.
-  - **Os outros eventos** (Blood Castle, Devil Square, Chaos Castle, Illusion Temple, Moss Merchant, Castle Deep) ainda vão pelo arquivo + Reload Event, só nos GameServers (o Castle Deep, só no Castle Siege). **Ainda não é garantido** que comecem na hora: pelos logs de 29/09, o Reload Event também não refaz o horário deles ("Sync Start Time" só aparece no fim de cada rodada).
+  - **Moss Merchant** (01/10/2026, issue #43): também vai direto na **memória** (`ResetWatcher.Moss.cs`). O Reload Event não recalculava o horário dele, e por isso o disparo não fazia nada.
+    - Quando começa, aparece o aviso "O mercador Moss apareceu!", o NPC Moss é criado em **Elbeland** (perto de 22, 225) e a loja de apostas abre por `MossMerchantEventTime` minutos (120). Ver [Moss Merchant](#moss-merchant-mercador-de-apostas).
+    - Linha de comando: `--moss <segundos> <saída>` e `--moss-ler <saída>`.
+  - **Estado na página Eventos:** ao lado de cada invasão e do Moss aparece o que está na memória dos GameServers: "acontecendo até HH:mm", "próximo: dd/MM HH:mm" ou "desligado".
+  - **Resultado do disparo de invasão:** mostra o aviso, a duração e, para cada grupo, os monstros e os mapas, lidos do `InvasionManager.dat` (issue #42). Quando o grupo tem vários mapas, **o servidor sorteia um** na hora, e o aviso não diz qual.
+  - **Os outros eventos** (Blood Castle, Devil Square, Chaos Castle, Illusion Temple, Castle Deep) ainda vão pelo arquivo + Reload Event, só nos GameServers (o Castle Deep, só no Castle Siege). **Ainda não é garantido** que comecem na hora: pelos logs de 29/09, o Reload Event também não refaz o horário deles ("Sync Start Time" só aparece no fim de cada rodada).
   - Blood Castle, Devil Square, Chaos Castle e Illusion Temple têm sala de espera e avisam 5 minutos antes (padrão de 6 minutos). Sem ninguém com ingresso, o evento fecha vazio ("Not enough users").
   - Reload Event no **Castle Siege** reinicia o ciclo do cerco (anuncia "começou o período de preparação" e adia o cerco ~15 min). O painel não manda mais para lá, a não ser no Castle Deep (com aviso) ou se você confirmar no botão manual.
   - "Limpar disparos já executados" tira as linhas que passaram há mais de 30 minutos.
@@ -203,6 +208,22 @@ Bloco 0 = `Index  Year  Month  Day  DoW  Hour  Minute  Second`, onde `*` signifi
   - só a Medusa estava certa.
 - **A correção:** `tools\Corrigir-Invasoes.py` acertou 40 linhas do bloco 2 (o Value de cada mapa = o do bloco 3). No servidor de testes, 3 disparos seguidos da Páscoa deram 10 coelhos cada. Com isso, as invasões da agenda passam a ter monstros de verdade, **inclusive as 11 que o kit marcou todo dia às 18:32**.
 - **Conferir se nasceu:** o título da janela do GameServer mostra `MonsterCount`, que sobe quando a invasão aparece (Golden: +66). Cada invasão sorteia o mapa, então pode acontecer longe de quem está olhando.
+- **Demônios invocados (invasão 9):** no kit **não são demônios**.
+  - São **Golden Goblins de nível 100** (monstro 652, 120 mil de vida), 10 por mapa (5 nos Karutans), em **um** mapa sorteado entre Tarkan, Aida, Kanturu 1, Karutan 1, Karutan 2 e Acheron 1. A duração é de 10 minutos.
+  - O aviso "A invasão dos Demônios invocados começou!" (mensagem 210) não diz o mapa.
+  - Na agenda, ela roda às 1:25, 5:25, 9:25, 13:25, 17:25 e 18:32.
+  - Para outros monstros ou mapas, mude os blocos 2 e 3 do `InvasionManager.dat` (Value do bloco 2 = Value do bloco 3) e dê Reload Event.
+
+### Moss Merchant (mercador de apostas)
+
+- **O que é:** o Moss é um NPC que aparece em **Elbeland** (mapa 51, perto de 22, 225) só durante o evento. Ele vende **armas com opções sorteadas** (uma aposta):
+  - espadas, cajados, arcos, cetros e varinhas: **1.000.000 de Zen** cada;
+  - Bless, Soul, Miracle Coin e Mastery Accessory: aposta paga com o item (bloco 1 do `MossMerchant.dat`).
+  - Cada arma sai com nível, skill, luck, opções e excelentes sorteados pela linha 9 (MossMerchant) do `Data\Item\ItemOptionRate.txt`. A chance de cada arma dentro do menu é a coluna GambleRate do bloco 2.
+- **Quando:** às 2:00, 8:00, 14:00 e 20:00 (bloco 0 do `Data\Event\MossMerchant.dat`), por `MossMerchantEventTime = 120` minutos (`GameServerInfo - Event.dat`; `MossMerchantEvent = 1` liga o evento).
+  - Ao começar, todos veem "O mercador Moss apareceu!" (mensagem 208).
+  - Ao terminar, veem "O mercador Moss foi embora!" (209) e o NPC some.
+- **Disparar na hora:** página Eventos do painel (ver acima). Só funciona com o Moss "esperando" (estado 1); se ele já estiver em Elbeland, o painel avisa.
 
 ## Colocar item no inventário ou no baú
 
