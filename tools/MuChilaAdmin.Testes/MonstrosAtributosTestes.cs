@@ -88,6 +88,9 @@ public class MonstrosAtributosTestes : IDisposable
         Assert.Equal((19, 30, 5), (d.Efeitos[19].Tipo, d.Efeitos[19].Chance, d.Efeitos[19].Duracao));
         Assert.Equal(1, d.UnidadeUsadaPor[4]); Assert.Equal(1, d.EfeitoUsadoPor[19]);
         Assert.Equal("alcance 4, a cada 500 ms; envenena (30%, 5 s)", MonsterSkills.DescreverUnidade(4, d));
+        // a Witch Queen tem só skill 0 (ataque básico): não é um dos que o GameServer faz soltar skill
+        Assert.DoesNotContain(304, d.MonstrosQueSoltam);
+        Assert.Empty(d.MonstrosQueSoltam);
     }
 
     [Fact]
@@ -102,7 +105,9 @@ public class MonstrosAtributosTestes : IDisposable
         Assert.DoesNotContain(9, d.SkillsDeMonstro);   // nenhum monstro do kit solta Evil Spirit
         // gravar outra skill ainda é possível no dado (a restrição é no dropdown da tela)
         MonsterSkills.Salvar(new MonsterSkills.Alteracoes { Poderes = (2, "Budge Dragon", new List<MonsterSkills.Poder> { new(9, 1) }) });
-        Assert.Equal(new[] { new MonsterSkills.Poder(9, 1) }, MonsterSkills.Carregar().PoderesDoMonstro[2]);
+        var d2 = MonsterSkills.Carregar();
+        Assert.Equal(new[] { new MonsterSkills.Poder(9, 1) }, d2.PoderesDoMonstro[2]);
+        Assert.Contains(2, d2.MonstrosQueSoltam);   // agora que tem skill real, entra na lista dos que soltam
     }
 
     [Fact]

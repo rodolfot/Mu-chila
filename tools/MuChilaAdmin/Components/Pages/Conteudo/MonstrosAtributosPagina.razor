@@ -78,6 +78,19 @@
 
             <Cartao Titulo="Poderes especiais" Icone="zap" Subtitulo="O que o monstro solta (Data\Monster\Skill). Uma unidade/efeito usado por vários monstros muda em todos.">
                 <ChildContent>
+                    @if (atual != null && skills.MonstrosQueSoltam.Contains(atual.Index))
+                    {
+                        <Nota Tipo="sucesso" Classe="mb-4">
+                            <b>Este monstro solta skill de verdade.</b> Ajustar a skill, a área, o intervalo e os efeitos abaixo funciona — o GameServer faz ele soltar (depois de reiniciar).
+                        </Nota>
+                    }
+                    else
+                    {
+                        var soltam = monstros.Where(m => skills.MonstrosQueSoltam.Contains(m.Index)).Select(m => m.Nome).Distinct().ToList();
+                        <Nota Tipo="atencao" Classe="mb-4">
+                            <b>Pelos testes, este monstro NÃO solta skill no servidor.</b> Por mais que você configure e reinicie, ele fica no ataque normal — não é a config, é o GameServer que só liga a "IA de soltar skill" para monstros específicos. No kit, só estes @soltam.Count soltam: <b>@string.Join(", ", soltam)</b>. Para um poder que funcione, edite um desses.
+                        </Nota>
+                    }
                     @if (poderesEdit.Count == 0)
                     {
                         <p class="mb-3 text-sm text-slate-500">Este monstro só tem o ataque normal (nenhum poder). Adicione um abaixo.</p>

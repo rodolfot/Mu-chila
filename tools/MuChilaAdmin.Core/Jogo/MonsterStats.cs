@@ -162,6 +162,7 @@ public static class MonsterSkills
         public Dictionary<int, int> UnidadeUsadaPor = new();   // unidade → nº de monstros
         public Dictionary<int, int> EfeitoUsadoPor = new();     // efeito → nº de unidades
         public HashSet<int> SkillsDeMonstro = new();            // skills que algum monstro do kit solta (as que o servidor sabe fazer)
+        public HashSet<int> MonstrosQueSoltam = new();          // monstros que o GameServer realmente faz soltar skill (têm skill != 0 na AI dele)
     }
 
     /// <summary>Número da skill → nome, do Data\Skill\Skill.txt (0 = ataque básico, sem skill nomeada).</summary>
@@ -218,10 +219,11 @@ public static class MonsterSkills
                 for (int k = 2; k + 1 < t.Length; k++) if (int.TryParse(t[k], out var tipo) && int.TryParse(t[k + 1], out var u)) { poderes.Add(new Poder(tipo, u)); k++; }
                 d.PoderesDoMonstro[m] = poderes;
             }
-        foreach (var poderes in d.PoderesDoMonstro.Values)
+        foreach (var (m, poderes) in d.PoderesDoMonstro)
         {
             foreach (var p in poderes.Select(p => p.Unidade).Distinct()) d.UnidadeUsadaPor[p] = d.UnidadeUsadaPor.GetValueOrDefault(p) + 1;
             foreach (var p in poderes) d.SkillsDeMonstro.Add(p.Tipo);
+            if (poderes.Any(p => p.Tipo != 0)) d.MonstrosQueSoltam.Add(m);   // só quem tem skill real é que o GS faz soltar
         }
         d.SkillsDeMonstro.Add(0);   // ataque básico sempre disponível
         foreach (var u in d.Unidades.Values) foreach (var e in u.Efeitos.Distinct()) d.EfeitoUsadoPor[e] = d.EfeitoUsadoPor.GetValueOrDefault(e) + 1;
