@@ -148,11 +148,11 @@ No fim, as pendências que ainda estão abertas.
   - Muda as colunas do `Data\Monster\Monster.txt` que não mexem na estrutura do monstro: nível, vida, mana, dano, taxas de ataque e defesa, defesa, alcance, visão, velocidades, tempo para renascer, as 7 resistências (gelo, veneno, raio, fogo, terra, vento, água) e o elemental.
   - Grava só a linha do monstro, sem desalinhar as colunas, com backup, e dá Reload Monster (depois da invasão, se houver uma no ar).
   - Ficam de fora o tipo, o tipo de ataque, o atributo e a skill (que definem o que o monstro é) e as taxas de drop (página Drops).
-- **Poderes ("o que eles soltam"): agora editáveis** (`MonsterSkills.cs`), nos três arquivos de `Data\Monster\Skill`:
-  - `MonsterSkill.txt` liga o monstro a até 10 **unidades** (os "golpes"); `MonsterSkillUnit.txt` dá a área, o **intervalo** (ms) e os efeitos da unidade; `MonsterSkillElement.txt` dá o **efeito** (atordoar, envenenar, empurrar...) com **chance (%)** e **duração (s)**.
-  - Na página dá para: trocar o efeito, a chance e a duração; mudar o intervalo e a área da unidade; e **adicionar/remover** poderes do monstro (escolhendo uma unidade da lista). Monstro sem poder ganha uma linha nova no `MonsterSkill.txt`.
+- **Poderes ("o que eles soltam"): agora editáveis** (`MonsterSkills.cs`), nos três arquivos de `Data\Monster\Skill`.
+  - Cada poder é um par **(skill, configuração)** no `MonsterSkill.txt`: o 1º valor é o **número da skill** (ex.: Poison=1, Hell Fire=10, Lunge=20; `0` = ataque básico), com o **nome** vindo do `Data\Skill\Skill.txt`; o 2º é a configuração (`MonsterSkillUnit.txt`: área, **intervalo** em ms e efeitos). O efeito (`MonsterSkillElement.txt`) tem **tipo** (atordoar, envenenar, empurrar...), **chance (%)** e **duração (s)**.
+  - A página mostra o **nome da skill** de cada poder (não "unidade N") e deixa: trocar a skill (um dropdown com todas, ex.: **Evil Spirit, Twisting Slash**), mudar o intervalo/área, trocar o efeito/chance/duração, e **adicionar/remover** poderes (escolhendo a skill + a configuração). Monstro sem poder ganha uma linha nova no `MonsterSkill.txt`.
   - Grava só o que mudou, coluna a coluna, com backup de cada arquivo, e dá Reload Monster. Se o jogo não pegar na hora, reiniciar os GameServers.
-  - **Compartilhamento:** uma unidade pode ser usada por vários monstros, e um efeito por várias unidades. A tela mostra "usada por N" e o Salvar avisa quando a mudança vale para outros monstros.
+  - **Compartilhamento:** uma configuração pode ser usada por vários monstros, e um efeito por várias configurações. A tela mostra "usada por N" e o Salvar avisa quando a mudança vale para outros monstros.
 - **Faixas aceitas:** medidas nos 604 monstros do kit (por exemplo, raio de movimento até 50 no Chaos Castle e velocidade 0 em armadilhas e portões).
   - O "Chaos Castle 1" do kit tem dano mínimo maior que o máximo. O painel pede para corrigir antes de salvar esse monstro.
 - Testado numa cópia real: mudar a vida do Bull Fighter muda só aquela linha; editar efeito/unidade/poder de um monstro muda só a linha certa de cada arquivo, com o tamanho preservado.

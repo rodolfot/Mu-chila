@@ -89,20 +89,32 @@
                             var poder = poderesEdit[i];
                             var u = UnidadeEdit(poder.Unidade);
                             <div class="rounded-lg border border-slate-200 p-3 dark:border-white/10">
-                                <div class="mb-2 flex items-center justify-between gap-2">
-                                    <span class="text-sm font-medium text-slate-800 dark:text-slate-200">Poder @(i + 1) — unidade @poder.Unidade@(UsoUnidade(poder.Unidade) > 1 ? $" · usada por {UsoUnidade(poder.Unidade)} monstros" : "")</span>
+                                <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+                                    <label class="flex min-w-0 flex-1 items-center gap-2">
+                                        <span class="shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-500">Skill</span>
+                                        <select class="entrada entrada-sm min-w-0 flex-1 font-medium" @onchange="e => TrocarSkill(i, e)" aria-label="Skill do poder">
+                                            @foreach (var s in SkillsOrdenadas)
+                                            {
+                                                <option value="@s.Key" selected="@(s.Key == poder.Tipo)">@s.Value</option>
+                                            }
+                                            @if (!skills.Skills.ContainsKey(poder.Tipo))
+                                            {
+                                                <option value="@poder.Tipo" selected>skill @poder.Tipo</option>
+                                            }
+                                        </select>
+                                    </label>
                                     <button type="button" class="btn btn-fantasma btn-icone text-rose-500" title="Remover poder" @onclick="() => RemoverPoder(i)"><Icone Nome="trash" Classe="h-4 w-4" /></button>
                                 </div>
                                 @if (u == null)
                                 {
-                                    <p class="text-xs text-rose-500">Unidade @poder.Unidade não está no MonsterSkillUnit.txt.</p>
+                                    <p class="text-xs text-rose-500">Configuração @poder.Unidade não está no MonsterSkillUnit.txt.</p>
                                 }
                                 else
                                 {
-                                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                                    <p class="mb-1 text-xs text-slate-500">Como usa@(UsoUnidade(poder.Unidade) > 1 ? $" · esta configuração é usada por {UsoUnidade(poder.Unidade)} monstros" : "")</p>
+                                    <div class="grid grid-cols-2 gap-3">
                                         <label class="block"><span class="rotulo">Intervalo (ms)</span><input type="number" min="0" max="60000" class="entrada entrada-sm @(MudouUnidade(u) ? "ring-2 ring-amber-400/60" : "")" value="@u.Delay" @onchange="e => u.Delay = Clamp(e, 0, 60000, u.Delay)" aria-label="Intervalo" /></label>
                                         <label class="block"><span class="rotulo">Área</span><input type="number" min="0" max="255" class="entrada entrada-sm @(MudouUnidade(u) ? "ring-2 ring-amber-400/60" : "")" value="@u.Area" @onchange="e => u.Area = Clamp(e, 0, 255, u.Area)" aria-label="Área" /></label>
-                                        <label class="block"><span class="rotulo">Comportamento</span><input type="number" min="0" max="255" class="entrada entrada-sm" value="@poder.Tipo" @onchange="e => TrocarTipoPoder(i, e)" title="Type do MonsterSkill.txt (0 = o mais comum)" aria-label="Comportamento" /></label>
                                     </div>
                                     @if (u.Efeitos.Count > 0)
                                     {
@@ -142,18 +154,26 @@
                         }
                     </div>
                     <div class="mt-4 flex flex-wrap items-end gap-2 border-t border-slate-200 pt-4 dark:border-white/10">
-                        <label class="block"><span class="rotulo">Adicionar poder (escolha uma unidade)</span>
+                        <label class="block"><span class="rotulo">Adicionar poder — skill</span>
+                            <select class="entrada entrada-sm w-56 max-w-full" @bind="skillNova">
+                                @foreach (var s in SkillsOrdenadas)
+                                {
+                                    <option value="@s.Key">@s.Value</option>
+                                }
+                            </select>
+                        </label>
+                        <label class="block"><span class="rotulo">Como usa (área, intervalo, efeitos)</span>
                             <select class="entrada entrada-sm w-80 max-w-full" @bind="unidadeNova">
                                 <option value="-1">— escolher —</option>
                                 @foreach (var un in skills.Unidades.Values.OrderBy(x => x.Index))
                                 {
-                                    <option value="@un.Index">@MonsterSkills.Descrever(un.Index, skills)</option>
+                                    <option value="@un.Index">@MonsterSkills.DescreverUnidade(un.Index, skills)</option>
                                 }
                             </select>
                         </label>
                         <button type="button" class="btn btn-secundario btn-sm" @onclick="AdicionarPoder" disabled="@(unidadeNova < 0)"><Icone Nome="plus" Classe="h-3.5 w-3.5" />Adicionar</button>
                     </div>
-                    <p class="ajuda mt-3">Os poderes valem com o Reload Monster; se o jogo não pegar na hora, reinicie os GameServers.</p>
+                    <p class="ajuda mt-3">Cada poder é uma <b>skill</b> (ex.: Evil Spirit, Twisting Slash) + uma configuração de como o monstro a usa (área, intervalo e efeitos). Vale com o Reload Monster; se o jogo não pegar na hora, reinicie os GameServers.</p>
                 </ChildContent>
             </Cartao>
         }
@@ -170,7 +190,9 @@
     List<MonsterSkills.Poder> poderesEdit = new();
     Dictionary<int, MonsterSkills.Unidade> unidadesEdit = new();
     Dictionary<int, MonsterSkills.Efeito> efeitosEdit = new();
-    int unidadeNova = -1;
+    int unidadeNova = -1, skillNova = 0;
+
+    IEnumerable<KeyValuePair<int, string>> SkillsOrdenadas => skills.Skills.OrderBy(x => x.Value, StringComparer.CurrentCultureIgnoreCase);
     string filtro = "", carimbo = "";
     bool ocupado;
     List<string> resultado = new();
@@ -232,7 +254,7 @@
     void MontarPoderes(int monstro)
     {
         poderesEdit = new(skills.PoderesDoMonstro.GetValueOrDefault(monstro, new()));
-        unidadesEdit = new(); efeitosEdit = new(); unidadeNova = -1;
+        unidadesEdit = new(); efeitosEdit = new(); unidadeNova = -1; skillNova = 0;
         foreach (var p in poderesEdit) GarantirUnidade(p.Unidade);
     }
 
@@ -253,15 +275,15 @@
     static int Clamp(ChangeEventArgs e, int min, int max, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, min, max) : atual;
     static int IntOr(ChangeEventArgs e, int atual) => int.TryParse(e.Value?.ToString(), out var v) ? v : atual;
 
-    void TrocarTipoPoder(int i, ChangeEventArgs e) { if (int.TryParse(e.Value?.ToString(), out var v)) poderesEdit[i] = poderesEdit[i] with { Tipo = Math.Clamp(v, 0, 255) }; }
+    void TrocarSkill(int i, ChangeEventArgs e) { if (int.TryParse(e.Value?.ToString(), out var v)) poderesEdit[i] = poderesEdit[i] with { Tipo = v }; }
     void RemoverPoder(int i) => poderesEdit.RemoveAt(i);
     void AdicionarPoder()
     {
         if (unidadeNova < 0) return;
         if (poderesEdit.Count >= 10) { Toast.Erro("Máximo de 10 poderes por monstro."); return; }
         GarantirUnidade(unidadeNova);
-        poderesEdit.Add(new MonsterSkills.Poder(0, unidadeNova));
-        unidadeNova = -1;
+        poderesEdit.Add(new MonsterSkills.Poder(skillNova, unidadeNova));
+        unidadeNova = -1; skillNova = 0;
     }
 
     async Task Salvar()

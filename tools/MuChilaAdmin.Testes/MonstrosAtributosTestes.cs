@@ -28,6 +28,8 @@ public class MonstrosAtributosTestes : IDisposable
         File.WriteAllText(pasta.Arquivo(@"Data\Monster\Skill\MonsterSkillElement.txt"),
             "0\r\n1         \"Monster Skill Element\"              0      50            3                 *               *                *                0                0\r\n" +
             "19        \"Monster Skill Element\"              19     30            5                 *               *                *                0                0\r\nend", Encoding.Latin1);
+        File.WriteAllText(pasta.Arquivo(@"Data\Skill\Skill.txt"),
+            "//Index  Name\r\n1\t\"Poison\"\t12\t42\r\n9\t\"Evil Spirit\"\t45\t90\r\n41\t\"Twisting Slash\"\t0\t10\r\nend", Encoding.Latin1);
     }
 
     public void Dispose() => pasta.Dispose();
@@ -85,7 +87,19 @@ public class MonstrosAtributosTestes : IDisposable
         Assert.Equal(500, d.Unidades[4].Delay); Assert.Equal(4, d.Unidades[4].Area); Assert.Equal(new[] { 19 }, d.Unidades[4].Efeitos);
         Assert.Equal((19, 30, 5), (d.Efeitos[19].Tipo, d.Efeitos[19].Chance, d.Efeitos[19].Duracao));
         Assert.Equal(1, d.UnidadeUsadaPor[4]); Assert.Equal(1, d.EfeitoUsadoPor[19]);
-        Assert.Equal("unidade 4: alcance 4, a cada 500 ms; envenena (30%, 5 s)", MonsterSkills.Descrever(4, d));
+        Assert.Equal("alcance 4, a cada 500 ms; envenena (30%, 5 s)", MonsterSkills.DescreverUnidade(4, d));
+    }
+
+    [Fact]
+    public void Skills_tem_nome_e_da_para_adicionar_uma_skill_ao_monstro()
+    {
+        var d = MonsterSkills.Carregar();
+        Assert.Equal("Evil Spirit", MonsterSkills.NomeSkill(9, d));
+        Assert.Equal("Twisting Slash", MonsterSkills.NomeSkill(41, d));
+        Assert.StartsWith("ataque básico", MonsterSkills.NomeSkill(0, d));
+        // dá Evil Spirit (9) ao Budge Dragon, usando a configuração 1
+        MonsterSkills.Salvar(new MonsterSkills.Alteracoes { Poderes = (2, "Budge Dragon", new List<MonsterSkills.Poder> { new(9, 1) }) });
+        Assert.Equal(new[] { new MonsterSkills.Poder(9, 1) }, MonsterSkills.Carregar().PoderesDoMonstro[2]);
     }
 
     [Fact]

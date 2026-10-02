@@ -152,15 +152,32 @@ public static class MonsterSkills
     public sealed class Unidade { public int Index, Delay, Area; public List<int> Efeitos = new(); public Unidade Copia() => new() { Index = Index, Delay = Delay, Area = Area, Efeitos = new(Efeitos) }; }
     public sealed record Poder(int Tipo, int Unidade);
 
-    /// <summary>Tudo pronto para a tela: efeitos, unidades, poderes por monstro e quantos compartilham cada um.</summary>
+    /// <summary>Tudo pronto para a tela: skills, efeitos, unidades, poderes por monstro e quantos compartilham cada um.</summary>
     public sealed class Dados
     {
+        public Dictionary<int, string> Skills = new();          // nº da skill → nome (Data\Skill\Skill.txt; 0 = ataque básico)
         public Dictionary<int, Efeito> Efeitos = new();
         public Dictionary<int, Unidade> Unidades = new();
         public Dictionary<int, List<Poder>> PoderesDoMonstro = new();
         public Dictionary<int, int> UnidadeUsadaPor = new();   // unidade → nº de monstros
         public Dictionary<int, int> EfeitoUsadoPor = new();     // efeito → nº de unidades
     }
+
+    /// <summary>Número da skill → nome, do Data\Skill\Skill.txt (0 = ataque básico, sem skill nomeada).</summary>
+    public static Dictionary<int, string> NomesSkills()
+    {
+        var d = new Dictionary<int, string> { [0] = "ataque básico (sem skill)" };
+        var f = Path.Combine(ServerControl.ServerRoot, @"Data\Skill\Skill.txt");
+        if (!File.Exists(f)) return d;
+        foreach (var line in File.ReadLines(f, Enc))
+        {
+            var m = Regex.Match(line, @"^\s*(\d+)\s+""([^""]+)""");
+            if (m.Success) d.TryAdd(int.Parse(m.Groups[1].Value), m.Groups[2].Value);
+        }
+        return d;
+    }
+
+    public static string NomeSkill(int skill, Dados d) => d.Skills.GetValueOrDefault(skill, $"skill {skill}");
 
     static string Dir => Path.Combine(ServerControl.ServerRoot, @"Data\Monster\Skill");
     static string Arq(string nome) => Path.Combine(Dir, nome);
@@ -182,7 +199,7 @@ public static class MonsterSkills
 
     public static Dados Carregar()
     {
-        var d = new Dados();
+        var d = new Dados { Skills = NomesSkills() };
         foreach (var t in LinhasDado("MonsterSkillElement.txt"))
             if (t.Length > ElDur && int.TryParse(t[0], out var i))
                 d.Efeitos.TryAdd(i, new Efeito { Index = i, Tipo = N(t[ElType]), Chance = N(t[ElChance]), Duracao = N(t[ElDur]) });
@@ -207,26 +224,26 @@ public static class MonsterSkills
 
     static int N(string s) => int.TryParse(s, out var v) ? v : 0;
 
-    /// <summary>Monstro → descrição de cada poder (para a lista de consulta).</summary>
+    /// <summary>Monstro → descrição de cada poder (nome da skill + o que a unidade faz), para a lista de consulta.</summary>
     public static Dictionary<int, List<string>> Todos()
     {
         var d = Carregar();
         var r = new Dictionary<int, List<string>>();
         foreach (var (monstro, poderes) in d.PoderesDoMonstro)
         {
-            var lista = poderes.Select(p => Descrever(p.Unidade, d)).ToList();
+            var lista = poderes.Select(p => $"{NomeSkill(p.Tipo, d)} — {DescreverUnidade(p.Unidade, d)}").ToList();
             if (lista.Count > 0) r[monstro] = lista;
         }
         return r;
     }
 
-    /// <summary>"unidade 4: alcance 6, a cada 300 ms; atordoa (50%, 3 s)".</summary>
-    public static string Descrever(int unidade, Dados d)
+    /// <summary>"alcance 6, a cada 300 ms; atordoa (50%, 3 s)" — o que a unidade (configuração) faz.</summary>
+    public static string DescreverUnidade(int unidade, Dados d)
     {
-        if (!d.Unidades.TryGetValue(unidade, out var u)) return $"unidade {unidade} (não está no MonsterSkillUnit.txt)";
+        if (!d.Unidades.TryGetValue(unidade, out var u)) return $"configuração {unidade} (não está no MonsterSkillUnit.txt)";
         var efeitos = u.Efeitos.Select(e => d.Efeitos.TryGetValue(e, out var el)
             ? $"{NomeEfeito(el.Tipo)} ({el.Chance}%{(el.Duracao > 0 ? $", {el.Duracao} s" : "")})" : $"efeito {e}");
-        return $"unidade {unidade}: alcance {u.Area}, a cada {u.Delay} ms" + (u.Efeitos.Count > 0 ? "; " + string.Join(", ", efeitos) : "");
+        return $"alcance {u.Area}, a cada {u.Delay} ms" + (u.Efeitos.Count > 0 ? "; " + string.Join(", ", efeitos) : "");
     }
 
     /// <summary>O que o painel manda gravar de UM monstro: efeitos e unidades mudados, e (opcional) a nova lista de poderes do monstro.</summary>
