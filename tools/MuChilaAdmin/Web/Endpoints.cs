@@ -34,6 +34,15 @@ public static class Endpoints
             return Results.File(f, "image/jpeg");
         });
 
+        // imagem do mapa da tecla Tab (fundo da densidade de spawns, #46); mapa sem imagem = 204
+        app.MapGet("/api/mapas/{mapa:int}.png", (int mapa, HttpContext ctx) =>
+        {
+            var png = MapImages.Png(mapa);
+            if (png == null) return Results.NoContent();
+            ctx.Response.Headers.CacheControl = "private, max-age=86400";
+            return Results.File(png, "image/png");
+        });
+
         // relatórios prontos para baixar: /api/relatorios/contas.csv?de=2026-09-01&ate=2026-10-01&texto=
         app.MapGet("/api/relatorios/{id}.{formato}", async (string id, string formato, DateTime? de, DateTime? ate, string? texto,
                                                             HttpContext ctx, IAuthorizationService autz, IAuditoria auditoria) =>

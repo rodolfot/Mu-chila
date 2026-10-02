@@ -100,15 +100,18 @@
                     </ChildContent>
                 </Cartao>
 
-                <Cartao Titulo="Densidade" Icone="grid" Subtitulo="Mapa 256×256. Mais spawns no mesmo lugar = azul mais forte.">
+                <Cartao Titulo="Densidade" Icone="grid" Subtitulo="Sobre o mapa do jogo (tecla Tab). Mais spawns no mesmo lugar = azul mais forte.">
                     <svg viewBox="-2 -2 260 260" class="mx-auto aspect-square w-full max-w-[20rem] rounded-lg bg-slate-50 dark:bg-slate-950" role="img" aria-label="Áreas de spawn no mapa">
+                        @* mapa da tecla Tab do cliente (#46); sem imagem para o mapa, o endereço responde vazio e fica só o quadro *@
+                        <image href="api/mapas/@(atual.Code).png" x="0" y="0" width="256" height="256" preserveAspectRatio="none" opacity="0.9" />
                         <rect x="0" y="0" width="256" height="256" fill="none" class="stroke-slate-300 dark:stroke-white/15" stroke-width="1" />
                         @for (int n = 0; n < spawns.Count; n++)
                         {
                             var i = n;
                             var s = spawns[i];
-                            int x = Math.Min(s.BeginX, s.EndX), y = Math.Min(s.BeginY, s.EndY), w = Math.Abs(s.EndX - s.BeginX) + 1, h = Math.Abs(s.EndY - s.BeginY) + 1;
-                            <rect x="@x" y="@y" width="@Math.Max(2, w)" height="@Math.Max(2, h)" class="cursor-pointer @(sel == i ? "fill-amber-400/70 stroke-amber-500" : s.Quantity >= 15 ? "fill-sky-400/75" : "fill-sky-400/45")" stroke-width="@(sel == i ? 1 : 0)" @onclick="() => sel = i">
+                            // na imagem do jogo o y cresce para CIMA (conferido com os NPCs de Lorencia e Devias): desenha de baixo para cima
+                            int x = Math.Min(s.BeginX, s.EndX), y = 255 - Math.Max(s.BeginY, s.EndY), w = Math.Abs(s.EndX - s.BeginX) + 1, h = Math.Abs(s.EndY - s.BeginY) + 1;
+                            <rect x="@x" y="@y" width="@Math.Max(2, w)" height="@Math.Max(2, h)" class="cursor-pointer @(sel == i ? "fill-amber-400/80 stroke-amber-600" : s.Quantity >= 15 ? "fill-sky-500/80 stroke-sky-900" : "fill-sky-500/55 stroke-sky-900")" stroke-width="@(sel == i ? 1 : 0.3)" @onclick="() => sel = i">
                                 <title>@s.Name: @s.Quantity (@s.BeginX,@s.BeginY → @s.EndX,@s.EndY)</title>
                             </rect>
                         }

@@ -143,6 +143,15 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Monstros: o mapa aparece junto com os spawns (issue #46)
+- O quadro "Densidade" da página Monstros agora desenha os spawns sobre o **mapa da tecla Tab** do jogo.
+  - A imagem fica no cliente, em `Data\Interface\GFx\NaviMap\NavimapNN.OZP` (NN = número do mapa + 1).
+  - O `.OZP` é um PNG com 4 bytes na frente, em 512×512 (2 pixels por posição). O painel serve em `/api/mapas/<n>.png` (`MapImages.cs`).
+- **Orientação:** na imagem, o **y cresce para cima** (pixel = 2x, 511 − 2y).
+  - Foi conferida desenhando os NPCs: em Lorencia eles caem na cruz de ruas da cidade e em Devias dentro da cidade (canto de baixo à direita), só nessa orientação.
+  - Com ela, os spawns de Devias caem todos em área andável e fora da cidade. A página desenha os spawns de baixo para cima.
+- Mapa sem imagem no cliente (os de evento, por exemplo): fica só o quadro, como antes.
+
 ### Missão de herói do Marlon pede o "Anel da Honra", e o diálogo fala em "Anel da Glória" (issue #51)
 - **O item existe:** é o **Anel da Honra (Ring of Honor), item 14,23 +1**. O 14,23 +0 é o Scroll of the Emperor; no `Item.txt` do servidor, e por isso nas buscas do painel, o 14,23 só aparece como "Scroll of the Emperor".
 - **De onde vem** (`Data\Quest\QuestObjective.txt`, missão 2 "Alcance o Status de Herói"):
