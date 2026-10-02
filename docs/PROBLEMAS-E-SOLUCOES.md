@@ -159,6 +159,16 @@ No fim, as pendências que ainda estão abertas.
     - **C:** igual ao B, mas já na 1ª classe (o personagem de teste `fggg`): só as missões e os pontos.
   - Quem fez a missão (nibble `0xA` e criado antes de 01/10) ou já está na 3ª/4ª classe não muda.
   - Testado no banco de desenvolvimento com personagens criados pelo `WZ_CreateCharacter`: os casos A, B e C, conta online pulada, segunda e terceira rodadas, os personagens do kit sem mudança, e personagem novo nascendo na classe 16 com as missões zeradas.
+  - **No servidor, o `ClasseInicial_MissoesDa2aClasse_existentes.sql` já tinha rodado** (Etapa 6 da implantação de 01/10). Ele marcou as missões 0 e 1 dos personagens antigos de 2ª classe e deu 10 pontos por missão, e por isso eles não entram no caso A.
+    - Quem desfaz é o `tools\Desfazer-MissoesDa2aClasse.ps1`. Ele restaura um backup de `D:\MuServerBackup\DB` como `MuChila_Antes35`, só para comparar, e apaga a cópia no fim.
+    - Ele pega o personagem que no backup estava na 2ª classe sem as missões e agora está na mesma classe com as duas marcadas. Esse personagem volta para a 1ª classe, as missões 0 e 1 voltam ao que eram no backup e saem os pontos ainda não distribuídos.
+    - Sem `-Aplicar` só mostra a lista. Sem `-Backup`, tenta os backups do mais novo para o mais antigo: um backup de depois da marcação não mostra ninguém, então o script passa para o anterior.
+    - Testado no banco de desenvolvimento simulando a sequência do servidor:
+      - backup antes, script antigo e backup depois;
+      - o backup de depois é ignorado;
+      - conta online pulada, segunda e terceira rodadas;
+      - a missão 0 feita sozinha (`FE`) volta como estava;
+      - quem passou para a 3ª classe e quem fez a missão de verdade não mudam.
 - **Pendente: o nome no cliente.**
   - O cliente em português mostra "Blade Knight" para a classe 16. O dono confirmou no jogo em 01/10, com o personagem `fggg` voltado para 16 no banco.
   - Os textos do cliente estão em `Data\Lang.mpr`: um ZIP com cada byte em XOR com `20 13 77` (pela posição, de 3 em 3). Dentro estão `por\Text(por).txt`, `eng\Text(eng).txt` e outros, mas as entradas têm senha (ZipCrypto), que não aparece no `main.exe` nem no `Main.dll` (compactados).
