@@ -143,6 +143,19 @@ No fim, as pendências que ainda estão abertas.
 - Testar se Chicken Box e Earring Box sobem do chão depois da correção do Inventário de Evento.
 - Testar se, ao abrir, dão o item inicial +6.
 
+### Missão de herói do Marlon pede o "Anel da Honra", e o diálogo fala em "Anel da Glória" (issue #51)
+- **O item existe:** é o **Anel da Honra (Ring of Honor), item 14,23 +1**. O 14,23 +0 é o Scroll of the Emperor; no `Item.txt` do servidor, e por isso nas buscas do painel, o 14,23 só aparece como "Scroll of the Emperor".
+- **De onde vem** (`Data\Quest\QuestObjective.txt`, missão 2 "Alcance o Status de Herói"):
+  - depois de aceitar a missão (3.000.000 de Zen), o anel cai de **monstros de nível 72 a 108**, com taxa 10, só para quem está com a missão ativa;
+  - são os de Atlans, Tarkan e Icarus, como o Marlon diz;
+  - pede a 2ª classe.
+- **A confusão:** o diálogo do Marlon chamava o item de "Anel da Glória" (17 vezes) e a missão pedia "Anel da Honra". O "Ring of Glory" é outro item, o 13,20 +3. O erro já vem nos textos da Webzen, inclusive no inglês.
+- **Solução:** no `Dialog(por)` (dentro do `Lang.mpr`), "Anel da Glória" → "Anel da Honra" nas 17 falas. O arquivo fica em `tools\Lang\por\` e vai para os jogadores pelo `Publicar-Launcher`.
+
+### Lethal Wizard's Ring não vende nem larga (issue #50)
+- **Causa:** a trava é só no cliente. O item 13,107 (código 6763) não está no `ItemMove.txt`, então o servidor libera tudo; mas no `item_*.bmd` ele tinha as permissões `0001000` (quase tudo bloqueado). O Wizard's Ring comum (13,20) tem `0111110`.
+- **Solução:** `.\tools\Liberar-ItemCliente.ps1 -Codigos 6763 -Permissoes 0111110` (iguais às do Wizard's Ring e do Jewel of Bless), nos três idiomas, com a soma recalculada. Vai para os jogadores pelo `Publicar-Launcher`.
+
 ### Painel: avisos repetidos, cabeçalho de tabela, IP e PDF (issues #44, #45, #47, #48; 02/10/2026)
 - **#44: "Enviar agora" repetia mensagens antigas no jogo.**
   - **Causa:** o aviso vai para o topo do `Notice.txt` com intervalo de 1 s, e o vigia só o tira depois de 20 a 50 s. Um segundo "Enviar agora" nesse meio-tempo deixava os dois no topo. O painel reinicia o rodízio na 1ª linha, e o servidor mandava o novo e, um por segundo, os anteriores.

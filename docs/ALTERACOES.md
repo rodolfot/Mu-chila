@@ -71,6 +71,8 @@ Comparação entre `1 - MuServer Season 14 - Aprendiz Mu Online` (kit original) 
 ## Cliente: textos (`Data\Lang.mpr`)
 
 - 02/10/2026 (issue #41): `por\MUQuest(por).txt` com os 356 títulos de missão em português e `por\Text(por).txt` com 84 frases da interface traduzidas. Os arquivos editados ficam em `tools\Lang\por\`; o pacote é montado com `tools\Montar-Lang.ps1`. Ver OPERACAO, "Textos do jogo".
+- 02/10/2026 (issue #51): `por\Dialog(por).txt`, onde o Marlon chamava o item da missão de herói de "Anel da Glória"; agora é "Anel da Honra" (17 falas), o nome do item que a missão pede (14,23 +1).
+- 02/10/2026 (issue #50): `Data\Local\{Eng,Por,Spn}\item_*.bmd`: Lethal Wizard's Ring (6763) com permissões `0001000` → `0111110` (vende, larga e guarda), com `tools\Liberar-ItemCliente.ps1`.
 
 ## Banco de dados (`.\MUONLINE`)
 

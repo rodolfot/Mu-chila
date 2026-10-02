@@ -1,0 +1,170 @@
+////////////////////////////////////////////////////////////////////////////////////////////										
+// Text Ver. 0.0.0.7		T ??? ? 2?? ? ???? ??								
+// Version 0.0.0.3  - T??		?? ???								
+// Version 0.0.0.3  - M??		?? ?? (???? ???)		0xf3 0x40 (cmd 5) // ???? ?? ??? ????.						
+// ?? ???: 2016-07-19 7:13 PM										
+// ?? ???: ???										
+// ?? : ????? ?? ???? ?? ???? ?? ??										
+////////////////////////////////////////////////////////////////////////////////////////////										
+// ??(??) ?? ?? 										
+// ??????/???										
+// ??? ??										
+// -1 : [????] ?? ???? ???. ??? ??? ??										
+// 1 : [??] ?? ???? ???. ?? ??? ??? ??										
+// 2 : [??] ?? ?? ???(?? ?? ??). ?? ??? ??? ??										
+// 3 : [??] ?? ?? ???(?? ?? ??). ?? ??? ??? ??										
+////////////////////////////////////////////////////////////////////////////////////////////										
+//		???1			???2			???3		
+//??? ??	por	?? ??? ??	???	por	?? ??? ??	???	por	?? ??? ??	???	por
+101	Isso não é algo que você pode conquistar com habilidades medianas. Volte depois de ter treinado mais.	101	2	Terminar conversa						
+1	Olá! Eu sou o Mago Pasi. Hahaha. Bom... Os movimentos das estrelas não parecem muito bons. Seu futuro. Haha. Eu não consigo vê-lo com clareza. Qual será o motivo.?									
+2	Olá. Eu sou o guardião do armazém e estou aqui para cuidar das suas coisas. Meu nome é Baz. Eu posso te ajudar onde você for. Você pode deixar suas coisas comigo!									
+3	Eu ouvi dizer que aventureiros cansados se recuperam quando ouvem a música da harpa do vento. Você precisa da minha ajuda?									
+4	Olá. Eu sou o guardião do armazém e estou aqui para cuidar das suas coisas. Meu nome é Baz. Eu posso te ajudar onde você for. Você pode deixar suas coisas comigo!									
+5	Você tem Zen suficiente? Eu não posso te ajudar na combinação de itens se você não tiver Zen suficiente. Zen é necessário para pesquisa, entende? Você quer saber de quanto Zen você precisa?									
+// ?? ???										
+6	É a sua primeira vez em MU? Pressione a tecla F1. Você vai ver dicas sobre viajar em MU.									
+7	Essa é sua primeira vez em Lorencia? Se sim, vá para a entrada sudeste perto da fonte, e cace alguns dragões lentos ou aranhas. Os Guerreiros Esqueletos do lado norte são muito perigosos.									
+8	Bem-vindo a Noria. Se essa é sua primeira vez caçando aqui, vá para a entrada oste passando pelo Guardião do Armazém e cace alguns Escorpiões Corrente ou Goblins.									
+9	Se você precisa de um guia detalhado sobre MU, olhe em www.muonline.jp.									
+//1? ?? ??? ???										
+50	Você já ouviu sobre Muren Reksmilon, que se tornou o primeiro imperador de MU depois que ele derrotou Sekneum e unificou o continente? Existem rumores que o 'Pergaminho do Imperador', onde essa história foi gravada, foi achado.	74	-1	Continuar ouvindo						
+74	O Deus da Luz, Rugard, lhe deu a missão de achar o 'Pergaminho do Imperador'. Contudo, parece que você ainda não está qualificado para isso. Por favor volte quando você estiver mais forte.	74	2	Terminar conversa						
+51	Você não tem dinheiro o suficiente. Você deve oferecer 1 milhão de Zen para Rugart se você quiser receber essa missão.	51	2	Terminar conversa						
+52	Você já ouviu sobre Muren Reksmilon, que se tornou o primeiro imperador de MU depois que ele derrotou Sekneum e unificou o continente? Existem rumores que o 'Pergaminho do Imperador', onde essa história foi gravada, foi achado.	75	-1	Continuar ouvindo						
+75	O 'Pergaminho do Imperador' contém o registro dos tesouros deixados pelos três heróis da Guerra Divina, incluindo Muren. O Deus da Luz, Rugard, lhe deu a missão de achar o 'Pergaminho de Imperador'.	53	-1	Continuar ouvindo						
+53	Você deve oferecer 1 milhão de Zen para Rugart se deseja receber essa missão. Você gostaria de aceitar a missão e achar o 'Pergaminho do Imperador'?	52	-1	Ouvir novamente	54	1	Aceitar	53	2	Rejeitar
+54	De acordo com os rumores, o 'Pergaminho do Imperador' pode ser achado no Calabouço, Torre Perdida, ou Atlans.	54	2	Terminar conversa						
+55	Você achou o 'Pergaminho do Imperador'. Ele deve conter informações sobre os tesouros que os três heróis da Guerra Divina deixaram para trás.	55	3	Dar uma olhada no pergaminho.						
+56	(Contém registros históricos do primeiro imperador do continente, Muren, como também o que aconteceu durante o Festival da Paz comemorando a vitória na guerra e a unificação do continente. ) Muren Reksmilon unificou os três países de Lorencia, Noria, e Arca em um único grande império.	57	-1	Continuar ouvindo						
+57	Muren terminou a Guerra Divina com o Grande Mago de Arca Etramu Renos e a Rainha Elfa de Noria Lunedill Diochell, e com isso foi reverenciado como um herói.	56	-1	Voltar para a história anterior	80	-1	Continuar ouvindo			
+80	Depois que o império foi estabelecido e a paz alcançada, todos do continente juraram lealdade ao imperador, e ofereceram os tesouros como um símbolo.	57	-1	Voltar para a história anterior	58	-1	Continuar ouvindo			
+58	A 'Espada Quebrada', a 'Lágrima da Elfa', e o 'Fragmento da Alma do Mago'. A 'Espada Quebrada' foi ofertada pelos Cavaleiros Negros de Lorencia como símbolo de sua bravura e lealdade; desejando a prosperidade do império.	57	-1	Voltar para a história anterior	81	-1	Continuar ouvindo			
+81	A 'Lágrima da Elfa' foi ofertada pela Rainha Elfa Lunedill Diochell como símbolo de seu juramento para fortalecer a união entre elfos e humanos.	58	-1	Voltar para a história anterior	59	-1	Continuar ouvindo			
+59	A 'Alma do Mago' foi ofertada pelo Grande Mago Etramu como símbolo de seu juramento dedicando seu poder para a paz e liberdade de seu império.                                   Dos registros do Festival da Paz realizado no 10º aniversário de MU.	58	-1	Voltar para a história anterior	59	2	Parar de ler			
+60	Se você já terminou de ler o 'Pergaminho do Imperador', vá achar a 'Espada Quebrada' que foi ofertada para Muren pelos Cavaleiros Negros de Lorencia. Rumores dizem que pode ser achada por perto de Atlans, Torre Perdida, ou Tarkan.	61	1	Aceitar	60	2	Rejeitar			
+61	Eu sei que você é forte, mas sempre tome cuidado, pois essa tarefa é perigosa. Assim que você achar a 'Espada Quebrada', por favor traga para mim.	61	2	Terminar conversa						
+62	Você achou a 'Espada Quebrada'. A 'Espada Quebrada' dizem que foi originada da espada de Muren, a 'Apocalipse', que o próprio Muren quebrou depois da unificação do continente, na esperança de que a guerra nunca mais aconteça.	76	-1	Continuar ouvindo						
+76	Os Cavaleiros Negros de Lorencia também quebraram suas espadas e ofereceram para Muren, jurando que eles usariam suas espadas apenas quando fosse absolutamente necessário.	63	-1	Continuar ouvindo						
+63	Muren ficou muito feliz e deu-lhes o título de 'Cavaleiro da Lâmina'. Desde então, os Cavaleiros Negros buscam se tornar Cavaleiros da Lâmina quebram suas espadas para demonstrar sua vontade.	79	-1	Continuar ouvindo						
+79	Agora que você achou a 'Espada Quebrada' e provou sua forte vontade, você será chamado de Cavaleiro da Lâmina.	79	3	Tornar-se um Cavaleiro da Lâmina						
+64	Você leu o 'Pergaminho do Imperador'. Então agora você sabe aonde estão os três tesouros deixados pelos heróis?	77	-1	Continuar ouvindo						
+77	Vá achar a 'Lágrima da Elfa' que dizem que foi ofertada para Muren pela Rainha Elfa Lunedill Diochell. Dizem os rumores que ela pode ser encontrada perto de Atlans, Torre Perdida, ou Tarkan.	65	1	Aceitar	77	2	Rejeitar			
+65	Eu sei que você é forte, mas sempre tome cuidado, pois essa tarefa é perigosa. Assim que você achar a 'ágrima da Elfa', por favor traga para mim.	65	2	Terminar conversa						
+66	Você achou a 'Lágrima da Elfa'. A 'Lágrima da Elfa' é a lágrima cristalizada de uma elfa, derramada durante a a cerimonio da era. A que foi ofertada para Muren foi a lágrima da Rainha Elfa, Lunedill Diochell.	78	-1	Continuar ouvindo						
+78	Agora que você tem a 'Lágrima da Elfa' que simboliza a pureza do coração, você será chamada de Musa Élfica.	78	3	Tornar-se uma Musa Élfica						
+67	Você leu o 'Pergaminho do Imperador'. Então agora você sabe aonde estão os três tesouros deixados pelos heróis?	82	-1	Continuar ouvindo						
+82	Vá achar a 'Alma do Mago' que o Grande Mago Etramu Renos ofertou para Muren. Dizem os rumores que ela pode ser encontrada perto de Atlans, Torre Perdida, ou Tarkan.	68	1	Aceitar	82	2	Rejeitar			
+68	Eu sei que você é forte, mas tenha sempre cuidado, pois essa tarefa pode ser muito perigosa. Quando achar a 'Alma do Mago', por favor traga par amimplease bring it back to me.	68	2	Terminar conversa						
+69	Você achou a 'Alma do Mago'. A 'Alma do Mago' é uma pedra mágica que simboliza a mente forte de um Mago Negro, e é dito que Etramu a ofertou para Muren como símbolo de seu juramento.	70	-1	Por favor, conte-me mais.						
+70	Agora que você tem a 'Alma do Mago', que simboliza a mente forte, você será chamado de Mestre da Alma.	70	3	Tornar-se um Mestre da Alma						
+71	Ofereça 2 milhões de Zen para o Deus da Luz, Rugard. Ele irá abençoar o seu caminho.	71	2	Terminar conversa						
+72	Eu respeito sua coragem e lhe darei um novo poder. Que a benção de Rugard, o Deus da Luz, Esteja com você.	72	2	Terminar conversa						
+73	Você foi enchido com as bençãos de Rugard. Que ele esteja sempre contigo durante seus testes.	73	2	Terminar conversa						
+//??? ???? ??? ??? (3,4? ??)										
+100	Eu tenho algo para lhe pedir. Mas parece que você ainda não tem a habilidade necessária para realizar ainda.	101	-1	Continuar ouvindo						
+101	Isso não é algo que você pode conquistar com habilidades medianas. Volte depois de ter treinado mais.	101	2	Terminar conversa						
+102	Eu tenho algo para lhe pedir. Você me ouvirá?	103	-1	Continuar ouvindo						
+103	Eu gostaria de lhe pedir para achar o 'Anel da Honra' para mim. O 'Anel da Honra' é a maior relíquia de todas; dada pelo Deus da Luz, Rugard, para os heróis que foram vitoriosos na guerra contra Sekneum.	104	-1	Continuar ouvindo						
+104	Se não acharmos o 'Anel da Honra', alguma coisa ruim pode acontecer com o continente. Você pode trabalhar nisso se tiver 3 milhões de Zen. Você gostaria de tentar?	102	-1	Ouvir novamente	105	1	Aceitar	104	2	Rejeitar
+105	A informação que eu descobri, diz que o  'Anel da Honra' parece estar mais perto do que pensava. Ele pode estar próximo de Atlans, Tarkan, ou Icarus.	105	2	Terminar conversa						
+108	Você achou o 'Anel da Honra'! Eu sabia que você conseguiria.	109	-1	Continuar ouvindo						
+109	Eu já te disse isso, mas o 'Anel da Honra' foi dado pelo Deus da Luz, Rugard, para os heróis da Guerra Divina. Além dos três heróis que já conhecemos, também teve o Kundun Mephis - o Grande Mago de Arca, e Gaion Kalein - o Vice Comandante da Aliança.	110	-1	Continuar ouvindo						
+110	Mas como você sabe, o Grande Mago Kundun Mephis e o Vice Comandante Gaion Kalein foram manchados com a escuridão, por isso seus 'Anéis da Glória' foram perdidos.	111	-1	Continuar ouvindo						
+111	O 'Anel da Honra' contém o poder sagrado de Rugard, então se Kundun usá-lo para fins nefastos, seria realmente catastrófico. E por isso que os guardas do império estão tentando achar a todo o custo o 'Anel da Honra'.	112	-1	Continuar ouvindo						
+112	Nós estamos muito aliviados e agradecidos por você trazer de volta o 'Anel da Honra'. Eu já mandei um relatório sobre sua performance para os 'Doze Discípulos da Luz', que servem Rugard.	112	3	Continuar ouvindo						
+113	Você foi abençoado com o poder de Rugard, e cada vez que você subir de nível, irá obter mais pontos de status. Parabéns!	113	2	Terminar conversa						
+114	Obrigado por me ajudar. Eu o verei novamente.	114	2	Terminar conversa						
+115	Dizem que a 'Pedra Negra', que garante o verdadeiro poder de um imperador, foi achada em MU. Mas parece que você ainda não possui a habilidade necessária para usar esse poder. Por favor espere até que você esteja pronto para usar esse poder.	101	-1	Eu voltarei quando for mais forte.						
+130	Você achou o 'Anel da Honra'! Eu sabia que você conseguiria!	131	-1	Continuar ouvindo						
+131	Eu já te disse isso, mas o 'Anel da Honra' foi dado pelo Deus da Luz, Rugard, para os heróis da Guerra Divina. Além dos três heróis que já conhecemos, também teve o Kundun Mephis - o Grande Mago de Arca, e Gaion Kalein - o Vice Comandante da Aliança.	132	-1	Continuar ouvindo						
+132	Mas como você sabe, o Grande Mago Kundun Mephis e o Vice Comandante Gaion Kalein foram manchados com a escuridão, por isso seus 'Anéis da Glória' foram perdidos.	133	-1	Continuar ouvindo						
+133	O 'Anel da Honra' contém o poder sagrado de Rugard, então se Kundun usá-lo para fins nefastos, seria realmente catastrófico. E por isso que os guardas do império estão tentando achar a todo o custo o 'Anel da Honra'.	134	-1	Continuar ouvindo						
+134	Nós estamos muito aliviados e agradecidos por você trazer de volta o 'Anel da Honra'. Eu já mandei um relatório sobre sua performance para os 'Doze Discípulos da Luz', que servem Rugard.	134	3	Continuar ouvindo						
+135	Existe um estilo de luta chamado 'Combo', que foi passado secretamente entre o exército do império. É apenas ensinado para pessoas que treinaram por muito tempo como um Cavaleiro da Lâmina. Se estiver interessado, eu posso te ensinar.	136	-1	Continuar ouvindo						
+136	Tudo bem. Mas para aprender o Combo, nós precisamos de uma pedra mágica especial chamada 'Pedra Negra'. Você deve usar a pedra mágica para mudar a energia que circula em seu corpo.	137	-1	Então o que eu tenho que fazer?						
+137	Eu ouvir dizer que a Pedra Negra pode ser achada em Tarkan ou Icarus. Você pode trabalhar nisso se tiver 2 milhões de Zen. Você gostaria de tentar?	135	-1	Ouvir novamente	138	1	Aceitar	137	2	Rejeitar
+138	Já que você achou o 'Anel da Honra', eu não tenho dúvidas que você conseguirá achar a 'Pedra Negra'. Por favor volte aqui quando tiver achado a 'Pedra Negra'.	138	2	Terminar conversa						
+139	Você realmente achou a 'Pedra Negra'! Agora, eu vou mudar a energia que circula em seu corpo.	140	-1	Continuar ouvindo						
+140	Bem, está feito. Agora eu vou te contar mais sobre Combos. Combo é um método que permite que você empunhe um poder explosivo coordenando diversas habilidades.	141	-1	Continuar ouvindo						
+141	Pela ordem das habilidades, você primeiro deve ativar a habilidade de arma, depois ativar duas habilidades normais para criar uma onda explosiva.	141	3	You have learned the Combo!						
+142	Obrigado por achar o 'Anel da Honra'. Como símbolo de gratitude, eu gostaria de te contar informações úteis, já que você treinou bastante para se tornar um Cavaleiro da Lâmina.	143	-1	Continuar ouvindo						
+143	Existe esse método de luta passado secretamente pelo exército do império. É apenas ensinado para pessoas que já treinaram por muito tempo como um Cavaleiro da Lâmina. Se tiver interessado, eu posso te ensinar.	143	2	Continuar ouvindo						
+116	Para receber o poder completo, você deve se tornar qualificado ao ler o 'Pergaminho do Imperador', que contém os registros históricos do primeiro imperador Muren. Vá achar 'Sebina' em Devias.	116	2	Terminar conversa						
+117	Você não adquiriu todas as qualificações como um 'Cavaleiro da Lâmina'. Primeiro consiga o novo poder com o 'Anel da Honra'.	117	2	Terminar conversa						
+118	Você não tem dinheiro o suficiente. Você poderá trabalhar nisso se tiver 3 milhões de Zen.	118	2	Terminar conversa						
+119	Você não tem dinheiro o suficiente. Você poderá trabalhar nisso se tiver 2 milhões de Zen.	119	2	Terminar conversa						
+//3? ?? ??? ??? ??(07.08.06 ???)										
+166	Você ainda não está qualificado. Vá achar o Guarda Marlon para se qualificar.	166	2	Terminar conversa						
+144	O Deus da Luz, Rugard, entregou uma nova missão. Contudo, parece que você ainda não está qualificado. Por favor volte depois de ficar mais forte.	144	2	Eu voltarei quando for mais forte.						
+145	O Deus da Luz, Rugard, entregou uma nova missão. Contudo, parece que você ainda não está qualificado. Por favor volte depois de ter terminado a missão anterior.	145	2	Eu voltarei quando tiver terminado.						
+146	Você não tem dinheiro o suficiente. Você previsa ofertar 5 milhões de Zen para Rugart se você quiser receber essa missão.	146	2	Eu voltarei quando estiver pronto.						
+147	O Deus da Luz, Rugart, entregou uma nova missão.	148	-1	Que missão é essa?						
+148	Rugard me disse para achar heróis que lutarão contra a nova ameaça em Balgass.	149	-1	Continuar ouvindo						
+149	Nós achamos que o Exército de Balgass que está na Fortaleza do Lobo Uivante pode trazer novas ameaças para o continente... Mas nós ainda não temos mais detalhes.	150	-1	Continuar ouvindo						
+150	Nós estamos fazendo nosso melhor para entender o pedido de Rugard. Mas estamos enfrentando diversas dificuldades devido a nossa...falta de adequação.	151	-1	Continuar ouvindo						
+151	Eu acredito que você tem a habilidade para nos ajudar. Você poderia fazer esse favor?	147	-1	Ouvir novamente	152	1	Aceitar	151	2	Rejeitar
+152	Para nos ajudar, você precisa lutar contra o Exército de Balgass. Antes de enfrentar seu poder, nós precisamos confirmar que você é forte o suficiente.	153	-1	Continuar ouvindo						
+153	Por favor derrote o Cavaleiro Raio Mortal, Maine Infernal, e a Fênix Negra em Tarkan, Aida, e Icarus, e traga de volta a prova de cada vitória.	153	2	Terminar conversa						
+154	Parabéns. Você completou a missão. Eu te darei uma pequena recompensa pelo seu trabalho.	155	3	Continuar ouvindo						
+155	Kundun fez uma barganha com Ereshkigal, a rainha do Pândemonio, e invocou Balgass na terra. Sua mera existência já é uma ameça.	156	-1	Continuar ouvindo						
+156	Nós acreditamos que Balgass, que está liderando o Exército do Pândemonio, está trazendo novas ameaças para o continente.	156	2	Terminar conversa						
+157	Você não tem dinheiro o suficiente. Você previsa ofertar 7 milhões de Zen para Rugart se você quiser receber essa missão.	157	2	Eu voltarei quando estiver pronto.						
+158	Bem-vindo. Você parece pronto para nos ajudar agora.	159	-1	Do que você precisa?						
+159	De acordo com as informações que descobrimos, Balgass criou um lugar especial chamado 'Quartel'. Nós, os Doze Discípulos de Rugard, acreditamos que o 'Quartel' de Balgass' é nossa nova ameaça.	160	-1	Continuar ouvindo						
+160	Para descobrir mais informações sobre o 'Quartel', e diminuir a ameaça dos soldados sendo treinados por Balgass, nós precisamos nos infiltrar lá.	161	-1	Continuar ouvindo						
+161	Graças a proteção de Rugard, nós achamos uma maneira de entrar no 'Quartel de Balgass'. Você estaria interessado em se infiltrar no quartel, derrotar os soldados, e trazer de volta mais informações sobre o lugar?	158	-1	Ouvir novamente	162	1	Aceitar	161	2	Rejeitar
+162	Vá para o cemitério ao norte do Lobo Uivante, e você achará um soldado fugitivo do Quartel de Balgass. Ele foi abençoado com inteligência graças a Rugard. Ele se chama 'Lobisomen Brigão'.	163	-1	Continuar ouvindo						
+163	Ele te levará lá. Por favor identifique os treineiros no Quartel de Balgass, e mate 20 de cada tipo	163	2	Terminar conversa						
+164	Você completou a missão em segurança. Eu agradeço sua incrível habilidade e grande força de vontade para lutar contra as piores situações.	165	3	Continue.						
+165	A informação que você trouxe de volta e os inimigos que você derrotou vai ajudar a trazer de volta a paz para MU e Lobo Uivante.	165	2	Terminar conversa						
+167	Você não tem dinheiro o suficiente. Você previsa ofertar 10 milhões de Zen para Rugart se você quiser receber essa missão.	167	2	Eu voltarei quando estiver pronto.						
+168	Sua coragem nos mostrou que ainda existe esperança.	169	-1	Continuar ouvindo						
+169	Parece que Balgass está se escondendo em algum lugar, se recuperando da batalha.	170	-1	Continuar ouvindo						
+170	Para levar para frente a missão de Rugard, nós temos que achar a localização exata de Balgass e derrotar os soldados que ele está treinando.	171	-1	Continuar ouvindo						
+171	Esse último teste para realizar a missão de Rugard será mais complicado que qualquer coisa que você enfrentou até agora. Você aceita o último desafio?	168	-1	Ouvir novamente	172	1	Aceitar	171	2	Rejeitar
+172	Entre no portão do castelo ao norte do Quartel de Balgass. Nós faremos a preparação para que você possa entrar.	172	2	Terminar conversa						
+173	Parabéns! Você passou no último teste de Rugard. A proteção de Rugard estará com você a partir de agora.	174	3	Continuar ouvindo						
+174	Graças ao seu esforço, MU e Lobo Uivante estão salvos das ameaças de Balgass por enquanto. Eu agradeço sua habilidade.	174	2	Terminar conversa						
+//???? 2? ??? ?? ??(07.11.20 ???)										
+90	Você leu o 'Pergaminho do Imperador'. Você sabe sobre o acordo secreto entre Muren e Semeden, o líder dos Invocadores? Em troca por não anexar Elbe no império, Semeden prometeu uma coisa para Muren.	91	-1	Continuar ouvindo						
+91	Ele prometeu que enquanto MU existir, os Invocadores guardariam o Portão Dimensional. Como símbolo dessa promessa, Semeden deu o 'Olho do Abismo'. Por favor ache o 'Olho do Abismo', que é a prova dessa promessa.	92	1	Aceitar	91	2	Rejeitar			
+92	Eu ouvi dizer que o 'Olho do Abismo' pode ser encontrado por perto de Atlans, Torre Perdida, ou Tarkan. Quando achar o 'Olho do Abismo', por favor traga para mim.	92	2	Terminar conversa						
+93	Você achou o 'Olho do Abismo'. O 'Olho do Abismo' é um material que não pode ser achado nesse mundo, criado da transformação de materiais durante a transferência dimensional. Ele contém memórias de uma era e um mundo antes da transferência dimensional.	94	-1	Continuar ouvindo						
+94	Para aqueles que vigiam as dimensões, o 'Olho do Abismo' é um símbolo importante. Você, que trouxe o 'Olho do Abismo'. Em nome dos Vigias Dimensionais Semeden, lhe dou o título de Invocador de Sangue.	94	3	Tornar-se um Invocador de Sangue						
+// ????? ???? ??? ?? ??(2014-07-08 ???)										
+175	Existe um método de luta chamado 'Escudo Circular', que é passado secretamente entre os Guarda Real dos Cavaleiros do Templo. É uma técnica que apenas Grandes Lanceiros podem aprender. Se estiver interessado, eu posso te ensinar.	176	-1	Continuar ouvindo						
+176	Tudo bem. Para aprender o Escudo Circular, nós precisamos de uma pedra mágica especial chamada de 'Pedra Negra'. A pedra mágica irá aumentar sua energia e criando uma nova fonte de energia em seu corpo.	177	-1	Então o que eu tenho que fazer?						
+177	Eu ouvi dizer que a Pedra Negra pode ser encontrada em Tarkan ou Icarus. Eu te ajudarei se você me pagar 2 milhões de Zen como agradecimento pela minha ajuda. Você gostaria de tentar?	175	-1	Ouvir novamente	178	1	Aceitar	177	2	Rejeitar
+178	Por favor volte aqui quando tiver achado a 'Pedra Negra'.	178	2	Terminar conversa						
+179	Você realmente achou a 'Pedra Negra'! Muito bem, eu vou aumentar a energia do seu corpo agora. Você poderá sentir uma nova onda de energia.	180	-1	Continuar ouvindo						
+180	Bom, está feito. Agora eu vou te dizer mais sobre o Escudo Circular. O Escudo Circular reduz a AG do oponente. Quando seu oponente te acerta, seu Escudo Circular será ativado com uma certa taxa.	181	-1	Continuar ouvindo						
+181	Se a AG deles for reduzida, eles não poderão usar algumas habilidades, então você estará na vantagem. Lembre-se que o Escudo Circular só pode ser usado quando você estiver com um escudo equipado.	181	3	Você aprendeu o Escudo Circular!						
+182	Lembre-se que o Escudo Circular só pode ser usado quando você estiver com um escudo equipado. Que a benção de Rugard esteja com você.	182	2	Terminar conversa						
+// 4? - 1 ?? ??? ?? ??										
+183	Você pode ter atingido as condições para fazer o teste mas eu precisa saber se você é forte o bastante para usar o poder.	184	-1	Como posso provar?						
+184	Primeiro, tente me vencer. Não se preocupe pois usarei apenas uma parte do meu poder contra você.	185	1	Okay, eu farei!	184	2	I refuse.			
+185	Parece bom. Mostre suas habilidades de batalha contra mim.	185	4	Termine a conversa						
+186	Você se provou bom na primeira batalha contra mim.	187	3	Continuar ouvindo.						
+187	Contudo, você está apenas preparado para ser dado o novo poder. Agora é você que deve superar todas as dificuldades durante o teste.	187	2	Terminar a conversa						
+188	Você não está preparado para fazer o teste. Por favor volte mais tarde.	188	2	Eu voltarei.						
+// 4? - 2 ?? ??? ?? ??										
+189	Você sabia? MU não é mais um lugar seguro. Ferea foi descoberta e as Nixies estão renascendo. Monstros poderosos estão começando a aparecer em MU. Você tem que estar preparado para enfrentá-los.	190	-1	Você está falando sobre o Calabouço Profundo.						
+190	A verdade é que o calabouço profundo é onde eu treinei para me tornar um cavaleiro guardião a muito tempo atrás. Você não estará pronto para enfrentar suas batalhas se não derrotar os monstros aqui.	191	1	Vá e evoque monstros!	190	2	Reject			
+191	Eu vou evocar os monstros da masmorras profunda. Derrote 5 Guerreiros Esqueletos da Masmorra Profunda, 5 Larvas e 5 Ciclopes.  E você tem que sobreviver por 5 minutos. Eu realmente espero que você sobrevive e faça o último teste. Eu evocarei os monstros.	191	4	Terminar a conversa						
+192	Você conseguiu. Você sobreviveu contra essas terríveis criaturas da masmorra profunda.	193	3	Continuar ouvindo.						
+193	Agora você está completamente preparado para fazer o último teste.	193	2	Terminar a conversa						
+194	Você ainda não está qualificado. Você precisa vencer a primeira batalha contra mim.	194	2	Ok.						
+// 4? - 3 ?? ??? ?? ??										
+195	Esse é o último teste que eu tenho para você.	196	-1	O que eu devo fazer.						
+196	Novamente, lute contra mim e ganhe. Agora, você deve lutar contra mim enquanto derrota os monstros da masmorra profunda.	197	1	Aceitar	196	2	Reject			
+197	Você juntou seus amigos? Se estiver pronto, vamos começar.	197	4	Terminar a conversa						
+198	Você completou todos os testes. E mostrou sua habilidade. Eu acredito que você poderá se tornar um cavaleiro guardião de Lugard que pode ficar ao meu lado um dia.	199	3	Continuar ouvindo.						
+199	Você passou todos os testes e agora está pronto para usar o novo poder. Eu parabenizo suas habilidades. Use a tecla de atalho [Ctrl+A] para verificar seu novo poder.	199	2	Terminar a conversa						
+200	Você ainda não está qualificado. Você precisa derrotar os monstros da masmorra profunda para ter a chance de lutar contra mim na última batalha.	200	2	Ok. Eu voltarei quando estiver pronto para a última batalha.						
+201	Você não tem dinheiro o suficiente. Você precisa ofertar 1 milhão de Zen para Lugard se quiser receber essa missão.	201	2	Eu voltarei quando estiver pronto.						
+//???? 2? ?? ??? ?? ??										
+95	Você leu o 'Pergaminho do Imperador', então você deve saber que existem 3 tesouros.	82	-1	Por favor, continue.						
+96	Eu sei que você quer vingança, mas tenha cuidade pois isso pode ser bem perigoso. Se você achar o 'Fragmento da Alma do Mago' em segurança, volte com ele aqui.	96	2	Eu acharei.						
+97	Eu sabia que você acharia o 'Fragmento da Alma do Mago'. O 'Fragmento da Alma do Mago' é uma pedra mágica que simboliza a força de vontade do mago e é dito que foi dado para Muren por Etramu como um símbolo de uma firme determinação.	98	-1	Conte-me mais.						
+98	Com esse 'Fragmento da Alma do Mago', agora você pode se tornar "Mestre da Magia Rúnica".	98	3	Eu me tornei uma Mestre da Magia Rúnica!						
